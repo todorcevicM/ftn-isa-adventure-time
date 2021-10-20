@@ -1,0 +1,1 @@
+insert into person values (1,'a@a.com','djota');
