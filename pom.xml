@@ -70,7 +70,7 @@
 				<version>1.7.6</version>
 
 				<executions>
-					<!-- <execution>
+					<execution>
 						<id>Install node and npm</id>
 						<goals>
 							<goal>install-node-and-npm</goal>
@@ -91,7 +91,7 @@
 						<configuration>
 							<arguments>install</arguments>
 						</configuration>
-					</execution> -->
+					</execution>
 
 					<execution>
 						<id>npm build</id>
