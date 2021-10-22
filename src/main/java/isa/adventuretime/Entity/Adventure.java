@@ -1,6 +1,5 @@
 package isa.adventuretime.Entity;
 
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,10 +9,10 @@ import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
-public class Cottage {
+@Entity
+public class Adventure {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -23,13 +22,15 @@ public class Cottage {
     private double GeoLng;
     private double GeoLat; 
     private String description;
-    private int numberOfRooms;
-    private int numberOfBedsPerRoom; 
-    private String rules;
-    private double pricePerDay;
-    private Date reservationStart;
-    private Date reservationEnd;
-    private Long ownerId;
-    private String priceAndInfo;
+    private Long instructorId;
+    private String instructorBio;
 
+    private String equipment; //ovo mozda prebaciti u termin avanture
+    private String extraService;
+
+    private String rules;
+    private int maxUsers;
+    private double pricePerDay;
+    private String priceAndInfo;
+    private int percentTakenIfCanceled;
 }
