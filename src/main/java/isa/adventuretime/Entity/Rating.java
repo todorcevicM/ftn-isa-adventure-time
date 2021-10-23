@@ -1,7 +1,5 @@
 package isa.adventuretime.Entity;
 
-import java.sql.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,12 +11,14 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class FishingInstructor extends User{
+public class Rating {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
-
-	private Date startWorkPeriod;
-	private Date endWorkPeriod;
+    
+    private Long raterId;
+    private Long ratedId;
+    private headEntityEnum forEntity; 
+    private int rating;
 
 }

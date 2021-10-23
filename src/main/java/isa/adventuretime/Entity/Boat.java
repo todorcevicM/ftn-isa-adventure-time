@@ -26,16 +26,13 @@ public class Boat {
     private int enginePower;
     private int maxSpeed;
 
-    private String navigationEquipment; //TODO da li samo sting za navigacionu opermu
+    private String navigationEquipment;
 
     private String address;
     private double GeoLng;
     private double GeoLat;
 
-    // kapacitet broda, jel se to odnosi na koliko je maksimalno moguce ljudi da nosi 
-    // a onda maksimalni broj osoba je samo neki broj koji vlasnik bira ali taj broj mora biti manji od ovog
-
-    private String promoDescription; // prethodno samo description
+    private String promoDescription; 
     private String rules;
     private double pricePerDay;
     private Date reservationStart;

@@ -1,0 +1,15 @@
+entities:
+Administrator satisfactory
+Boat owner  
+Boat
+Cottage owner
+Cottage
+Fishing instructor
+Adventure
+
+registerd user // might be same as boat and cottage owner
+room
+
+review satisfactory
+rating satisfactory
+sub satisfactory
