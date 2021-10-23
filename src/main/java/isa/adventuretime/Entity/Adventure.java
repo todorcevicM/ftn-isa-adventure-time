@@ -31,7 +31,6 @@ public class Adventure {
     private int percentTakenIfCanceled;
 
     private String location;
-    private int duration;
     private int maxUsers;    
     private double pricePerDay;
 

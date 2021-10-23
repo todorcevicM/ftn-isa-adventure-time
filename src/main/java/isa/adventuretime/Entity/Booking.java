@@ -18,8 +18,9 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long bookedGoodsId;
-    private Long RegisteredUserId;
+    private Long bookedServiceId;
+    private HeadEntityEnum forService;
+    private Long registeredUserId;
     private boolean quickBooking;
 
     private Date start;

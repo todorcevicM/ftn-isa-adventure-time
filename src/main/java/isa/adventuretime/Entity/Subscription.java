@@ -16,7 +16,7 @@ public class Subscription {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
     
-    private Long suberId;
-    private Long subedId;
+    private Long subberId;
+    private Long subbedId;
     private HeadEntityEnum forEntity; 
 }

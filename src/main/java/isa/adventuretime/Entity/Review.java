@@ -20,5 +20,6 @@ public class Review {
     private Long reviewedId;
     private HeadEntityEnum forEntity; 
     private String reviewText;
+    private boolean accepted;
 
 }
