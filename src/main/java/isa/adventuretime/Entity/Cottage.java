@@ -22,14 +22,16 @@ public class Cottage {
     private String address;
     private double GeoLng;
     private double GeoLat; 
-    private String description;
-    private int numberOfRooms;
-    private int numberOfBedsPerRoom; 
+    private String promoDescription; // prethodno samo description
+    private int numberOfRooms; // samo rooms jer je int?
+    private int numberOfBedsPerRoom; // samo bedsPerRoom jer je int?
     private String rules;
     private double pricePerDay;
+    private String priceAndInfo;
+
     private Date reservationStart;
     private Date reservationEnd;
+    private int maxUsers;
     private Long ownerId;
-    private String priceAndInfo;
 
 }

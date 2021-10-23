@@ -1,6 +1,8 @@
 package isa.adventuretime.Entity;
 
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,16 +23,26 @@ public class Adventure {
     private String address;
     private double GeoLng;
     private double GeoLat; 
-    private String description;
+    private String promoDescription; // prethodno samo description
     private Long instructorId;
     private String instructorBio;
 
     private String equipment; //ovo mozda prebaciti u termin avanture
-    private String extraService;
+    private String extraService; 
+
+    // sta je extraService a sta priceAndInfo, i ako se zaista razlikuju zasto nema i jedno i drugo u Boat klasi
+
 
     private String rules;
-    private int maxUsers;
-    private double pricePerDay;
     private String priceAndInfo;
     private int percentTakenIfCanceled;
+
+    private Date reservationStart;
+    private Date reservationEnd;
+    private String location;
+    private int duration;
+    private int maxUsers;    
+    // todo: dodatne usluge, obzirom da se dodaju kao tagovi, mozda liste koristiti ili nesto tako
+    private double pricePerDay;
+
 }

@@ -21,7 +21,7 @@ public class Boat {
     private String name;
 
     private String type;
-    private double lenght;
+    private double length;
     private int engineNumber;
     private int enginePower;
     private int maxSpeed;
@@ -32,7 +32,10 @@ public class Boat {
     private double GeoLng;
     private double GeoLat;
 
-    private String description;
+    // kapacitet broda, jel se to odnosi na koliko je maksimalno moguce ljudi da nosi 
+    // a onda maksimalni broj osoba je samo neki broj koji vlasnik bira ali taj broj mora biti manji od ovog
+
+    private String promoDescription; // prethodno samo description
     private String rules;
     private double pricePerDay;
     private Date reservationStart;
