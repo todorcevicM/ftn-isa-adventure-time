@@ -11,8 +11,13 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class RegisteredUser extends User{
+public class RequestFromAdmin {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
+
+    private Long requesterId;
+    private headEntityEnum forType;
+    private String requestText;    
+    
 }

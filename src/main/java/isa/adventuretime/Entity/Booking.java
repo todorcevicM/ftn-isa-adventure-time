@@ -19,7 +19,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long bookedGoodsId;
-    private Long registeredUserId;
+    private Long RegisteredUserId;
     private boolean quickBooking;
 
     private Date start;
