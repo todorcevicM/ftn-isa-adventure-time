@@ -29,8 +29,8 @@ public class Boat {
     private String navigationEquipment;
 
     private String address;
-    private double GeoLng;
-    private double GeoLat;
+    private double geoLng;
+    private double geoLat;
 
     private String promoDescription; 
     private String rules;

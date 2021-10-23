@@ -1,15 +1,17 @@
 entities:
 Administrator satisfactory
-Boat owner  
-Boat
-Cottage owner
-Cottage
-Fishing instructor
-Adventure
+Boat owner satisfactory
+Boat satisfactory
+Cottage owner satisfactory
+Cottage satisfactory
+Fishing instructor satisfactory
+Adventure satisfactory
 
-registerd user // might be same as boat and cottage owner
-room
+registerd user satisfactory
+room satisfactory
 
 review satisfactory
 rating satisfactory
 sub satisfactory
+
+DateRange

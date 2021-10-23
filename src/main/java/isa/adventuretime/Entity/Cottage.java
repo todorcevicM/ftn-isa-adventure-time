@@ -20,11 +20,10 @@ public class Cottage {
 
     private String name;
     private String address;
-    private double GeoLng;
-    private double GeoLat; 
+    private double geoLng;
+    private double geoLat; 
     private String promoDescription; // prethodno samo description
-    private int numberOfRooms; // samo rooms jer je int?
-    private int numberOfBedsPerRoom; // samo bedsPerRoom jer je int?
+
     private String rules;
     private double pricePerDay;
     private String priceAndInfo;

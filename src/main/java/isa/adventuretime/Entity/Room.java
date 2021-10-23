@@ -16,6 +16,7 @@ public class Room {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private int numberOfBeds;
     private Long cottageId;
     
 }

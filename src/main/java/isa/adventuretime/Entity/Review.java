@@ -18,7 +18,7 @@ public class Review {
     
     private Long reviewerId;
     private Long reviewedId;
-    private headEntityEnum forEntity; 
+    private HeadEntityEnum forEntity; 
     private String reviewText;
 
 }

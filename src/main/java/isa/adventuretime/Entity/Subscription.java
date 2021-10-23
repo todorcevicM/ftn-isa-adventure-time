@@ -18,5 +18,5 @@ public class Subscription {
     
     private Long suberId;
     private Long subedId;
-    private headEntityEnum forEntity; 
+    private HeadEntityEnum forEntity; 
 }

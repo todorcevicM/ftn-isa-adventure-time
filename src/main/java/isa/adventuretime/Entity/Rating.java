@@ -18,7 +18,7 @@ public class Rating {
     
     private Long raterId;
     private Long ratedId;
-    private headEntityEnum forEntity; 
+    private HeadEntityEnum forEntity; 
     private int rating;
 
 }

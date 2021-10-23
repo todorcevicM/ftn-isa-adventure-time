@@ -9,6 +9,4 @@ public class CottageOwner extends User{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 
-    //lista vikendica koju poseduje
-
 }
