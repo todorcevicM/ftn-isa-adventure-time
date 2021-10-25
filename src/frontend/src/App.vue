@@ -57,10 +57,7 @@ export default {
 </script>
 
 <style>
-@font-face {
-  font-family: Aleo;
-  src: url("assets/fonts/aleo/Aleo-Regular.ttf");
-}
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
 body {
   background-image: url("assets/adventure-time-background.jpg");
   background-color: #1a2022;
