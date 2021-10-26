@@ -19,6 +19,13 @@
         <a href="#">Sign up</a> to schedule one of our adventures,
       </p>
       <p style="margin: 0; font-size: 23px">or continue browsing as a guest.</p>
+
+      <p style="margin-top: 50; font-size: 23px">
+        Return from GET fetch: {{ returnGET }}
+      </p>
+      <p style="margin-top: 50; font-size: 23px">
+        Return from POST fetch: {{ returnPOST }}
+      </p>
     </div>
     <div id="card"></div>
     <!-- <p>Message from backend :</p>
@@ -26,32 +33,38 @@
     <h1>i rember 👌😊🦩</h1>
     <button @click="log">Log!</button> -->
   </div>
-</template>
+</template> 
 
 <script>
-// import HelloWorld from "./components/HelloWorld.vue";
+import { ref } from "vue";
+import axios from "axios";
 export default {
-  name: "App",
-  data() {
-    return {
-      //   msg: "",
-      //   fac: false,
-    };
-  },
-  methods: {
-    // log() {
-    //   console.log("Random result :");
-    //   if (Math.random() > 0.5) this.fac = true;
-    //   else this.fac = false;
-    //   console.log(this.fac);
-    // },
-  },
-  mounted() {
-    // fetch("/api/test")
-    //   .then((response) => response.text())
-    //   .then((data) => {
-    //     this.msg = data;
+  setup() {
+    const returnGET = ref(null); // TODO: Sta ovo znaci?
+    const returnPOST = ref(null); // TODO: Sta ovo znaci?
+    axios.get("/api/get").then((data) => (returnGET.value = data.data)); // TODO: Kakva je ovo sintaksa
+    var x = 3;
+    axios.post("/api/post", x).then((data) => (returnPOST.value = data.data)); // Ovo data => ... je valjda isto sto i function(data){...} ❗❗❗
+    // axios.post("/api/post", {})
+    //   .then(function (data) {
+    //     returnPOST.value = data.data;
+    //   })
+
+    // Ovo u Notion :
+    // axios
+    //   .post("/api/post", {})
+    //   .then(function (response) {
+    //     console.log(response + " AAAAAAAAAAAAAAAAA");
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error + " BBBBBBBBBBBBBBBB");
     //   });
+
+    // Za u <template>
+    return {
+      returnGET,
+      returnPOST,
+    };
   },
 };
 </script>
