@@ -5,15 +5,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import isa.adventuretime.Entity.User;
-import isa.adventuretime.Repository.AdministratorRepo;
+import isa.adventuretime.Service.AdministratorService;
 
 @RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
 @RequestMapping(path = "/api") // This means URL's start with /demo (after Application path)
 public class MainController {
+	private AdministratorService administratorService;
+	
 	@Autowired
-	private AdministratorRepo ar;
-
-	public MainController() {
+	public MainController(AdministratorService as) {
+		administratorService = as;
 	}
 
 	@GetMapping(path = "/test")
@@ -22,6 +23,6 @@ public class MainController {
 		User user = new User();
 		user.setAddress("A");
 		user.getAddress();
-		return ar.getOne(1L).getEmail();
+		return administratorService.getById(1L).getEmail();
 	}
 }
