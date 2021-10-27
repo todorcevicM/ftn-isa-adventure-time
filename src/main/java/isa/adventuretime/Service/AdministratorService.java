@@ -11,8 +11,8 @@ public class AdministratorService{
     private AdministratorRepo administratorRepo;
 
     @Autowired
-    public AdministratorService(AdministratorRepo aR){
-        this.administratorRepo = aR;
+    public AdministratorService(AdministratorRepo repo){
+        this.administratorRepo = repo;
     }
 
     public  Administrator getById(Long id){

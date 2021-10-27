@@ -11,8 +11,8 @@ public class AdventureService {
     private AdventureRepo adventureRepo;
 
     @Autowired
-    public AdventureService(AdventureRepo aR){
-        adventureRepo = aR;
+    public AdventureService(AdventureRepo repo){
+        adventureRepo = repo;
     }
 
     public Adventure getById(Long Id){
