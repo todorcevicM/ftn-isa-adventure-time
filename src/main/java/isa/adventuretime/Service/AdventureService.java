@@ -1,0 +1,21 @@
+package isa.adventuretime.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import isa.adventuretime.Entity.Adventure;
+import isa.adventuretime.Repository.AdventureRepo;
+
+@Service
+public class AdventureService {
+    private AdventureRepo adventureRepo;
+
+    @Autowired
+    public AdventureService(AdventureRepo aR){
+        adventureRepo = aR;
+    }
+
+    public Adventure getById(Long Id){
+        return adventureRepo.getById(Id);
+    }
+}
