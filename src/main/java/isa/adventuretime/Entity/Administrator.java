@@ -4,13 +4,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+// TODO:
+// Ovaj property je dodat jer bez njega Spring baca ogromnu gresku,
+// ovo je radjeno i na web-u.
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Administrator extends User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

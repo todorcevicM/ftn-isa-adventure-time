@@ -26,6 +26,9 @@
       <p style="margin-top: 50; font-size: 23px">
         Return from POST fetch: {{ returnPOST }}
       </p>
+      <p style="margin-top: 50; font-size: 23px">
+        Return from GET JSON fetch: {{ returnJSON }}
+      </p>
     </div>
     <div id="card"></div>
     <!-- <p>Message from backend :</p>
@@ -41,13 +44,18 @@ import axios from "axios";
 export default {
   setup() {
     const returnGET = ref(null); // TODO: Sta ovo znaci?
-    const returnPOST = ref(null); // TODO: Sta ovo znaci?
-    axios.get("/api/get").then((data) => (returnGET.value = data.data)); // TODO: Kakva je ovo sintaksa
+    const returnPOST = ref(null);
+    const returnJSON = ref(null);
+    axios.get("/api/get").then((response) => (returnGET.value = response.data)); // TODO: Kakva je ovo sintaksa
     var x = 3;
-    axios.post("/api/post", x).then((data) => (returnPOST.value = data.data)); // Ovo data => ... je valjda isto sto i function(data){...} ❗❗❗
+    axios
+      .post("/api/post", x)
+      .then((response) => (returnPOST.value = response.data));
+    // Ovo response => ... je valjda isto sto i function(response){...} ❗❗❗
+
     // axios.post("/api/post", {})
-    //   .then(function (data) {
-    //     returnPOST.value = data.data;
+    //   .then(function (response) {
+    //     returnPOST.value = response.data;
     //   })
 
     // Ovo u Notion :
@@ -60,10 +68,18 @@ export default {
     //     console.log(error + " BBBBBBBBBBBBBBBB");
     //   });
 
+    // axios.get("/api/get/json").then((response) => (returnJSON.value = response.data));
+    var temp;
+    axios.get("/api/get/json").then(function (odgovor) {
+      temp = odgovor;
+    });
+    console.log(temp); // TODO: Kako je ovo undefined?
+
     // Za u <template>
     return {
       returnGET,
       returnPOST,
+      returnJSON,
     };
   },
 };
