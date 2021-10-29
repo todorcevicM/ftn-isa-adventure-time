@@ -3,7 +3,7 @@
     <div id="logo-container">
       <div class="underlined">
         <img
-          src="../src/assets/wheel.svg"
+          src="../../assets/wheel.svg"
           style="margin-bottom: -6px; margin-right: -7px"
         />
         <p style="font-size: 75px; letter-spacing: -2px; display: inline">
@@ -72,7 +72,7 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
 body {
-  background-image: url("assets/adventure-time-background.jpg");
+  background-image: url("../../assets/adventure-time-background.jpg");
   background-color: #1a2022;
   background-size: 100%;
   background-repeat: no-repeat;
