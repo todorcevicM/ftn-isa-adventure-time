@@ -1,21 +1,25 @@
 package isa.adventuretime.Service;
 
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Repository.CottageRepo;
 
 @Service
 public class CottageService {
-    private CottageRepo CottageRepo;
+	private CottageRepo cottageRepo;
 
-    @Autowired
-    public CottageService(CottageRepo aR){
-        CottageRepo = aR;
-    }
+	@Autowired
+	public CottageService(CottageRepo aR) {
+		cottageRepo = aR;
+	}
 
-    public Cottage getById(Long Id){
-        return CottageRepo.getById(Id);
-    }
+	public ArrayList<Cottage> findAll() {
+		return cottageRepo.findAll();
+	}
+
+	public Cottage getById(Long Id) {
+		return cottageRepo.getById(Id);
+	}
 }

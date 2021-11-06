@@ -29,6 +29,9 @@
       <p style="margin-top: 50; font-size: 23px">
         Return from GET JSON fetch: {{ returnJSON }}
       </p>
+      <p style="margin-top: 50; font-size: 23px">
+        Return from Cottage Controller fetch: {{ cottageJSON }}
+      </p>
     </div>
     <div id="card"></div>
     <!-- <p>Message from backend :</p>
@@ -75,11 +78,38 @@ export default {
     });
     console.log(temp); // TODO: Kako je ovo undefined?
 
+    const cottageJSON = ref(null);
+    var a = axios.get("/api/cottages/get").then(function (response) {
+      cottageJSON.value = response.data;
+      // console.log(cottageJSON);
+      a.value = response.data;
+    });
+
+    var yaml = 2;
+    (async () => {
+      const res = await axios.get("/api/cottages/get");
+      console.log(yaml);
+      yaml = res.data;
+      console.log("kita");
+      console.log(yaml);
+      console.log("kit2");
+    })();
+    console.log("boki");
+    console.log(yaml);
+    console.log("skokic");
+
+    // yaml.split({})
+
+    var b = a;
+    console.log(a.value);
+    console.log("b: " + b);
+
     // Za u <template>
     return {
       returnGET,
       returnPOST,
       returnJSON,
+      cottageJSON,
     };
   },
 };

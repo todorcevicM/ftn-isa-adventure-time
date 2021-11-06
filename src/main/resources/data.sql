@@ -1,7 +1,5 @@
-insert into administrator (name,lastname,email,password,address,city,country,telephone_number,wants_deletion,authenticated) values ("Marko","Stankovic","stankovictab@gmail.com","testpassword","Address","City","Country","064121213",FALSE,FALSE);
+insert into administrator (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated) values ("Marko", "Stankovic", "stankovictab@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, FALSE);
 
--- insert into Business_Constants(value, description) values (15.00, "Successful reservation percentage take.")
-
-
-
--- insert into person values (1,'a@a.com','djota');
+insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id) values ("Old Pine Cabin", "Montauk, New York", 41.049690, -71.909219, "Sample Promo Description", "Sample Rules", 130.00, "Sample Price and Info", "2020-01-01", "2021-01-01", 4, 1);
+insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id) values ("Wayward Cottage", "Burlington, Vermont", 0, 0, "Sample Promo Description", "Sample Rules", 185.00, "Sample Price and Info", "2020-01-01", "2021-01-01", 4, 1);
+insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id) values ("Old Fishing Place", "Diamond Lake, Oregon", 0, 0, "Sample Promo Description", "Sample Rules", 90.00, "Sample Price and Info", "2020-01-01", "2021-01-01", 4, 1);
