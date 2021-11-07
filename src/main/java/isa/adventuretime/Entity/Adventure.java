@@ -12,26 +12,26 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Adventure {
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-    private String name;
-    private String address;
-    private double geoLng;
-    private double geoLat; 
-    private String promoDescription; // prethodno samo description
-    private Long instructorId;
-    private String instructorBio;
+	private String name;
+	private String address;
+	private double geoLng;
+	private double geoLat;
+	private String promoDescription; // prethodno samo description
+	private Long instructorId;
+	private String instructorBio;
 
-    private String equipment; //ovo mozda prebaciti u termin avanture
+	private String equipment; // ovo mozda prebaciti u termin avanture
 
-    private String rules;
-    private String priceAndInfo;
-    private int percentTakenIfCanceled;
+	private String rules;
+	private String priceAndInfo;
+	private int percentTakenIfCancelled;
 
-    private String location;
-    private int maxUsers;    
-    private double pricePerDay;
+	private String location;
+	private int maxUsers;
+	private double pricePerDay;
 
 }
