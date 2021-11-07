@@ -19,6 +19,6 @@ public class Administrator extends User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
-	// Main Admin ima id==1
+	// Main Admin ima id == 1
 
 }
