@@ -30,7 +30,7 @@ public class Adventure {
 	private String priceAndInfo;
 	private int percentTakenIfCancelled;
 
-	private String location;
+	private String location; // TODO: Razlika sa address?
 	private int maxUsers;
 	private double pricePerDay;
 

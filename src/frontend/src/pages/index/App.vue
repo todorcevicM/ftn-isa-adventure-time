@@ -1,5 +1,8 @@
 <template>
 	<div>
+		<div style="display: flex; justify-content: flex-end">
+			<button id="logInButton">Log in</button>
+		</div>
 		<div id="logo-container">
 			<div class="underlined">
 				<img
@@ -20,13 +23,71 @@
 				Plan your fishing trip with ease.
 			</p>
 		</div>
-		<div style="height: 670px; font-size: 30px; margin: 50px 0 0 200px">
+		<div style="font-size: 30px; margin: 50px 0 0 200px">
 			<p style="margin: 0">
-				<a href="#">Sign up</a> to schedule one of our adventures,
+				<a @click="openPopup()">Sign up</a> to schedule one of our
+				adventures,
 			</p>
 			<p style="margin: 0; font-size: 23px">
 				or continue browsing as a guest.
 			</p>
+		</div>
+		<div v-if="!popupState" style="height: 520px"></div>
+		<div v-if="popupState" class="popup">
+			<div style="height: 20px"></div>
+			<!-- Spacer -->
+			<div class="popupRow">
+				<div class="inputField">
+					<p>Register as</p>
+					<input type="text" />
+				</div>
+			</div>
+			<div class="popupRow">
+				<div class="inputField">
+					<p>First Name</p>
+					<input type="text" />
+				</div>
+				<div class="inputField">
+					<p>Last Name</p>
+					<input type="text" />
+				</div>
+			</div>
+			<div class="popupRow">
+				<div class="inputField">
+					<p>Email</p>
+					<input type="text" />
+				</div>
+				<div class="inputField">
+					<p>Address</p>
+					<input type="text" />
+				</div>
+			</div>
+			<div class="popupRow">
+				<div class="inputField">
+					<p>City</p>
+					<input type="text" />
+				</div>
+				<div class="inputField">
+					<p>Country</p>
+					<input type="text" />
+				</div>
+			</div>
+			<div class="popupRow">
+				<div class="inputField">
+					<p>Password</p>
+					<input type="password" />
+				</div>
+				<div class="inputField">
+					<p>Repeat Password</p>
+					<input type="password" />
+				</div>
+			</div>
+			<div class="spacer">
+				<p>Do Passwords Match?</p>
+			</div>
+			<div class="popupRow">
+				<button @click="closePopup()" id="signUpButton">Sign Up</button>
+			</div>
 		</div>
 		<div class="mainCard">
 			<div style="text-align: center">
@@ -70,6 +131,7 @@ export default {
 	setup() {
 		var cottages = ref(null);
 		var adventures = ref(null);
+		var popupState = ref(null);
 
 		axios.get("/api/cottages/get").then(function (response) {
 			cottages.value = response.data;
@@ -94,6 +156,13 @@ export default {
 							".png");
 				}
 			},
+			popupState,
+			openPopup() {
+				popupState.value = true;
+			},
+			closePopup() {
+				popupState.value = false;
+			},
 		};
 	},
 };
@@ -108,9 +177,11 @@ body {
 	background-repeat: no-repeat;
 	color: #10120e;
 	font-family: Aleo;
+	margin: 0;
 }
 #logo-container {
-	margin: 3em 70em 0 10em;
+	margin: 0 70em 0 10em;
+	text-align: center;
 }
 .underlined {
 	display: inline-block;
@@ -122,13 +193,15 @@ a {
 	text-decoration: none;
 }
 a:hover {
-	color: #53380e;
+	color: #573b0d;
+	cursor: pointer;
 }
 .mainCard {
 	background-color: white;
 	height: 1400px;
 	margin: 0;
-	border-radius: 24px;
+	border-top-left-radius: 24px;
+	border-top-right-radius: 24px;
 }
 .categoryItems {
 	display: flex;
@@ -138,8 +211,8 @@ a:hover {
 .itemImage {
 	border-radius: 15px;
 	object-fit: cover;
-	width: 366px;
-	height: 366px;
+	width: 360px;
+	height: 360px;
 }
 h4 {
 	font-size: 32px;
@@ -160,5 +233,78 @@ h1 {
 .largeCategory {
 	margin-left: 224px;
 	margin-right: 224px;
+}
+.popup {
+	font-size: 22px;
+	text-align: center;
+	margin: 0px 36rem 100px 36rem;
+	height: 520px;
+	background-color: rgb(255, 255, 255);
+	border-radius: 15px;
+	display: flex;
+	flex-direction: column;
+}
+#signUpButton {
+	color: white;
+	font-size: 24px;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #ad6800;
+	border-radius: 5px;
+	border: none;
+	width: 200px;
+	height: 46px;
+}
+#signUpButton:hover {
+	background-color: #583603;
+	cursor: pointer;
+}
+.popupRow {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+	height: 16.66%;
+}
+input {
+	width: 260px;
+	height: 32px;
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 20px;
+	background-color: #f0f0f0;
+}
+input:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
+}
+.inputField {
+	width: 260px;
+}
+.inputField p {
+	margin: 0;
+	text-align: left;
+}
+.spacer {
+	height: 30px;
+}
+.spacer p {
+	font-size: 16px;
+	color: gray;
+	margin: 0;
+	margin-top: 6px;
+}
+#logInButton {
+	font-size: 24px;
+	font-family: Aleo;
+	width: 115px;
+	height: 40px;
+	background: none;
+	border: 2px solid #10120e;
+	border-radius: 15px;
+	margin: 30px 40px 0 0;
+}
+#logInButton:hover {
+	background-color: #c4813069;
+	cursor: pointer;
 }
 </style>
