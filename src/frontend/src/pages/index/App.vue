@@ -19,22 +19,14 @@
         <a href="#">Sign up</a> to schedule one of our adventures,
       </p>
       <p style="margin: 0; font-size: 23px">or continue browsing as a guest.</p>
-
-      <p style="margin-top: 50; font-size: 23px">
-        Return from GET fetch: {{ returnGET }}
-      </p>
-      <p style="margin-top: 50; font-size: 23px">
-        Return from POST fetch: {{ returnPOST }}
-      </p>
-      <p style="margin-top: 50; font-size: 23px">
-        Return from GET JSON fetch: {{ returnJSON }}
-      </p>
-      <p style="margin-top: 50; font-size: 23px">
-        Return from Cottage Controller fetch: {{ cottageJSON }}
-      </p>
-
-      <p v-for="c in cottages" :key="c.id"> {{ c.name }}</p>
-        
+      <!-- v-for c in cottages bi iteriralo kroz sve, hocemo samo prva 3 -->
+      <!-- i in 3 ide od 1 do 3, ne od 0 do 2 -->
+      <div v-for="i in 3" :key="i">
+        <img :src="imageSource(i)" style="width: 150px" />
+        <h4>{{ cottages[i - 1].name }}</h4>
+        <p>${{ cottages[i - 1].pricePerDay }}/day</p>
+        <p>{{ cottages[i - 1].address }}</p>
+      </div>
     </div>
     <div id="card"></div>
     <!-- <p>Message from backend :</p>
@@ -49,58 +41,18 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
   setup() {
-    const returnGET = ref(null); // TODO: Sta ovo znaci?
-    const returnPOST = ref(null);
-    const returnJSON = ref(null);
-    axios.get("/api/get").then((response) => (returnGET.value = response.data)); // TODO: Kakva je ovo sintaksa
-    var x = 3;
-    axios
-      .post("/api/post", x)
-      .then((response) => (returnPOST.value = response.data));
-    // Ovo response => ... je valjda isto sto i function(response){...} ❗❗❗
+    var cottages = ref(null);
 
-    // axios.post("/api/post", {})
-    //   .then(function (response) {
-    //     returnPOST.value = response.data;
-    //   })
-
-    // Ovo u Notion :
-    // axios
-    //   .post("/api/post", {})
-    //   .then(function (response) {
-    //     console.log(response + " AAAAAAAAAAAAAAAAA");
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error + " BBBBBBBBBBBBBBBB");
-    //   });
-
-    // axios.get("/api/get/json").then((response) => (returnJSON.value = response.data));
-    var temp;
-    axios.get("/api/get/json").then(function (odgovor) {
-      temp = odgovor;
-    });
-    console.log(temp); // TODO: Kako je ovo undefined?     
-
-    const cottageJSON = ref(null);
-    var a = axios.get("/api/cottages/get").then(function (response) {
-      cottageJSON.value = response.data;
-      // console.log(cottageJSON);
-      a.value = response.data;
-    });
-
-    let cottages = ref(null)
-    axios.get("/api/cottages/get").then((response) => {
+    axios.get("/api/cottages/get").then(function (response) {
       cottages.value = response.data;
-      console.log("this msg: " + cottages.value);
     });
 
     // Za u <template>
     return {
-      returnGET,
-      returnPOST,
-      returnJSON,
-      cottageJSON,
-      cottages
+      cottages,
+      imageSource(id) {
+        return require("../../assets/images/cottage" + id + ".png");
+      },
     };
   },
 };
