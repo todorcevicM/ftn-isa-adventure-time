@@ -7,5 +7,7 @@ import isa.adventuretime.Entity.BoatOwner;
 public interface BoatOwnerRepo extends JpaRepository<BoatOwner, Long> {
 
     BoatOwner findByEmail(String email);
+    BoatOwner findByEmailHash(int code);
+
     
 }

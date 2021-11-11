@@ -7,5 +7,6 @@ import isa.adventuretime.Entity.FishingInstructor;
 public interface FishingInstructorRepo extends JpaRepository<FishingInstructor, Long>{
 
     FishingInstructor findByEmail(String email);
-    
+    FishingInstructor findByEmailHash(int code);
+
 }

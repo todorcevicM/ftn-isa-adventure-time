@@ -26,4 +26,8 @@ public class FishingInstructorService{
     public Object findByEmail(String email) {
         return fishingInstructorRepo.findByEmail(email);
     }
+
+    public FishingInstructor findByEmailHash(int code){
+        return fishingInstructorRepo.findByEmailHash(code);
+    }
 }

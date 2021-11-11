@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import isa.adventuretime.Entity.CottageOwner;
+import isa.adventuretime.Entity.FishingInstructor;
 import isa.adventuretime.Repository.CottageOwnerRepo;
+import isa.adventuretime.Repository.FishingInstructorRepo;
 
 @Service
 public class CottageOwnerService{
@@ -25,5 +27,9 @@ public class CottageOwnerService{
 
     public Object findByEmail(String email) {
         return cottageOwnerRepo.findByEmail(email);
+    }
+
+    public CottageOwner findByEmailHash(int code){
+        return cottageOwnerRepo.findByEmailHash(code);
     }
 }

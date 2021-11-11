@@ -1,10 +1,15 @@
 package isa.adventuretime.Controller;
 
+import java.io.UnsupportedEncodingException;
+
+import javax.mail.internet.AddressException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +22,7 @@ import isa.adventuretime.Entity.UnregisteredUser;
 import isa.adventuretime.Service.BoatOwnerService;
 import isa.adventuretime.Service.CottageOwnerService;
 import isa.adventuretime.Service.FishingInstructorService;
+import isa.adventuretime.Service.MailService;
 import isa.adventuretime.Service.RegisteredUserService;
 
 @RestController
@@ -35,8 +41,11 @@ public class UserController {
 	@Autowired
 	private FishingInstructorService fishingInstructorService;
 
+    @Autowired
+    private MailService mailService;
+
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> registerUser(RequestEntity<UnregisteredUser> request) {
+	public ResponseEntity<String> registerUser(RequestEntity<UnregisteredUser> request) throws AddressException, UnsupportedEncodingException {
 		// System.out.println(request.getBody().getEmail());
 
 		String new_user_email = request.getBody().getEmail();
@@ -54,37 +63,42 @@ public class UserController {
 						request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
 						request.getBody().getTelephoneNumber());
 				registeredUserService.register(registeredUser);
-				return new ResponseEntity<String>(returnedString, HttpStatus.OK);
+                break;
 			case "Boat Owner":
 				BoatOwner boatOwner = new BoatOwner(request.getBody().getName(), request.getBody().getLastname(),
 						request.getBody().getEmail(), request.getBody().getPassword(), request.getBody().getAddress(),
 						request.getBody().getCity(), request.getBody().getCountry(),
 						request.getBody().getTelephoneNumber());
 				boatOwnerService.register(boatOwner);
-				return new ResponseEntity<String>(returnedString, HttpStatus.OK);
+				break;
 			case "Cottage Owner":
+				System.out.println("");
 				CottageOwner cottageOwner = new CottageOwner(request.getBody().getName(),
 						request.getBody().getLastname(), request.getBody().getEmail(), request.getBody().getPassword(),
 						request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
 						request.getBody().getTelephoneNumber());
 				cottageOwnerService.register(cottageOwner);
-				return new ResponseEntity<String>(returnedString, HttpStatus.OK);
+				break;
 			case "Fishing Instructor":
 				FishingInstructor fishingInstructor = new FishingInstructor(request.getBody().getName(),
 						request.getBody().getLastname(), request.getBody().getEmail(), request.getBody().getPassword(),
 						request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
 						request.getBody().getTelephoneNumber());
 				fishingInstructorService.register(fishingInstructor);
-				return new ResponseEntity<String>(returnedString, HttpStatus.OK);
+				break;
 			default:
 				returnedString = "Error - Unrecognized type!";
-				return new ResponseEntity<String>(returnedString, HttpStatus.OK);
+
 			}
 		} else {
 			System.out.println("Error - User with that E-mail already exists.");
 			returnedString = "Error - User with that E-mail already exists.";
-			return new ResponseEntity<String>(returnedString, HttpStatus.OK);
 		}
+        mailService.SendMail(request.getBody().getEmail(), request.getBody().getName());
+        return new ResponseEntity<String>(returnedString, HttpStatus.OK);
+
 	}
+
+ 
 
 }

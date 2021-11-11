@@ -26,4 +26,8 @@ public class RegisteredUserService {
     public RegisteredUser findByEmail(String email){
         return registeredUserRepo.findByEmail(email);
     }
+
+    public RegisteredUser findByEmailHash(int code){
+        return registeredUserRepo.findByEmailHash(code);
+    }
 }

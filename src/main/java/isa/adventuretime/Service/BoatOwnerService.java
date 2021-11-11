@@ -27,4 +27,9 @@ public class BoatOwnerService{
         return boatOwnerRepo.findByEmail(email);
     }
 
+    public BoatOwner findByEmailHash(int code){
+        return boatOwnerRepo.findByEmailHash(code);
+    }
+
+
 }
