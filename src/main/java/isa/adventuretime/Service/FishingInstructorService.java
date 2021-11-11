@@ -18,4 +18,8 @@ public class FishingInstructorService{
     public FishingInstructor getById(Long Id){
         return fishingInstructorRepo.getById(Id);
     }
+    
+    public FishingInstructor register(FishingInstructor instructor){
+        return fishingInstructorRepo.save(instructor);
+    }
 }

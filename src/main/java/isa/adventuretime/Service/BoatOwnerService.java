@@ -18,4 +18,9 @@ public class BoatOwnerService{
     public BoatOwner getById(Long Id){
         return boatOwnerRepo.getById(Id);
     }
+
+    public BoatOwner register(BoatOwner boatOwner){
+        return boatOwnerRepo.save(boatOwner);
+    }
+
 }

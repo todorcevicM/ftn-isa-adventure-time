@@ -1,13 +1,11 @@
 package isa.adventuretime.Entity;
 
-import javax.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@MappedSuperclass
-public class User {
+public class UnregisteredUser {
 	protected String name;
 	protected String lastname;
 	protected String email;
@@ -16,13 +14,15 @@ public class User {
 	protected String city;
 	protected String country;
 	protected String telephoneNumber;
+    protected String type;
+    protected String registrationReason;
 	protected Boolean wantsDeletion;
 	protected Boolean authenticated;
 
-	public User() {
+	public UnregisteredUser() {
 	}
 
-	public User(String name, String lastname, String email, String password, String address, String city, String country, String telephoneNumber) {
+	public UnregisteredUser(String name, String lastname, String email, String password, String address, String city, String country, String telephoneNumber) {
 		this.name = name;
 		this.lastname = lastname;
 		this.email = email;

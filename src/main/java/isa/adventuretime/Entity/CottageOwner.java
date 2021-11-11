@@ -11,4 +11,7 @@ public class CottageOwner extends User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 
+	public CottageOwner(String name, String lastname, String email, String password, String address, String city, String country, String telephoneNumber) {
+		super(name, lastname, email, password, address, city, country, telephoneNumber);
+	}
 }

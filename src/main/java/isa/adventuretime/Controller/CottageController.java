@@ -16,10 +16,10 @@ import isa.adventuretime.Service.CottageService;
 public class CottageController {
 
 	@Autowired
-	private CottageService cs;
+	private CottageService cottageService;
 
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<Cottage>> getCottages() {
-		return new ResponseEntity<ArrayList<Cottage>>(cs.findAll(), HttpStatus.OK);
+		return new ResponseEntity<ArrayList<Cottage>>(cottageService.findAll(), HttpStatus.OK);
 	}
 }

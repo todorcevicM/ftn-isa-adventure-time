@@ -19,4 +19,7 @@ public class CottageOwnerService{
         return cottageOwnerRepo.getById(id);
     }
 
+    public CottageOwner register(CottageOwner owner){
+        return cottageOwnerRepo.save(owner);
+    }
 }

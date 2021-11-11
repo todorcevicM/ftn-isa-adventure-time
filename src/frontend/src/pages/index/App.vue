@@ -43,44 +43,42 @@
 						<option>Standard User</option>
 						<option>Cottage Owner</option>
 						<option>Boat Owner</option>
-						<option>
-							Fishing Instructor
-						</option>
+						<option>Fishing Instructor</option>
 					</select>
 				</div>
 				<div class="inputField">
 					<p>Email</p>
-					<input type="text" placeholder="johnjohnson@gmail.com" />
+					<input v-model="userEmail" type="text" placeholder="johnjohnson@gmail.com" />
 				</div>
 			</div>
 			<div class="popupRow">
 				<div class="inputField">
 					<p>First Name</p>
-					<input type="text" placeholder="John" />
+					<input v-model="userFirstName" type="text" placeholder="John" />
 				</div>
 				<div class="inputField">
 					<p>Last Name</p>
-					<input type="text" placeholder="Johnson" />
+					<input v-model="userLastName" type="text" placeholder="Johnson" />
 				</div>
 			</div>
 			<div class="popupRow">
 				<div class="inputField">
 					<p>Phone Number</p>
-					<input type="tel" placeholder="+381 65 123 123 12" />
+					<input v-model="userPhoneNumber" type="tel" placeholder="+381 65 123 123 12" />
 				</div>
 				<div class="inputField">
 					<p>Address</p>
-					<input type="text" placeholder="42 John Lane" />
+					<input v-model="userAddress" type="text" placeholder="42 John Lane" />
 				</div>
 			</div>
 			<div class="popupRow">
 				<div class="inputField">
 					<p>City</p>
-					<input type="text" placeholder="Johnville" />
+					<input v-model="userCity" type="text" placeholder="Johnville" />
 				</div>
 				<div class="inputField">
 					<p>Country</p>
-					<input type="text" placeholder="California" />
+					<input v-model="userCountry" type="text" placeholder="California" />
 				</div>
 			</div>
 			<div class="popupRow">
@@ -92,9 +90,7 @@
 					<p>Repeat Password</p>
 					<input
 						v-model="repeatPassword"
-						@input="
-							passwordMatchCheck(firstPassword, repeatPassword)
-						"
+						@input="passwordMatchCheck(firstPassword, repeatPassword)"
 						type="password"
 					/>
 				</div>
@@ -105,11 +101,11 @@
 			<div v-if="userType != 'Standard User'" class="popupRow">
 				<div class="inputFieldBig">
 					<p>Reason for registration</p>
-					<input />
+					<input v-model="userRegistrationReason"/>
 				</div>
 			</div>
 			<div class="popupRow">
-				<button @click="closePopup()" id="signUpButton">Sign Up</button>
+				<button @click="registerUser()" id="signUpButton">Sign Up</button>
 			</div>
 		</div>
 		<div class="mainCard">
@@ -161,6 +157,14 @@ export default {
 		var userType = ref(null);
 		// Ako se inicijalizuje ovde na "Do passwords match?",
 		// kasnice update-ovanje za jedan
+		var userEmail = ref(null);
+		var userFirstName = ref(null);
+		var userLastName = ref(null);
+		var userPhoneNumber = ref(null);
+		var userAddress = ref(null);
+		var userCity = ref(null);
+		var userCountry = ref(null);
+		var userRegistrationReason = ref(null);
 
 		axios.get("/api/cottages/get").then(function (response) {
 			cottages.value = response.data;
@@ -177,6 +181,15 @@ export default {
 			firstPassword,
 			repeatPassword,
 			userType,
+			userEmail,
+			userFirstName,
+			userLastName,
+			userPhoneNumber,
+			userAddress,
+			userCity,
+			userCountry,
+			userRegistrationReason,
+			
 			passwordMatchCheck(firstPassword, repeatPassword) {
 				if (firstPassword == repeatPassword) {
 					this.matching = "Passwords Match!";
@@ -205,6 +218,24 @@ export default {
 			closePopup() {
 				popupState.value = false;
 			},
+			registerUser() {
+				var user = {
+					email: this.userEmail,
+					name: this.userFirstName,
+					lastname: this.userLastName,
+					telephoneNumber: this.userPhoneNumber,
+					address: this.userAddress,
+					city: this.userCity,
+					country: this.userCountry,
+					password: this.firstPassword,
+					type: this.userType,
+					userRegistrationReason: this.userRegistrationReason
+				};
+				axios.post("/api/registerRequest", user).then(function (response) {
+					console.log(response);
+					popupState.value = false;
+				});
+			}
 		};
 	},
 };

@@ -21,4 +21,8 @@ public class FishingInstructor extends User{
 	private Date startWorkPeriod;
 	private Date endWorkPeriod;
 
+	public FishingInstructor(String name, String lastname, String email, String password, String address, String city, String country, String telephoneNumber) {
+		super(name, lastname, email, password, address, city, country, telephoneNumber);
+	}
+
 }
