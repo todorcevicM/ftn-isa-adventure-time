@@ -22,4 +22,8 @@ public class CottageOwnerService{
     public CottageOwner register(CottageOwner owner){
         return cottageOwnerRepo.save(owner);
     }
+
+    public Object findByEmail(String email) {
+        return cottageOwnerRepo.findByEmail(email);
+    }
 }

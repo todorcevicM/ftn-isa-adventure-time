@@ -31,7 +31,7 @@ public class UnregisteredUser {
 		this.city = city;
 		this.country = country;
 		this.telephoneNumber = telephoneNumber;
-        this.wantsDeletion = true;
+        this.wantsDeletion = false;
         this.authenticated = false;
 	}
 }
