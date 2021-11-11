@@ -15,4 +15,12 @@ public class RegisteredUser extends User{
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
+
+	public RegisteredUser(String name, String lastname, String email, String password, String address, String city, String country, String telephoneNumber) {
+		super(name, lastname, email, password, address, city, country, telephoneNumber);
+	}
+
+	public RegisteredUser() {
+		super();
+	}
 }

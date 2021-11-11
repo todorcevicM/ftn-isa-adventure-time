@@ -18,4 +18,12 @@ public class RegisteredUserService {
     public RegisteredUser getById(Long Id){
         return registeredUserRepo.getById(Id);
     }
+
+    public RegisteredUser register(RegisteredUser user){
+        return registeredUserRepo.save(user);
+    }
+
+    public RegisteredUser findByEmail(String email){
+        return registeredUserRepo.findByEmail(email);
+    }
 }

@@ -13,16 +13,21 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class FishingInstructor extends User{
-    @Id
+public class FishingInstructor extends User {
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 
 	private Date startWorkPeriod;
 	private Date endWorkPeriod;
 
-	public FishingInstructor(String name, String lastname, String email, String password, String address, String city, String country, String telephoneNumber) {
+	public FishingInstructor(String name, String lastname, String email, String password, String address, String city,
+			String country, String telephoneNumber) {
 		super(name, lastname, email, password, address, city, country, telephoneNumber);
+	}
+
+	public FishingInstructor() {
+		super();
 	}
 
 }
