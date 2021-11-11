@@ -18,6 +18,7 @@ public class User {
 	protected String telephoneNumber;
 	protected Boolean wantsDeletion;
 	protected Boolean authenticated;
+	protected int emailHash;
 
 	public User() {
 	}
@@ -33,5 +34,6 @@ public class User {
 		this.telephoneNumber = telephoneNumber;
         this.wantsDeletion = true;
         this.authenticated = false;
+		this.emailHash = email.hashCode();
 	}
 }
