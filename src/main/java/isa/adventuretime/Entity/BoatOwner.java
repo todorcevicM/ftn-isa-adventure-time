@@ -11,7 +11,12 @@ public class BoatOwner extends User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 
-	public BoatOwner(String name, String lastname, String email, String password, String address, String city, String country, String telephoneNumber) {
+	public BoatOwner(String name, String lastname, String email, String password, String address, String city,
+			String country, String telephoneNumber) {
 		super(name, lastname, email, password, address, city, country, telephoneNumber);
+	}
+
+	public BoatOwner() {
+		super();
 	}
 }

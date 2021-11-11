@@ -48,37 +48,65 @@
 				</div>
 				<div class="inputField">
 					<p>Email</p>
-					<input v-model="userEmail" type="text" placeholder="johnjohnson@gmail.com" />
+					<input
+						v-model="userEmail"
+						type="text"
+						placeholder="johnjohnson@gmail.com"
+					/>
 				</div>
 			</div>
 			<div class="popupRow">
 				<div class="inputField">
 					<p>First Name</p>
-					<input v-model="userFirstName" type="text" placeholder="John" />
+					<input
+						v-model="userFirstName"
+						type="text"
+						placeholder="John"
+					/>
 				</div>
 				<div class="inputField">
 					<p>Last Name</p>
-					<input v-model="userLastName" type="text" placeholder="Johnson" />
+					<input
+						v-model="userLastName"
+						type="text"
+						placeholder="Johnson"
+					/>
 				</div>
 			</div>
 			<div class="popupRow">
 				<div class="inputField">
 					<p>Phone Number</p>
-					<input v-model="userPhoneNumber" type="tel" placeholder="+381 65 123 123 12" />
+					<input
+						v-model="userPhoneNumber"
+						type="tel"
+						placeholder="+381 65 123 123 12"
+					/>
 				</div>
 				<div class="inputField">
 					<p>Address</p>
-					<input v-model="userAddress" type="text" placeholder="42 John Lane" />
+					<input
+						v-model="userAddress"
+						type="text"
+						placeholder="42 John Lane"
+					/>
 				</div>
 			</div>
 			<div class="popupRow">
 				<div class="inputField">
 					<p>City</p>
-					<input v-model="userCity" type="text" placeholder="Johnville" />
+					<input
+						v-model="userCity"
+						type="text"
+						placeholder="Johnville"
+					/>
 				</div>
 				<div class="inputField">
 					<p>Country</p>
-					<input v-model="userCountry" type="text" placeholder="California" />
+					<input
+						v-model="userCountry"
+						type="text"
+						placeholder="California"
+					/>
 				</div>
 			</div>
 			<div class="popupRow">
@@ -90,7 +118,9 @@
 					<p>Repeat Password</p>
 					<input
 						v-model="repeatPassword"
-						@input="passwordMatchCheck(firstPassword, repeatPassword)"
+						@input="
+							passwordMatchCheck(firstPassword, repeatPassword)
+						"
 						type="password"
 					/>
 				</div>
@@ -101,11 +131,13 @@
 			<div v-if="userType != 'Standard User'" class="popupRow">
 				<div class="inputFieldBig">
 					<p>Reason for registration</p>
-					<input v-model="userRegistrationReason"/>
+					<input v-model="userRegistrationReason" />
 				</div>
 			</div>
 			<div class="popupRow">
-				<button @click="registerUser()" id="signUpButton">Sign Up</button>
+				<button @click="registerUser()" id="signUpButton">
+					Sign Up
+				</button>
 			</div>
 		</div>
 		<div class="mainCard">
@@ -189,7 +221,7 @@ export default {
 			userCity,
 			userCountry,
 			userRegistrationReason,
-			
+
 			passwordMatchCheck(firstPassword, repeatPassword) {
 				if (firstPassword == repeatPassword) {
 					this.matching = "Passwords Match!";
@@ -215,27 +247,44 @@ export default {
 			openPopup() {
 				popupState.value = true;
 			},
-			closePopup() {
-				popupState.value = false;
-			},
+			// closePopup() {
+			// 	popupState.value = false;
+			// },
 			registerUser() {
-				var user = {
-					email: this.userEmail,
-					name: this.userFirstName,
-					lastname: this.userLastName,
-					telephoneNumber: this.userPhoneNumber,
-					address: this.userAddress,
-					city: this.userCity,
-					country: this.userCountry,
-					password: this.firstPassword,
-					type: this.userType,
-					userRegistrationReason: this.userRegistrationReason
-				};
-				axios.post("/api/registerRequest", user).then(function (response) {
-					console.log(response);
-					popupState.value = false;
-				});
-			}
+				console.log("From registerUser() : ");
+				console.log(this.firstPassword);
+				console.log(this.repeatPassword);
+				if (this.firstPassword == this.repeatPassword) {
+					var user = {
+						email: this.userEmail,
+						name: this.userFirstName,
+						lastname: this.userLastName,
+						telephoneNumber: this.userPhoneNumber,
+						address: this.userAddress,
+						city: this.userCity,
+						country: this.userCountry,
+						password: this.firstPassword,
+						type: this.userType,
+						userRegistrationReason: this.userRegistrationReason,
+					};
+					axios
+						.post("/api/register/create", user)
+						.then(function (response) {
+							// console.log("From AXIOS POST");
+							// console.log(response);
+							if (
+								response.data ==
+								"Error - User with that E-mail already exists."
+							) {
+								// Ovo radi
+								alert("User with that E-mail already exists.");
+							}
+							popupState.value = false; // Zatvara popup
+						});
+				} else {
+					alert("Passwords don't match!");
+				}
+			},
 		};
 	},
 };
