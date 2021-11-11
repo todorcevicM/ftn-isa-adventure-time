@@ -23,7 +23,7 @@
 				Plan your fishing trip with ease.
 			</p>
 		</div>
-		<div style="font-size: 30px; margin: 50px 0 0 200px">
+		<div v-if="!popupState" style="font-size: 30px; margin: 50px 0 0 200px">
 			<p style="margin: 0">
 				<a @click="openPopup()">Sign up</a> to schedule one of our
 				adventures,
@@ -39,51 +39,74 @@
 			<div class="popupRow">
 				<div class="inputField">
 					<p>Register as</p>
-					<input type="text" />
+					<select v-model="userType" type="">
+						<option>Standard User</option>
+						<option>Cottage Owner</option>
+						<option>Boat Owner</option>
+						<option>
+							Fishing Instructor
+						</option>
+					</select>
+				</div>
+				<div class="inputField">
+					<p>Email</p>
+					<input type="text" placeholder="johnjohnson@gmail.com" />
 				</div>
 			</div>
 			<div class="popupRow">
 				<div class="inputField">
 					<p>First Name</p>
-					<input type="text" />
+					<input type="text" placeholder="John" />
 				</div>
 				<div class="inputField">
 					<p>Last Name</p>
-					<input type="text" />
+					<input type="text" placeholder="Johnson" />
 				</div>
 			</div>
 			<div class="popupRow">
 				<div class="inputField">
-					<p>Email</p>
-					<input type="text" />
+					<p>Phone Number</p>
+					<input type="tel" placeholder="+381 65 123 123 12" />
 				</div>
 				<div class="inputField">
 					<p>Address</p>
-					<input type="text" />
+					<input type="text" placeholder="42 John Lane" />
 				</div>
 			</div>
 			<div class="popupRow">
 				<div class="inputField">
 					<p>City</p>
-					<input type="text" />
+					<input type="text" placeholder="Johnville" />
 				</div>
 				<div class="inputField">
 					<p>Country</p>
-					<input type="text" />
+					<input type="text" placeholder="California" />
 				</div>
 			</div>
 			<div class="popupRow">
 				<div class="inputField">
 					<p>Password</p>
-					<input type="password" />
+					<input v-model="firstPassword" type="password" />
 				</div>
 				<div class="inputField">
 					<p>Repeat Password</p>
-					<input type="password" />
+					<input
+						v-model="repeatPassword"
+						@input="
+							passwordMatchCheck(firstPassword, repeatPassword)
+						"
+						type="password"
+					/>
 				</div>
 			</div>
 			<div class="spacer">
-				<p>Do Passwords Match?</p>
+				<p>{{ matching }}</p>
+			</div>
+			<div v-if="userType != 'Standard User'" class="popupRow">
+				<div class="inputFieldBig">
+					<p>Reason for registration</p>
+					<input />
+				</div>
 			</div>
 			<div class="popupRow">
 				<button @click="closePopup()" id="signUpButton">Sign Up</button>
@@ -132,6 +155,12 @@ export default {
 		var cottages = ref(null);
 		var adventures = ref(null);
 		var popupState = ref(null);
+		var firstPassword = ref(null);
+		var repeatPassword = ref(null);
+		var matching = ref(null);
+		var userType = ref(null);
+		// Ako se inicijalizuje ovde na "Do passwords match?",
+		// kasnice update-ovanje za jedan
 
 		axios.get("/api/cottages/get").then(function (response) {
 			cottages.value = response.data;
@@ -144,6 +173,19 @@ export default {
 		return {
 			cottages,
 			adventures,
+			matching,
+			firstPassword,
+			repeatPassword,
+			userType,
+			passwordMatchCheck(firstPassword, repeatPassword) {
+				if (firstPassword == repeatPassword) {
+					this.matching = "Passwords Match!";
+					return this.matching;
+				} else {
+					this.matching = "Passwords don't match!";
+					return this.matching;
+				}
+			},
 			imageSource(type, id) {
 				switch (type) {
 					case 1:
@@ -238,7 +280,7 @@ h1 {
 	font-size: 22px;
 	text-align: center;
 	margin: 0px 36rem 100px 36rem;
-	height: 520px;
+	height: 610px;
 	background-color: rgb(255, 255, 255);
 	border-radius: 15px;
 	display: flex;
@@ -265,7 +307,8 @@ h1 {
 	width: 100%;
 	height: 16.66%;
 }
-input {
+input,
+select {
 	width: 260px;
 	height: 32px;
 	border-radius: 5px;
@@ -273,14 +316,22 @@ input {
 	font-size: 20px;
 	background-color: #f0f0f0;
 }
-input:focus {
+input:focus,
+select:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
 }
 .inputField {
 	width: 260px;
 }
-.inputField p {
+/* .inputFieldBig {
+	width: inherit;
+} */
+.inputFieldBig input {
+	width: 500px;
+}
+.inputField p,
+.inputFieldBig p {
 	margin: 0;
 	text-align: left;
 }
