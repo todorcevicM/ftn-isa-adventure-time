@@ -92,7 +92,6 @@ public class MainController {
 
 	@PostMapping(path = "/post", consumes = MediaType.ALL_VALUE)
 	public String frontendPOSTTest(Integer num) {
-		// TODO: Da li radi ovo num?
 		System.out.println(as.getById(1L).getName() + " i dobijeno " + num + " sa fronta!");
 		return as.getById(1L).getName();
 	}
