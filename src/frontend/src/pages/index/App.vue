@@ -151,7 +151,7 @@
 		>
 			<p>{{ signUpMessageText }}</p>
 		</div>
-		<div v-if="!signUpMessageOn" style="height: 110px"></div>
+		<!-- <div v-if="popupState" style="height: 10px"></div> -->
 		<div class="mainCard">
 			<div style="text-align: center">
 				<img
@@ -267,7 +267,7 @@ export default {
 				this.signUpMessageKind = kind;
 				this.signUpMessageText = text;
 			},
-			registerUser() {
+			async registerUser() {
 				if (
 					this.userType == null ||
 					this.userEmail == null ||
@@ -302,6 +302,18 @@ export default {
 							password: this.firstPassword,
 							userRegistrationReason: this.userRegistrationReason,
 						};
+						console.log("Pre await");
+						// TODO: Ovde puca, verovatno zbog mail bug-a
+						var a = await axios
+							.post("/api/register/create", user)
+							.then((response) => response.data);
+						console.log("Samo a :");
+						console.log(a);
+						console.log("typeof a :");
+						console.log(typeof a);
+						console.log("a data :");
+						console.log(a.data);
+
 						axios
 							.post("/api/register/create", user)
 							.then(function (response) {
@@ -311,6 +323,7 @@ export default {
 									response.data ==
 									"Error - User with that E-mail already exists."
 								) {
+									// TODO: Ovo radi, samo se izgleda sada ne pokrece zbog mail bug-a
 									alert(
 										"User with that E-mail already exists."
 									);

@@ -1,9 +1,7 @@
 package isa.adventuretime.Controller;
 
 import java.io.UnsupportedEncodingException;
-
 import javax.mail.internet.AddressException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,8 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
 import isa.adventuretime.Entity.Administrator;
 import isa.adventuretime.Entity.BoatOwner;
 import isa.adventuretime.Entity.CottageOwner;
@@ -45,43 +41,42 @@ public class MainController {
 	@Autowired
 	private FishingInstructorService fishingInstructorService;
 
-
 	public MainController() {
 	}
-	//jakovljevic1999@gmail.com
+
+	// jakovljevic1999@gmail.com
 	@GetMapping(path = "/mail")
-	public void frontendSendMailTest() throws AddressException, UnsupportedEncodingException{
-		String s = "stankovictab@gmail.com";
+	public void frontendSendMailTest() throws AddressException, UnsupportedEncodingException {
 		mailService.SendMail("NMatijevic123@gmail.com", "Nikola");
 	}
 
 	@GetMapping(path = "/conf/{code}")
-	public void confirmationMail(@PathVariable int code){
+	public void confirmationMail(@PathVariable int code) {
 		RegisteredUser registeredUser = registeredUserService.findByEmailHash(code);
-		if(registeredUser != null){
+		if (registeredUser != null) {
 			registeredUser.setAuthenticated(true);
 			registeredUserService.register(registeredUser);
 			return;
 		}
 		CottageOwner cottageOwner = cottageOwnerService.findByEmailHash(code);
-		if(cottageOwner !=null){
+		if (cottageOwner != null) {
 			cottageOwner.setAuthenticated(true);
 			cottageOwnerService.register(cottageOwner);
 			return;
 		}
 		BoatOwner boatOwner = boatOwnerService.findByEmailHash(code);
-		if(boatOwner != null){
+		if (boatOwner != null) {
 			boatOwner.setAuthenticated(true);
 			boatOwnerService.register(boatOwner);
 			return;
 		}
 		FishingInstructor fishingInstructor = fishingInstructorService.findByEmailHash(code);
-		if(fishingInstructor != null){
+		if (fishingInstructor != null) {
 			fishingInstructor.setAuthenticated(true);
 			fishingInstructorService.register(fishingInstructor);
 			return;
 		}
-		System.out.println("Nije nadjen sa tim codom "+code);
+		System.out.println("Nije nadjen sa tim codom " + code);
 	}
 
 	@GetMapping(path = "/get")

@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,11 +40,12 @@ public class UserController {
 	@Autowired
 	private FishingInstructorService fishingInstructorService;
 
-    @Autowired
-    private MailService mailService;
+	@Autowired
+	private MailService mailService;
 
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> registerUser(RequestEntity<UnregisteredUser> request) throws AddressException, UnsupportedEncodingException {
+	public ResponseEntity<String> registerUser(RequestEntity<UnregisteredUser> request)
+			throws AddressException, UnsupportedEncodingException {
 		// System.out.println(request.getBody().getEmail());
 
 		String new_user_email = request.getBody().getEmail();
@@ -63,7 +63,7 @@ public class UserController {
 						request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
 						request.getBody().getTelephoneNumber());
 				registeredUserService.register(registeredUser);
-                break;
+				break;
 			case "Boat Owner":
 				BoatOwner boatOwner = new BoatOwner(request.getBody().getName(), request.getBody().getLastname(),
 						request.getBody().getEmail(), request.getBody().getPassword(), request.getBody().getAddress(),
@@ -94,11 +94,9 @@ public class UserController {
 			System.out.println("Error - User with that E-mail already exists.");
 			returnedString = "Error - User with that E-mail already exists.";
 		}
-        mailService.SendMail(request.getBody().getEmail(), request.getBody().getName());
-        return new ResponseEntity<String>(returnedString, HttpStatus.OK);
+		mailService.SendMail(request.getBody().getEmail(), request.getBody().getName());
+		return new ResponseEntity<String>(returnedString, HttpStatus.OK);
 
 	}
-
- 
 
 }
