@@ -32,7 +32,7 @@
 				or continue browsing as a guest.
 			</p>
 		</div>
-		<div v-if="!popupState" style="height: 520px"></div>
+		<div v-if="!popupState" style="height: 500px"></div>
 		<div v-if="popupState" class="popup">
 			<div style="height: 20px"></div>
 			<!-- Spacer -->
@@ -125,6 +125,7 @@
 					/>
 				</div>
 			</div>
+			<!--v-if="matching != null"-->
 			<div class="spacer">
 				<p>{{ matching }}</p>
 			</div>
@@ -140,6 +141,17 @@
 				</button>
 			</div>
 		</div>
+		<div
+			v-if="signUpMessageOn"
+			:class="{
+				successfulBackground: signUpMessageKind == 'success',
+				failedBackground: signUpMessageKind == 'failed',
+			}"
+			class="secondPopup"
+		>
+			<p>{{ signUpMessageText }}</p>
+		</div>
+		<div v-if="!signUpMessageOn" style="height: 110px"></div>
 		<div class="mainCard">
 			<div style="text-align: center">
 				<img
@@ -184,11 +196,9 @@ export default {
 		var adventures = ref(null);
 		var popupState = ref(null);
 		var firstPassword = ref(null);
-		var repeatPassword = ref(null);
+		var repeatPassword = ref(null); // Ako se inicijalizuje ovde na "Do passwords match?", kasnice update-ovanje za jedan
 		var matching = ref(null);
 		var userType = ref(null);
-		// Ako se inicijalizuje ovde na "Do passwords match?",
-		// kasnice update-ovanje za jedan
 		var userEmail = ref(null);
 		var userFirstName = ref(null);
 		var userLastName = ref(null);
@@ -197,6 +207,9 @@ export default {
 		var userCity = ref(null);
 		var userCountry = ref(null);
 		var userRegistrationReason = ref(null);
+		var signUpMessageOn = ref(null);
+		var signUpMessageKind = ref(null);
+		var signUpMessageText = ref(null);
 
 		axios.get("/api/cottages/get").then(function (response) {
 			cottages.value = response.data;
@@ -221,7 +234,9 @@ export default {
 			userCity,
 			userCountry,
 			userRegistrationReason,
-
+			signUpMessageOn,
+			signUpMessageKind,
+			signUpMessageText,
 			passwordMatchCheck(firstPassword, repeatPassword) {
 				if (firstPassword == repeatPassword) {
 					this.matching = "Passwords Match!";
@@ -247,42 +262,99 @@ export default {
 			openPopup() {
 				popupState.value = true;
 			},
-			// closePopup() {
-			// 	popupState.value = false;
-			// },
+			renderSecondPopup(on, kind, text) {
+				this.signUpMessageOn = on;
+				this.signUpMessageKind = kind;
+				this.signUpMessageText = text;
+			},
 			registerUser() {
-				console.log("From registerUser() : ");
-				console.log(this.firstPassword);
-				console.log(this.repeatPassword);
-				if (this.firstPassword == this.repeatPassword) {
-					var user = {
-						email: this.userEmail,
-						name: this.userFirstName,
-						lastname: this.userLastName,
-						telephoneNumber: this.userPhoneNumber,
-						address: this.userAddress,
-						city: this.userCity,
-						country: this.userCountry,
-						password: this.firstPassword,
-						type: this.userType,
-						userRegistrationReason: this.userRegistrationReason,
-					};
-					axios
-						.post("/api/register/create", user)
-						.then(function (response) {
-							// console.log("From AXIOS POST");
-							// console.log(response);
-							if (
-								response.data ==
-								"Error - User with that E-mail already exists."
-							) {
-								// Ovo radi
-								alert("User with that E-mail already exists.");
-							}
-							popupState.value = false; // Zatvara popup
-						});
+				if (
+					this.userType == null ||
+					this.userEmail == null ||
+					this.userFirstName == null ||
+					this.userLastName == null ||
+					this.userPhoneNumber == null ||
+					this.userAddress == null ||
+					this.userCity == null ||
+					this.userCountry == null ||
+					this.firstPassword == null ||
+					this.repeatPassword == null
+				) {
+					this.renderSecondPopup(
+						true,
+						"failed",
+						"All fields need to be filled, try again."
+					);
 				} else {
-					alert("Passwords don't match!");
+					this.signUpMessageOn = false;
+					// this.signUpMessageKind = "failed";
+					// this.signUpMessageText = "Sample Text";
+					if (this.firstPassword == this.repeatPassword) {
+						var user = {
+							type: this.userType,
+							email: this.userEmail,
+							name: this.userFirstName,
+							lastname: this.userLastName,
+							telephoneNumber: this.userPhoneNumber,
+							address: this.userAddress,
+							city: this.userCity,
+							country: this.userCountry,
+							password: this.firstPassword,
+							userRegistrationReason: this.userRegistrationReason,
+						};
+						axios
+							.post("/api/register/create", user)
+							.then(function (response) {
+								// console.log("From AXIOS POST");
+								// console.log(response);
+								if (
+									response.data ==
+									"Error - User with that E-mail already exists."
+								) {
+									alert(
+										"User with that E-mail already exists."
+									);
+									// TODO: Iz .then()-a nikako ne mogu niti da return-ujem promenljive koje se koriste u setup()-u, niti da zovem neku funkciju. Ne radi ni this. ni .value, ne mogu ni da izcupam vrednost iz response.data u neku promenljivu pa da nju prosledim nekoj drugoj funkciji, nista. Ne moze ni da se bind-uje this u scope .then()-a, nista ne moze da vidi.
+									// Za sad radi alert(), i to je to.
+
+									// this.renderSecondPopup(
+									// 	true,
+									// 	"failed",
+									// 	"User with that E-mail already exists."
+									// );
+									// signUpMessageOn = true;
+									// signUpMessageKind = "failed";
+									// signUpMessageText =
+									// 	"User with that E-mail already exists.";
+									// return (
+									// 	signUpMessageOn,
+									// 	signUpMessageKind,
+									// 	signUpMessageText
+									// );
+								} else {
+									// TODO: Ovde je isti problem
+									alert(
+										"A registration request has been sent to the Administrator. Keep your eye open for a verification email!"
+									);
+									// popupState.value = false; // Zatvara sign up popup
+									// signUpMessageOn = true;
+									// signUpMessageKind = "success";
+									// signUpMessageText =
+									// 	"A registration request has been sent to the Administrator. Keep your eye open for a verification email!";
+									// return (
+									// 	signUpMessageOn,
+									// 	signUpMessageKind,
+									// 	signUpMessageText
+									// );
+								}
+							});
+					} else {
+						this.renderSecondPopup(
+							true,
+							"failed",
+							"Passwords don't match, try again."
+						);
+					}
 				}
 			},
 		};
@@ -359,12 +431,29 @@ h1 {
 .popup {
 	font-size: 22px;
 	text-align: center;
-	margin: 0px 36rem 100px 36rem;
-	height: 610px;
+	margin: 0px 36rem 20px 36rem;
+	height: 570px;
 	background-color: rgb(255, 255, 255);
 	border-radius: 15px;
 	display: flex;
 	flex-direction: column;
+}
+.secondPopup {
+	font-size: 22px;
+	text-align: center;
+	margin: 0px 36rem 60px 36rem;
+	height: auto;
+	border-radius: 15px;
+	display: flex;
+	flex-direction: column;
+}
+.successfulBackground {
+	background-color: #c4e79d;
+	border: 2px solid rgb(97, 160, 97);
+}
+.failedBackground {
+	background-color: #e79d9d;
+	border: 2px solid rgb(160, 97, 97);
 }
 #signUpButton {
 	color: white;
