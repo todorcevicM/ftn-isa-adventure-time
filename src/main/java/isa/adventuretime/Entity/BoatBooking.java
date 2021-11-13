@@ -13,13 +13,12 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Booking {//TODO: one or 3 ?
+public class BoatBooking {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long bookedServiceId;
-    private HeadEntityEnum forService;
     private Long registeredUserId;
     private boolean quickBooking;
 
