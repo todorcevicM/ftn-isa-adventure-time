@@ -46,10 +46,13 @@ public class UserController {
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerUser(RequestEntity<UnregisteredUser> request)
 			throws AddressException, UnsupportedEncodingException {
-		// System.out.println(request.getBody().getEmail());
 
 		String new_user_email = request.getBody().getEmail();
 		String returnedString = "User has been successfully created!";
+		System.out.println(request.getBody().getEmail());
+		System.out.println(request.getBody().getAddress());
+		System.out.println(request.getBody().getCity());
+		System.out.println(request.getBody().getCountry());
 
 		if (registeredUserService.findByEmail(new_user_email) == null
 				&& boatOwnerService.findByEmail(new_user_email) == null
@@ -57,37 +60,41 @@ public class UserController {
 				&& fishingInstructorService.findByEmail(new_user_email) == null) {
 
 			switch (request.getBody().getType()) {
-			case "Standard User":
-				RegisteredUser registeredUser = new RegisteredUser(request.getBody().getName(),
-						request.getBody().getLastname(), request.getBody().getEmail(), request.getBody().getPassword(),
-						request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
-						request.getBody().getTelephoneNumber());
-				registeredUserService.register(registeredUser);
-				break;
-			case "Boat Owner":
-				BoatOwner boatOwner = new BoatOwner(request.getBody().getName(), request.getBody().getLastname(),
-						request.getBody().getEmail(), request.getBody().getPassword(), request.getBody().getAddress(),
-						request.getBody().getCity(), request.getBody().getCountry(),
-						request.getBody().getTelephoneNumber());
-				boatOwnerService.register(boatOwner);
-				break;
-			case "Cottage Owner":
-				System.out.println("");
-				CottageOwner cottageOwner = new CottageOwner(request.getBody().getName(),
-						request.getBody().getLastname(), request.getBody().getEmail(), request.getBody().getPassword(),
-						request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
-						request.getBody().getTelephoneNumber());
-				cottageOwnerService.register(cottageOwner);
-				break;
-			case "Fishing Instructor":
-				FishingInstructor fishingInstructor = new FishingInstructor(request.getBody().getName(),
-						request.getBody().getLastname(), request.getBody().getEmail(), request.getBody().getPassword(),
-						request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
-						request.getBody().getTelephoneNumber());
-				fishingInstructorService.register(fishingInstructor);
-				break;
-			default:
-				returnedString = "Error - Unrecognized type!";
+				case "Standard User":
+					RegisteredUser registeredUser = new RegisteredUser(request.getBody().getName(),
+							request.getBody().getLastname(), request.getBody().getEmail(),
+							request.getBody().getPassword(),
+							request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
+							request.getBody().getTelephoneNumber());
+					registeredUserService.register(registeredUser);
+					break;
+				case "Boat Owner":
+					BoatOwner boatOwner = new BoatOwner(request.getBody().getName(), request.getBody().getLastname(),
+							request.getBody().getEmail(), request.getBody().getPassword(),
+							request.getBody().getAddress(),
+							request.getBody().getCity(), request.getBody().getCountry(),
+							request.getBody().getTelephoneNumber());
+					boatOwnerService.register(boatOwner);
+					break;
+				case "Cottage Owner":
+					System.out.println("");
+					CottageOwner cottageOwner = new CottageOwner(request.getBody().getName(),
+							request.getBody().getLastname(), request.getBody().getEmail(),
+							request.getBody().getPassword(),
+							request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
+							request.getBody().getTelephoneNumber());
+					cottageOwnerService.register(cottageOwner);
+					break;
+				case "Fishing Instructor":
+					FishingInstructor fishingInstructor = new FishingInstructor(request.getBody().getName(),
+							request.getBody().getLastname(), request.getBody().getEmail(),
+							request.getBody().getPassword(),
+							request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
+							request.getBody().getTelephoneNumber());
+					fishingInstructorService.register(fishingInstructor);
+					break;
+				default:
+					returnedString = "Error - Unrecognized type!";
 
 			}
 		} else {
