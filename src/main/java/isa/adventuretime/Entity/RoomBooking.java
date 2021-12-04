@@ -18,7 +18,7 @@ public class RoomBooking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long bookedServiceId;
+    private Long bookedRoomId;
     private Long registeredUserId;
     private boolean quickBooking;
 

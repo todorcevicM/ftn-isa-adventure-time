@@ -30,10 +30,14 @@ insert into adventure(name, address, geo_lng, geo_lat, promo_description, instru
 insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day) values ("Ice Fishing", "Arcadia, Alberta", 55.402453, -116.123231, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 85);
 insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day) values ("A4_Name", "A4_Address", 0, 0, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 70);
 
-insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, 
-                geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info,
-                max_users)
-            values(1, "Nepotopivi2", "JoMama", "15", 123456, 321, 321, "Sonar", "Address",
-            44.374710, -68.191748, "VeryFastBoy", "Don't talk about Nepotopivi1", 50, "2021-01-01", "2021-01-15", "Lorem",
-            7
-            )
+insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users)
+            values(1, "Nepotopivi2", "JoMama", "15", 123456, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Don't talk about Nepotopivi1", 50, "2021-01-01", "2021-01-15", "Lorem", 7);
+
+insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
+            values (1, 1, "2021-01-01", "2021-01-02", 100, false, "", 6);
+
+insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
+            values (1, 1, "2021-01-03", "2021-01-04", 100, false, "", 6);
+
+insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
+            values (1, 1, "2021-01-05", "2021-01-06", 100, false, "", 6);

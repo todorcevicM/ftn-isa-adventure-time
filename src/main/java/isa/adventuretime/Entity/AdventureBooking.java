@@ -18,7 +18,7 @@ public class AdventureBooking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long bookedServiceId;
+    private Long bookedAdventureId;
     private Long registeredUserId;
     private boolean quickBooking;
 

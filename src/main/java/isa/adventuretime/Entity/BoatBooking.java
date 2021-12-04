@@ -18,7 +18,7 @@ public class BoatBooking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long bookedServiceId;
+    private Long bookedBoatId;
     private Long registeredUserId;
     private boolean quickBooking;
 
