@@ -11,7 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-// TODO:
 // Ovaj property je dodat jer bez njega Spring baca ogromnu gresku,
 // ovo je radjeno i na web-u.
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })

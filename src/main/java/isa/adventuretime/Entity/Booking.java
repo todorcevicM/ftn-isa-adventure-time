@@ -13,7 +13,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Booking {//TODO: one or 3 ?
+public class Booking {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

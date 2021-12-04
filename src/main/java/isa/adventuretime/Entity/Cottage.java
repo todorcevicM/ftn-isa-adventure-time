@@ -1,18 +1,11 @@
 package isa.adventuretime.Entity;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,12 +32,6 @@ public class Cottage {
 	private Date reservationEnd;
 	private int maxUsers;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "owner_id", nullable = false)
-    private CottageOwner cottageOwner;
-
-	@OneToMany(mappedBy = "cottage", fetch = FetchType.LAZY,
-	cascade = CascadeType.ALL)
-	private Set<Room> rooms = new HashSet<>();
+	private Long owner_id;
 
 }
