@@ -18,5 +18,8 @@ public class AdministratorService{
     public  Administrator getById(Long id){
         return administratorRepo.getById(id);
     }
+    public Administrator findByEmail(String email){
+        return administratorRepo.findByEmail(email);
+    }
 
 }

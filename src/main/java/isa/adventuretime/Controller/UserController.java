@@ -1,8 +1,10 @@
 package isa.adventuretime.Controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import javax.mail.internet.AddressException;
+import javax.validation.constraints.Null;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +21,8 @@ import isa.adventuretime.Entity.CottageOwner;
 import isa.adventuretime.Entity.FishingInstructor;
 import isa.adventuretime.Entity.RegisteredUser;
 import isa.adventuretime.Entity.UnregisteredUser;
+import isa.adventuretime.Entity.User;
+import isa.adventuretime.Service.AdministratorService;
 import isa.adventuretime.Service.BoatOwnerService;
 import isa.adventuretime.Service.CottageOwnerService;
 import isa.adventuretime.Service.FishingInstructorService;
@@ -41,7 +46,49 @@ public class UserController {
 	private FishingInstructorService fishingInstructorService;
 
 	@Autowired
+	private AdministratorService administratorService;
+
+	@Autowired
 	private MailService mailService;
+
+	@PostMapping(
+			value =("/login"),
+		    consumes = MediaType.APPLICATION_JSON_VALUE,   
+		    produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> UserLogin(@RequestBody ArrayList<String> credentials) throws Exception{
+		
+		String email = credentials.get(0);
+		String password = credentials.get(1);
+
+		System.out.println(email + " " + password);
+
+		User newUser = (User)registeredUserService.findByEmail(email);
+		if(newUser != null){
+			newUser.setUserType("Registered User");
+			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		}
+		newUser = (User)boatOwnerService.findByEmail(email);
+		if(newUser != null){
+			newUser.setUserType("Boat Owner");
+			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		}
+		newUser = (User)cottageOwnerService.findByEmail(email);
+		if(newUser != null){
+			newUser.setUserType("Cottage Owner");
+			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		}
+		newUser = (User)fishingInstructorService.findByEmail(email);
+		if(newUser != null){
+			newUser.setUserType("Fishing Instructor");
+			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		}
+		newUser = (User)administratorService.findByEmail(email);
+		if(newUser != null){
+			newUser.setUserType("Admin");
+			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		}
+		return null;
+	}
 
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerUser(RequestEntity<UnregisteredUser> request)

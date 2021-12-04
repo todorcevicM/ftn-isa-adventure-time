@@ -19,6 +19,8 @@ public class User {
 	protected Boolean wantsDeletion;
 	protected Boolean authenticated;
 	protected int emailHash;
+	
+	private String userType;
 
 	public User() {
 	}
@@ -35,5 +37,7 @@ public class User {
         this.wantsDeletion = false;
         this.authenticated = false;
 		this.emailHash = email.hashCode();
+		this.userType = "";
 	}
+	
 }
