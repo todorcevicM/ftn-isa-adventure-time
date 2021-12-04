@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div style="display: flex; justify-content: flex-end">
-			<button id="logInButton">Log in</button>
+			<button id="logInButton" @click="openLogin()">Log in</button>
 		</div>
 		<div id="logo-container">
 			<div class="underlined">
@@ -195,6 +195,7 @@ export default {
 		var cottages = ref(null);
 		var adventures = ref(null);
 		var popupState = ref(null);
+		var loginState = ref(null);
 		var firstPassword = ref(null);
 		var repeatPassword = ref(null); // Ako se inicijalizuje ovde na "Do passwords match?", kasnice update-ovanje za jedan
 		var matching = ref(null);
@@ -222,6 +223,8 @@ export default {
 		return {
 			cottages,
 			adventures,
+			popupState,
+			loginState,
 			matching,
 			firstPassword,
 			repeatPassword,
@@ -249,16 +252,17 @@ export default {
 			imageSource(type, id) {
 				switch (type) {
 					case 1:
+						// console.log("CASE 1 ID ZA IMAGESOURCE : " + id);
 						return require("../../assets/images/cottage" +
 							id +
 							".png");
 					case 2:
+						// console.log("CASE 2 ID ZA IMAGESOURCE : " + id);
 						return require("../../assets/images/adventure" +
 							id +
 							".png");
 				}
 			},
-			popupState,
 			openPopup() {
 				popupState.value = true;
 			},
@@ -267,7 +271,7 @@ export default {
 				this.signUpMessageKind = kind;
 				this.signUpMessageText = text;
 			},
-			async registerUser() {
+			registerUser() {
 				if (
 					this.userType == null ||
 					this.userEmail == null ||
@@ -286,6 +290,24 @@ export default {
 						"All fields need to be filled, try again."
 					);
 				} else {
+					console.log(this.userEmail.includes("@"));
+					console.log(this.userEmail.indexOf("@"));
+					console.log(this.userEmail.length);
+					if (
+						!(
+							(
+								this.userEmail.includes("@") &&
+								this.userEmail.indexOf("@") !=
+									this.userEmail.length - 1
+							) // Proverava da imamo nesto posle @
+						)
+					) {
+						alert(
+							"Email isn't in the correct form. Please fill out the form again."
+						);
+						return;
+					}
+
 					this.signUpMessageOn = false;
 					// this.signUpMessageKind = "failed";
 					// this.signUpMessageText = "Sample Text";
@@ -302,18 +324,6 @@ export default {
 							password: this.firstPassword,
 							userRegistrationReason: this.userRegistrationReason,
 						};
-						console.log("Pre await");
-						// TODO: Ovde puca, verovatno zbog mail bug-a
-						var a = await axios
-							.post("/api/register/create", user)
-							.then((response) => response.data);
-						console.log("Samo a :");
-						console.log(a);
-						console.log("typeof a :");
-						console.log(typeof a);
-						console.log("a data :");
-						console.log(a.data);
-
 						axios
 							.post("/api/register/create", user)
 							.then(function (response) {
@@ -323,7 +333,6 @@ export default {
 									response.data ==
 									"Error - User with that E-mail already exists."
 								) {
-									// TODO: Ovo radi, samo se izgleda sada ne pokrece zbog mail bug-a
 									alert(
 										"User with that E-mail already exists."
 									);
@@ -369,6 +378,9 @@ export default {
 						);
 					}
 				}
+			},
+			openLogin() {
+				loginState.value = true;
 			},
 		};
 	},
