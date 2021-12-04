@@ -23,7 +23,7 @@ public class BoatOwnerService{
         return boatOwnerRepo.save(boatOwner);
     }
 
-    public Object findByEmail(String email) {
+    public BoatOwner findByEmail(String email) {
         return boatOwnerRepo.findByEmail(email);
     }
 
@@ -31,5 +31,7 @@ public class BoatOwnerService{
         return boatOwnerRepo.findByEmailHash(code);
     }
 
-
+    public BoatOwner saveBoatOwner(BoatOwner boatOwner){
+        return boatOwnerRepo.save(boatOwner);
+    }
 }

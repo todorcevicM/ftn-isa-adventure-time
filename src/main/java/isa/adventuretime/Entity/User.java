@@ -39,5 +39,18 @@ public class User {
 		this.emailHash = email.hashCode();
 		this.userType = "";
 	}
-	
+
+	public void updateWithUser(User user){
+		this.address = user.address;
+		this.authenticated = user.authenticated;
+		this.city = user.city;
+		this.country = user.country;
+		//this.email = user.email; NOT Allowed
+		this.emailHash = user.emailHash;
+		this.lastname = user.lastname;
+		this.name = user.password;
+		this.telephoneNumber = user.telephoneNumber;
+		this.wantsDeletion = user.wantsDeletion;
+	}
+
 }

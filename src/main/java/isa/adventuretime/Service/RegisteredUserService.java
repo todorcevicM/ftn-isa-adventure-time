@@ -30,4 +30,8 @@ public class RegisteredUserService {
     public RegisteredUser findByEmailHash(int code){
         return registeredUserRepo.findByEmailHash(code);
     }
+
+    public RegisteredUser saveRegisteredUser(RegisteredUser registeredUser){
+        return registeredUserRepo.save(registeredUser);
+    }
 }
