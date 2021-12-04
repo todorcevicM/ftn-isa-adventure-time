@@ -23,7 +23,10 @@
 				Plan your fishing trip with ease.
 			</p>
 		</div>
-		<div v-if="!popupState" style="font-size: 30px; margin: 50px 0 0 200px">
+		<div
+			v-if="!popupState && !loginState"
+			style="font-size: 30px; margin: 50px 0 0 200px"
+		>
 			<p style="margin: 0">
 				<a @click="openPopup()">Sign up</a> to schedule one of our
 				adventures,
@@ -32,11 +35,38 @@
 				or continue browsing as a guest.
 			</p>
 		</div>
-		<div v-if="!popupState" style="height: 500px"></div>
-		<div v-if="popupState" class="popup">
+
+		<!-- <div v-if="loginState" style="height: 500px"></div> -->
+		<div v-if="loginState" class="popupLogin">
 			<div style="height: 20px"></div>
 			<!-- Spacer -->
-			<div class="popupRow">
+			<div class="popupLoginRow">
+				<div class="inputField">
+					<p>Email</p>
+					<input
+						v-model="userEmail"
+						type="text"
+						placeholder="johnjohnson@gmail.com"
+					/>
+				</div>
+				<div class="inputField">
+					<p>Password</p>
+					<input v-model="firstPassword" type="password" />
+				</div>
+			</div>
+			<div class="popupLoginRow">
+				<button @click="loginUser()" class="actionButton">
+					Log In
+				</button>
+			</div>
+		</div>
+		<!-- Optional Spacer -->
+		<div v-if="loginState" style="height: 200px"></div>
+
+		<div v-if="popupState" class="popupRegister">
+			<div style="height: 20px"></div>
+			<!-- Spacer -->
+			<div class="popupRegisterRow">
 				<div class="inputField">
 					<p>Register as</p>
 					<select v-model="userType" type="">
@@ -55,7 +85,7 @@
 					/>
 				</div>
 			</div>
-			<div class="popupRow">
+			<div class="popupRegisterRow">
 				<div class="inputField">
 					<p>First Name</p>
 					<input
@@ -73,7 +103,7 @@
 					/>
 				</div>
 			</div>
-			<div class="popupRow">
+			<div class="popupRegisterRow">
 				<div class="inputField">
 					<p>Phone Number</p>
 					<input
@@ -91,7 +121,7 @@
 					/>
 				</div>
 			</div>
-			<div class="popupRow">
+			<div class="popupRegisterRow">
 				<div class="inputField">
 					<p>City</p>
 					<input
@@ -109,7 +139,7 @@
 					/>
 				</div>
 			</div>
-			<div class="popupRow">
+			<div class="popupRegisterRow">
 				<div class="inputField">
 					<p>Password</p>
 					<input v-model="firstPassword" type="password" />
@@ -129,18 +159,19 @@
 			<div class="spacer">
 				<p>{{ matching }}</p>
 			</div>
-			<div v-if="userType != 'Standard User'" class="popupRow">
+			<div v-if="userType != 'Standard User'" class="popupRegisterRow">
 				<div class="inputFieldBig">
 					<p>Reason for registration</p>
 					<input v-model="userRegistrationReason" />
 				</div>
 			</div>
-			<div class="popupRow">
-				<button @click="registerUser()" id="signUpButton">
+			<div class="popupRegisterRow">
+				<button @click="registerUser()" class="actionButton">
 					Sign Up
 				</button>
 			</div>
 		</div>
+		<div v-if="!popupState && !loginState" style="height: 500px"></div>
 		<div
 			v-if="signUpMessageOn"
 			:class="{
@@ -151,7 +182,6 @@
 		>
 			<p>{{ signUpMessageText }}</p>
 		</div>
-		<!-- <div v-if="popupState" style="height: 10px"></div> -->
 		<div class="mainCard">
 			<div style="text-align: center">
 				<img
@@ -266,6 +296,7 @@ export default {
 			openPopup() {
 				popupState.value = true;
 			},
+			// TODO: Ovo se vise ne koristi, koristimo alert()
 			renderSecondPopup(on, kind, text) {
 				this.signUpMessageOn = on;
 				this.signUpMessageKind = kind;
@@ -284,22 +315,21 @@ export default {
 					this.firstPassword == null ||
 					this.repeatPassword == null
 				) {
-					this.renderSecondPopup(
-						true,
-						"failed",
-						"All fields need to be filled, try again."
-					);
+					alert("All fields need to be filled, try again.");
+					// this.renderSecondPopup(
+					// 	true,
+					// 	"failed",
+					// 	"All fields need to be filled, try again."
+					// );
 				} else {
-					console.log(this.userEmail.includes("@"));
-					console.log(this.userEmail.indexOf("@"));
-					console.log(this.userEmail.length);
+					// Provera korektnog formata Email-a
 					if (
 						!(
 							(
 								this.userEmail.includes("@") &&
 								this.userEmail.indexOf("@") !=
 									this.userEmail.length - 1
-							) // Proverava da imamo nesto posle @
+							) // Proverava da li imamo nesto posle @
 						)
 					) {
 						alert(
@@ -325,7 +355,7 @@ export default {
 							userRegistrationReason: this.userRegistrationReason,
 						};
 						axios
-							.post("/api/register/create", user)
+							.post("/api/user/create", user)
 							.then(function (response) {
 								// console.log("From AXIOS POST");
 								// console.log(response);
@@ -371,16 +401,59 @@ export default {
 								}
 							});
 					} else {
-						this.renderSecondPopup(
-							true,
-							"failed",
-							"Passwords don't match, try again."
-						);
+						alert("Passwords don't match, try again.");
+						// this.renderSecondPopup(
+						// 	true,
+						// 	"failed",
+						// 	"Passwords don't match, try again."
+						// );
 					}
 				}
 			},
 			openLogin() {
 				loginState.value = true;
+			},
+			loginUser() {
+				if (this.userEmail == null || this.firstPassword == null) {
+					alert("All fields need to be filled, try again.");
+					// this.renderSecondPopup(
+					// 	true,
+					// 	"failed",
+					// 	"All fields need to be filled, try again."
+					// );
+				} else {
+					// Provera korektnog formata Email-a
+					if (
+						!(
+							(
+								this.userEmail.includes("@") &&
+								this.userEmail.indexOf("@") !=
+									this.userEmail.length - 1
+							) // Proverava da li imamo nesto posle @
+						)
+					) {
+						alert(
+							"Email isn't in the correct form. Please fill out the form again."
+						);
+						return;
+					}
+					alert("Success!");
+					// Logika
+					var credentials = [this.userEmail, this.firstPassword]; // Ovako jer se deserijalizuje u ArrayList
+					console.log("Credentials: \n");
+					console.log(credentials);
+					axios
+						.post("/api/user/login", credentials)
+						.then(function (response) {
+							if (response.data == "") {
+								alert("The credentials are wrong, try again.");
+								return;
+							}
+							console.log("Response :");
+							console.log(response.data);
+							// var x = response.data[];
+						});
+				}
 			},
 		};
 	},
@@ -453,11 +526,21 @@ h1 {
 	margin-left: 224px;
 	margin-right: 224px;
 }
-.popup {
+.popupRegister {
 	font-size: 22px;
 	text-align: center;
 	margin: 0px 36rem 20px 36rem;
 	height: 570px;
+	background-color: rgb(255, 255, 255);
+	border-radius: 15px;
+	display: flex;
+	flex-direction: column;
+}
+.popupLogin {
+	font-size: 22px;
+	text-align: center;
+	margin: 0px 36rem 20px 36rem;
+	height: 200px;
 	background-color: rgb(255, 255, 255);
 	border-radius: 15px;
 	display: flex;
@@ -480,7 +563,7 @@ h1 {
 	background-color: #e79d9d;
 	border: 2px solid rgb(160, 97, 97);
 }
-#signUpButton {
+.actionButton {
 	color: white;
 	font-size: 24px;
 	font-family: Arial, Helvetica, sans-serif;
@@ -490,16 +573,23 @@ h1 {
 	width: 200px;
 	height: 46px;
 }
-#signUpButton:hover {
+.actionButton:hover {
 	background-color: #583603;
 	cursor: pointer;
 }
-.popupRow {
+.popupRegisterRow {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 	width: 100%;
 	height: 16.66%;
+}
+.popupLoginRow {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+	height: 50%;
 }
 input,
 select {

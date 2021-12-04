@@ -2,19 +2,15 @@ package isa.adventuretime.Controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-
 import javax.mail.internet.AddressException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import isa.adventuretime.Entity.Administrator;
 import isa.adventuretime.Entity.BoatOwner;
 import isa.adventuretime.Entity.CottageOwner;
@@ -30,7 +26,7 @@ import isa.adventuretime.Service.MailService;
 import isa.adventuretime.Service.RegisteredUserService;
 
 @RestController
-@RequestMapping(path = "/api/register")
+@RequestMapping(path = "/api/user")
 public class UserController {
 
 	@Autowired
@@ -51,81 +47,92 @@ public class UserController {
 	@Autowired
 	private MailService mailService;
 
-	@PostMapping(
-			value =("/login"),
-		    consumes = MediaType.APPLICATION_JSON_VALUE,   
-		    produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> UserLogin(@RequestBody ArrayList<String> credentials) throws Exception{
-		
-		String email = credentials.get(0);
-		String password = credentials.get(1);
-
-		System.out.println(email + " " + password);
-
-		User newUser = (User)registeredUserService.findByEmail(email);
-		if(newUser != null){
-			newUser.setUserType("Standard User");
-			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+	@PostMapping(value = ("/login"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> UserLogin(RequestEntity<ArrayList<String>> credentials) throws Exception {
+		String email = credentials.getBody().get(0);
+		String password = credentials.getBody().get(1);
+		// System.out.println(email + " " + password);
+		User newUser = (User) registeredUserService.findByEmail(email);
+		if (newUser != null) {
+			if (password.equals(newUser.getPassword())) {
+				newUser.setUserType("Registered User");
+				return new ResponseEntity<User>(newUser, HttpStatus.OK);
+			} else {
+				// TODO: password se ne poklapa ali email postoji
+			}
 		}
-		newUser = (User)boatOwnerService.findByEmail(email);
-		if(newUser != null){
-			newUser.setUserType("Boat Owner");
-			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		newUser = (User) boatOwnerService.findByEmail(email);
+		if (newUser != null) {
+			if (password.equals(newUser.getPassword())) {
+				newUser.setUserType("Boat Owner");
+				return new ResponseEntity<User>(newUser, HttpStatus.OK);
+			} else {
+				// TODO: password se ne poklapa ali email postoji
+			}
 		}
-		newUser = (User)cottageOwnerService.findByEmail(email);
-		if(newUser != null){
-			newUser.setUserType("Cottage Owner");
-			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		newUser = (User) cottageOwnerService.findByEmail(email);
+		if (newUser != null) {
+			if (password.equals(newUser.getPassword())) {
+				newUser.setUserType("Cottage Owner");
+				return new ResponseEntity<User>(newUser, HttpStatus.OK);
+			} else {
+				// TODO: password se ne poklapa ali email postoji
+			}
 		}
-		newUser = (User)fishingInstructorService.findByEmail(email);	
-		if(newUser != null){
-			newUser.setUserType("Fishing Instructor");
-			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		newUser = (User) fishingInstructorService.findByEmail(email);
+		if (newUser != null) {
+			if (password.equals(newUser.getPassword())) {
+				newUser.setUserType("Fishing Instructor");
+				return new ResponseEntity<User>(newUser, HttpStatus.OK);
+			} else {
+				// TODO: password se ne poklapa ali email postoji
+			}
 		}
-		newUser = (User)administratorService.findByEmail(email);
-		if(newUser != null){
-			newUser.setUserType("Admin");
-			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		newUser = (User) administratorService.findByEmail(email);
+		if (newUser != null) {
+			if (password.equals(newUser.getPassword())) {
+				newUser.setUserType("Admin");
+				return new ResponseEntity<User>(newUser, HttpStatus.OK);
+			} else {
+				// TODO: password se ne poklapa ali email postoji
+			}
 		}
+		// TODO: email ne postoji
 		return null;
 	}
 
-	@PostMapping(
-			value =("/update"),
-		    consumes = MediaType.APPLICATION_JSON_VALUE,   
-		    produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> UserUpdate(RequestEntity <User> user) throws Exception{
-		
-		switch(user.getBody().getUserType()){
+	@PostMapping(value = ("/update"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> UserUpdate(RequestEntity<User> user) throws Exception {
+
+		switch (user.getBody().getUserType()) {
 			case "Standard User":
 				RegisteredUser registeredUser = registeredUserService.findByEmail(user.getBody().getEmail());
 				registeredUser.updateWithUser(user.getBody());
 				registeredUserService.saveRegisteredUser(registeredUser);
-				return new ResponseEntity<User>((User)registeredUser, HttpStatus.OK);
+				return new ResponseEntity<User>((User) registeredUser, HttpStatus.OK);
 			case "Boat Owner":
 				BoatOwner boatOwner = boatOwnerService.findByEmail(user.getBody().getEmail());
 				boatOwner.updateWithUser(user.getBody());
 				boatOwnerService.saveBoatOwner(boatOwner);
-				return new ResponseEntity<User>((User)boatOwner, HttpStatus.OK);
+				return new ResponseEntity<User>((User) boatOwner, HttpStatus.OK);
 			case "Cottage Owner":
 				CottageOwner cottageOwner = cottageOwnerService.findByEmail(user.getBody().getEmail());
 				cottageOwner.updateWithUser(user.getBody());
 				cottageOwnerService.saveCottageOwner(cottageOwner);
-				return new ResponseEntity<User>((User)cottageOwner, HttpStatus.OK);
+				return new ResponseEntity<User>((User) cottageOwner, HttpStatus.OK);
 			case "Fishing Instructor":
 				FishingInstructor fishingInstructor = fishingInstructorService.findByEmail(user.getBody().getEmail());
 				fishingInstructor.updateWithUser(user.getBody());
 				fishingInstructorService.saveFishingInstructor(fishingInstructor);
-				return new ResponseEntity<User>((User)fishingInstructor, HttpStatus.OK);
+				return new ResponseEntity<User>((User) fishingInstructor, HttpStatus.OK);
 			case "Admin":
 				Administrator administrator = administratorService.findByEmail(user.getBody().getEmail());
 				administrator.updateWithUser(user.getBody());
 				administratorService.saveAdministrator(administrator);
-				return new ResponseEntity<User>((User)administrator, HttpStatus.OK);
+				return new ResponseEntity<User>((User) administrator, HttpStatus.OK);
 		}
 		return null;
 	}
-
 
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerUser(RequestEntity<UnregisteredUser> request)
@@ -187,7 +194,5 @@ public class UserController {
 		}
 		mailService.SendMail(request.getBody().getEmail(), request.getBody().getName());
 		return new ResponseEntity<String>(returnedString, HttpStatus.OK);
-
 	}
-
 }
