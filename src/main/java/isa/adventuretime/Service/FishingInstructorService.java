@@ -23,11 +23,15 @@ public class FishingInstructorService{
         return fishingInstructorRepo.save(instructor);
     }
 
-    public Object findByEmail(String email) {
+    public FishingInstructor findByEmail(String email) {
         return fishingInstructorRepo.findByEmail(email);
     }
 
     public FishingInstructor findByEmailHash(int code){
         return fishingInstructorRepo.findByEmailHash(code);
+    }
+
+    public FishingInstructor saveFishingInstructor(FishingInstructor fishingInstructor){
+        return fishingInstructorRepo.save(fishingInstructor);
     }
 }

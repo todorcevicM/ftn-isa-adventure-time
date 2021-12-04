@@ -22,11 +22,15 @@ public class CottageOwnerService {
 		return cottageOwnerRepo.save(owner);
 	}
 
-	public Object findByEmail(String email) {
+	public CottageOwner findByEmail(String email) {
 		return cottageOwnerRepo.findByEmail(email);
 	}
 
 	public CottageOwner findByEmailHash(int code) {
 		return cottageOwnerRepo.findByEmailHash(code);
+	}
+
+	public CottageOwner saveCottageOwner(CottageOwner cottageOwner){
+		return cottageOwnerRepo.save(cottageOwner);
 	}
 }

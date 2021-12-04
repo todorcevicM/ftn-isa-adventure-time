@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import javax.mail.internet.AddressException;
-import javax.validation.constraints.Null;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import isa.adventuretime.Entity.Administrator;
 import isa.adventuretime.Entity.BoatOwner;
 import isa.adventuretime.Entity.CottageOwner;
 import isa.adventuretime.Entity.FishingInstructor;
@@ -64,7 +64,7 @@ public class UserController {
 
 		User newUser = (User)registeredUserService.findByEmail(email);
 		if(newUser != null){
-			newUser.setUserType("Registered User");
+			newUser.setUserType("Standard User");
 			return new ResponseEntity<User>(newUser, HttpStatus.OK);
 		}
 		newUser = (User)boatOwnerService.findByEmail(email);
@@ -77,7 +77,7 @@ public class UserController {
 			newUser.setUserType("Cottage Owner");
 			return new ResponseEntity<User>(newUser, HttpStatus.OK);
 		}
-		newUser = (User)fishingInstructorService.findByEmail(email);
+		newUser = (User)fishingInstructorService.findByEmail(email);	
 		if(newUser != null){
 			newUser.setUserType("Fishing Instructor");
 			return new ResponseEntity<User>(newUser, HttpStatus.OK);
@@ -89,6 +89,43 @@ public class UserController {
 		}
 		return null;
 	}
+
+	@PostMapping(
+			value =("/update"),
+		    consumes = MediaType.APPLICATION_JSON_VALUE,   
+		    produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> UserUpdate(RequestEntity <User> user) throws Exception{
+		
+		switch(user.getBody().getUserType()){
+			case "Standard User":
+				RegisteredUser registeredUser = registeredUserService.findByEmail(user.getBody().getEmail());
+				registeredUser.updateWithUser(user.getBody());
+				registeredUserService.saveRegisteredUser(registeredUser);
+				return new ResponseEntity<User>((User)registeredUser, HttpStatus.OK);
+			case "Boat Owner":
+				BoatOwner boatOwner = boatOwnerService.findByEmail(user.getBody().getEmail());
+				boatOwner.updateWithUser(user.getBody());
+				boatOwnerService.saveBoatOwner(boatOwner);
+				return new ResponseEntity<User>((User)boatOwner, HttpStatus.OK);
+			case "Cottage Owner":
+				CottageOwner cottageOwner = cottageOwnerService.findByEmail(user.getBody().getEmail());
+				cottageOwner.updateWithUser(user.getBody());
+				cottageOwnerService.saveCottageOwner(cottageOwner);
+				return new ResponseEntity<User>((User)cottageOwner, HttpStatus.OK);
+			case "Fishing Instructor":
+				FishingInstructor fishingInstructor = fishingInstructorService.findByEmail(user.getBody().getEmail());
+				fishingInstructor.updateWithUser(user.getBody());
+				fishingInstructorService.saveFishingInstructor(fishingInstructor);
+				return new ResponseEntity<User>((User)fishingInstructor, HttpStatus.OK);
+			case "Admin":
+				Administrator administrator = administratorService.findByEmail(user.getBody().getEmail());
+				administrator.updateWithUser(user.getBody());
+				administratorService.saveAdministrator(administrator);
+				return new ResponseEntity<User>((User)administrator, HttpStatus.OK);
+		}
+		return null;
+	}
+
 
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerUser(RequestEntity<UnregisteredUser> request)

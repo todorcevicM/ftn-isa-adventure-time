@@ -21,5 +21,8 @@ public class AdministratorService{
     public Administrator findByEmail(String email){
         return administratorRepo.findByEmail(email);
     }
+    public Administrator saveAdministrator(Administrator administrator){
+        return administratorRepo.save(administrator);
+    }
 
 }
