@@ -468,8 +468,9 @@ export default {
 									);
 								}
 							}
-							window.location.href =
-								"/" + localStorage.getItem("userType");
+							window.location.replace("/administrator");
+							// window.location.href =
+							// 	"/" + localStorage.getItem("userType");
 						})
 						.catch(function (error) {
 							console.log(error.response.status);

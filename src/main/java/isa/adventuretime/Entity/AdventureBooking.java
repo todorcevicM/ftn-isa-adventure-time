@@ -14,17 +14,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AdventureBooking {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long bookedAdventureId;
-    private Long registeredUserId;
-    private boolean quickBooking;
 
-    private Date start;
-    private Date end;
-    private double price; //if not default price
-    private String extraService; // if any
-    private int maxUsers; //if not default, is this needed?
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private Long bookedAdventureId;
+	private Long bookedInstructorId;
+	private Long registeredUserId;
+	private boolean quickBooking;
+
+	private Date start;
+	private Date end;
+	private double price; // if not default price
+	private String extraService; // if any
+	private int maxUsers; // if not default, is this needed?
 }
