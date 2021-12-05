@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +33,19 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
+
+	@GetMapping(value = ("/{id}"))
+	public ResponseEntity<Administrator> getAdministrator(@PathVariable("id") Long id){
+		Administrator administrator = administratorService.getById(id);
+		if (administrator == null) {
+			System.out.println("aaaaaaaaaa");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		else {
+			System.out.println(administrator.getId());
+			return new ResponseEntity<>(administrator, HttpStatus.OK);
+		}
+
+	}	
 
 }

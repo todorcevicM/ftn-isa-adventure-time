@@ -12,6 +12,9 @@ import java.util.Date;
 import java.util.ArrayList;
 import org.springframework.http.ResponseEntity;
 import isa.adventuretime.Service.BoatBookingService;
+import isa.adventuretime.Entity.Boat;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
 @RequestMapping(path = "/api/boat")
@@ -28,6 +31,15 @@ public class BoatController {
 	 * public ResponseEntity<User> UserLogin(RequestEntity<ArrayList<String>>
 	 * credentials) throws Exception {
 	 */
+
+	@GetMapping(path = "/get/{id}")
+	public ResponseEntity<Boat> getAdventure(@PathVariable("id") Long id){
+		Boat boat = boatService.getById(id);
+		if(boat == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Boat>(boat, HttpStatus.OK);
+	}
 
 	@PostMapping(path = "/getFreeTimes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<Date>> getAllFreeDates(RequestEntity<Long> id) {

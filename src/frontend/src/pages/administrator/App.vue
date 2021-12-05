@@ -4,8 +4,7 @@
 			<div class="underlined">
 				<img
 					src="../../assets/wheel.svg"
-					style="margin-bottom: -6px; margin-right: -7px"
-				/>
+					style="margin-bottom: -6px; margin-right: -7px"/>
 				<p
 					style="
 						font-size: 75px;
@@ -13,7 +12,7 @@
 						display: inline;
 					"
 				>
-					NEWPAGE
+					Administrator
 				</p>
 			</div>
 			<p style="font-size: 36px; text-align: center; margin: 7px">
@@ -48,27 +47,14 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		const returnGET = ref(null); // TODO: Sta ovo znaci?
-		const returnPOST = ref(null); // TODO: Sta ovo znaci?
+		const returnGET = ref(null); 
+		const returnPOST = ref(null); 
 		axios.get("/api/get").then((data) => (returnGET.value = data.data)); // TODO: Kakva je ovo sintaksa
 		var x = 3;
 		axios
 			.post("/api/post", x)
 			.then((data) => (returnPOST.value = data.data)); // Ovo data => ... je valjda isto sto i function(data){...} ❗❗❗
-		// axios.post("/api/post", {})
-		//   .then(function (data) {
-		//     returnPOST.value = data.data;
-		//   })
-		// Ovo u Notion :
-		// axios
-		//   .post("/api/post", {})
-		//   .then(function (response) {
-		//     console.log(response + " AAAAAAAAAAAAAAAAA");
-		//   })
-		//   .catch(function (error) {
-		//     console.log(error + " BBBBBBBBBBBBBBBB");
-		//   });
-		// Za u <template>
+
 		return {
 			returnGET,
 			returnPOST,

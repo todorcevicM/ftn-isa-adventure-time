@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Service.CottageService;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
 @RequestMapping(path = "/api/cottages")
@@ -21,5 +22,14 @@ public class CottageController {
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<Cottage>> getCottages() {
 		return new ResponseEntity<ArrayList<Cottage>>(cottageService.findAll(), HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/get/{id}")
+	public ResponseEntity<Cottage> getAdventure(@PathVariable("id") Long id){
+		Cottage cottage = cottageService.getById(id);
+		if(cottage == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Cottage>(cottage, HttpStatus.OK);
 	}
 }

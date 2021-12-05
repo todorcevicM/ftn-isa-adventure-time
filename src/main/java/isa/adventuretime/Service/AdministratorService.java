@@ -15,7 +15,7 @@ public class AdministratorService{
         this.administratorRepo = repo;
     }
 
-    public  Administrator getById(Long id){
+    public Administrator getById(Long id){
         return administratorRepo.getById(id);
     }
     public Administrator findByEmail(String email){

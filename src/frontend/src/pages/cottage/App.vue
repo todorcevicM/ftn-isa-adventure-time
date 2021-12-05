@@ -16,7 +16,7 @@
 						display: inline;
 					"
 				>
-					Adventure Time
+					Cottage
 				</p>
 			</div>
 			<p style="font-size: 36px; text-align: center; margin: 7px">
@@ -468,7 +468,7 @@ export default {
 									);
 								}
 							}
-							window.location.replace("/administrator/" + localStorage.getItem("id"));
+							window.location.replace("/administrator");
 							// window.location.href =
 							// 	"/" + localStorage.getItem("userType");
 						})

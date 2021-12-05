@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,15 @@ public class AdventureController {
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<Adventure>> getAdventures() {
 		return new ResponseEntity<ArrayList<Adventure>>(adventureService.findAll(), HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/get/{id}")
+	public ResponseEntity<Adventure> getAdventure(@PathVariable("id") Long id){
+		Adventure adventure = adventureService.getById(id);
+		if(adventure == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Adventure>(adventure, HttpStatus.OK);
 	}
 
 	@PostMapping(path = "/getFreeTimes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

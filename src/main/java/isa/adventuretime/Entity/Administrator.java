@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
-@Entity
 // Ovaj property je dodat jer bez njega Spring baca ogromnu gresku,
 // ovo je radjeno i na web-u.
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
