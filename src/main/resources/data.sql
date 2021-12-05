@@ -41,3 +41,9 @@ insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, 
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
             values (1, 1, "2021-01-05", "2021-01-06", 100, false, "", 6);
+
+insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service) 
+			values(1, "2021-01-01", "2021-01-01", 2, 100, false, 1, "")
+
+insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service) 
+			values(1, "2021-01-03", "2021-01-04", 2, 100, false, 1, "")

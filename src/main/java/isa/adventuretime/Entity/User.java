@@ -19,13 +19,15 @@ public class User {
 	protected Boolean wantsDeletion;
 	protected Boolean authenticated;
 	protected int emailHash;
-	
+	// protected String loginStatus;
+
 	private String userType;
 
 	public User() {
 	}
 
-	public User(String name, String lastname, String email, String password, String address, String city, String country, String telephoneNumber) {
+	public User(String name, String lastname, String email, String password, String address, String city,
+			String country, String telephoneNumber) {
 		this.name = name;
 		this.lastname = lastname;
 		this.email = email;
@@ -34,18 +36,19 @@ public class User {
 		this.city = city;
 		this.country = country;
 		this.telephoneNumber = telephoneNumber;
-        this.wantsDeletion = false;
-        this.authenticated = false;
+		this.wantsDeletion = false;
+		this.authenticated = false;
 		this.emailHash = email.hashCode();
 		this.userType = "";
+		// this.loginStatus = "";
 	}
 
-	public void updateWithUser(User user){
+	public void updateWithUser(User user) {
 		this.address = user.address;
 		this.authenticated = user.authenticated;
 		this.city = user.city;
 		this.country = user.country;
-		//this.email = user.email; NOT Allowed
+		// this.email = user.email; NOT Allowed
 		this.emailHash = user.emailHash;
 		this.lastname = user.lastname;
 		this.name = user.password;

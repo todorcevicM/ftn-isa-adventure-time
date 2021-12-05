@@ -1,15 +1,9 @@
 package isa.adventuretime.Entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class BoatOwner extends User {
@@ -26,8 +20,4 @@ public class BoatOwner extends User {
 		super();
 	}
 
-
-	@OneToMany(mappedBy = "boatOwner", fetch = FetchType.LAZY,
-	cascade = CascadeType.ALL)
-	private Set<Boat> boatsOwned = new HashSet<>();
 }

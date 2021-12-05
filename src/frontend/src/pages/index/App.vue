@@ -328,7 +328,8 @@ export default {
 							(
 								this.userEmail.includes("@") &&
 								this.userEmail.indexOf("@") !=
-									this.userEmail.length - 1
+									this.userEmail.length - 1 &&
+								this.userEmail.indexOf("@") != 0
 							) // Proverava da li imamo nesto posle @
 						)
 					) {
@@ -343,7 +344,7 @@ export default {
 					// this.signUpMessageText = "Sample Text";
 					if (this.firstPassword == this.repeatPassword) {
 						var user = {
-							type: this.userType,
+							type: "",
 							email: this.userEmail,
 							name: this.userFirstName,
 							lastname: this.userLastName,
@@ -354,6 +355,21 @@ export default {
 							password: this.firstPassword,
 							userRegistrationReason: this.userRegistrationReason,
 						};
+						switch (this.userType) {
+							case "Standard User":
+								user.type = "registeredUser";
+								break;
+							case "Boat Owner":
+								user.type = "boatOwner";
+								break;
+							case "Cottage Owner":
+								user.type = "cottageOwner";
+								break;
+							case "Fishing Instructor":
+								user.type = "fishingInstructor";
+								break;
+						}
+
 						axios
 							.post("/api/user/create", user)
 							.then(function (response) {
@@ -428,7 +444,8 @@ export default {
 							(
 								this.userEmail.includes("@") &&
 								this.userEmail.indexOf("@") !=
-									this.userEmail.length - 1
+									this.userEmail.length - 1 &&
+								this.userEmail.indexOf("@") != 0
 							) // Proverava da li imamo nesto posle @
 						)
 					) {
@@ -437,21 +454,38 @@ export default {
 						);
 						return;
 					}
-					alert("Success!");
-					// Logika
 					var credentials = [this.userEmail, this.firstPassword]; // Ovako jer se deserijalizuje u ArrayList
 					console.log("Credentials: \n");
 					console.log(credentials);
 					axios
 						.post("/api/user/login", credentials)
 						.then(function (response) {
-							if (response.data == "") {
-								alert("The credentials are wrong, try again.");
-								return;
+							for (const key in response.data) {
+								if (!(key === "password")) {
+									localStorage.setItem(
+										key,
+										response.data[key]
+									);
+								}
 							}
-							console.log("Response :");
-							console.log(response.data);
-							// var x = response.data[];
+							window.location.href =
+								"/" + localStorage.getItem("userType");
+						})
+						.catch(function (error) {
+							console.log(error.response.status);
+							switch (error.response.status) {
+								case 401: // UNAUTHORIZED
+									alert(
+										"This user isn't authenticated. Please wait for the administrator to authenticate the account, and try again."
+									);
+									break;
+								case 404: // NOT_FOUND
+									alert("This user doesn't exist.");
+									break;
+								case 406: // NOT_ACCEPTABLE
+									alert("The password is wrong, try again.");
+									break;
+							}
 						});
 				}
 			},

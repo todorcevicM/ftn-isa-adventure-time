@@ -9,6 +9,6 @@ import isa.adventuretime.Entity.BoatBooking;
 
 @Repository
 public interface BoatBookingRepo extends JpaRepository<BoatBooking, Long> {
-    ArrayList<BoatBooking> findAllByBookedBoatId(Long id);
+	ArrayList<BoatBooking> findAllByBookedBoatId(Long id);
 
 }

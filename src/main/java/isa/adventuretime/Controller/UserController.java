@@ -54,78 +54,97 @@ public class UserController {
 		// System.out.println(email + " " + password);
 		User newUser = (User) registeredUserService.findByEmail(email);
 		if (newUser != null) {
-			if (password.equals(newUser.getPassword())) {
-				newUser.setUserType("Registered User");
-				return new ResponseEntity<User>(newUser, HttpStatus.OK);
+			if (newUser.getAuthenticated() == true) {
+				if (password.equals(newUser.getPassword())) {
+					newUser.setUserType("registeredUser");
+					return new ResponseEntity<User>(newUser, HttpStatus.OK);
+				} else {
+					return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
+				}
 			} else {
-				// TODO: password se ne poklapa ali email postoji
+				return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
 			}
 		}
 		newUser = (User) boatOwnerService.findByEmail(email);
 		if (newUser != null) {
-			if (password.equals(newUser.getPassword())) {
-				newUser.setUserType("Boat Owner");
-				return new ResponseEntity<User>(newUser, HttpStatus.OK);
+			if (newUser.getAuthenticated() == true) {
+				if (password.equals(newUser.getPassword())) {
+					newUser.setUserType("boatOwner");
+					return new ResponseEntity<User>(newUser, HttpStatus.OK);
+				} else {
+					return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
+				}
 			} else {
-				// TODO: password se ne poklapa ali email postoji
+				return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
 			}
 		}
 		newUser = (User) cottageOwnerService.findByEmail(email);
 		if (newUser != null) {
-			if (password.equals(newUser.getPassword())) {
-				newUser.setUserType("Cottage Owner");
-				return new ResponseEntity<User>(newUser, HttpStatus.OK);
+			if (newUser.getAuthenticated() == true) {
+				if (password.equals(newUser.getPassword())) {
+					newUser.setUserType("cottageOwner");
+					return new ResponseEntity<User>(newUser, HttpStatus.OK);
+				} else {
+					return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
+				}
 			} else {
-				// TODO: password se ne poklapa ali email postoji
+				return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
 			}
 		}
 		newUser = (User) fishingInstructorService.findByEmail(email);
 		if (newUser != null) {
-			if (password.equals(newUser.getPassword())) {
-				newUser.setUserType("Fishing Instructor");
-				return new ResponseEntity<User>(newUser, HttpStatus.OK);
+			if (newUser.getAuthenticated() == true) {
+				if (password.equals(newUser.getPassword())) {
+					newUser.setUserType("fishingInstructor");
+					return new ResponseEntity<User>(newUser, HttpStatus.OK);
+				} else {
+					return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
+				}
 			} else {
-				// TODO: password se ne poklapa ali email postoji
+				return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
 			}
 		}
 		newUser = (User) administratorService.findByEmail(email);
 		if (newUser != null) {
-			if (password.equals(newUser.getPassword())) {
-				newUser.setUserType("Admin");
-				return new ResponseEntity<User>(newUser, HttpStatus.OK);
+			if (newUser.getAuthenticated() == true) {
+				if (password.equals(newUser.getPassword())) {
+					newUser.setUserType("admin");
+					return new ResponseEntity<User>(newUser, HttpStatus.OK);
+				} else {
+					return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
+				}
 			} else {
-				// TODO: password se ne poklapa ali email postoji
+				return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
 			}
 		}
-		// TODO: email ne postoji
-		return null;
+		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
 
 	@PostMapping(value = ("/update"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> UserUpdate(RequestEntity<User> user) throws Exception {
 
 		switch (user.getBody().getUserType()) {
-			case "Standard User":
+			case "registeredUser":
 				RegisteredUser registeredUser = registeredUserService.findByEmail(user.getBody().getEmail());
 				registeredUser.updateWithUser(user.getBody());
 				registeredUserService.saveRegisteredUser(registeredUser);
 				return new ResponseEntity<User>((User) registeredUser, HttpStatus.OK);
-			case "Boat Owner":
+			case "boatOwner":
 				BoatOwner boatOwner = boatOwnerService.findByEmail(user.getBody().getEmail());
 				boatOwner.updateWithUser(user.getBody());
 				boatOwnerService.saveBoatOwner(boatOwner);
 				return new ResponseEntity<User>((User) boatOwner, HttpStatus.OK);
-			case "Cottage Owner":
+			case "cottageOwner":
 				CottageOwner cottageOwner = cottageOwnerService.findByEmail(user.getBody().getEmail());
 				cottageOwner.updateWithUser(user.getBody());
 				cottageOwnerService.saveCottageOwner(cottageOwner);
 				return new ResponseEntity<User>((User) cottageOwner, HttpStatus.OK);
-			case "Fishing Instructor":
+			case "fishingInstructor":
 				FishingInstructor fishingInstructor = fishingInstructorService.findByEmail(user.getBody().getEmail());
 				fishingInstructor.updateWithUser(user.getBody());
 				fishingInstructorService.saveFishingInstructor(fishingInstructor);
 				return new ResponseEntity<User>((User) fishingInstructor, HttpStatus.OK);
-			case "Admin":
+			case "admin":
 				Administrator administrator = administratorService.findByEmail(user.getBody().getEmail());
 				administrator.updateWithUser(user.getBody());
 				administratorService.saveAdministrator(administrator);
@@ -151,7 +170,7 @@ public class UserController {
 				&& fishingInstructorService.findByEmail(new_user_email) == null) {
 
 			switch (request.getBody().getType()) {
-				case "Standard User":
+				case "registeredUser":
 					RegisteredUser registeredUser = new RegisteredUser(request.getBody().getName(),
 							request.getBody().getLastname(), request.getBody().getEmail(),
 							request.getBody().getPassword(),
@@ -159,7 +178,7 @@ public class UserController {
 							request.getBody().getTelephoneNumber());
 					registeredUserService.register(registeredUser);
 					break;
-				case "Boat Owner":
+				case "boatOwner":
 					BoatOwner boatOwner = new BoatOwner(request.getBody().getName(), request.getBody().getLastname(),
 							request.getBody().getEmail(), request.getBody().getPassword(),
 							request.getBody().getAddress(),
@@ -167,8 +186,7 @@ public class UserController {
 							request.getBody().getTelephoneNumber());
 					boatOwnerService.register(boatOwner);
 					break;
-				case "Cottage Owner":
-					System.out.println("");
+				case "cottageOwner":
 					CottageOwner cottageOwner = new CottageOwner(request.getBody().getName(),
 							request.getBody().getLastname(), request.getBody().getEmail(),
 							request.getBody().getPassword(),
@@ -176,7 +194,7 @@ public class UserController {
 							request.getBody().getTelephoneNumber());
 					cottageOwnerService.register(cottageOwner);
 					break;
-				case "Fishing Instructor":
+				case "fishingInstructor":
 					FishingInstructor fishingInstructor = new FishingInstructor(request.getBody().getName(),
 							request.getBody().getLastname(), request.getBody().getEmail(),
 							request.getBody().getPassword(),

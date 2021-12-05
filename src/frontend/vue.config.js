@@ -6,10 +6,10 @@ module.exports = {
 			entry: "src/pages/index/main.js",
 			title: "Adventure Time",
 		},
-		newPage: {
-			entry: "src/pages/newPage/main.js",
-			title: "NEW PAGE TITLE",
-		}
+		RegisteredUser: {
+			entry: "src/pages/registeredUser/main.js",
+			title: "REGISTERED USER PAGE",
+		},
 	},
 	devServer: {
 		port: 3000,
