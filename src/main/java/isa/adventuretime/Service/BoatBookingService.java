@@ -30,8 +30,10 @@ public class BoatBookingService {
 
 		dates.add(currentBoat.getReservationStart());
 		for (BoatBooking booking : bookings) {
-			dates.add(booking.getStart());
-			dates.add(booking.getEnd());
+			if (dates.get(0).before(booking.getStart())) {
+				dates.add(booking.getStart());
+				dates.add(booking.getEnd());
+			}
 		}
 		dates.add(currentBoat.getReservationEnd());
 		return dates;

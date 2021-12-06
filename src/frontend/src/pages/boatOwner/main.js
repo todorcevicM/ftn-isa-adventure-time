@@ -1,3 +1,3 @@
 import { createApp } from 'vue'
-import App from './App.vue'
+import App from './boatOwner.vue'
 createApp(App).mount('#app')

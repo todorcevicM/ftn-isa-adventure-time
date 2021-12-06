@@ -15,12 +15,12 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Room {
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	private Long id;
 
-    private int numberOfBeds;
+	private int numberOfBeds;
 
-    private Long cottage_id;
-    
+	private Long cottage_id;
+
 }

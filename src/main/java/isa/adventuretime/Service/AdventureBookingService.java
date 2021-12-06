@@ -30,8 +30,10 @@ public class AdventureBookingService {
 
 		dates.add(fishingInstructor.getStartWorkPeriod());
 		for (AdventureBooking booking : bookings) {
-			dates.add(booking.getStart());
-			dates.add(booking.getEnd());
+			if (dates.get(0).before(booking.getStart())) {
+				dates.add(booking.getStart());
+				dates.add(booking.getEnd());
+			}
 		}
 		dates.add(fishingInstructor.getEndWorkPeriod());
 		return dates;

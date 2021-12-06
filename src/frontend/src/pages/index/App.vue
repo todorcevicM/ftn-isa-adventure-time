@@ -5,19 +5,8 @@
 		</div>
 		<div id="logo-container">
 			<div class="underlined">
-				<img
-					src="../../assets/wheel.svg"
-					style="margin-bottom: -6px; margin-right: -7px"
-				/>
-				<p
-					style="
-						font-size: 75px;
-						letter-spacing: -2px;
-						display: inline;
-					"
-				>
-					Adventure Time
-				</p>
+				<img src="../../assets/wheel.svg" />
+				<p>Adventure Time</p>
 			</div>
 			<p style="font-size: 36px; text-align: center; margin: 7px">
 				Plan your fishing trip with ease.
@@ -214,9 +203,22 @@
 			</div>
 			<div class="largeCategory">
 				<h1>Browse Adventures</h1>
+				<a v-if="showAllAdventuresToggle" @click="showAllAdventures()"
+					>Show All</a
+				>
 				<div class="categoryItems">
-					<div v-for="i in 3" :key="i">
-						<img class="itemImage" :src="imageSource(2, i)" />
+					<!-- TODO: ne radi ovaj kurac ovde -->
+					<div
+						v-for="i in adventureNumToDisplay
+							? adventures.length
+							: 3"
+						:key="i"
+					>
+						<img
+							@click="imageRedirect(2, i)"
+							class="itemImage"
+							:src="imageSource(2, i)"
+						/>
 						<h4>{{ adventures[i - 1].name }}</h4>
 						<h6>${{ adventures[i - 1].pricePerDay }}/day</h6>
 						<h6>{{ adventures[i - 1].address }}</h6>
@@ -265,6 +267,9 @@ export default {
 		var cottageNumToDisplay = ref(null);
 		var showAllCottagesToggle = ref(null);
 		showAllCottagesToggle = true;
+		var adventureNumToDisplay = ref(null);
+		var showAllAdventuresToggle = ref(null);
+		showAllAdventuresToggle = true;
 
 		axios.get("/api/cottages/get").then(function (response) {
 			cottages.value = response.data;
@@ -296,6 +301,8 @@ export default {
 			signUpMessageText,
 			cottageNumToDisplay,
 			showAllCottagesToggle,
+			adventureNumToDisplay,
+			showAllAdventuresToggle,
 			passwordMatchCheck(firstPassword, repeatPassword) {
 				if (firstPassword == repeatPassword) {
 					this.matching = "Passwords Match!";
@@ -364,7 +371,6 @@ export default {
 						);
 						return;
 					}
-
 					this.signUpMessageOn = false;
 					// this.signUpMessageKind = "failed";
 					// this.signUpMessageText = "Sample Text";
@@ -522,14 +528,17 @@ export default {
 				this.showAllCottagesToggle = false;
 				this.cottageNumToDisplay = true;
 			},
+			showAllAdventures() {
+				this.showAllAdventuresToggle = false;
+				this.adventureNumToDisplay = true;
+			},
 			imageRedirect(type, id) {
 				switch (type) {
 					case 1:
 						window.location.href = "/cottage/" + id;
-
 						break;
 					case 2:
-						window.location.href = "/api/adventures/get/" + id;
+						window.location.href = "/adventure/" + id;
 						break;
 				}
 			},
@@ -558,6 +567,16 @@ body {
 	border-bottom: #ad6800 3px solid;
 	height: 80px;
 }
+.underlined img {
+	margin-bottom: -6px;
+	margin-right: -7px;
+}
+.underlined p {
+	margin-left: 10px;
+	font-size: 75px;
+	letter-spacing: -2px;
+	display: inline;
+}
 a {
 	color: #ad6800;
 	text-decoration: none;
@@ -568,7 +587,7 @@ a:hover {
 }
 .mainCard {
 	background-color: white;
-	height: 1900px;
+	height: 1400px;
 	margin: 0;
 	border-top-left-radius: 24px;
 	border-top-right-radius: 24px;
@@ -578,7 +597,7 @@ a:hover {
 	align-items: flex-end;
 	justify-content: space-around;
 	flex-wrap: wrap;
-	row-gap: 30px;
+	row-gap: 20px;
 }
 .itemImage {
 	margin: 0px 3px;
@@ -586,6 +605,10 @@ a:hover {
 	object-fit: cover;
 	width: 360px;
 	height: 360px;
+	transition: all 0.2s ease-in-out;
+}
+.itemImage:hover {
+	transform: scale(1.02);
 }
 h4 {
 	font-size: 32px;
