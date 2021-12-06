@@ -30,6 +30,6 @@ public class RoomBooking {
 	private double price; // if not default price
 	private String extraService; // if any
 	private int maxUsers; // if not default, is this needed?
-	private Long cottage_id;
+	private Long cottageId;
 
 }

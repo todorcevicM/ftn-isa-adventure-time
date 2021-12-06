@@ -226,6 +226,24 @@
 				</div>
 			</div>
 		</div>
+		<div class="largeCategory">
+			<h1>Browse Boats</h1>
+			<a v-if="showAllBoatsToggle" @click="showAllBoats()">Show All</a>
+			<div class="categoryItems">
+				<!-- v-for c in cottages bi iteriralo kroz sve, hocemo samo prva 3 -->
+				<!-- i in 3 ide od 1 do 3, ne od 0 do 2 -->
+				<div v-for="i in boatNumToDisplay ? boats.length : 3" :key="i">
+					<img
+						@click="imageRedirect(3, i)"
+						class="itemImage"
+						:src="imageSource(3, i)"
+					/>
+					<h4>{{ boats[i - 1].name }}</h4>
+					<h6>${{ boats[i - 1].pricePerDay }}/day</h6>
+					<h6>{{ boats[i - 1].address }}</h6>
+				</div>
+			</div>
+		</div>
 		<div class="bottomCard">
 			<p>
 				Created by Nikola Matijević, Đorđe Stanković and Marko
@@ -247,6 +265,7 @@ export default {
 	setup() {
 		var cottages = ref(null);
 		var adventures = ref(null);
+		var boats = ref(null);
 		var popupState = ref(null);
 		var loginState = ref(null);
 		var firstPassword = ref(null);
@@ -270,6 +289,9 @@ export default {
 		var adventureNumToDisplay = ref(null);
 		var showAllAdventuresToggle = ref(null);
 		showAllAdventuresToggle = true;
+		var boatNumToDisplay = ref(null);
+		var showAllBoatsToggle = ref(null);
+		showAllBoatsToggle = true;
 
 		axios.get("/api/cottages/get").then(function (response) {
 			cottages.value = response.data;
@@ -282,6 +304,7 @@ export default {
 		return {
 			cottages,
 			adventures,
+			boats,
 			popupState,
 			loginState,
 			matching,
@@ -303,6 +326,8 @@ export default {
 			showAllCottagesToggle,
 			adventureNumToDisplay,
 			showAllAdventuresToggle,
+			boatNumToDisplay,
+			showAllBoatsToggle,
 			passwordMatchCheck(firstPassword, repeatPassword) {
 				if (firstPassword == repeatPassword) {
 					this.matching = "Passwords Match!";
@@ -322,6 +347,10 @@ export default {
 					case 2:
 						// console.log("CASE 2 ID ZA IMAGESOURCE : " + id);
 						return require("../../assets/images/adventure" +
+							id +
+							".png");
+					case 3:
+						return require("../../assets/images/boat" +
 							id +
 							".png");
 				}
@@ -363,7 +392,7 @@ export default {
 								this.userEmail.indexOf("@") !=
 									this.userEmail.length - 1 &&
 								this.userEmail.indexOf("@") != 0
-							) // Proverava da li imamo nesto posle @
+							) // Proverava da li imamo nesto posle @ ili pre @
 						)
 					) {
 						alert(
@@ -532,6 +561,10 @@ export default {
 				this.showAllAdventuresToggle = false;
 				this.adventureNumToDisplay = true;
 			},
+			showAllBoats() {
+				this.showAllBoatsToggle = false;
+				this.boatNumToDisplay = true;
+			},
 			imageRedirect(type, id) {
 				switch (type) {
 					case 1:
@@ -539,6 +572,9 @@ export default {
 						break;
 					case 2:
 						window.location.href = "/adventure/" + id;
+						break;
+					case 3:
+						window.location.href = "/boat/" + id;
 						break;
 				}
 			},
@@ -587,7 +623,7 @@ a:hover {
 }
 .mainCard {
 	background-color: white;
-	height: 1400px;
+	height: 1900px;
 	margin: 0;
 	border-top-left-radius: 24px;
 	border-top-right-radius: 24px;
@@ -609,6 +645,7 @@ a:hover {
 }
 .itemImage:hover {
 	transform: scale(1.02);
+	cursor: pointer;
 }
 h4 {
 	font-size: 32px;
@@ -631,8 +668,8 @@ h1 {
 	margin-right: 224px;
 }
 .largeCategory a {
-	margin-left: 20px;
-	font-size: 20px;
+	margin-left: 30px;
+	font-size: 24px;
 }
 .popupRegister {
 	font-size: 22px;

@@ -9,7 +9,8 @@ import isa.adventuretime.Entity.RoomBooking;
 
 @Repository
 public interface RoomBookingRepo extends JpaRepository<RoomBooking, Long> {
-	ArrayList<RoomBooking> findAllByBookedRoomId(Long id);
+	public ArrayList<RoomBooking> findAllByBookedRoomId(Long id);
 
-	ArrayList<RoomBooking> findAllByBookedRegisteredUserId(Long id);
+	public ArrayList<RoomBooking> findAllByRegisteredUserId(Long id);
+
 }

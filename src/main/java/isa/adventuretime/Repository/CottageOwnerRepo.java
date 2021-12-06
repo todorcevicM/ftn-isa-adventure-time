@@ -4,10 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import isa.adventuretime.Entity.CottageOwner;
+
 @Repository
-public interface CottageOwnerRepo extends JpaRepository<CottageOwner, Long>{
+public interface CottageOwnerRepo extends JpaRepository<CottageOwner, Long> {
 
-    CottageOwner findByEmail(String email);
-    CottageOwner findByEmailHash(int code);
+	public CottageOwner findByEmail(String email);
 
+	public CottageOwner findByEmailHash(int code);
 }

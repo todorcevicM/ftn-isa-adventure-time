@@ -19,7 +19,7 @@
 				<p>{{ cottage.geoLat }}</p>
 				<p>{{ cottage.promoDescription }}</p>
 				<p>{{ cottage.rules }}</p>
-				<p>{{ cottage.pricePerDay }}</p>
+				<p>Price: ${{ cottage.pricePerDay }}.00 / Day</p>
 				<p>{{ cottage.priceAndInfo }}</p>
 				<p>{{ cottage.reservationStart }}</p>
 				<p>{{ cottage.reservationEnd }}</p>
@@ -86,6 +86,7 @@ body {
 	display: inline;
 }
 .mainFlex {
+	margin: 50px 200px;
 	display: flex;
 	justify-content: space-between;
 }
@@ -94,18 +95,22 @@ body {
 	flex-direction: column;
 }
 .leftFlex h4 {
+	margin: 0;
 	font-weight: 400;
 	font-size: 50px;
 }
 .leftFlex img {
 	width: 800px;
 	height: 450px;
+	border-radius: 15px;
+	object-fit: cover;
 }
 .rightFlex {
 	display: flex;
 	flex-direction: column;
 }
 .rightFlex p {
-	font-size: 20px;
+	margin: 0;
+	font-size: 30px;
 }
 </style>

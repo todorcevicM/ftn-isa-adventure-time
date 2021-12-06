@@ -9,7 +9,7 @@ import isa.adventuretime.Entity.AdventureBooking;
 
 @Repository
 public interface AdventureBookingRepo extends JpaRepository<AdventureBooking, Long> {
-	ArrayList<AdventureBooking> findAllByBookedInstructorId(Long id);
+	public ArrayList<AdventureBooking> findAllByBookedInstructorId(Long id);
 
-	ArrayList<AdventureBooking> findAllRegisteredUserId(Long id);
+	public ArrayList<AdventureBooking> findAllByRegisteredUserId(Long id);
 }

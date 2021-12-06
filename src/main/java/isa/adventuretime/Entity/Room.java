@@ -20,7 +20,6 @@ public class Room {
 	private Long id;
 
 	private int numberOfBeds;
-
-	private Long cottage_id;
+	private Long cottageId;
 
 }

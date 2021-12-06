@@ -9,6 +9,6 @@ public class AdventureTimeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AdventureTimeApplication.class, args);
-		System.out.println("Test print iz main klase.");
+		System.out.println("🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇");
 	}
 }

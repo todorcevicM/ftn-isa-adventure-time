@@ -34,6 +34,6 @@ public class Cottage {
 	private Date reservationEnd;
 	private int maxUsers;
 
-	private Long owner_id;
+	private Long ownerId;
 
 }
