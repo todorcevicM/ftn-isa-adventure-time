@@ -48,7 +48,7 @@ public class UserController {
 	private MailService mailService;
 
 	@PostMapping(value = ("/login"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> UserLogin(RequestEntity<ArrayList<String>> credentials) throws Exception {
+	public ResponseEntity<User> userLogin(RequestEntity<ArrayList<String>> credentials) throws Exception {
 		String email = credentials.getBody().get(0);
 		String password = credentials.getBody().get(1);
 		// System.out.println(email + " " + password);
@@ -121,7 +121,7 @@ public class UserController {
 	}
 
 	@PostMapping(value = ("/update"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> UserUpdate(RequestEntity<User> user) throws Exception {
+	public ResponseEntity<User> userUpdate(RequestEntity<User> user) throws Exception {
 
 		switch (user.getBody().getUserType()) {
 			case "registeredUser":

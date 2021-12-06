@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
-@RequestMapping(path = "/api/boat")
+@RequestMapping(path = "/api/boats")
 public class BoatController {
 
 	@Autowired
@@ -32,10 +32,15 @@ public class BoatController {
 	 * credentials) throws Exception {
 	 */
 
+	@GetMapping(path = "/get")
+	public ResponseEntity<ArrayList<Boat>> getBoats() {
+		return new ResponseEntity<ArrayList<Boat>>(boatService.findAll(), HttpStatus.OK);
+	}
+
 	@GetMapping(path = "/get/{id}")
-	public ResponseEntity<Boat> getAdventure(@PathVariable("id") Long id){
+	public ResponseEntity<Boat> getAdventure(@PathVariable("id") Long id) {
 		Boat boat = boatService.getById(id);
-		if(boat == null) {
+		if (boat == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Boat>(boat, HttpStatus.OK);

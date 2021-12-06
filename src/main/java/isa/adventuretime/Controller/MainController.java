@@ -23,6 +23,7 @@ import isa.adventuretime.Service.FishingInstructorService;
 import isa.adventuretime.Service.MailService;
 import isa.adventuretime.Service.RegisteredUserService;
 
+// TODO: Ovde ima nepotrebnih metoda
 @RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
 @RequestMapping(path = "/api")
 public class MainController {

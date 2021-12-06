@@ -8,6 +8,8 @@ import isa.adventuretime.Entity.BoatOwner;
 @Repository
 public interface BoatOwnerRepo extends JpaRepository<BoatOwner, Long> {
 
+	public BoatOwner getOne(Long id);
+
 	public BoatOwner findByEmail(String email);
 
 	public BoatOwner findByEmailHash(int code);

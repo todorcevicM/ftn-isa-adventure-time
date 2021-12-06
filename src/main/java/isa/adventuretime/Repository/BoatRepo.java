@@ -10,6 +10,9 @@ import isa.adventuretime.Entity.Boat;
 
 @Repository
 public interface BoatRepo extends JpaRepository<Boat, Long> {
+
+	public ArrayList<Boat> findAll();
+
 	public Optional<Boat> findById(Long id);
 
 	public ArrayList<Boat> findAllByOwnerId(Long id);

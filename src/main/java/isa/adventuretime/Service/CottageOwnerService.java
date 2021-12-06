@@ -14,8 +14,8 @@ public class CottageOwnerService {
 		this.cottageOwnerRepo = aR;
 	}
 
-	public CottageOwner getById(Long id) {
-		return cottageOwnerRepo.getById(id);
+	public CottageOwner getOne(Long id) {
+		return cottageOwnerRepo.getOne(id);
 	}
 
 	public CottageOwner register(CottageOwner owner) {
@@ -30,7 +30,7 @@ public class CottageOwnerService {
 		return cottageOwnerRepo.findByEmailHash(code);
 	}
 
-	public CottageOwner saveCottageOwner(CottageOwner cottageOwner){
+	public CottageOwner saveCottageOwner(CottageOwner cottageOwner) {
 		return cottageOwnerRepo.save(cottageOwner);
 	}
 }

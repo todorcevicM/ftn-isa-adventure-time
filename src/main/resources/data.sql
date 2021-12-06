@@ -56,6 +56,9 @@ insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_
 insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users)
             values(1, "Just A Splash", "JoMama", "15", 123456, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Potopio nepotopivog1", 50, "2021-01-01", "2021-01-15", "Lorem", 7);
 
+insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users)
+            values(1, "Peti Sveti", "JoMama", "15", 123456, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Potopio nepotopivog1", 50, "2021-01-01", "2021-01-15", "Lorem", 7);
+
 
 --rezervacije u prvoj polovini januara, pravice problem u januaru
 insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service)

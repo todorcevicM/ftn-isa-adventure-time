@@ -225,25 +225,33 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="largeCategory">
-			<h1>Browse Boats</h1>
-			<a v-if="showAllBoatsToggle" @click="showAllBoats()">Show All</a>
-			<div class="categoryItems">
-				<!-- v-for c in cottages bi iteriralo kroz sve, hocemo samo prva 3 -->
-				<!-- i in 3 ide od 1 do 3, ne od 0 do 2 -->
-				<div v-for="i in boatNumToDisplay ? boats.length : 3" :key="i">
-					<img
-						@click="imageRedirect(3, i)"
-						class="itemImage"
-						:src="imageSource(3, i)"
-					/>
-					<h4>{{ boats[i - 1].name }}</h4>
-					<h6>${{ boats[i - 1].pricePerDay }}/day</h6>
-					<h6>{{ boats[i - 1].address }}</h6>
+			<div class="largeCategory">
+				<h1>Browse Boats</h1>
+				<a v-if="showAllBoatsToggle" @click="showAllBoats()"
+					>Show All</a
+				>
+				<div class="categoryItems">
+					<div
+						v-for="i in boatNumToDisplay ? boats.length : 3"
+						:key="i"
+					>
+						<img
+							@click="imageRedirect(3, i)"
+							class="itemImage"
+							:src="imageSource(3, i)"
+						/>
+						<h4>{{ boats[i - 1].name }}</h4>
+						<h6>${{ boats[i - 1].pricePerDay }}/day</h6>
+						<h6>{{ boats[i - 1].address }}</h6>
+					</div>
 				</div>
 			</div>
 		</div>
+		<!-- Spacers -->
+		<div v-if="!showAllCottagesToggle" style="height: 500px"></div>
+		<div v-if="!showAllAdventuresToggle" style="height: 500px"></div>
+		<div v-if="!showAllBoatsToggle" style="height: 500px"></div>
+		<!-- Spacers -->
 		<div class="bottomCard">
 			<p>
 				Created by Nikola Matijević, Đorđe Stanković and Marko
@@ -299,6 +307,9 @@ export default {
 		axios.get("/api/adventures/get").then(function (response) {
 			adventures.value = response.data;
 		});
+		axios.get("/api/boats/get").then(function (response) {
+			boats.value = response.data;
+		});
 
 		// Za u <template>
 		return {
@@ -350,6 +361,7 @@ export default {
 							id +
 							".png");
 					case 3:
+						// console.log("CASE 3 ID ZA IMAGESOURCE : " + id);
 						return require("../../assets/images/boat" +
 							id +
 							".png");

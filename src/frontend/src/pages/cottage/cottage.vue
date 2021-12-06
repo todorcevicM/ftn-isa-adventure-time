@@ -12,19 +12,20 @@
 					<img class="itemImage" :src="imageSource(cottage.id)" />
 				</div>
 				<h4>{{ cottage.name }}</h4>
+				<p>${{ cottage.pricePerDay }}.00 / Day</p>
 			</div>
 			<div class="rightFlex">
-				<p>{{ cottage.address }}</p>
-				<p>{{ cottage.geoLng }}</p>
-				<p>{{ cottage.geoLat }}</p>
-				<p>{{ cottage.promoDescription }}</p>
-				<p>{{ cottage.rules }}</p>
-				<p>Price: ${{ cottage.pricePerDay }}.00 / Day</p>
-				<p>{{ cottage.priceAndInfo }}</p>
-				<p>{{ cottage.reservationStart }}</p>
-				<p>{{ cottage.reservationEnd }}</p>
-				<p>{{ cottage.maxUsers }}</p>
-				<p>{{ cottage.owner_id }}</p>
+				<p>Address : {{ cottage.address }}</p>
+				<p style="font-size: 22px">
+					({{ cottage.geoLng }}, {{ cottage.geoLat }})
+				</p>
+				<p>Promo : {{ cottage.promoDescription }}</p>
+				<p>Rules : {{ cottage.rules }}</p>
+				<p>Info : {{ cottage.priceAndInfo }}</p>
+				<p>Start : {{ cottage.reservationStart }}</p>
+				<p>End : {{ cottage.reservationEnd }}</p>
+				<p>{{ cottage.maxUsers }} person limit.</p>
+				<p>Owner : {{ owner.name }}</p>
 			</div>
 		</div>
 	</div>
@@ -35,17 +36,27 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		var cottage = ref(null);
 		var urlArray = window.location.href.split("/");
 		var id = urlArray[4];
 
+		var cottage = ref(null);
 		axios.get("/api/cottages/get/" + id).then(function (response) {
 			cottage.value = response.data;
+			localStorage["cottageOwner"] = cottage.value.ownerId;
+			// Mora localStorage da bi se izbegao limit scope-a .then()-a
 		});
+
+		var owner = ref(null);
+		axios
+			.get("/api/cottageOwner/get/" + localStorage["cottageOwner"])
+			.then(function (response) {
+				owner.value = response.data;
+			});
 
 		// Za u <template>
 		return {
 			cottage,
+			owner,
 			imageSource(id) {
 				return require("../../assets/images/cottage" + id + ".png");
 			},
@@ -99,6 +110,11 @@ body {
 	font-weight: 400;
 	font-size: 50px;
 }
+.leftFlex p {
+	margin: 0;
+	font-size: 27px;
+	font-weight: 100;
+}
 .leftFlex img {
 	width: 800px;
 	height: 450px;
@@ -110,7 +126,7 @@ body {
 	flex-direction: column;
 }
 .rightFlex p {
-	margin: 0;
-	font-size: 30px;
+	margin: 4px 0;
+	font-size: 36px;
 }
 </style>

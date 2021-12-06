@@ -17,7 +17,7 @@ export default {
 		var urlArray = window.location.href.split("/");
 		var id = urlArray[4];
 
-		axios.get("/api/boat/get/" + id).then(function (response) {
+		axios.get("/api/boats/get/" + id).then(function (response) {
 			boat.value = response.data;
 		});
 
