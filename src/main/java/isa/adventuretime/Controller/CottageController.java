@@ -25,9 +25,9 @@ public class CottageController {
 	}
 
 	@GetMapping(path = "/get/{id}")
-	public ResponseEntity<Cottage> getAdventure(@PathVariable("id") Long id){
+	public ResponseEntity<Cottage> getAdventure(@PathVariable("id") Long id) {
 		Cottage cottage = cottageService.getById(id);
-		if(cottage == null) {
+		if (cottage == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Cottage>(cottage, HttpStatus.OK);

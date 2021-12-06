@@ -221,18 +221,275 @@
 import { ref } from "vue";
 import axios from "axios";
 export default {
-	setup(id) {
-		// TODO:
-		// AXIOS GET ZA COTTAGE
-		var cottage = ref(null);
+	setup() {
+		var cottages = ref(null);
+		var adventures = ref(null);
+		var popupState = ref(null);
+		var loginState = ref(null);
+		var firstPassword = ref(null);
+		var repeatPassword = ref(null); // Ako se inicijalizuje ovde na "Do passwords match?", kasnice update-ovanje za jedan
+		var matching = ref(null);
+		var userType = ref(null);
+		var userEmail = ref(null);
+		var userFirstName = ref(null);
+		var userLastName = ref(null);
+		var userPhoneNumber = ref(null);
+		var userAddress = ref(null);
+		var userCity = ref(null);
+		var userCountry = ref(null);
+		var userRegistrationReason = ref(null);
+		var signUpMessageOn = ref(null);
+		var signUpMessageKind = ref(null);
+		var signUpMessageText = ref(null);
 
-		axios.get("/api/cottages/get/" + id).then(function (response) {
-			cottage.value = response.data;
+		axios.get("/api/cottages/get").then(function (response) {
+			cottages.value = response.data;
+		});
+		axios.get("/api/adventures/get").then(function (response) {
+			adventures.value = response.data;
 		});
 
 		// Za u <template>
 		return {
-			cottage,
+			cottages,
+			adventures,
+			popupState,
+			loginState,
+			matching,
+			firstPassword,
+			repeatPassword,
+			userType,
+			userEmail,
+			userFirstName,
+			userLastName,
+			userPhoneNumber,
+			userAddress,
+			userCity,
+			userCountry,
+			userRegistrationReason,
+			signUpMessageOn,
+			signUpMessageKind,
+			signUpMessageText,
+			passwordMatchCheck(firstPassword, repeatPassword) {
+				if (firstPassword == repeatPassword) {
+					this.matching = "Passwords Match!";
+					return this.matching;
+				} else {
+					this.matching = "Passwords don't match!";
+					return this.matching;
+				}
+			},
+			imageSource(type, id) {
+				switch (type) {
+					case 1:
+						// console.log("CASE 1 ID ZA IMAGESOURCE : " + id);
+						return require("../../assets/images/cottage" +
+							id +
+							".png");
+					case 2:
+						// console.log("CASE 2 ID ZA IMAGESOURCE : " + id);
+						return require("../../assets/images/adventure" +
+							id +
+							".png");
+				}
+			},
+			openPopup() {
+				popupState.value = true;
+			},
+			// TODO: Ovo se vise ne koristi, koristimo alert()
+			renderSecondPopup(on, kind, text) {
+				this.signUpMessageOn = on;
+				this.signUpMessageKind = kind;
+				this.signUpMessageText = text;
+			},
+			registerUser() {
+				if (
+					this.userType == null ||
+					this.userEmail == null ||
+					this.userFirstName == null ||
+					this.userLastName == null ||
+					this.userPhoneNumber == null ||
+					this.userAddress == null ||
+					this.userCity == null ||
+					this.userCountry == null ||
+					this.firstPassword == null ||
+					this.repeatPassword == null
+				) {
+					alert("All fields need to be filled, try again.");
+					// this.renderSecondPopup(
+					// 	true,
+					// 	"failed",
+					// 	"All fields need to be filled, try again."
+					// );
+				} else {
+					// Provera korektnog formata Email-a
+					if (
+						!(
+							(
+								this.userEmail.includes("@") &&
+								this.userEmail.indexOf("@") !=
+									this.userEmail.length - 1 &&
+								this.userEmail.indexOf("@") != 0
+							) // Proverava da li imamo nesto posle @
+						)
+					) {
+						alert(
+							"Email isn't in the correct form. Please fill out the form again."
+						);
+						return;
+					}
+
+					this.signUpMessageOn = false;
+					// this.signUpMessageKind = "failed";
+					// this.signUpMessageText = "Sample Text";
+					if (this.firstPassword == this.repeatPassword) {
+						var user = {
+							type: "",
+							email: this.userEmail,
+							name: this.userFirstName,
+							lastname: this.userLastName,
+							telephoneNumber: this.userPhoneNumber,
+							address: this.userAddress,
+							city: this.userCity,
+							country: this.userCountry,
+							password: this.firstPassword,
+							userRegistrationReason: this.userRegistrationReason,
+						};
+						switch (this.userType) {
+							case "Standard User":
+								user.type = "registeredUser";
+								break;
+							case "Boat Owner":
+								user.type = "boatOwner";
+								break;
+							case "Cottage Owner":
+								user.type = "cottageOwner";
+								break;
+							case "Fishing Instructor":
+								user.type = "fishingInstructor";
+								break;
+						}
+
+						axios
+							.post("/api/user/create", user)
+							.then(function (response) {
+								// console.log("From AXIOS POST");
+								// console.log(response);
+								if (
+									response.data ==
+									"Error - User with that E-mail already exists."
+								) {
+									alert(
+										"User with that E-mail already exists."
+									);
+									// TODO: Iz .then()-a nikako ne mogu niti da return-ujem promenljive koje se koriste u setup()-u, niti da zovem neku funkciju. Ne radi ni this. ni .value, ne mogu ni da izcupam vrednost iz response.data u neku promenljivu pa da nju prosledim nekoj drugoj funkciji, nista. Ne moze ni da se bind-uje this u scope .then()-a, nista ne moze da vidi.
+									// Za sad radi alert(), i to je to.
+
+									// this.renderSecondPopup(
+									// 	true,
+									// 	"failed",
+									// 	"User with that E-mail already exists."
+									// );
+									// signUpMessageOn = true;
+									// signUpMessageKind = "failed";
+									// signUpMessageText =
+									// 	"User with that E-mail already exists.";
+									// return (
+									// 	signUpMessageOn,
+									// 	signUpMessageKind,
+									// 	signUpMessageText
+									// );
+								} else {
+									// TODO: Ovde je isti problem
+									alert(
+										"A registration request has been sent to the Administrator. Keep your eye open for a verification email!"
+									);
+									// popupState.value = false; // Zatvara sign up popup
+									// signUpMessageOn = true;
+									// signUpMessageKind = "success";
+									// signUpMessageText =
+									// 	"A registration request has been sent to the Administrator. Keep your eye open for a verification email!";
+									// return (
+									// 	signUpMessageOn,
+									// 	signUpMessageKind,
+									// 	signUpMessageText
+									// );
+								}
+							});
+					} else {
+						alert("Passwords don't match, try again.");
+						// this.renderSecondPopup(
+						// 	true,
+						// 	"failed",
+						// 	"Passwords don't match, try again."
+						// );
+					}
+				}
+			},
+			openLogin() {
+				loginState.value = true;
+			},
+			loginUser() {
+				if (this.userEmail == null || this.firstPassword == null) {
+					alert("All fields need to be filled, try again.");
+					// this.renderSecondPopup(
+					// 	true,
+					// 	"failed",
+					// 	"All fields need to be filled, try again."
+					// );
+				} else {
+					// Provera korektnog formata Email-a
+					if (
+						!(
+							(
+								this.userEmail.includes("@") &&
+								this.userEmail.indexOf("@") !=
+									this.userEmail.length - 1 &&
+								this.userEmail.indexOf("@") != 0
+							) // Proverava da li imamo nesto posle @
+						)
+					) {
+						alert(
+							"Email isn't in the correct form. Please fill out the form again."
+						);
+						return;
+					}
+					var credentials = [this.userEmail, this.firstPassword]; // Ovako jer se deserijalizuje u ArrayList
+					console.log("Credentials: \n");
+					console.log(credentials);
+					axios
+						.post("/api/user/login", credentials)
+						.then(function (response) {
+							for (const key in response.data) {
+								if (!(key === "password")) {
+									localStorage.setItem(
+										key,
+										response.data[key]
+									);
+								}
+							}
+							window.location.replace("/administrator");
+							// window.location.href =
+							// 	"/" + localStorage.getItem("userType");
+						})
+						.catch(function (error) {
+							console.log(error.response.status);
+							switch (error.response.status) {
+								case 401: // UNAUTHORIZED
+									alert(
+										"This user isn't authenticated. Please wait for the administrator to authenticate the account, and try again."
+									);
+									break;
+								case 404: // NOT_FOUND
+									alert("This user doesn't exist.");
+									break;
+								case 406: // NOT_ACCEPTABLE
+									alert("The password is wrong, try again.");
+									break;
+							}
+						});
+				}
+			},
 		};
 	},
 };

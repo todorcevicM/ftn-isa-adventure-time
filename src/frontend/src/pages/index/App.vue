@@ -191,11 +191,21 @@
 			</div>
 			<div class="largeCategory">
 				<h1>Browse Cottages</h1>
+				<a v-if="showAllCottagesToggle" @click="showAllCottages()"
+					>Show All</a
+				>
 				<div class="categoryItems">
 					<!-- v-for c in cottages bi iteriralo kroz sve, hocemo samo prva 3 -->
 					<!-- i in 3 ide od 1 do 3, ne od 0 do 2 -->
-					<div v-for="i in 3" :key="i">
-						<img class="itemImage" :src="imageSource(1, i)" />
+					<div
+						v-for="i in cottageNumToDisplay ? cottages.length : 3"
+						:key="i"
+					>
+						<img
+							@click="imageRedirect(1, i)"
+							class="itemImage"
+							:src="imageSource(1, i)"
+						/>
 						<h4>{{ cottages[i - 1].name }}</h4>
 						<h6>${{ cottages[i - 1].pricePerDay }}/day</h6>
 						<h6>{{ cottages[i - 1].address }}</h6>
@@ -213,6 +223,17 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="bottomCard">
+			<p>
+				Created by Nikola Matijević, Đorđe Stanković and Marko
+				Todorčević
+			</p>
+			<a href="https://github.com/todorcevicM/ftn-isa-adventure-time"
+				>Source Code Here!</a
+			>
+			<p>2021/22</p>
+			<!-- &copy; je copyright -->
 		</div>
 	</div>
 </template> 
@@ -241,6 +262,9 @@ export default {
 		var signUpMessageOn = ref(null);
 		var signUpMessageKind = ref(null);
 		var signUpMessageText = ref(null);
+		var cottageNumToDisplay = ref(null);
+		var showAllCottagesToggle = ref(null);
+		showAllCottagesToggle = true;
 
 		axios.get("/api/cottages/get").then(function (response) {
 			cottages.value = response.data;
@@ -270,6 +294,8 @@ export default {
 			signUpMessageOn,
 			signUpMessageKind,
 			signUpMessageText,
+			cottageNumToDisplay,
+			showAllCottagesToggle,
 			passwordMatchCheck(firstPassword, repeatPassword) {
 				if (firstPassword == repeatPassword) {
 					this.matching = "Passwords Match!";
@@ -468,7 +494,9 @@ export default {
 									);
 								}
 							}
-							window.location.replace("/administrator/" + localStorage.getItem("id"));
+							window.location.replace(
+								"/administrator/" + localStorage.getItem("id")
+							);
 							// window.location.href =
 							// 	"/" + localStorage.getItem("userType");
 						})
@@ -490,6 +518,21 @@ export default {
 						});
 				}
 			},
+			showAllCottages() {
+				this.showAllCottagesToggle = false;
+				this.cottageNumToDisplay = true;
+			},
+			imageRedirect(type, id) {
+				switch (type) {
+					case 1:
+						window.location.href = "/cottage/" + id;
+
+						break;
+					case 2:
+						window.location.href = "/api/adventures/get/" + id;
+						break;
+				}
+			},
 		};
 	},
 };
@@ -499,7 +542,7 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 body {
 	background-image: url("../../assets/adventure-time-background.jpg");
-	background-color: #1a2022;
+	/* background-color: #1a2022; */
 	background-size: 100%;
 	background-repeat: no-repeat;
 	color: #10120e;
@@ -525,7 +568,7 @@ a:hover {
 }
 .mainCard {
 	background-color: white;
-	height: 1400px;
+	height: 1900px;
 	margin: 0;
 	border-top-left-radius: 24px;
 	border-top-right-radius: 24px;
@@ -533,9 +576,12 @@ a:hover {
 .categoryItems {
 	display: flex;
 	align-items: flex-end;
-	justify-content: space-between;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	row-gap: 30px;
 }
 .itemImage {
+	margin: 0px 3px;
 	border-radius: 15px;
 	object-fit: cover;
 	width: 360px;
@@ -560,6 +606,10 @@ h1 {
 .largeCategory {
 	margin-left: 224px;
 	margin-right: 224px;
+}
+.largeCategory a {
+	margin-left: 20px;
+	font-size: 20px;
 }
 .popupRegister {
 	font-size: 22px;
@@ -676,5 +726,26 @@ select:focus {
 #logInButton:hover {
 	background-color: #c4813069;
 	cursor: pointer;
+}
+.bottomCard {
+	background-color: #3f3f3f;
+	height: 150px;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+	text-align: center;
+	color: white;
+	padding-top: 30px;
+}
+.bottomCard p {
+	font-weight: 300;
+	font-size: 24px;
+	margin: 10px 0px;
+}
+.bottomCard a {
+	font-size: 22px;
+	color: orange;
+}
+.bottomCard a:hover {
+	color: rgb(175, 61, 45);
 }
 </style>
