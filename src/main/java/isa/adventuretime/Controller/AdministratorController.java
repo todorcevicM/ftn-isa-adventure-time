@@ -21,13 +21,13 @@ public class AdministratorController {
 	public ResponseEntity<Administrator> getAdministrator(@PathVariable("id") Long id) {
 		Administrator administrator = administratorService.getById(id);
 		if (administrator == null) {
-			System.out.println("aaaaaaaaaa");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			System.out.println(administrator.getId());
 			return new ResponseEntity<>(administrator, HttpStatus.OK);
 		}
-
 	}
+
+
 
 }

@@ -1,5 +1,7 @@
 package isa.adventuretime.Service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +35,9 @@ public class FishingInstructorService{
 
     public FishingInstructor saveFishingInstructor(FishingInstructor fishingInstructor){
         return fishingInstructorRepo.save(fishingInstructor);
+    }
+
+    public ArrayList<FishingInstructor> findAllByAuthenticated(Boolean authenticated){
+        return fishingInstructorRepo.findAllByAuthenticated(authenticated);
     }
 }

@@ -6,22 +6,24 @@ insert into boat_owner (name, lastname, email, password, address, city, country,
 insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Brodovlasnik2", "Drugi", "random3@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 1326308801);
 insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Brodovlasnik3", "Treci", "random4@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -470642558);
 --neodobren
-insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Brodovlasnik4", "Cetvrti", "random16@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 924836377);
-
+insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Brodovlasnik4", "Cetvrti", "random16@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, FALSE, 924836377);
+insert into request_for_admin(for_type, request_text, requester_id) values (1, "UwU pwease xDDD, sucky sucky ten bucky", 4);
 
 
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Vikendicovlasnik1", "Prvi", "random5@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 2027373379);
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Vikendicovlasnik2", "Drugi", "random6@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 230422020);
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Vikendicovlasnik3", "Treci", "random7@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -1566529339);
 --neodobren
-insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Vikendicovlasnik4", "Cetvrti", "random17@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -872114982);
+insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Vikendicovlasnik4", "Cetvrti", "random17@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, FALSE, -872114982);
+insert into request_for_admin(for_type, request_text, requester_id) values (3, "UwO pwease DDxxxDDD, sucky sucky ten bucky", 4);
 
 
 insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Pecaros1", "Prvi", "random8@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 931486598, "2021-01-01", "2021-01-15" );
 insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Pecaros2", "Drugi", "random9@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -865464761, "2021-01-01", "2021-01-15" );
 insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Pecaros3", "Treci", "random10@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -1178357357, "2021-01-01", "2021-01-15" );
 --neodobren
-insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Pecaros4", "Cetvrti", "random18@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 1625900955, "2021-01-01", "2021-01-15" );
+insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Pecaros4", "Cetvrti", "random18@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, FALSE, 1625900955, "2021-01-01", "2021-01-15" );
+insert into request_for_admin(for_type, request_text, requester_id) values (5, "OwO pwease MMMDDD, sucky sucky ten bucky", 4);
 
 
 insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("KorisnikUsluga1", "Prvi", "random11@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 1319658580);

@@ -51,9 +51,11 @@ public class User {
 		// this.email = user.email; NOT Allowed
 		this.emailHash = user.emailHash;
 		this.lastname = user.lastname;
-		this.name = user.password;
+		this.name = user.name;
 		this.telephoneNumber = user.telephoneNumber;
 		this.wantsDeletion = user.wantsDeletion;
+		this.userType = user.getUserType();
+		this.password = user.getPassword();
 	}
 
 }

@@ -2,20 +2,27 @@ package isa.adventuretime.Controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
 import javax.mail.internet.AddressException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import isa.adventuretime.DTO.UnauthenticatedUser;
 import isa.adventuretime.Entity.Administrator;
 import isa.adventuretime.Entity.BoatOwner;
 import isa.adventuretime.Entity.CottageOwner;
 import isa.adventuretime.Entity.FishingInstructor;
+import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RegisteredUser;
+import isa.adventuretime.Entity.RequestForAdmin;
 import isa.adventuretime.Entity.UnregisteredUser;
 import isa.adventuretime.Entity.User;
 import isa.adventuretime.Service.AdministratorService;
@@ -24,6 +31,7 @@ import isa.adventuretime.Service.CottageOwnerService;
 import isa.adventuretime.Service.FishingInstructorService;
 import isa.adventuretime.Service.MailService;
 import isa.adventuretime.Service.RegisteredUserService;
+import isa.adventuretime.Service.RequestForAdminService;
 
 @RestController
 @RequestMapping(path = "/api/user")
@@ -46,6 +54,8 @@ public class UserController {
 
 	@Autowired
 	private MailService mailService;
+
+	@Autowired RequestForAdminService requestForAdminService;
 
 	@PostMapping(value = ("/login"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> userLogin(RequestEntity<ArrayList<String>> credentials) throws Exception {
@@ -213,4 +223,55 @@ public class UserController {
 		mailService.SendMail(request.getBody().getEmail(), request.getBody().getName());
 		return new ResponseEntity<String>(returnedString, HttpStatus.OK);
 	}
+
+
+	@GetMapping(path = "/getUnauthenticated")
+	public ResponseEntity<ArrayList<UnauthenticatedUser>> getUnauthenticated() {
+		ArrayList<UnauthenticatedUser> unauthenticatedUsers = new ArrayList<>();
+		ArrayList<RequestForAdmin> requestForAdmins = requestForAdminService.findAll();
+		System.out.println("---------");
+		System.out.println(requestForAdmins.size());
+	
+		ArrayList<BoatOwner> boatOwners = boatOwnerService.findAllByAuthenticated(false);
+		ArrayList<CottageOwner> cottageOwners = cottageOwnerService.findAllByAuthenticated(false);
+		ArrayList<FishingInstructor> fishingInstructors = fishingInstructorService.findAllByAuthenticated(false);
+
+		for (RequestForAdmin requestForAdmin : requestForAdmins) 
+			switch (requestForAdmin.getForType()) {
+				case BOAT_OWNER:
+					for (BoatOwner boatOwner : boatOwners) {
+						if(requestForAdmin.getRequesterId() == boatOwner.getId() && requestForAdmin.getForType().equals(HeadEntityEnum.BOAT_OWNER)){
+							unauthenticatedUsers.add(new UnauthenticatedUser(boatOwner, requestForAdmin, HeadEntityEnum.BOAT_OWNER));
+							boatOwners.remove(boatOwner);
+						}
+						break;
+					}	
+					break;
+				case FISHING_INSTRUCTOR:
+					for (FishingInstructor fishingInstructor : fishingInstructors) {
+						if(requestForAdmin.getRequesterId() == fishingInstructor.getId() && requestForAdmin.getForType().equals(HeadEntityEnum.FISHING_INSTRUCTOR)){
+							unauthenticatedUsers.add(new UnauthenticatedUser(fishingInstructor, requestForAdmin, HeadEntityEnum.FISHING_INSTRUCTOR));
+							fishingInstructors.remove(fishingInstructor);
+						}
+						break;
+					}
+					break;
+				case COTTAGE_OWNER:
+					for (CottageOwner cottageOwner : cottageOwners) {
+						if(requestForAdmin.getRequesterId() == cottageOwner.getId() && requestForAdmin.getForType().equals(HeadEntityEnum.COTTAGE_OWNER)){
+							unauthenticatedUsers.add(new UnauthenticatedUser(cottageOwner, requestForAdmin, HeadEntityEnum.COTTAGE_OWNER));
+							cottageOwners.remove(cottageOwner);
+						}
+						break;
+					}
+					break;
+				default:
+					System.err.println("Samo vlasnici traze zahteve");
+					break;
+			}
+
+		return new ResponseEntity<ArrayList<UnauthenticatedUser>>(unauthenticatedUsers, HttpStatus.OK);
+
+	}
+
 }
