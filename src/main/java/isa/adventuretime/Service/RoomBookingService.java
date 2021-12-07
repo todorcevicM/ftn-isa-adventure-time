@@ -22,4 +22,7 @@ public class RoomBookingService {
 		return roomBookingRepo.findAllByRegisteredUserIdAndEndBefore(id, date);
 	}
 
+	public ArrayList<RoomBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {
+		return roomBookingRepo.findAllByRegisteredUserIdAndEndAfter(id, date);
+	}
 }

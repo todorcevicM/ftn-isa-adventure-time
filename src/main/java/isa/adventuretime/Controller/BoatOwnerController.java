@@ -21,4 +21,14 @@ public class BoatOwnerController {
 	public ResponseEntity<BoatOwner> getBoatOwner(@PathVariable("id") Long id) {
 		return new ResponseEntity<>(boatOwnerService.getById(id), HttpStatus.OK);
 	}
+
+	@GetMapping(value = ("/getByEmail/{emailHash}"))
+	public ResponseEntity<BoatOwner> getBoatOwnerByEmailHash(@PathVariable("emailHash") int emailHash) {
+		BoatOwner boatOwner = boatOwnerService.findByEmailHash(emailHash);
+		if (boatOwner == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(boatOwner, HttpStatus.OK);
+		}
+	}
 }

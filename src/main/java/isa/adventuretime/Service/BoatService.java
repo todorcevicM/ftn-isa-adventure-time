@@ -22,4 +22,8 @@ public class BoatService {
 	public Boat getById(Long Id) {
 		return boatRepo.getById(Id);
 	}
+
+	public ArrayList<Boat> findAllByIdIn(ArrayList<Long> ids) {
+		return boatRepo.findAllByIdIn(ids);
+	}
 }

@@ -13,19 +13,53 @@
 				</div> -->
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
 				<p>Administrator</p>
+				<p style="font-size: 18px">{{ user.email }}</p>
 			</div>
 			<div class="rightFlex">
-				<p>Email</p>
-				<p class="smallText">{{ user.email }}</p>
 				<p>Address</p>
-				<p class="smallText">{{ user.address }}</p>
+				<p class="smallText" v-if="!updateToggle">{{ user.address }}</p>
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newUser.newAddress"
+				/>
+
 				<p>City</p>
-				<p class="smallText">{{ user.city }}</p>
+				<p class="smallText" v-if="!updateToggle">{{ user.city }}</p>
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newUser.newCity"
+				/>
+
 				<p>Country</p>
-				<p class="smallText">{{ user.country }}</p>
+				<p class="smallText" v-if="!updateToggle">{{ user.country }}</p>
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newUser.newCountry"
+				/>
+
 				<p>Telephone Number</p>
-				<p class="smallText">{{ user.telephoneNumber }}</p>
-				<button @click="updateDetails()">Update Details</button>
+				<p class="smallText" v-if="!updateToggle">
+					{{ user.telephoneNumber }}
+				</p>
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newUser.newTelephoneNumber"
+				/>
+
+				<button @click="updateDetails()" v-if="!updateToggle">
+					Update Details
+				</button>
+				<button
+					@click="sendUpdatedDetails()"
+					v-if="updateToggle"
+					style="background-color: rgb(108, 207, 108)"
+				>
+					Submit
+				</button>
 			</div>
 		</div>
 		<div class="lowerFlex">
@@ -39,7 +73,9 @@
 					:key="req"
 				>
 					<p class="entryName">{{ req.name }}</p>
-					<p class="entryRequestText">{{ req.requestText }}</p>
+					<p class="entryRequestText">
+						{{ req.userRegistrationReason }}
+					</p>
 					<button class="entryApprove" @click="approve()">
 						Approve
 					</button>
@@ -59,11 +95,25 @@ import axios from "axios";
 export default {
 	setup() {
 		var user = ref(null);
+		var updateToggle = ref(null);
 		axios
 			.get("/api/administrator/get/" + localStorage["emailHash"])
 			.then(function (response) {
 				user.value = response.data;
+				localStorage.address = user.value.address;
+				localStorage.city = user.value.city;
+				localStorage.country = user.value.country;
+				localStorage.telephoneNumber = user.value.telephoneNumber;
+				// userType iz ovog user-a je null jer je tako namesteno da bi se izbegao DTO
+				// Posto znamo da radimo sa ovim tipom user-a,
+				// samo u send metodi stavljamo userType koji treba
 			});
+		var newUser = ref({
+			newAddress: localStorage.address,
+			newCity: localStorage.city,
+			newCountry: localStorage.country,
+			newTelephoneNumber: localStorage.telephoneNumber,
+		});
 
 		var registrationRequests = ref(null);
 		axios.get("/api/user/getUnauthenticated").then(function (response) {
@@ -73,17 +123,45 @@ export default {
 		return {
 			user,
 			registrationRequests,
+			updateToggle,
+			newUser,
 			wantsDeletion() {
 				alert("Not implemented yet!");
 			},
 			updateDetails() {
-				alert("Not implemented yet!");
+				this.updateToggle = true;
 			},
 			approve() {
 				alert("Not implemented yet!");
 			},
 			deny() {
 				alert("Not implemented yet!");
+				// TODO: Tacka 3.25, mora da se otvori dijalog gde admin upisuje razlog za deny.
+			},
+			sendUpdatedDetails() {
+				if (
+					this.newUser.newAddress == "" ||
+					this.newUser.newCity == "" ||
+					this.newUser.newCountry == "" ||
+					this.newUser.newTelephoneNumber == ""
+				) {
+					alert("Please fill out all inputs.");
+					return;
+				}
+				var sendingUser = this.user;
+				sendingUser.address = this.newUser.newAddress;
+				sendingUser.city = this.newUser.newCity;
+				sendingUser.country = this.newUser.newCountry;
+				sendingUser.telephoneNumber = this.newUser.newTelephoneNumber;
+				sendingUser.userType = "administrator";
+				console.log(sendingUser);
+				axios
+					.post("/api/user/update", sendingUser)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+					});
+				window.location.reload();
 			},
 		};
 	},
@@ -161,11 +239,22 @@ h3 {
 }
 .rightFlex p {
 	margin: 4px 0;
-	font-size: 36px;
+	font-size: 28px;
 }
 .rightFlex .smallText {
 	margin: 0;
 	font-size: 22px;
+}
+.rightFlex input {
+	height: 24px;
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 18px;
+	background-color: #f0f0f0;
+}
+.rightFlex input:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
 }
 button {
 	margin: 0 auto;

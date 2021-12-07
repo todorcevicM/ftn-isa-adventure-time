@@ -19,7 +19,16 @@ public class FishingInstructorController {
 
 	@GetMapping("/get/{id}")
 	public ResponseEntity<FishingInstructor> getFishingInstructor(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(fishingInstructorService.getById(id), HttpStatus.OK);
+		return new ResponseEntity<>(fishingInstructorService.getById(id), HttpStatus.OK);
+	}
 
+	@GetMapping(value = ("/getByEmail/{emailHash}"))
+	public ResponseEntity<FishingInstructor> getFishingInstructorByEmailHash(@PathVariable("emailHash") int emailHash) {
+		FishingInstructor fishingInstructor = fishingInstructorService.findByEmailHash(emailHash);
+		if (fishingInstructor == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(fishingInstructor, HttpStatus.OK);
+		}
 	}
 }

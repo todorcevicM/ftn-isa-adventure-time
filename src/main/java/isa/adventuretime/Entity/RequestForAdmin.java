@@ -15,12 +15,21 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class RequestForAdmin {
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 
-    private Long requesterId;
-    private HeadEntityEnum forType;
-    private String requestText;    
-    
+	private Long requesterId;
+	private HeadEntityEnum forType;
+	private String userRegistrationReason;
+
+	public RequestForAdmin() {
+	}
+
+	public RequestForAdmin(Long requesterId, HeadEntityEnum forType, String userRegistrationReason) {
+		this.requesterId = requesterId;
+		this.forType = forType;
+		this.userRegistrationReason = userRegistrationReason;
+	}
+
 }

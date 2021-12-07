@@ -42,4 +42,8 @@ public class BoatBookingService {
 	public ArrayList<BoatBooking> findAllByRegisteredUserIdAndEndBefore(Long id, Date date) {
 		return boatBookingRepo.findAllByRegisteredUserIdAndEndBefore(id, date);
 	}
+
+	public ArrayList<BoatBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {
+		return boatBookingRepo.findAllByRegisteredUserIdAndEndAfter(id, date);
+	}
 }

@@ -42,4 +42,8 @@ public class AdventureBookingService {
 	public ArrayList<AdventureBooking> findAllByRegisteredUserIdAndEndBefore(Long id, Date date) {
 		return adventureBookingRepo.findAllByRegisteredUserIdAndEndBefore(id, date);
 	}
+
+	public ArrayList<AdventureBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {
+		return adventureBookingRepo.findAllByRegisteredUserIdAndEndAfter(id, date);
+	}
 }

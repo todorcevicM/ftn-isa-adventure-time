@@ -26,6 +26,22 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
+			<div class="table">
+				<h3>Cottage Owner table</h3>
+
+				<!-- <div
+					class="tableEntry"
+					v-for="req in registrationRequests"
+					:key="req"
+				>
+					<p class="entryName">{{ req.name }}</p>
+					<p class="entryRequestText">{{ req.requestText }}</p>
+					<button class="entryApprove" @click="approve()">
+						Approve
+					</button>
+					<button class="entryDeny" @click="deny()">Deny</button>
+				</div> -->
+			</div>
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<button @click="wantsDeletion()">Delete My Account</button>

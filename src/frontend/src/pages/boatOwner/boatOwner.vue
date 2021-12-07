@@ -1,218 +1,69 @@
 <template>
 	<div>
-		<div style="display: flex; justify-content: flex-end">
-			<button id="logInButton" @click="openLogin()">Log in</button>
-		</div>
 		<div id="logo-container">
 			<div class="underlined">
-				<img
-					src="../../assets/wheel.svg"
-					style="margin-bottom: -6px; margin-right: -7px"
-				/>
-				<p
-					style="
-						font-size: 75px;
-						letter-spacing: -2px;
-						display: inline;
-					"
-				>
-					Cottage
+				<img src="../../assets/wheel.svg" />
+				<p>Adventure Time</p>
+			</div>
+		</div>
+		<div class="mainFlex">
+			<div class="leftFlex">
+				<!-- <div>
+					<img class="itemImage" :src="imageSource(adventure.id)" />
+				</div> -->
+				<h4>{{ user.name }} {{ user.lastname }}</h4>
+				<p>Boat Owner</p>
+			</div>
+			<div class="rightFlex">
+				<p>Email</p>
+				<p class="smallText" v-if="!updateToggle">{{ user.email }}</p>
+				<input type="text" v-if="updateToggle" v-model="newEmail" />
+
+				<p>Address</p>
+				<p class="smallText" v-if="!updateToggle">{{ user.address }}</p>
+				<input type="text" v-if="updateToggle" v-model="newAddress" />
+
+				<p>City</p>
+				<p class="smallText" v-if="!updateToggle">{{ user.city }}</p>
+				<input type="text" v-if="updateToggle" v-model="newCity" />
+
+				<p>Country</p>
+				<p class="smallText" v-if="!updateToggle">{{ user.country }}</p>
+				<input type="text" v-if="updateToggle" v-model="newCountry" />
+
+				<p>Telephone Number</p>
+				<p class="smallText" v-if="!updateToggle">
+					{{ user.telephoneNumber }}
 				</p>
-			</div>
-			<p style="font-size: 36px; text-align: center; margin: 7px">
-				Plan your fishing trip with ease.
-			</p>
-		</div>
-		<div
-			v-if="!popupState && !loginState"
-			style="font-size: 30px; margin: 50px 0 0 200px"
-		>
-			<p style="margin: 0">
-				<a @click="openPopup()">Sign up</a> to schedule one of our
-				adventures,
-			</p>
-			<p style="margin: 0; font-size: 23px">
-				or continue browsing as a guest.
-			</p>
-		</div>
-
-		<!-- <div v-if="loginState" style="height: 500px"></div> -->
-		<div v-if="loginState" class="popupLogin">
-			<div style="height: 20px"></div>
-			<!-- Spacer -->
-			<div class="popupLoginRow">
-				<div class="inputField">
-					<p>Email</p>
-					<input
-						v-model="userEmail"
-						type="text"
-						placeholder="johnjohnson@gmail.com"
-					/>
-				</div>
-				<div class="inputField">
-					<p>Password</p>
-					<input v-model="firstPassword" type="password" />
-				</div>
-			</div>
-			<div class="popupLoginRow">
-				<button @click="loginUser()" class="actionButton">
-					Log In
-				</button>
-			</div>
-		</div>
-		<!-- Optional Spacer -->
-		<div v-if="loginState" style="height: 200px"></div>
-
-		<div v-if="popupState" class="popupRegister">
-			<div style="height: 20px"></div>
-			<!-- Spacer -->
-			<div class="popupRegisterRow">
-				<div class="inputField">
-					<p>Register as</p>
-					<select v-model="userType" type="">
-						<option>Standard User</option>
-						<option>Cottage Owner</option>
-						<option>Boat Owner</option>
-						<option>Fishing Instructor</option>
-					</select>
-				</div>
-				<div class="inputField">
-					<p>Email</p>
-					<input
-						v-model="userEmail"
-						type="text"
-						placeholder="johnjohnson@gmail.com"
-					/>
-				</div>
-			</div>
-			<div class="popupRegisterRow">
-				<div class="inputField">
-					<p>First Name</p>
-					<input
-						v-model="userFirstName"
-						type="text"
-						placeholder="John"
-					/>
-				</div>
-				<div class="inputField">
-					<p>Last Name</p>
-					<input
-						v-model="userLastName"
-						type="text"
-						placeholder="Johnson"
-					/>
-				</div>
-			</div>
-			<div class="popupRegisterRow">
-				<div class="inputField">
-					<p>Phone Number</p>
-					<input
-						v-model="userPhoneNumber"
-						type="tel"
-						placeholder="+381 65 123 123 12"
-					/>
-				</div>
-				<div class="inputField">
-					<p>Address</p>
-					<input
-						v-model="userAddress"
-						type="text"
-						placeholder="42 John Lane"
-					/>
-				</div>
-			</div>
-			<div class="popupRegisterRow">
-				<div class="inputField">
-					<p>City</p>
-					<input
-						v-model="userCity"
-						type="text"
-						placeholder="Johnville"
-					/>
-				</div>
-				<div class="inputField">
-					<p>Country</p>
-					<input
-						v-model="userCountry"
-						type="text"
-						placeholder="California"
-					/>
-				</div>
-			</div>
-			<div class="popupRegisterRow">
-				<div class="inputField">
-					<p>Password</p>
-					<input v-model="firstPassword" type="password" />
-				</div>
-				<div class="inputField">
-					<p>Repeat Password</p>
-					<input
-						v-model="repeatPassword"
-						@input="
-							passwordMatchCheck(firstPassword, repeatPassword)
-						"
-						type="password"
-					/>
-				</div>
-			</div>
-			<!--v-if="matching != null"-->
-			<div class="spacer">
-				<p>{{ matching }}</p>
-			</div>
-			<div v-if="userType != 'Standard User'" class="popupRegisterRow">
-				<div class="inputFieldBig">
-					<p>Reason for registration</p>
-					<input v-model="userRegistrationReason" />
-				</div>
-			</div>
-			<div class="popupRegisterRow">
-				<button @click="registerUser()" class="actionButton">
-					Sign Up
-				</button>
-			</div>
-		</div>
-		<div v-if="!popupState && !loginState" style="height: 500px"></div>
-		<div
-			v-if="signUpMessageOn"
-			:class="{
-				successfulBackground: signUpMessageKind == 'success',
-				failedBackground: signUpMessageKind == 'failed',
-			}"
-			class="secondPopup"
-		>
-			<p>{{ signUpMessageText }}</p>
-		</div>
-		<div class="mainCard">
-			<div style="text-align: center">
-				<img
-					src="../../assets/wheel.svg"
-					style="width: 48px; margin-top: 18px"
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newTelephoneNumber"
 				/>
+
+				<button @click="updateDetails()">Update Details</button>
 			</div>
-			<div class="largeCategory">
-				<h1>Browse Cottages</h1>
-				<div class="categoryItems">
-					<!-- v-for c in cottages bi iteriralo kroz sve, hocemo samo prva 3 -->
-					<!-- i in 3 ide od 1 do 3, ne od 0 do 2 -->
-					<div v-for="i in 3" :key="i">
-						<img class="itemImage" :src="imageSource(1, i)" />
-						<h4>{{ cottages[i - 1].name }}</h4>
-						<h6>${{ cottages[i - 1].pricePerDay }}/day</h6>
-						<h6>{{ cottages[i - 1].address }}</h6>
-					</div>
-				</div>
+		</div>
+		<div class="lowerFlex">
+			<div class="table">
+				<h3>Boat Owner table</h3>
+
+				<!-- <div
+					class="tableEntry"
+					v-for="req in registrationRequests"
+					:key="req"
+				>
+					<p class="entryName">{{ req.name }}</p>
+					<p class="entryRequestText">{{ req.requestText }}</p>
+					<button class="entryApprove" @click="approve()">
+						Approve
+					</button>
+					<button class="entryDeny" @click="deny()">Deny</button>
+				</div> -->
 			</div>
-			<div class="largeCategory">
-				<h1>Browse Adventures</h1>
-				<div class="categoryItems">
-					<div v-for="i in 3" :key="i">
-						<img class="itemImage" :src="imageSource(2, i)" />
-						<h4>{{ adventures[i - 1].name }}</h4>
-						<h6>${{ adventures[i - 1].pricePerDay }}/day</h6>
-						<h6>{{ adventures[i - 1].address }}</h6>
-					</div>
-				</div>
-			</div>
+			<!-- Spacer -->
+			<div style="height: 80px"></div>
+			<button @click="wantsDeletion()">Delete My Account</button>
 		</div>
 	</div>
 </template> 
@@ -222,459 +73,178 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		var cottages = ref(null);
-		var adventures = ref(null);
-		var popupState = ref(null);
-		var loginState = ref(null);
-		var firstPassword = ref(null);
-		var repeatPassword = ref(null); // Ako se inicijalizuje ovde na "Do passwords match?", kasnice update-ovanje za jedan
-		var matching = ref(null);
-		var userType = ref(null);
-		var userEmail = ref(null);
-		var userFirstName = ref(null);
-		var userLastName = ref(null);
-		var userPhoneNumber = ref(null);
-		var userAddress = ref(null);
-		var userCity = ref(null);
-		var userCountry = ref(null);
-		var userRegistrationReason = ref(null);
-		var signUpMessageOn = ref(null);
-		var signUpMessageKind = ref(null);
-		var signUpMessageText = ref(null);
+		var user = ref(null);
+		var updateToggle = ref(null);
+		axios
+			.get("/api/boatOwner/getByEmail/" + localStorage["emailHash"])
+			.then(function (response) {
+				user.value = response.data;
+			});
 
-		axios.get("/api/cottages/get").then(function (response) {
-			cottages.value = response.data;
-		});
-		axios.get("/api/adventures/get").then(function (response) {
-			adventures.value = response.data;
-		});
+		// boat owner table
+		// var registrationRequests = ref(null);
+		// axios.get("/api/user/getUnauthenticated").then(function (response) {
+		// 	registrationRequests.value = response.data;
+		// });
 
-		// Za u <template>
 		return {
-			cottages,
-			adventures,
-			popupState,
-			loginState,
-			matching,
-			firstPassword,
-			repeatPassword,
-			userType,
-			userEmail,
-			userFirstName,
-			userLastName,
-			userPhoneNumber,
-			userAddress,
-			userCity,
-			userCountry,
-			userRegistrationReason,
-			signUpMessageOn,
-			signUpMessageKind,
-			signUpMessageText,
-			passwordMatchCheck(firstPassword, repeatPassword) {
-				if (firstPassword == repeatPassword) {
-					this.matching = "Passwords Match!";
-					return this.matching;
-				} else {
-					this.matching = "Passwords don't match!";
-					return this.matching;
-				}
+			user,
+			// registrationRequests,
+			updateToggle,
+			wantsDeletion() {
+				alert("Not implemented yet!");
 			},
-			imageSource(type, id) {
-				switch (type) {
-					case 1:
-						// console.log("CASE 1 ID ZA IMAGESOURCE : " + id);
-						return require("../../assets/images/cottage" +
-							id +
-							".png");
-					case 2:
-						// console.log("CASE 2 ID ZA IMAGESOURCE : " + id);
-						return require("../../assets/images/adventure" +
-							id +
-							".png");
-				}
+			updateDetails() {
+				this.updateToggle = true;
 			},
-			openPopup() {
-				popupState.value = true;
-			},
-			// TODO: Ovo se vise ne koristi, koristimo alert()
-			renderSecondPopup(on, kind, text) {
-				this.signUpMessageOn = on;
-				this.signUpMessageKind = kind;
-				this.signUpMessageText = text;
-			},
-			registerUser() {
-				if (
-					this.userType == null ||
-					this.userEmail == null ||
-					this.userFirstName == null ||
-					this.userLastName == null ||
-					this.userPhoneNumber == null ||
-					this.userAddress == null ||
-					this.userCity == null ||
-					this.userCountry == null ||
-					this.firstPassword == null ||
-					this.repeatPassword == null
-				) {
-					alert("All fields need to be filled, try again.");
-					// this.renderSecondPopup(
-					// 	true,
-					// 	"failed",
-					// 	"All fields need to be filled, try again."
-					// );
-				} else {
-					// Provera korektnog formata Email-a
-					if (
-						!(
-							(
-								this.userEmail.includes("@") &&
-								this.userEmail.indexOf("@") !=
-									this.userEmail.length - 1 &&
-								this.userEmail.indexOf("@") != 0
-							) // Proverava da li imamo nesto posle @
-						)
-					) {
-						alert(
-							"Email isn't in the correct form. Please fill out the form again."
-						);
-						return;
-					}
-
-					this.signUpMessageOn = false;
-					// this.signUpMessageKind = "failed";
-					// this.signUpMessageText = "Sample Text";
-					if (this.firstPassword == this.repeatPassword) {
-						var user = {
-							type: "",
-							email: this.userEmail,
-							name: this.userFirstName,
-							lastname: this.userLastName,
-							telephoneNumber: this.userPhoneNumber,
-							address: this.userAddress,
-							city: this.userCity,
-							country: this.userCountry,
-							password: this.firstPassword,
-							userRegistrationReason: this.userRegistrationReason,
-						};
-						switch (this.userType) {
-							case "Standard User":
-								user.type = "registeredUser";
-								break;
-							case "Boat Owner":
-								user.type = "boatOwner";
-								break;
-							case "Cottage Owner":
-								user.type = "cottageOwner";
-								break;
-							case "Fishing Instructor":
-								user.type = "fishingInstructor";
-								break;
-						}
-
-						axios
-							.post("/api/user/create", user)
-							.then(function (response) {
-								// console.log("From AXIOS POST");
-								// console.log(response);
-								if (
-									response.data ==
-									"Error - User with that E-mail already exists."
-								) {
-									alert(
-										"User with that E-mail already exists."
-									);
-									// TODO: Iz .then()-a nikako ne mogu niti da return-ujem promenljive koje se koriste u setup()-u, niti da zovem neku funkciju. Ne radi ni this. ni .value, ne mogu ni da izcupam vrednost iz response.data u neku promenljivu pa da nju prosledim nekoj drugoj funkciji, nista. Ne moze ni da se bind-uje this u scope .then()-a, nista ne moze da vidi.
-									// Za sad radi alert(), i to je to.
-
-									// this.renderSecondPopup(
-									// 	true,
-									// 	"failed",
-									// 	"User with that E-mail already exists."
-									// );
-									// signUpMessageOn = true;
-									// signUpMessageKind = "failed";
-									// signUpMessageText =
-									// 	"User with that E-mail already exists.";
-									// return (
-									// 	signUpMessageOn,
-									// 	signUpMessageKind,
-									// 	signUpMessageText
-									// );
-								} else {
-									// TODO: Ovde je isti problem
-									alert(
-										"A registration request has been sent to the Administrator. Keep your eye open for a verification email!"
-									);
-									// popupState.value = false; // Zatvara sign up popup
-									// signUpMessageOn = true;
-									// signUpMessageKind = "success";
-									// signUpMessageText =
-									// 	"A registration request has been sent to the Administrator. Keep your eye open for a verification email!";
-									// return (
-									// 	signUpMessageOn,
-									// 	signUpMessageKind,
-									// 	signUpMessageText
-									// );
-								}
-							});
-					} else {
-						alert("Passwords don't match, try again.");
-						// this.renderSecondPopup(
-						// 	true,
-						// 	"failed",
-						// 	"Passwords don't match, try again."
-						// );
-					}
-				}
-			},
-			openLogin() {
-				loginState.value = true;
-			},
-			loginUser() {
-				if (this.userEmail == null || this.firstPassword == null) {
-					alert("All fields need to be filled, try again.");
-					// this.renderSecondPopup(
-					// 	true,
-					// 	"failed",
-					// 	"All fields need to be filled, try again."
-					// );
-				} else {
-					// Provera korektnog formata Email-a
-					if (
-						!(
-							(
-								this.userEmail.includes("@") &&
-								this.userEmail.indexOf("@") !=
-									this.userEmail.length - 1 &&
-								this.userEmail.indexOf("@") != 0
-							) // Proverava da li imamo nesto posle @
-						)
-					) {
-						alert(
-							"Email isn't in the correct form. Please fill out the form again."
-						);
-						return;
-					}
-					var credentials = [this.userEmail, this.firstPassword]; // Ovako jer se deserijalizuje u ArrayList
-					console.log("Credentials: \n");
-					console.log(credentials);
-					axios
-						.post("/api/user/login", credentials)
-						.then(function (response) {
-							for (const key in response.data) {
-								if (!(key === "password")) {
-									localStorage.setItem(
-										key,
-										response.data[key]
-									);
-								}
-							}
-							window.location.replace("/administrator");
-							// window.location.href =
-							// 	"/" + localStorage.getItem("userType");
-						})
-						.catch(function (error) {
-							console.log(error.response.status);
-							switch (error.response.status) {
-								case 401: // UNAUTHORIZED
-									alert(
-										"This user isn't authenticated. Please wait for the administrator to authenticate the account, and try again."
-									);
-									break;
-								case 404: // NOT_FOUND
-									alert("This user doesn't exist.");
-									break;
-								case 406: // NOT_ACCEPTABLE
-									alert("The password is wrong, try again.");
-									break;
-							}
-						});
-				}
-			},
+			// approve() {
+			// 	alert("Not implemented yet!");
+			// },
+			// deny() {
+			// 	alert("Not implemented yet!");
+			// },
 		};
 	},
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
 body {
-	background-image: url("../../assets/adventure-time-background.jpg");
-	background-color: #1a2022;
+	/* background-image: url("../../assets/adventure-time-background.jpg"); */
+	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
 	color: #10120e;
 	font-family: Aleo;
-	margin: 0;
 }
 #logo-container {
-	margin: 0 70em 0 10em;
+	margin-top: 8px;
 	text-align: center;
 }
 .underlined {
 	display: inline-block;
 	border-bottom: #ad6800 3px solid;
-	height: 80px;
+	height: 43px;
 }
-a {
-	color: #ad6800;
-	text-decoration: none;
+.underlined img {
+	height: 40px;
+	margin-bottom: -6px;
+	margin-right: -7px;
 }
-a:hover {
-	color: #573b0d;
-	cursor: pointer;
+.underlined p {
+	margin-left: 10px;
+	font-size: 40px;
+	letter-spacing: -1px;
+	display: inline;
 }
-.mainCard {
-	background-color: white;
-	height: 1400px;
-	margin: 0;
-	border-top-left-radius: 24px;
-	border-top-right-radius: 24px;
-}
-.categoryItems {
+.mainFlex {
+	margin: 50px 200px 0px;
 	display: flex;
-	align-items: flex-end;
 	justify-content: space-between;
 }
-.itemImage {
-	border-radius: 15px;
-	object-fit: cover;
-	width: 360px;
-	height: 360px;
+.leftFlex {
+	display: flex;
+	flex-direction: column;
 }
 h4 {
-	font-size: 32px;
+	margin: 0;
 	font-weight: 400;
+	font-size: 50px;
+}
+h3 {
 	margin: 0;
+	font-weight: 400;
+	font-size: 35px;
 }
-h6 {
-	font-size: 26px;
-	font-weight: lighter;
+.leftFlex p {
 	margin: 0;
+	font-size: 27px;
+	font-weight: 100;
 }
-h1 {
-	display: inline-block;
-	font-size: 46px;
-	letter-spacing: 1px;
-	border-bottom: #ad6800 3px solid;
-}
-.largeCategory {
-	margin-left: 224px;
-	margin-right: 224px;
-}
-.popupRegister {
-	font-size: 22px;
-	text-align: center;
-	margin: 0px 36rem 20px 36rem;
-	height: 570px;
-	background-color: rgb(255, 255, 255);
+.leftFlex img {
+	width: 800px;
+	height: 450px;
 	border-radius: 15px;
+	object-fit: cover;
+}
+.rightFlex {
 	display: flex;
 	flex-direction: column;
-}
-.popupLogin {
-	font-size: 22px;
-	text-align: center;
-	margin: 0px 36rem 20px 36rem;
-	height: 200px;
-	background-color: rgb(255, 255, 255);
+	justify-content: space-between;
+	background-color: rgb(241, 241, 241);
+	padding: 20px;
 	border-radius: 15px;
-	display: flex;
-	flex-direction: column;
+	border: 2px solid #da9e46;
 }
-.secondPopup {
+.rightFlex p {
+	margin: 4px 0;
+	font-size: 30px;
+}
+.rightFlex .smallText {
+	margin: 0;
 	font-size: 22px;
-	text-align: center;
-	margin: 0px 36rem 60px 36rem;
-	height: auto;
-	border-radius: 15px;
-	display: flex;
-	flex-direction: column;
 }
-.successfulBackground {
-	background-color: #c4e79d;
-	border: 2px solid rgb(97, 160, 97);
-}
-.failedBackground {
-	background-color: #e79d9d;
-	border: 2px solid rgb(160, 97, 97);
-}
-.actionButton {
-	color: white;
-	font-size: 24px;
-	font-family: Arial, Helvetica, sans-serif;
-	background-color: #ad6800;
-	border-radius: 5px;
-	border: none;
-	width: 200px;
-	height: 46px;
-}
-.actionButton:hover {
-	background-color: #583603;
-	cursor: pointer;
-}
-.popupRegisterRow {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	width: 100%;
-	height: 16.66%;
-}
-.popupLoginRow {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	width: 100%;
-	height: 50%;
-}
-input,
-select {
-	width: 260px;
-	height: 32px;
+.rightFlex input {
+	height: 24px;
 	border-radius: 5px;
 	border: 1px solid rgb(122, 122, 122);
-	font-size: 20px;
+	font-size: 18px;
 	background-color: #f0f0f0;
 }
-input:focus,
-select:focus {
+.rightFlex input:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
 }
-.inputField {
-	width: 260px;
-}
-/* .inputFieldBig {
-	width: inherit;
-} */
-.inputFieldBig input {
-	width: 500px;
-}
-.inputField p,
-.inputFieldBig p {
-	margin: 0;
-	text-align: left;
-}
-.spacer {
-	height: 30px;
-}
-.spacer p {
-	font-size: 16px;
-	color: gray;
-	margin: 0;
-	margin-top: 6px;
-}
-#logInButton {
-	font-size: 24px;
-	font-family: Aleo;
-	width: 115px;
+button {
+	margin: 0 auto;
 	height: 40px;
-	background: none;
-	border: 2px solid #10120e;
-	border-radius: 15px;
-	margin: 30px 40px 0 0;
+	width: 290px;
+	background-color: #da9e46;
+	border: none;
+	border-radius: 4px;
+	font-family: Aleo;
+	font-size: 24px;
+	transition: 0.15s;
+	margin-top: 20px;
 }
-#logInButton:hover {
-	background-color: #c4813069;
+button:hover {
+	background-color: #9e6b1d;
+	color: white;
 	cursor: pointer;
 }
-</style>
+.lowerFlex {
+	margin: 0px 200px;
+	display: flex;
+	flex-direction: column;
+}
+.lowerFlex h3 {
+	border-bottom: solid 1px rgb(145, 145, 145);
+}
+.tableEntry {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 55px;
+	border-bottom: solid 1px rgb(145, 145, 145);
+}
+.tableEntry .entryName {
+	margin: auto 0;
+	width: 160px;
+}
+.tableEntry .entryRequestText {
+	width: 800px;
+	margin: auto 0;
+}
+.tableEntry button {
+	width: 110px;
+	margin: auto 0;
+	font-size: 20px;
+}
+.tableEntry .entryApprove {
+	background-color: rgb(108, 207, 108);
+}
+.tableEntry .entryDeny {
+	background-color: rgb(194, 109, 109);
+}
+</style> 

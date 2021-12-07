@@ -22,4 +22,8 @@ public class CottageService {
 	public Cottage getById(Long Id) {
 		return cottageRepo.getById(Id);
 	}
+
+	public ArrayList<Cottage> findAllByIdIn(ArrayList<Long> ids) {
+		return cottageRepo.findAllByIdIn(ids);
+	}
 }

@@ -17,4 +17,6 @@ public interface BoatBookingRepo extends JpaRepository<BoatBooking, Long> {
 
 	public ArrayList<BoatBooking> findAllByRegisteredUserIdAndEndBefore(Long id, Date end);
 
+	public ArrayList<BoatBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date end);
+
 }

@@ -7,7 +7,8 @@ insert into boat_owner (name, lastname, email, password, address, city, country,
 insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Brodovlasnik3", "Treci", "random4@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -470642558);
 --neodobren
 insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Brodovlasnik4", "Cetvrti", "random16@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, FALSE, 924836377);
-insert into request_for_admin(for_type, request_text, requester_id) values (1, "UwU pwease xDDD, sucky sucky ten bucky", 4);
+
+
 
 
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Vikendicovlasnik1", "Prvi", "random5@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 2027373379);
@@ -15,7 +16,6 @@ insert into cottage_owner (name, lastname, email, password, address, city, count
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Vikendicovlasnik3", "Treci", "random7@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -1566529339);
 --neodobren
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Vikendicovlasnik4", "Cetvrti", "random17@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, FALSE, -872114982);
-insert into request_for_admin(for_type, request_text, requester_id) values (3, "UwO pwease DDxxxDDD, sucky sucky ten bucky", 4);
 
 
 insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Pecaros1", "Prvi", "random8@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 931486598, "2023-01-01", "2023-01-15" );
@@ -23,8 +23,10 @@ insert into fishing_instructor (name, lastname, email, password, address, city, 
 insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Pecaros3", "Treci", "random10@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -1178357357, "2023-01-01", "2023-01-15" );
 --neodobren
 insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Pecaros4", "Cetvrti", "random18@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, FALSE, 1625900955, "2023-01-01", "2023-01-15" );
-insert into request_for_admin(for_type, request_text, requester_id) values (5, "OwO pwease MMMDDD, sucky sucky ten bucky", 4);
 
+insert into request_for_admin(for_type, user_registration_reason, requester_id) values (1, "UwU pwease xDDD, sucky sucky ten bucky", 4);
+insert into request_for_admin(for_type, user_registration_reason, requester_id) values (3, "UwO pwease DDxxxDDD, sucky sucky ten bucky", 4);
+insert into request_for_admin(for_type, user_registration_reason, requester_id) values (5, "OwO pwease MMMDDD, sucky sucky ten bucky", 4);
 
 insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("KorisnikUsluga1", "Prvi", "random11@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 1319658580);
 insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("KorisnikUsluga2", "Drugi", "random12@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -477292779);
@@ -46,12 +48,14 @@ insert into room(cottage_id, number_of_beds) values (3, 4);
 insert into room(cottage_id, number_of_beds) values (4, 6);
 insert into room(cottage_id, number_of_beds) values (5, 8);
 
-
 insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day) values ("Bow Fishing", "Wolfe Island, Ontario", 44.151642, -76.375484, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 100);
 insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day) values ("Isolated Fishing", "Bar Harbour, Maine", 44.374710, -68.191748, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 60);
 insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day) values ("Ice Fishing", "Arcadia, Alberta", 55.402453, -116.123231, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 85);
 insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day) values ("Net Fishing", "Bering Strait", 65.562156, -168.451294, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 70);
 
+insert into subscription (for_entity, subbed_id, subber_id) values (1, 1, 1);
+insert into subscription (for_entity, subbed_id, subber_id) values (3, 1, 1);
+insert into subscription (for_entity, subbed_id, subber_id) values (5, 1, 1);  
 
 insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users)
             values(1, "Nepotopivi 2", "JoMama", "15", 123456, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Don't talk about Nepotopivi 1", 50, "2023-01-01", "2023-01-15", "Lorem", 7);

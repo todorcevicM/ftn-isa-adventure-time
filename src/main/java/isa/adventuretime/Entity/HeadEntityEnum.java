@@ -1,10 +1,10 @@
 package isa.adventuretime.Entity;
 
 public enum HeadEntityEnum {
-    BOAT, 
-    BOAT_OWNER, 
-    COTTAGE,
-    COTTAGE_OWNER,
-    ADVENTURE, 
-    FISHING_INSTRUCTOR
+	BOAT,
+	BOAT_OWNER,
+	COTTAGE,
+	COTTAGE_OWNER,
+	ADVENTURE,
+	FISHING_INSTRUCTOR
 }

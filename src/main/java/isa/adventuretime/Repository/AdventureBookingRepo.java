@@ -16,4 +16,7 @@ public interface AdventureBookingRepo extends JpaRepository<AdventureBooking, Lo
 	public ArrayList<AdventureBooking> findAllByRegisteredUserId(Long id);
 
 	public ArrayList<AdventureBooking> findAllByRegisteredUserIdAndEndBefore(Long id, Date date);
+
+	public ArrayList<AdventureBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date date);
+
 }

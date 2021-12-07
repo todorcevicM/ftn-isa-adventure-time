@@ -10,18 +10,23 @@ import isa.adventuretime.Repository.RequestForAdminRepo;
 
 @Service
 public class RequestForAdminService {
-    private RequestForAdminRepo requestForAdminRepo;
+	private RequestForAdminRepo requestForAdminRepo;
 
-    @Autowired
-    public RequestForAdminService(RequestForAdminRepo repo){
-        requestForAdminRepo = repo;
-    }
+	@Autowired
+	public RequestForAdminService(RequestForAdminRepo repo) {
+		requestForAdminRepo = repo;
+	}
 
-    public RequestForAdmin getById(Long Id){
-        return requestForAdminRepo.getById(Id);
-    }
+	public RequestForAdmin getById(Long Id) {
+		return requestForAdminRepo.getById(Id);
+	}
 
-    public ArrayList<RequestForAdmin> findAll(){
-        return requestForAdminRepo.findAll();
-    }
+	public ArrayList<RequestForAdmin> findAll() {
+		return requestForAdminRepo.findAll();
+	}
+
+	public RequestForAdmin saveRequestForAdmin(RequestForAdmin requestForAdmin) {
+		return requestForAdminRepo.save(requestForAdmin);
+	}
+
 }

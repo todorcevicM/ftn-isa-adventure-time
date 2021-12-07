@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UnauthenticatedUserDTO extends User {
-	private String requestText;
+	private String userRegistrationReason;
 
 	public UnauthenticatedUserDTO() {
 
@@ -17,7 +17,7 @@ public class UnauthenticatedUserDTO extends User {
 
 	public UnauthenticatedUserDTO(User user, RequestForAdmin requestForAdmin, HeadEntityEnum type) {
 		this.updateWithUser(user);
-		this.requestText = requestForAdmin.getRequestText();
+		this.userRegistrationReason = requestForAdmin.getUserRegistrationReason();
 		this.email = user.getEmail();
 		this.setUserType(type.toString());
 	}
