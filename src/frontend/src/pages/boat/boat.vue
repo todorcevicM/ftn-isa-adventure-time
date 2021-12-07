@@ -1,9 +1,32 @@
 <template>
 	<div>
-		<p>{{ boat }}</p>
-		<p>{{ boat.name }}</p>
-		<div>
-			<img class="itemImage" :src="imageSource(boat.id)" />
+		<div id="logo-container">
+			<div class="underlined">
+				<img src="../../assets/wheel.svg" />
+				<p>Adventure Time</p>
+			</div>
+		</div>
+		<div class="mainFlex">
+			<div class="leftFlex">
+				<div>
+					<img class="itemImage" :src="imageSource(boat.id)" />
+				</div>
+				<h4>{{ boat.name }}</h4>
+				<p>${{ boat.pricePerDay }}.00 / Day</p>
+			</div>
+			<div class="rightFlex">
+				<p>Address : {{ boat.address }}</p>
+				<p style="font-size: 22px">
+					({{ boat.geoLng }}, {{ boat.geoLat }})
+				</p>
+				<p>Promo : {{ boat.promoDescription }}</p>
+				<p>Rules : {{ boat.rules }}</p>
+				<p>Info : {{ boat.priceAndInfo }}</p>
+				<p>Start : {{ boat.reservationStart }}</p>
+				<p>End : {{ boat.reservationEnd }}</p>
+				<p>{{ boat.maxUsers }} person limit.</p>
+				<p>Owner : {{ owner.name }}</p>
+			</div>
 		</div>
 	</div>
 </template> 
@@ -13,17 +36,26 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		var boat = ref(null);
 		var urlArray = window.location.href.split("/");
 		var id = urlArray[4];
 
+		var boat = ref(null);
 		axios.get("/api/boats/get/" + id).then(function (response) {
 			boat.value = response.data;
+			localStorage["boatOwner"] = boat.value.ownerId;
 		});
+
+		var owner = ref(null);
+		axios
+			.get("/api/boatOwner/get/" + localStorage["boatOwner"])
+			.then(function (response) {
+				owner.value = response.data;
+			});
 
 		// Za u <template>
 		return {
 			boat,
+			owner,
 			imageSource(id) {
 				return require("../../assets/images/boat" + id + ".png");
 			},
@@ -36,7 +68,6 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 body {
 	/* background-image: url("../../assets/adventure-time-background.jpg"); */
-
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -45,174 +76,56 @@ body {
 	margin: 0;
 }
 #logo-container {
-	margin: 0 70em 0 10em;
+	margin-top: 8px;
 	text-align: center;
 }
 .underlined {
 	display: inline-block;
 	border-bottom: #ad6800 3px solid;
-	height: 80px;
+	height: 43px;
 }
-a {
-	color: #ad6800;
-	text-decoration: none;
+.underlined img {
+	height: 40px;
+	margin-bottom: -6px;
+	margin-right: -7px;
 }
-a:hover {
-	color: #573b0d;
-	cursor: pointer;
+.underlined p {
+	margin-left: 10px;
+	font-size: 40px;
+	letter-spacing: -1px;
+	display: inline;
 }
-.mainCard {
-	background-color: white;
-	height: 1400px;
-	margin: 0;
-	border-top-left-radius: 24px;
-	border-top-right-radius: 24px;
-}
-.categoryItems {
+.mainFlex {
+	margin: 50px 200px;
 	display: flex;
-	align-items: flex-end;
 	justify-content: space-between;
 }
-.itemImage {
+.leftFlex {
+	display: flex;
+	flex-direction: column;
+}
+.leftFlex h4 {
+	margin: 0;
+	font-weight: 400;
+	font-size: 50px;
+}
+.leftFlex p {
+	margin: 0;
+	font-size: 27px;
+	font-weight: 100;
+}
+.leftFlex img {
+	width: 800px;
+	height: 450px;
 	border-radius: 15px;
 	object-fit: cover;
-	width: 360px;
-	height: 360px;
 }
-h4 {
-	font-size: 32px;
-	font-weight: 400;
-	margin: 0;
-}
-h6 {
-	font-size: 26px;
-	font-weight: lighter;
-	margin: 0;
-}
-h1 {
-	display: inline-block;
-	font-size: 46px;
-	letter-spacing: 1px;
-	border-bottom: #ad6800 3px solid;
-}
-.largeCategory {
-	margin-left: 224px;
-	margin-right: 224px;
-}
-.popupRegister {
-	font-size: 22px;
-	text-align: center;
-	margin: 0px 36rem 20px 36rem;
-	height: 570px;
-	background-color: rgb(255, 255, 255);
-	border-radius: 15px;
+.rightFlex {
 	display: flex;
 	flex-direction: column;
 }
-.popupLogin {
-	font-size: 22px;
-	text-align: center;
-	margin: 0px 36rem 20px 36rem;
-	height: 200px;
-	background-color: rgb(255, 255, 255);
-	border-radius: 15px;
-	display: flex;
-	flex-direction: column;
-}
-.secondPopup {
-	font-size: 22px;
-	text-align: center;
-	margin: 0px 36rem 60px 36rem;
-	height: auto;
-	border-radius: 15px;
-	display: flex;
-	flex-direction: column;
-}
-.successfulBackground {
-	background-color: #c4e79d;
-	border: 2px solid rgb(97, 160, 97);
-}
-.failedBackground {
-	background-color: #e79d9d;
-	border: 2px solid rgb(160, 97, 97);
-}
-.actionButton {
-	color: white;
-	font-size: 24px;
-	font-family: Arial, Helvetica, sans-serif;
-	background-color: #ad6800;
-	border-radius: 5px;
-	border: none;
-	width: 200px;
-	height: 46px;
-}
-.actionButton:hover {
-	background-color: #583603;
-	cursor: pointer;
-}
-.popupRegisterRow {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	width: 100%;
-	height: 16.66%;
-}
-.popupLoginRow {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	width: 100%;
-	height: 50%;
-}
-input,
-select {
-	width: 260px;
-	height: 32px;
-	border-radius: 5px;
-	border: 1px solid rgb(122, 122, 122);
-	font-size: 20px;
-	background-color: #f0f0f0;
-}
-input:focus,
-select:focus {
-	outline: none !important;
-	border: 1px solid #ad6800;
-}
-.inputField {
-	width: 260px;
-}
-/* .inputFieldBig {
-	width: inherit;
-} */
-.inputFieldBig input {
-	width: 500px;
-}
-.inputField p,
-.inputFieldBig p {
-	margin: 0;
-	text-align: left;
-}
-.spacer {
-	height: 30px;
-}
-.spacer p {
-	font-size: 16px;
-	color: gray;
-	margin: 0;
-	margin-top: 6px;
-}
-#logInButton {
-	font-size: 24px;
-	font-family: Aleo;
-	width: 115px;
-	height: 40px;
-	background: none;
-	border: 2px solid #10120e;
-	border-radius: 15px;
-	margin: 30px 40px 0 0;
-}
-#logInButton:hover {
-	background-color: #c4813069;
-	cursor: pointer;
+.rightFlex p {
+	margin: 4px 0;
+	font-size: 36px;
 }
 </style>
