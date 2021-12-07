@@ -51,4 +51,14 @@ public class AdventureController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<ArrayList<Date>>(dates, HttpStatus.OK);
 	}
+
+	// @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// public ResponseEntity<Adventure> saveAdventure(RequestEntity<Adventure>
+	// adventure) {
+	// // TODO: Prosledi objekat, ne RequestEntity
+	// return new ResponseEntity<Adventure>(adventureService.save(adventure),
+	// HttpStatus.OK);
+	// }
+
 }

@@ -45,4 +45,12 @@ public class CottageController {
 		return new ResponseEntity<ArrayList<Room>>(roomService.findAllByCottageId(id), HttpStatus.OK);
 	}
 
+	// @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// public ResponseEntity<Cottage> saveCottage(RequestEntity<Cottage> cottage) {
+	// // TODO: Prosledi objekat, ne RequestEntity
+	// return new ResponseEntity<Cottage>(cottageService.save(cottage),
+	// HttpStatus.OK);
+	// }
+
 }

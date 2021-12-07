@@ -174,11 +174,19 @@
 			<p>{{ signUpMessageText }}</p>
 		</div>
 		<div class="mainCard">
-			<div style="text-align: center">
+			<div class="search" style="text-align: center">
 				<img
 					src="../../assets/wheel.svg"
 					style="width: 48px; margin-top: 18px"
 				/>
+				<input
+					type="text"
+					placeholder="Search..."
+					v-model="searchQuery"
+				/>
+				<div v-if="searchQuery" class="searchResult">
+					<p>No results found...</p>
+				</div>
 			</div>
 			<div class="largeCategory">
 				<h1>Browse Cottages</h1>
@@ -302,6 +310,7 @@ export default {
 		var boatNumToDisplay = ref(null);
 		var showAllBoatsToggle = ref(null);
 		showAllBoatsToggle = true;
+		var searchQuery = ref(null);
 
 		axios.get("/api/cottages/get").then(function (response) {
 			cottages.value = response.data;
@@ -341,6 +350,7 @@ export default {
 			showAllAdventuresToggle,
 			boatNumToDisplay,
 			showAllBoatsToggle,
+			searchQuery,
 			passwordMatchCheck(firstPassword, repeatPassword) {
 				if (firstPassword == repeatPassword) {
 					this.matching = "Passwords Match!";
@@ -677,6 +687,7 @@ h1 {
 	font-size: 46px;
 	letter-spacing: 1px;
 	border-bottom: #ad6800 3px solid;
+	margin-top: 10px;
 }
 .largeCategory {
 	margin-left: 224px;
@@ -822,5 +833,30 @@ select:focus {
 }
 .bottomCard a:hover {
 	color: rgb(175, 61, 45);
+}
+.search {
+	text-align: center;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.search input {
+	border-radius: 5px;
+	margin-top: 10px;
+}
+.searchResult {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 370px;
+	height: 470px;
+	margin-top: 20px;
+	border-radius: 15px;
+	background-color: rgb(230, 230, 230);
+}
+.searchResult p {
+	text-align: center;
+	color: rgb(71, 71, 71);
+	font-size: 35px;
 }
 </style>

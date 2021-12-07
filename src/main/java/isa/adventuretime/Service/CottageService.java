@@ -26,4 +26,8 @@ public class CottageService {
 	public ArrayList<Cottage> findAllByIdIn(ArrayList<Long> ids) {
 		return cottageRepo.findAllByIdIn(ids);
 	}
+
+	public Cottage save(Cottage cottage) {
+		return cottageRepo.save(cottage);
+	}
 }

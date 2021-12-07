@@ -28,4 +28,8 @@ public class AdventureService {
 	public ArrayList<Adventure> findAllByIdIn(ArrayList<Long> ids) {
 		return adventureRepo.findAllByIdIn(ids);
 	}
+
+	public Adventure save(Adventure adventure) {
+		return adventureRepo.save(adventure);
+	}
 }
