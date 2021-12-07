@@ -13,6 +13,7 @@
 				</div>
 				<h4>{{ boat.name }}</h4>
 				<p>${{ boat.pricePerDay }}.00 / Day</p>
+				<button @click="reserve()">Reserve</button>
 			</div>
 			<div class="rightFlex">
 				<p>Address : {{ boat.address }}</p>
@@ -25,6 +26,12 @@
 				<p>Start : {{ boat.reservationStart }}</p>
 				<p>End : {{ boat.reservationEnd }}</p>
 				<p>{{ boat.maxUsers }} person limit.</p>
+				<p>Boat Type : {{ boat.type }}</p>
+				<p>Length : {{ boat.type }}m</p>
+				<p>Engines : {{ boat.engineNumber }}</p>
+				<p>Engine Power : {{ boat.enginePower }}HP</p>
+				<p>Max Speed : {{ boat.maxSpeed }} Knots</p>
+				<p>Equipment : {{ boat.navigationEquipment }}</p>
 				<p>Owner : {{ owner.name }}</p>
 			</div>
 		</div>
@@ -58,6 +65,9 @@ export default {
 			owner,
 			imageSource(id) {
 				return require("../../assets/images/boat" + id + ".png");
+			},
+			reserve() {
+				alert("Not implemented yet!");
 			},
 		};
 	},
@@ -127,5 +137,20 @@ body {
 .rightFlex p {
 	margin: 4px 0;
 	font-size: 36px;
+}
+button {
+	margin: 0 auto;
+	height: 40px;
+	width: 140px;
+	background-color: #da9e46;
+	border: none;
+	border-radius: 4px;
+	font-family: Aleo;
+	font-size: 24px;
+}
+button:hover {
+	background-color: #9e6b1d;
+	color: white;
+	cursor: pointer;
 }
 </style>
