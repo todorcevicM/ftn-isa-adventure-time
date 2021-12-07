@@ -9,7 +9,7 @@ import isa.adventuretime.Entity.Administrator;
 public interface AdministratorRepo extends JpaRepository<Administrator, Long> {
 	public Administrator getOne(Long id);
 
-	public Administrator findByEmailHash(int code);
+	public Administrator findByEmailHash(int emailHash);
 
 	public Administrator findByEmail(String email);
 

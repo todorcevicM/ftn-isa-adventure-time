@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isa.adventuretime.DTO.UnauthenticatedUser;
+import isa.adventuretime.DTO.UnauthenticatedUserDTO;
 import isa.adventuretime.Entity.Administrator;
 import isa.adventuretime.Entity.BoatOwner;
 import isa.adventuretime.Entity.CottageOwner;
@@ -55,7 +55,8 @@ public class UserController {
 	@Autowired
 	private MailService mailService;
 
-	@Autowired RequestForAdminService requestForAdminService;
+	@Autowired
+	RequestForAdminService requestForAdminService;
 
 	@PostMapping(value = ("/login"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> userLogin(RequestEntity<ArrayList<String>> credentials) throws Exception {
@@ -118,7 +119,7 @@ public class UserController {
 		if (newUser != null) {
 			if (newUser.getAuthenticated() == true) {
 				if (password.equals(newUser.getPassword())) {
-					newUser.setUserType("admin");
+					newUser.setUserType("administrator");
 					return new ResponseEntity<User>(newUser, HttpStatus.OK);
 				} else {
 					return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
@@ -154,7 +155,7 @@ public class UserController {
 				fishingInstructor.updateWithUser(user.getBody());
 				fishingInstructorService.saveFishingInstructor(fishingInstructor);
 				return new ResponseEntity<User>((User) fishingInstructor, HttpStatus.OK);
-			case "admin":
+			case "administrator":
 				Administrator administrator = administratorService.findByEmail(user.getBody().getEmail());
 				administrator.updateWithUser(user.getBody());
 				administratorService.saveAdministrator(administrator);
@@ -224,33 +225,34 @@ public class UserController {
 		return new ResponseEntity<String>(returnedString, HttpStatus.OK);
 	}
 
-
 	@GetMapping(path = "/getUnauthenticated")
-	public ResponseEntity<ArrayList<UnauthenticatedUser>> getUnauthenticated() {
-		ArrayList<UnauthenticatedUser> unauthenticatedUsers = new ArrayList<>();
+	public ResponseEntity<ArrayList<UnauthenticatedUserDTO>> getUnauthenticated() {
+		ArrayList<UnauthenticatedUserDTO> unauthenticatedUsers = new ArrayList<>();
 		ArrayList<RequestForAdmin> requestForAdmins = requestForAdminService.findAll();
-		System.out.println("---------");
-		System.out.println(requestForAdmins.size());
-	
+
 		ArrayList<BoatOwner> boatOwners = boatOwnerService.findAllByAuthenticated(false);
 		ArrayList<CottageOwner> cottageOwners = cottageOwnerService.findAllByAuthenticated(false);
 		ArrayList<FishingInstructor> fishingInstructors = fishingInstructorService.findAllByAuthenticated(false);
 
-		for (RequestForAdmin requestForAdmin : requestForAdmins) 
+		for (RequestForAdmin requestForAdmin : requestForAdmins)
 			switch (requestForAdmin.getForType()) {
 				case BOAT_OWNER:
 					for (BoatOwner boatOwner : boatOwners) {
-						if(requestForAdmin.getRequesterId() == boatOwner.getId() && requestForAdmin.getForType().equals(HeadEntityEnum.BOAT_OWNER)){
-							unauthenticatedUsers.add(new UnauthenticatedUser(boatOwner, requestForAdmin, HeadEntityEnum.BOAT_OWNER));
+						if (requestForAdmin.getRequesterId() == boatOwner.getId()
+								&& requestForAdmin.getForType().equals(HeadEntityEnum.BOAT_OWNER)) {
+							unauthenticatedUsers.add(
+									new UnauthenticatedUserDTO(boatOwner, requestForAdmin, HeadEntityEnum.BOAT_OWNER));
 							boatOwners.remove(boatOwner);
 						}
 						break;
-					}	
+					}
 					break;
 				case FISHING_INSTRUCTOR:
 					for (FishingInstructor fishingInstructor : fishingInstructors) {
-						if(requestForAdmin.getRequesterId() == fishingInstructor.getId() && requestForAdmin.getForType().equals(HeadEntityEnum.FISHING_INSTRUCTOR)){
-							unauthenticatedUsers.add(new UnauthenticatedUser(fishingInstructor, requestForAdmin, HeadEntityEnum.FISHING_INSTRUCTOR));
+						if (requestForAdmin.getRequesterId() == fishingInstructor.getId()
+								&& requestForAdmin.getForType().equals(HeadEntityEnum.FISHING_INSTRUCTOR)) {
+							unauthenticatedUsers.add(new UnauthenticatedUserDTO(fishingInstructor, requestForAdmin,
+									HeadEntityEnum.FISHING_INSTRUCTOR));
 							fishingInstructors.remove(fishingInstructor);
 						}
 						break;
@@ -258,8 +260,10 @@ public class UserController {
 					break;
 				case COTTAGE_OWNER:
 					for (CottageOwner cottageOwner : cottageOwners) {
-						if(requestForAdmin.getRequesterId() == cottageOwner.getId() && requestForAdmin.getForType().equals(HeadEntityEnum.COTTAGE_OWNER)){
-							unauthenticatedUsers.add(new UnauthenticatedUser(cottageOwner, requestForAdmin, HeadEntityEnum.COTTAGE_OWNER));
+						if (requestForAdmin.getRequesterId() == cottageOwner.getId()
+								&& requestForAdmin.getForType().equals(HeadEntityEnum.COTTAGE_OWNER)) {
+							unauthenticatedUsers.add(new UnauthenticatedUserDTO(cottageOwner, requestForAdmin,
+									HeadEntityEnum.COTTAGE_OWNER));
 							cottageOwners.remove(cottageOwner);
 						}
 						break;
@@ -270,7 +274,7 @@ public class UserController {
 					break;
 			}
 
-		return new ResponseEntity<ArrayList<UnauthenticatedUser>>(unauthenticatedUsers, HttpStatus.OK);
+		return new ResponseEntity<ArrayList<UnauthenticatedUserDTO>>(unauthenticatedUsers, HttpStatus.OK);
 
 	}
 

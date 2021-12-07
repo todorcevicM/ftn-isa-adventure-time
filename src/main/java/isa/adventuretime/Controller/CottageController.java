@@ -19,19 +19,15 @@ public class CottageController {
 	@Autowired
 	private CottageService cottageService;
 
-	@Autowired
-	private RoomService roomService;
-
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<Cottage>> getCottages() {
 		return new ResponseEntity<ArrayList<Cottage>>(cottageService.findAll(), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/get/{id}")
-	public ResponseEntity<Cottage> getAdventure(@PathVariable("id") Long id) {
+	public ResponseEntity<Cottage> getCottage(@PathVariable("id") Long id) {
 		Cottage cottage = cottageService.getById(id);
 		if (cottage == null) {
-			// TODO: get all rooms
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 

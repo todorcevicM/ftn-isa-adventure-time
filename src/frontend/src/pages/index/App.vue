@@ -25,6 +25,7 @@
 			</p>
 		</div>
 
+		<!-- Login -->
 		<!-- <div v-if="loginState" style="height: 500px"></div> -->
 		<div v-if="loginState" class="popupLogin">
 			<div style="height: 20px"></div>
@@ -52,6 +53,7 @@
 		<!-- Optional Spacer -->
 		<div v-if="loginState" style="height: 200px"></div>
 
+		<!-- Registration -->
 		<div v-if="popupState" class="popupRegister">
 			<div style="height: 20px"></div>
 			<!-- Spacer -->
@@ -541,11 +543,12 @@ export default {
 									);
 								}
 							}
-							window.location.replace(
-								"/administrator/" + localStorage.getItem("id")
+							window.location.assign(
+								"/" +
+									localStorage.getItem("userType") +
+									"/" +
+									localStorage.getItem("emailHash")
 							);
-							// window.location.href =
-							// 	"/" + localStorage.getItem("userType");
 						})
 						.catch(function (error) {
 							console.log(error.response.status);

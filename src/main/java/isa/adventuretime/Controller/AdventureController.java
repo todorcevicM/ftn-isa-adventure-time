@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Service.AdventureService;
+
 import org.springframework.http.MediaType;
 
 import java.util.Date;
@@ -35,9 +36,9 @@ public class AdventureController {
 	}
 
 	@GetMapping(path = "/get/{id}")
-	public ResponseEntity<Adventure> getAdventure(@PathVariable("id") Long id){
+	public ResponseEntity<Adventure> getAdventure(@PathVariable("id") Long id) {
 		Adventure adventure = adventureService.getById(id);
-		if(adventure == null) {
+		if (adventure == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Adventure>(adventure, HttpStatus.OK);

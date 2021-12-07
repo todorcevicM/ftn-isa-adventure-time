@@ -18,16 +18,23 @@ public class AdministratorController {
 	private AdministratorService administratorService;
 
 	@GetMapping(value = ("/{id}"))
-	public ResponseEntity<Administrator> getAdministrator(@PathVariable("id") Long id) {
+	public ResponseEntity<Administrator> getAdministratorById(@PathVariable("id") Long id) {
 		Administrator administrator = administratorService.getById(id);
 		if (administrator == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			System.out.println(administrator.getId());
 			return new ResponseEntity<>(administrator, HttpStatus.OK);
 		}
 	}
 
-
+	@GetMapping(value = ("/get/{emailHash}"))
+	public ResponseEntity<Administrator> getAdministratorByEmailHash(@PathVariable("emailHash") int emailHash) {
+		Administrator administrator = administratorService.findByEmailHash(emailHash);
+		if (administrator == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(administrator, HttpStatus.OK);
+		}
+	}
 
 }

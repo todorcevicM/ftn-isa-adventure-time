@@ -38,4 +38,8 @@ public class AdventureBookingService {
 		dates.add(fishingInstructor.getEndWorkPeriod());
 		return dates;
 	}
+
+	public ArrayList<AdventureBooking> findAllByRegisteredUserIdAndEndBefore(Long id, Date date) {
+		return adventureBookingRepo.findAllByRegisteredUserIdAndEndBefore(id, date);
+	}
 }

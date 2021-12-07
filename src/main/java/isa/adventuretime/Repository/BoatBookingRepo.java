@@ -7,9 +7,14 @@ import org.springframework.stereotype.Repository;
 
 import isa.adventuretime.Entity.BoatBooking;
 
+import java.util.Date;
+
 @Repository
 public interface BoatBookingRepo extends JpaRepository<BoatBooking, Long> {
 	public ArrayList<BoatBooking> findAllByBookedBoatId(Long id);
 
 	public ArrayList<BoatBooking> findAllByRegisteredUserId(Long id);
+
+	public ArrayList<BoatBooking> findAllByRegisteredUserIdAndEndBefore(Long id, Date end);
+
 }

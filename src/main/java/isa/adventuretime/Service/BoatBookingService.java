@@ -38,4 +38,8 @@ public class BoatBookingService {
 		dates.add(currentBoat.getReservationEnd());
 		return dates;
 	}
+
+	public ArrayList<BoatBooking> findAllByRegisteredUserIdAndEndBefore(Long id, Date date) {
+		return boatBookingRepo.findAllByRegisteredUserIdAndEndBefore(id, date);
+	}
 }
