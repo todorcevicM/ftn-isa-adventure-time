@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import isa.adventuretime.Entity.Cottage;
-import isa.adventuretime.Service.CottageService;
+import isa.adventuretime.Service.*;
+
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
@@ -17,6 +18,9 @@ public class CottageController {
 
 	@Autowired
 	private CottageService cottageService;
+
+	@Autowired
+	private RoomService roomService;
 
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<Cottage>> getCottages() {
@@ -27,8 +31,10 @@ public class CottageController {
 	public ResponseEntity<Cottage> getAdventure(@PathVariable("id") Long id) {
 		Cottage cottage = cottageService.getById(id);
 		if (cottage == null) {
+			// TODO: get all rooms
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+
 		return new ResponseEntity<Cottage>(cottage, HttpStatus.OK);
 	}
 }

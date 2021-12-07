@@ -7,18 +7,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import isa.adventuretime.Entity.CottageOwner;
-import isa.adventuretime.Service.CottageOwnerService;
+import isa.adventuretime.Entity.FishingInstructor;
+import isa.adventuretime.Service.FishingInstructorService;
 
 @RestController
-@RequestMapping("/api/cottageOwner")
-public class CottageOwnerController {
+@RequestMapping("/api/fishingInstructor")
+public class FishingInstructorController {
 
 	@Autowired
-	private CottageOwnerService cottageOwnerService;
+	private FishingInstructorService fishingInstructorService;
 
 	@GetMapping("/get/{id}")
-	public ResponseEntity<CottageOwner> getCottageOwner(@PathVariable("id") Long id) {
-		return new ResponseEntity<>(cottageOwnerService.getById(id), HttpStatus.OK);
+	public ResponseEntity<FishingInstructor> getFishingInstructor(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(fishingInstructorService.getById(id), HttpStatus.OK);
+
 	}
 }

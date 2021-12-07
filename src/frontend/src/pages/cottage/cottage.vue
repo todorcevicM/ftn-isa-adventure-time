@@ -13,6 +13,7 @@
 				</div>
 				<h4>{{ cottage.name }}</h4>
 				<p>${{ cottage.pricePerDay }}.00 / Day</p>
+				<button @click="reserve()">Reserve</button>
 			</div>
 			<div class="rightFlex">
 				<p>Address : {{ cottage.address }}</p>
@@ -59,6 +60,9 @@ export default {
 			owner,
 			imageSource(id) {
 				return require("../../assets/images/cottage" + id + ".png");
+			},
+			reserve() {
+				alert("Not implemented yet!");
 			},
 		};
 	},
@@ -128,5 +132,20 @@ body {
 .rightFlex p {
 	margin: 4px 0;
 	font-size: 36px;
+}
+button {
+	margin: 0 auto;
+	height: 40px;
+	width: 140px;
+	background-color: #da9e46;
+	border: none;
+	border-radius: 4px;
+	font-family: Aleo;
+	font-size: 24px;
+}
+button:hover {
+	background-color: #9e6b1d;
+	color: white;
+	cursor: pointer;
 }
 </style>

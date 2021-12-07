@@ -19,6 +19,6 @@ public class BoatOwnerController {
 
 	@GetMapping("/get/{id}")
 	public ResponseEntity<BoatOwner> getBoatOwner(@PathVariable("id") Long id) {
-		return new ResponseEntity<>(boatOwnerService.getOne(id), HttpStatus.OK);
+		return new ResponseEntity<>(boatOwnerService.getById(id), HttpStatus.OK);
 	}
 }

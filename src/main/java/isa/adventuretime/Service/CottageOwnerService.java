@@ -16,8 +16,8 @@ public class CottageOwnerService {
 		this.cottageOwnerRepo = aR;
 	}
 
-	public CottageOwner getOne(Long id) {
-		return cottageOwnerRepo.getOne(id);
+	public CottageOwner getById(Long id) {
+		return cottageOwnerRepo.getById(id);
 	}
 
 	public CottageOwner register(CottageOwner owner) {

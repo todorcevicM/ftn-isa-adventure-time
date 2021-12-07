@@ -17,8 +17,8 @@ public class BoatOwnerService {
 		boatOwnerRepo = repo;
 	}
 
-	public BoatOwner getOne(Long Id) {
-		return boatOwnerRepo.getOne(Id);
+	public BoatOwner getById(Long Id) {
+		return boatOwnerRepo.getById(Id);
 	}
 
 	public BoatOwner register(BoatOwner boatOwner) {
