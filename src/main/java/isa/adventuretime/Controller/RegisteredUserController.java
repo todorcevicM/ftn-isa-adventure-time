@@ -61,13 +61,13 @@ public class RegisteredUserController {
 				boatBookingService.findAllByRegisteredUserIdAndEndBefore(id, new java.util.Date()), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/pastAdventureBooking/{id}")
+	@GetMapping(path = "/pastAdventureBookings/{id}")
 	public ResponseEntity<ArrayList<AdventureBooking>> getPastAdventureBookings(@PathVariable("id") Long id) {
 		return new ResponseEntity<ArrayList<AdventureBooking>>(
 				adventureBookingService.findAllByRegisteredUserIdAndEndBefore(id, new java.util.Date()), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/pastRoomBooking/{id}")
+	@GetMapping(path = "/pastRoomBookings/{id}")
 	public ResponseEntity<ArrayList<RoomBooking>> getPastRoomBookings(@PathVariable("id") Long id) throws Exception {
 		return new ResponseEntity<ArrayList<RoomBooking>>(
 				roomBookService.findAllByRegisteredUserIdAndEndBefore(id, new java.util.Date()), HttpStatus.OK);
@@ -79,13 +79,13 @@ public class RegisteredUserController {
 				boatBookingService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date()), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/futureAdventureBooking/{id}")
+	@GetMapping(path = "/futureAdventureBookings/{id}")
 	public ResponseEntity<ArrayList<AdventureBooking>> getFutureAdventureBookings(@PathVariable("id") Long id) {
 		return new ResponseEntity<ArrayList<AdventureBooking>>(
 				adventureBookingService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date()), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/futureRoomBooking/{id}")
+	@GetMapping(path = "/futureRoomBookings/{id}")
 	public ResponseEntity<ArrayList<RoomBooking>> getFutureRoomBookings(@PathVariable("id") Long id) throws Exception {
 		return new ResponseEntity<ArrayList<RoomBooking>>(
 				roomBookService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date()), HttpStatus.OK);
@@ -96,7 +96,7 @@ public class RegisteredUserController {
 		ArrayList<Subscription> subscriptions = subscriptionService.findAllSubberById(id);
 		ArrayList<Long> ids = new ArrayList<>();
 		for (Subscription subscription : subscriptions) {
-			if (subscription.getForEntity().equals(HeadEntityEnum.BOAT))
+			if (subscription.getForEntity().equals(HeadEntityEnum.BOAT_OWNER)) 
 				ids.add(subscription.getSubbedId());
 		}
 		return new ResponseEntity<ArrayList<Boat>>(
@@ -108,7 +108,7 @@ public class RegisteredUserController {
 		ArrayList<Subscription> subscriptions = subscriptionService.findAllSubberById(id);
 		ArrayList<Long> ids = new ArrayList<>();
 		for (Subscription subscription : subscriptions) {
-			if (subscription.getForEntity().equals(HeadEntityEnum.ADVENTURE))
+			if (subscription.getForEntity().equals(HeadEntityEnum.FISHING_INSTRUCTOR))
 				ids.add(subscription.getSubbedId());
 		}
 
@@ -121,7 +121,7 @@ public class RegisteredUserController {
 		ArrayList<Subscription> subscriptions = subscriptionService.findAllSubberById(id);
 		ArrayList<Long> ids = new ArrayList<>();
 		for (Subscription subscription : subscriptions) {
-			if (subscription.getForEntity().equals(HeadEntityEnum.COTTAGE))
+			if (subscription.getForEntity().equals(HeadEntityEnum.COTTAGE_OWNER))
 				ids.add(subscription.getSubbedId());
 		}
 

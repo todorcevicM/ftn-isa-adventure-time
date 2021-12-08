@@ -34,4 +34,8 @@ public class RegisteredUserService {
     public RegisteredUser saveRegisteredUser(RegisteredUser registeredUser){
         return registeredUserRepo.save(registeredUser);
     }
+
+    public Long findIdByEmailHash(int emailHash) {
+        return registeredUserRepo.findIdByEmailHash(emailHash);
+    }
 }
