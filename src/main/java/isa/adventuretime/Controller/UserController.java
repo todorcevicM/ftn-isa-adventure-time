@@ -138,9 +138,9 @@ public class UserController {
 	@PostMapping(value = ("/update"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> userUpdate(RequestEntity<User> user) throws Exception {
 		User updatedUser = new User();
-		System.out.println(user);
-		System.out.println(user.getBody());
-		System.out.println(user.getBody().getUserType());
+		// System.out.println(user);
+		// System.out.println(user.getBody());
+		// System.out.println(user.getBody().getUserType());
 		switch (user.getBody().getUserType()) {
 			case "registeredUser":
 				RegisteredUser registeredUser = registeredUserService.findByEmail(user.getBody().getEmail());

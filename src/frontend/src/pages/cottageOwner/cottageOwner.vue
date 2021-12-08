@@ -26,7 +26,7 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
-			<div class="table">				
+			<div class="table">
 				<!-- past room booking -->
 				<div class="table">
 					<h3>Past Room Bookings</h3>
@@ -44,14 +44,19 @@
 						>
 							<!-- <p class="entryRequestText">{{ booking.start }}</p>
 							<p class="entryRequestText">{{ booking.end }}</p> -->
-							<p> {{booking.registeredUserId}} </p>
-							<p> {{booking.extraService}} </p>
-							<p>Cena: {{booking.price}}.00</p>		
+							<p>{{ booking.registeredUserId }}</p>
+							<p>{{ booking.extraService }}</p>
+							<p>Cena: {{ booking.price }}.00</p>
 
-							<button class="entryApprove" @click="viewUser(booking.registeredUserId)">
+							<button
+								class="entryApprove"
+								@click="viewUser(booking.registeredUserId)"
+							>
 								View User
 							</button>
-							<button class="entryDeny" @click="deny()">Deny</button>
+							<button class="entryDeny" @click="deny()">
+								Deny
+							</button>
 						</div>
 					</div>
 				</div>
@@ -59,7 +64,7 @@
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<button @click="wantsDeletion()">Delete My Account</button>
-			<button @click="wantsDeletion()">Change My Password</button>	
+			<button @click="wantsDeletion()">Change My Password</button>
 		</div>
 	</div>
 </template> 
@@ -78,10 +83,12 @@ export default {
 			});
 
 		var pastRoomBookings = ref(null);
-		axios.get("/api/cottageOwner/pastRoomBookings/" + localStorage["userId"]).then(function (response) {
-			console.log(response.data);
-			pastRoomBookings.value = response.data;
-		});
+		axios
+			.get("/api/cottageOwner/pastRoomBookings/" + localStorage["userId"])
+			.then(function (response) {
+				console.log(response.data);
+				pastRoomBookings.value = response.data;
+			});
 
 		return {
 			user,
@@ -94,11 +101,13 @@ export default {
 			},
 			// TODO: ovde treba da se prikazu ti dobavljeni podaci
 			viewUser(registeredUserId) {
-				axios.get("/api/registeredUser/getUser/" + registeredUserId).then(function (response) {
-					console.log(response.data);
-				});
+				axios
+					.get("/api/registeredUser/getUser/" + registeredUserId)
+					.then(function (response) {
+						console.log(response.data);
+					});
 				console.log(registeredUserId);
-			}
+			},
 		};
 	},
 };

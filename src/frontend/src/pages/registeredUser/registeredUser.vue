@@ -67,8 +67,8 @@
 				>
 					<p class="entryName">{{ pbb.start }}</p>
 					<p class="entryRequestText">{{ pbb.end }}</p>
-					<p> {{pbb.extraService}} </p>
-					<p>Cena: {{pbb.price}}.00</p>
+					<p>{{ pbb.extraService }}</p>
+					<p>Cena: {{ pbb.price }}.00</p>
 					<button class="entryApprove" @click="approve()">
 						Approve
 					</button>
@@ -86,8 +86,8 @@
 				>
 					<p class="entryName">{{ pab.start }}</p>
 					<p class="entryRequestText">{{ pab.end }}</p>
-					<p> {{pab.extraService}} </p>
-					<p>Cena: {{pab.price}}.00</p>
+					<p>{{ pab.extraService }}</p>
+					<p>Cena: {{ pab.price }}.00</p>
 					<button class="entryApprove" @click="approve()">
 						Approve
 					</button>
@@ -105,8 +105,8 @@
 				>
 					<p class="entryName">{{ prb.start }}</p>
 					<p class="entryRequestText">{{ prb.end }}</p>
-					<p> {{prb.extraService}} </p>
-					<p>Cena: {{prb.price}}.00</p>
+					<p>{{ prb.extraService }}</p>
+					<p>Cena: {{ prb.price }}.00</p>
 					<button class="entryApprove" @click="approve()">
 						Approve
 					</button>
@@ -114,7 +114,6 @@
 				</div>
 			</div>
 
-			
 			<!-- future boat booking -->
 			<div class="table">
 				<h3>Future Boat Bookings</h3>
@@ -126,8 +125,8 @@
 				>
 					<p class="entryName">{{ pbb.start }}</p>
 					<p class="entryRequestText">{{ pbb.end }}</p>
-					<p> {{pbb.extraService}} </p>
-					<p>Cena: {{pbb.price}}.00</p>
+					<p>{{ pbb.extraService }}</p>
+					<p>Cena: {{ pbb.price }}.00</p>
 					<button class="entryApprove" @click="approve()">
 						Cancel
 					</button>
@@ -145,8 +144,8 @@
 				>
 					<p class="entryName">{{ pab.start }}</p>
 					<p class="entryRequestText">{{ pab.end }}</p>
-					<p> {{pab.extraService}} </p>
-					<p>Cena: {{pab.price}}.00</p>
+					<p>{{ pab.extraService }}</p>
+					<p>Cena: {{ pab.price }}.00</p>
 					<button class="entryApprove" @click="approve()">
 						Cancel
 					</button>
@@ -164,8 +163,8 @@
 				>
 					<p class="entryName">{{ prb.start }}</p>
 					<p class="entryRequestText">{{ prb.end }}</p>
-					<p> {{prb.extraService}} </p>
-					<p>Cena: {{prb.price}}.00</p>
+					<p>{{ prb.extraService }}</p>
+					<p>Cena: {{ prb.price }}.00</p>
 					<button class="entryApprove" @click="approve()">
 						Cancel
 					</button>
@@ -173,20 +172,15 @@
 				</div>
 			</div>
 
-
 			<!-- sub boat -->
 			<div class="table">
 				<h3>Subscribed Boat</h3>
 				<button>Sort</button>
-				<div
-					class="tableEntry"
-					v-for="pbb in subBoat"
-					:key="pbb"
-				>
+				<div class="tableEntry" v-for="pbb in subBoat" :key="pbb">
 					<p class="entryName">{{ pbb.name }}</p>
 					<p class="entryRequestText">{{ pbb.promoDescription }}</p>
-					<p> {{pbb.extraService}} </p>
-					<p>Cena: {{pbb.pricePerDay}}.00</p>
+					<p>{{ pbb.extraService }}</p>
+					<p>Cena: {{ pbb.pricePerDay }}.00</p>
 					<button class="entryApprove" @click="approve()">
 						Approve
 					</button>
@@ -197,15 +191,11 @@
 			<div class="table">
 				<h3>Subscribed Adventure</h3>
 				<button>Sort</button>
-				<div
-					class="tableEntry"
-					v-for="pab in subAdventure"
-					:key="pab"
-				>
+				<div class="tableEntry" v-for="pab in subAdventure" :key="pab">
 					<p class="entryName">{{ pab.name }}</p>
 					<p class="entryRequestText">{{ pab.promoDescription }}</p>
-					<p> {{pab.extraService}} </p>
-					<p>Cena: {{pab.pricePerDay}}.00</p>
+					<p>{{ pab.extraService }}</p>
+					<p>Cena: {{ pab.pricePerDay }}.00</p>
 					<button class="entryApprove" @click="approve()">
 						Approve
 					</button>
@@ -216,15 +206,11 @@
 			<div class="table">
 				<h3>Subscribed Cottage</h3>
 				<button>Sort</button>
-				<div
-					class="tableEntry"
-					v-for="prb in subCottage"
-					:key="prb"
-				>
+				<div class="tableEntry" v-for="prb in subCottage" :key="prb">
 					<p class="entryName">{{ prb.name }}</p>
 					<p class="entryRequestText">{{ prb.promoDescription }}</p>
-					<p> {{prb.extraService}} </p>
-					<p>Cena: {{prb.pricePerDay}}.00</p>
+					<p>{{ prb.extraService }}</p>
+					<p>Cena: {{ prb.pricePerDay }}.00</p>
 					<button class="entryApprove" @click="approve()">
 						Approve
 					</button>
@@ -232,13 +218,11 @@
 				</div>
 			</div>
 
-
-
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<button @click="wantsDeletion()">Delete My Account</button>
-			<button @click="wantsDeletion()">Submit a complaint</button>
-			<button @click="wantsDeletion()">Change My Password</button>	
+			<button @click="wantsDeletion()">Submit a Complaint</button>
+			<button @click="wantsDeletion()">Change My Password</button>
 		</div>
 	</div>
 </template> 
@@ -258,50 +242,84 @@ export default {
 			});
 
 		var pastBoatBookings = ref(null);
-		axios.get("/api/registeredUser/pastBoatBookings/" + localStorage["userId"]).then(function (response) {
-			pastBoatBookings.value = response.data;
-		});
+		axios
+			.get(
+				"/api/registeredUser/pastBoatBookings/" + localStorage["userId"]
+			)
+			.then(function (response) {
+				pastBoatBookings.value = response.data;
+			});
 
 		var pastAdventureBookings = ref(null);
-		axios.get("/api/registeredUser/pastAdventureBookings/" + localStorage["userId"]).then(function (response) {
-			pastAdventureBookings.value = response.data;
-		});
+		axios
+			.get(
+				"/api/registeredUser/pastAdventureBookings/" +
+					localStorage["userId"]
+			)
+			.then(function (response) {
+				pastAdventureBookings.value = response.data;
+			});
 
 		var pastRoomBookings = ref(null);
-		axios.get("/api/registeredUser/pastRoomBookings/" + localStorage["userId"]).then(function (response) {
-			pastRoomBookings.value = response.data;
-		});
+		axios
+			.get(
+				"/api/registeredUser/pastRoomBookings/" + localStorage["userId"]
+			)
+			.then(function (response) {
+				pastRoomBookings.value = response.data;
+			});
 
 		var futureBoatBookings = ref(null);
-		axios.get("/api/registeredUser/futureBoatBookings/" + localStorage["userId"]).then(function (response) {
-			futureBoatBookings.value = response.data;
-		});
+		axios
+			.get(
+				"/api/registeredUser/futureBoatBookings/" +
+					localStorage["userId"]
+			)
+			.then(function (response) {
+				futureBoatBookings.value = response.data;
+			});
 
 		var futureAdventureBookings = ref(null);
-		axios.get("/api/registeredUser/futureAdventureBookings/" + localStorage["userId"]).then(function (response) {
-			futureAdventureBookings.value = response.data;
-		});
+		axios
+			.get(
+				"/api/registeredUser/futureAdventureBookings/" +
+					localStorage["userId"]
+			)
+			.then(function (response) {
+				futureAdventureBookings.value = response.data;
+			});
 
 		var futureRoomBookings = ref(null);
-		axios.get("/api/registeredUser/futureRoomBookings/" + localStorage["userId"]).then(function (response) {
-			futureRoomBookings.value = response.data;
-		});
+		axios
+			.get(
+				"/api/registeredUser/futureRoomBookings/" +
+					localStorage["userId"]
+			)
+			.then(function (response) {
+				futureRoomBookings.value = response.data;
+			});
 
 		var subBoat = ref(null);
-		axios.get("/api/registeredUser/subBoat/" + localStorage["userId"]).then(function (response) {
-			console.log(response.data);
-			subBoat.value = response.data;
-		});
+		axios
+			.get("/api/registeredUser/subBoat/" + localStorage["userId"])
+			.then(function (response) {
+				console.log(response.data);
+				subBoat.value = response.data;
+			});
 
 		var subAdventure = ref(null);
-		axios.get("/api/registeredUser/subAdventure/" + localStorage["userId"]).then(function (response) {
-			subAdventure.value = response.data;
-		});
+		axios
+			.get("/api/registeredUser/subAdventure/" + localStorage["userId"])
+			.then(function (response) {
+				subAdventure.value = response.data;
+			});
 
 		var subCottage = ref(null);
-		axios.get("/api/registeredUser/subCottage/" + localStorage["userId"]).then(function (response) {
-			subCottage.value = response.data;
-		});
+		axios
+			.get("/api/registeredUser/subCottage/" + localStorage["userId"])
+			.then(function (response) {
+				subCottage.value = response.data;
+			});
 
 		return {
 			user,

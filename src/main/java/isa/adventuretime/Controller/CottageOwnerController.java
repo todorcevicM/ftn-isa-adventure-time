@@ -47,14 +47,16 @@ public class CottageOwnerController {
 	}
 
 	@GetMapping(path = "/pastRoomBookings/{ownerId}")
-	public ResponseEntity<ArrayList<CottageNameRoomBookingDTO>> getPastRoomBookings(@PathVariable("ownerId") Long ownerId) throws Exception {
+	public ResponseEntity<ArrayList<CottageNameRoomBookingDTO>> getPastRoomBookings(
+			@PathVariable("ownerId") Long ownerId) throws Exception {
 		ArrayList<Cottage> cottages = cottageService.findAllByOwnerId(ownerId);
 		ArrayList<CottageNameRoomBookingDTO> cottagesDTO = new ArrayList<>();
 
 		for (Cottage cottage : cottages) {
 			ArrayList<RoomBooking> roomBookings = new ArrayList<>();
-			roomBookings.addAll(roomBookingService.findAllByCottageIdAndEndBefore(cottage.getId(), new java.util.Date()));
-			
+			roomBookings
+					.addAll(roomBookingService.findAllByCottageIdAndEndBefore(cottage.getId(), new java.util.Date()));
+
 			if (roomBookings.size() > 0) {
 				cottagesDTO.add(new CottageNameRoomBookingDTO(cottage.getName(), roomBookings));
 			}
@@ -67,7 +69,5 @@ public class CottageOwnerController {
 	public ResponseEntity<Boolean> checkBooked(@PathVariable("id") Long id) {
 		return new ResponseEntity<>(roomBookingService.existsByCottageId(id), HttpStatus.OK);
 	}
-
-
 
 }

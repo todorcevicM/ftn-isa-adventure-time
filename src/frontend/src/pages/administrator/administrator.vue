@@ -5,6 +5,37 @@
 				<img src="../../assets/wheel.svg" />
 				<p>Adventure Time</p>
 			</div>
+			<div v-if="checkFirstLogin() == 1" class="firstLogin">
+				<div
+					style="
+						display: flex;
+						flex-direction: row;
+						justify-content: space-around;
+					"
+				>
+					<div>
+						<p>Enter new password :</p>
+						<input type="password" v-model="firstPassword" />
+					</div>
+					<div>
+						<p>Repeat password :</p>
+						<input
+							type="password"
+							v-model="repeatPassword"
+							@input="
+								passwordMatchCheck(
+									firstPassword,
+									repeatPassword
+								)
+							"
+						/>
+					</div>
+				</div>
+				<div class="spacer">
+					<p>{{ matching }}</p>
+				</div>
+				<button @click="updatePassword()">Update</button>
+			</div>
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
@@ -84,8 +115,41 @@
 			</div>
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
+			<button @click="showPasswordChange()" v-if="!passwordChangeToggle">
+				Change My Password
+			</button>
+			<div v-if="passwordChangeToggle" class="passwordChange">
+				<div
+					style="
+						display: flex;
+						flex-direction: row;
+						justify-content: space-around;
+					"
+				>
+					<div>
+						<p>Enter new password :</p>
+						<input type="password" v-model="firstPassword" />
+					</div>
+					<div>
+						<p>Repeat password :</p>
+						<input
+							type="password"
+							v-model="repeatPassword"
+							@input="
+								passwordMatchCheck(
+									firstPassword,
+									repeatPassword
+								)
+							"
+						/>
+					</div>
+				</div>
+				<div class="spacer">
+					<p>{{ matching }}</p>
+				</div>
+				<button @click="updatePassword()">Update</button>
+			</div>
 			<button @click="wantsDeletion()">Delete My Account</button>
-			<button @click="wantsDeletion()">Change My Password</button>	
 		</div>
 	</div>
 </template> 
@@ -121,11 +185,27 @@ export default {
 			registrationRequests.value = response.data;
 		});
 
+		var firstPassword = ref(null);
+		var repeatPassword = ref(null);
+		var matching = ref(null);
+		var passwordChangeToggle = ref(null);
+
 		return {
 			user,
 			registrationRequests,
 			updateToggle,
 			newUser,
+			firstPassword,
+			repeatPassword,
+			matching,
+			passwordChangeToggle,
+			checkFirstLogin() {
+				if (this.user.password == "0") {
+					return 1;
+				} else {
+					return 0;
+				}
+			},
 			wantsDeletion() {
 				alert("Not implemented yet!");
 			},
@@ -163,6 +243,38 @@ export default {
 						console.log(response.data);
 					});
 				window.location.reload();
+			},
+			passwordMatchCheck(firstPassword, repeatPassword) {
+				if (firstPassword == repeatPassword) {
+					this.matching = "Passwords Match!";
+					return this.matching;
+				} else {
+					this.matching = "Passwords don't match!";
+					return this.matching;
+				}
+			},
+			updatePassword() {
+				if (this.matching == "Passwords don't match!") {
+					alert("Passwords don't match!");
+					return;
+				} else if (this.repeatPassword == null) {
+					alert("All fields need to be filled.");
+					return;
+				}
+				var sendingUser = this.user;
+				sendingUser.password = this.repeatPassword;
+				sendingUser.userType = "administrator";
+				console.log(sendingUser);
+				axios
+					.post("/api/user/update", sendingUser)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+					});
+				window.location.reload();
+			},
+			showPasswordChange() {
+				this.passwordChangeToggle = true;
 			},
 		};
 	},
@@ -229,7 +341,9 @@ h3 {
 	border-radius: 15px;
 	object-fit: cover;
 }
-.rightFlex {
+.rightFlex,
+.firstLogin,
+.passwordChange {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -238,24 +352,53 @@ h3 {
 	border-radius: 15px;
 	border: 2px solid #da9e46;
 }
-.rightFlex p {
+.firstLogin {
+	margin: 20px 40em;
+}
+.passwordChange {
+	margin: 20px 28em;
+}
+.rightFlex p,
+.firstLogin p,
+.passwordChange p {
 	margin: 4px 0;
-	font-size: 28px;
+	font-size: 25px;
 }
 .rightFlex .smallText {
 	margin: 0;
 	font-size: 22px;
 }
-.rightFlex input {
+.rightFlex input,
+.firstLogin input,
+.passwordChange input {
 	height: 24px;
 	border-radius: 5px;
 	border: 1px solid rgb(122, 122, 122);
 	font-size: 18px;
 	background-color: #f0f0f0;
 }
-.rightFlex input:focus {
+.rightFlex input:focus,
+.firstLogin input:focus,
+.passwordChange input:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
+}
+.firstLogin button,
+.passwordChange button {
+	margin-top: 10px;
+	width: 170px;
+}
+.firstLogin .spacer,
+.passwordChange .spacer {
+	height: 30px;
+	text-align: center;
+}
+.firstLogin .spacer p,
+.passwordChange .spacer p {
+	font-size: 16px;
+	color: gray;
+	margin: 0;
+	margin-top: 6px;
 }
 button {
 	margin: 0 auto;

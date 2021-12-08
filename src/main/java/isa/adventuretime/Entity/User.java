@@ -59,6 +59,7 @@ public class User {
 	}
 
 	public void updateUserWithUser(User user) {
+		this.password = user.getPassword();
 		this.address = user.address;
 		this.city = user.city;
 		this.country = user.country;
