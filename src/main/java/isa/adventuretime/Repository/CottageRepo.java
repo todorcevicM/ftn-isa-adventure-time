@@ -14,5 +14,4 @@ public interface CottageRepo extends JpaRepository<Cottage, Long> {
 
 	public ArrayList<Cottage> findAllByIdIn(ArrayList<Long> ids);
 
-	public Cottage save(Cottage cottage);
 }

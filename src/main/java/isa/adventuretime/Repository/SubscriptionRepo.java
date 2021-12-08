@@ -11,5 +11,4 @@ import isa.adventuretime.Entity.Subscription;
 public interface SubscriptionRepo extends JpaRepository<Subscription, Long> {
 	public ArrayList<Subscription> findAllBySubberId(Long id);
 
-	public Subscription save(Subscription subscription);
 }

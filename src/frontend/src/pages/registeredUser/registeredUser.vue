@@ -13,6 +13,7 @@
 				</div> -->
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
 				<p>Registered User</p>
+				<p style="color: rgb(96, 96, 236)">Platinum Account</p>
 				<p>Penalties: 0</p>
 			</div>
 			<div class="rightFlex">
@@ -237,6 +238,7 @@
 			<div style="height: 80px"></div>
 			<button @click="wantsDeletion()">Delete My Account</button>
 			<button @click="wantsDeletion()">Submit a complaint</button>
+			<button @click="wantsDeletion()">Change My Password</button>	
 		</div>
 	</div>
 </template> 

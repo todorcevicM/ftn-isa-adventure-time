@@ -17,5 +17,5 @@ public interface AdventureRepo extends JpaRepository<Adventure, Long> {
 
 	public ArrayList<Adventure> findAllByIdIn(ArrayList<Long> ids);
 
-	public Adventure save(Adventure adventure);
+	public ArrayList<Adventure> getPastAdventuresByInstructorId(Long instructorId);
 }

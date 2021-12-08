@@ -30,4 +30,8 @@ public class CottageService {
 	public Cottage save(Cottage cottage) {
 		return cottageRepo.save(cottage);
 	}
+
+	public ArrayList<Cottage> findAllByOwnerId(Long id) {
+		return cottageRepo.findAllByOwnerId(id);
+	}
 }

@@ -32,4 +32,8 @@ public class AdventureService {
 	public Adventure save(Adventure adventure) {
 		return adventureRepo.save(adventure);
 	}
+
+	public ArrayList<Adventure> getPastAdventuresByInstructorId(Long id) {
+		return adventureRepo.getPastAdventuresByInstructorId(id);
+	}
 }

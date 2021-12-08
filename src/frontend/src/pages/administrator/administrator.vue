@@ -85,6 +85,7 @@
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<button @click="wantsDeletion()">Delete My Account</button>
+			<button @click="wantsDeletion()">Change My Password</button>	
 		</div>
 	</div>
 </template> 

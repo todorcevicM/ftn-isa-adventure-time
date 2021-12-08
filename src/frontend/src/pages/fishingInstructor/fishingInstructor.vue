@@ -55,24 +55,36 @@
 		</div>
 		<div class="lowerFlex">
 			<div class="table">
-				<h3>Fishing Instructor Table</h3>
+				<h3>Past Adventure Bookings</h3>
+					<button>Sort</button>
+					<div
+						class="tableEntry"
+						v-for="pab in pastAdventureBookings"
+						:key="pab"
+					>
+						<div
+						class="tableEntry"
+						v-for="booking in pab.adventureBookings"
+						:key="booking"
+						>
+							<p class="entryName">{{ pab.adventureName }}</p>	
+							<!-- <p class="entryRequestText">{{ booking.start }}</p>
+							<p class="entryRequestText">{{ booking.end }}</p> -->
+							<p> {{booking.registeredUserId}} </p>
+							<p> {{booking.extraService}} </p>
+							<p>Cena: {{booking.price}}.00</p>		
 
-				<!-- <div
-					class="tableEntry"
-					v-for="req in registrationRequests"
-					:key="req"
-				>
-					<p class="entryName">{{ req.name }}</p>
-					<p class="entryRequestText">{{ req.requestText }}</p>
-					<button class="entryApprove" @click="approve()">
-						Approve
-					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
-				</div> -->
+							<button class="entryApprove" @click="viewUser(booking.registeredUserId)">
+								View User
+							</button>
+							<button class="entryDeny" @click="deny()">Deny</button>
+						</div>
+					</div>
 			</div>
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<button @click="wantsDeletion()">Delete My Account</button>
+			<button @click="wantsDeletion()">Change My Password</button>	
 		</div>
 	</div>
 </template> 
@@ -92,14 +104,16 @@ export default {
 				user.value = response.data;
 			});
 
-		// var registrationRequests = ref(null);
-		// axios.get("/api/user/getUnauthenticated").then(function (response) {
-		// 	registrationRequests.value = response.data;
-		// });
+		var pastAdventureBookings = ref(null);
+		axios.get("/api/fishingInstructor/pastAdventureBookings/" + localStorage["userId"]).then(function (response) {
+			console.log(response.data);
+			pastAdventureBookings.value = response.data;
+		});
+
 
 		return {
 			user,
-			// registrationRequests,
+			pastAdventureBookings,
 			updateToggle,
 			wantsDeletion() {
 				alert("Not implemented yet!");

@@ -26,25 +26,40 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
-			<div class="table">
-				<h3>Cottage Owner table</h3>
+			<div class="table">				
+				<!-- past room booking -->
+				<div class="table">
+					<h3>Past Room Bookings</h3>
+					<button>Sort</button>
+					<div
+						class="tableEntry"
+						v-for="prb in pastRoomBookings"
+						:key="prb"
+					>
+						<p class="entryName">{{ prb.cottageName }}</p>
+						<div
+							class="tableEntry"
+							v-for="booking in prb.roomBookings"
+							:key="booking"
+						>
+							<!-- <p class="entryRequestText">{{ booking.start }}</p>
+							<p class="entryRequestText">{{ booking.end }}</p> -->
+							<p> {{booking.registeredUserId}} </p>
+							<p> {{booking.extraService}} </p>
+							<p>Cena: {{booking.price}}.00</p>		
 
-				<!-- <div
-					class="tableEntry"
-					v-for="req in registrationRequests"
-					:key="req"
-				>
-					<p class="entryName">{{ req.name }}</p>
-					<p class="entryRequestText">{{ req.requestText }}</p>
-					<button class="entryApprove" @click="approve()">
-						Approve
-					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
-				</div> -->
+							<button class="entryApprove" @click="viewUser(booking.registeredUserId)">
+								View User
+							</button>
+							<button class="entryDeny" @click="deny()">Deny</button>
+						</div>
+					</div>
+				</div>
 			</div>
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<button @click="wantsDeletion()">Delete My Account</button>
+			<button @click="wantsDeletion()">Change My Password</button>	
 		</div>
 	</div>
 </template> 
@@ -59,16 +74,31 @@ export default {
 			.get("/api/cottageOwner/getByEmail/" + localStorage["emailHash"])
 			.then(function (response) {
 				user.value = response.data;
+				console.log(user.value);
 			});
+
+		var pastRoomBookings = ref(null);
+		axios.get("/api/cottageOwner/pastRoomBookings/" + localStorage["userId"]).then(function (response) {
+			console.log(response.data);
+			pastRoomBookings.value = response.data;
+		});
 
 		return {
 			user,
+			pastRoomBookings,
 			wantsDeletion() {
 				alert("Not implemented yet!");
 			},
 			updateDetails() {
 				alert("Not implemented yet!");
 			},
+			// TODO: ovde treba da se prikazu ti dobavljeni podaci
+			viewUser(registeredUserId) {
+				axios.get("/api/registeredUser/getUser/" + registeredUserId).then(function (response) {
+					console.log(response.data);
+				});
+				console.log(registeredUserId);
+			}
 		};
 	},
 };
@@ -145,11 +175,22 @@ h3 {
 }
 .rightFlex p {
 	margin: 4px 0;
-	font-size: 36px;
+	font-size: 28px;
 }
 .rightFlex .smallText {
 	margin: 0;
 	font-size: 22px;
+}
+.rightFlex input {
+	height: 24px;
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 18px;
+	background-color: #f0f0f0;
+}
+.rightFlex input:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
 }
 button {
 	margin: 0 auto;
@@ -172,5 +213,34 @@ button:hover {
 	margin: 0px 200px;
 	display: flex;
 	flex-direction: column;
+}
+.lowerFlex h3 {
+	border-bottom: solid 1px rgb(145, 145, 145);
+}
+.tableEntry {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 55px;
+	border-bottom: solid 1px rgb(145, 145, 145);
+}
+.tableEntry .entryName {
+	margin: auto 0;
+	width: 160px;
+}
+.tableEntry .entryRequestText {
+	width: 800px;
+	margin: auto 0;
+}
+.tableEntry button {
+	width: 110px;
+	margin: auto 0;
+	font-size: 20px;
+}
+.tableEntry .entryApprove {
+	background-color: rgb(108, 207, 108);
+}
+.tableEntry .entryDeny {
+	background-color: rgb(194, 109, 109);
 }
 </style> 

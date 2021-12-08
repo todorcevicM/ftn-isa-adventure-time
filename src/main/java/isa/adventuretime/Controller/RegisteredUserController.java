@@ -139,4 +139,14 @@ public class RegisteredUserController {
 		}
 	}
 
+	@GetMapping(path = "/getUser/{id}")
+	public ResponseEntity<RegisteredUser> getUser(@PathVariable("id") Long id) {
+		RegisteredUser registeredUser = registeredUserService.getById(id);
+		if (registeredUser == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(registeredUser, HttpStatus.OK);
+		}
+	}
+
 }
