@@ -17,6 +17,9 @@ import isa.adventuretime.Service.AdventureService;
 import isa.adventuretime.Service.FishingInstructorService;
 import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Entity.AdventureBooking;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/api/fishingInstructor")
@@ -62,4 +65,10 @@ public class FishingInstructorController {
 
 		return new ResponseEntity<>(adventureNameAdventureBookingDTOs, HttpStatus.OK);
 	}
+
+	@PostMapping(path = "/delete/{id}")
+	public void deleteFishingInstructor(@PathVariable("id") Long id) {
+		fishingInstructorService.deleteById(id);
+	}
+	
 }

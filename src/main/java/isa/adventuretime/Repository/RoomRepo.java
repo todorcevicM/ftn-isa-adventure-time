@@ -14,6 +14,8 @@ public interface RoomRepo extends JpaRepository<Room, Long> {
 
 	public ArrayList<Room> findAllByCottageId(Long id);
 
-	public Room save(Room room);
+	public void deleteAllByCottageId(Long id);
+
+
 
 }

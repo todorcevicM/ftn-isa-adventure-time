@@ -39,4 +39,8 @@ public class CottageOwnerService {
 	public ArrayList<CottageOwner> findAllByAuthenticated(Boolean authenticated){
 		return cottageOwnerRepo.findAllByAuthenticated(authenticated);
 	}
+
+	public void deleteById(Long id) {
+		cottageOwnerRepo.deleteById(id);
+	}
 }

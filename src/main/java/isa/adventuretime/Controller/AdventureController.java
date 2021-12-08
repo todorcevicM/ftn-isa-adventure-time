@@ -61,4 +61,9 @@ public class AdventureController {
 	// HttpStatus.OK);
 	// }
 
+	@PostMapping(path = "/delete/{id}") 
+	public void deleteAdventure(@PathVariable("id") Long id) {
+		adventureService.deleteById(id);
+	}
+
 }

@@ -28,4 +28,8 @@ public class RoomService {
 	public Room save(Room room) {
 		return roomRepo.save(room);
 	}
+
+	public void deleteAllByCottageId(Long id) {
+		roomRepo.deleteAllByCottageId(id);
+	}
 }

@@ -26,4 +26,8 @@ public class BoatService {
 	public ArrayList<Boat> findAllByIdIn(ArrayList<Long> ids) {
 		return boatRepo.findAllByIdIn(ids);
 	}
+
+	public void deleteById(Long id) {
+		boatRepo.deleteById(id);
+	}
 }

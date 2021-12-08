@@ -36,4 +36,8 @@ public class AdventureService {
 	public ArrayList<Adventure> getPastAdventuresByInstructorId(Long id) {
 		return adventureRepo.getPastAdventuresByInstructorId(id);
 	}
+
+	public void deleteById(Long id) {
+		adventureRepo.deleteById(id);
+	}
 }

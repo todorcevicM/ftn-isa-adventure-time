@@ -40,4 +40,8 @@ public class FishingInstructorService{
     public ArrayList<FishingInstructor> findAllByAuthenticated(Boolean authenticated){
         return fishingInstructorRepo.findAllByAuthenticated(authenticated);
     }
+
+    public void deleteById(Long id){
+        fishingInstructorRepo.deleteById(id);
+    }
 }

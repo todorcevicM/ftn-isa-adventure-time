@@ -34,4 +34,8 @@ public class CottageService {
 	public ArrayList<Cottage> findAllByOwnerId(Long id) {
 		return cottageRepo.findAllByOwnerId(id);
 	}
+
+	public void deleteById(Long id) {
+		cottageRepo.deleteById(id);
+	}
 }

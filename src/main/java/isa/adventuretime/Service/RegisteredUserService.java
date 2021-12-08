@@ -38,4 +38,8 @@ public class RegisteredUserService {
     public Long findIdByEmailHash(int emailHash) {
         return registeredUserRepo.findIdByEmailHash(emailHash);
     }
+
+    public void deleteById(Long id){
+        registeredUserRepo.deleteById(id);
+    }
 }

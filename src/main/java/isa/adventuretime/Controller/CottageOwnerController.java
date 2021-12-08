@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ import isa.adventuretime.Entity.RoomBooking;
 import isa.adventuretime.Service.CottageOwnerService;
 import isa.adventuretime.Service.CottageService;
 import isa.adventuretime.Service.RoomBookingService;
+import isa.adventuretime.Service.RoomService;
 
 @RestController
 @RequestMapping("/api/cottageOwner")
@@ -30,6 +32,9 @@ public class CottageOwnerController {
 
 	@Autowired
 	private CottageService cottageService;
+
+	@Autowired
+	private RoomService roomService;
 
 	@GetMapping("/get/{id}")
 	public ResponseEntity<CottageOwner> getCottageOwner(@PathVariable("id") Long id) {
@@ -70,4 +75,9 @@ public class CottageOwnerController {
 		return new ResponseEntity<>(roomBookingService.existsByCottageId(id), HttpStatus.OK);
 	}
 
+	@PostMapping(path = "/delete/{id}")
+	public void deleteCottageOwner(@PathVariable("id") Long id) {
+		roomService.deleteAllByCottageId(id);
+		cottageOwnerService.deleteById(id);
+	}
 }

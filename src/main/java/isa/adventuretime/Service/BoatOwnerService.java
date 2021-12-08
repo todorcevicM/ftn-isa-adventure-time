@@ -40,4 +40,9 @@ public class BoatOwnerService {
 	public ArrayList<BoatOwner> findAllByAuthenticated(Boolean authenticated){
 		return boatOwnerRepo.findAllByAuthenticated(authenticated);
 	}
+
+	public void deleteById(Long id) {
+		boatOwnerRepo.deleteById(id);
+	}
+
 }
