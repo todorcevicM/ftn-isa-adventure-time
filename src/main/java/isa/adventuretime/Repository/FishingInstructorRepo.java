@@ -18,5 +18,4 @@ public interface FishingInstructorRepo extends JpaRepository<FishingInstructor, 
 
 	public ArrayList<FishingInstructor> findAllByAuthenticated(boolean authenticated);
 
-
 }

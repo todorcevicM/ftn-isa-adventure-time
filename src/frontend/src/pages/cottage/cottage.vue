@@ -13,6 +13,7 @@
 				</div>
 				<h4>{{ cottage.name }}</h4>
 				<p>${{ cottage.pricePerDay }}.00 / Day</p>
+				<p>Rating: 5.00</p>
 				<button @click="reserve()">Reserve</button>
 			</div>
 			<div class="rightFlex">

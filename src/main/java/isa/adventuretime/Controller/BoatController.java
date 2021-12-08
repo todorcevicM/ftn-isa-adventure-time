@@ -55,7 +55,15 @@ public class BoatController {
 	}
 
 	@PostMapping(path = "/delete/{id}")
-	public void deleteBoat(@PathVariable("id") Long id) {
+	public Boolean deleteBoat(@PathVariable("id") Long id) {
+		Date now = new Date();
+
+		if (boatBookingService.existsByBookedBoatIdAndEndAfter(id, now)) {
+			return false;
+		}
+
 		boatService.deleteById(id);
+
+		return true;
 	}
 }

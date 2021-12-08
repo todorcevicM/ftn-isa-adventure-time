@@ -22,6 +22,8 @@ import isa.adventuretime.Service.CottageOwnerService;
 import isa.adventuretime.Service.FishingInstructorService;
 import isa.adventuretime.Service.MailService;
 import isa.adventuretime.Service.RegisteredUserService;
+import isa.adventuretime.Service.BusinessConstantsService;
+import isa.adventuretime.Entity.BusinessConstants;
 
 // TODO: Ovde ima nepotrebnih metoda
 @RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
@@ -41,6 +43,8 @@ public class MainController {
 	private BoatOwnerService boatOwnerService;
 	@Autowired
 	private FishingInstructorService fishingInstructorService;
+	@Autowired
+	BusinessConstantsService businessConstantsService;
 
 	public MainController() {
 	}
@@ -98,6 +102,21 @@ public class MainController {
 		Administrator test = as.getById(1L);
 		System.out.println("JSON Sent Out!");
 		return new ResponseEntity<>(test, HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/get/constant/{name}")
+	public BusinessConstants getBusinessConstants(@PathVariable("name") String name) {
+		return businessConstantsService.getBusinessConstantsByName(name);
+	}
+
+	@PostMapping(path = "/update/constant/{name}/{percent}")
+	public ResponseEntity<BusinessConstants> updatePercent(@PathVariable("name") String name,
+			@PathVariable("percent") double percent) {
+		BusinessConstants bc = businessConstantsService.getBusinessConstantsByName(name);
+		System.out.println(percent);
+		bc.setValue(percent);
+		bc = businessConstantsService.save(bc);
+		return new ResponseEntity<>(bc, HttpStatus.OK);
 	}
 
 }

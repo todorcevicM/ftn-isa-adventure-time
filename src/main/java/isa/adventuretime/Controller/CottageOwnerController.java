@@ -82,7 +82,6 @@ public class CottageOwnerController {
 
 	@PostMapping(path = "/delete/{id}")
 	public void deleteCottageOwner(@PathVariable("id") Long id) {
-		roomService.deleteAllByCottageId(id);
 		cottageOwnerService.deleteById(id);
 	}
 }

@@ -1,3 +1,5 @@
+insert into business_constants (description, value, name) values ("Percentage taken on successful reservation.", 15.00, "ptosr");
+
 insert into administrator (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Marko", "Stankovic", "stankovictab@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 1291623784);
 insert into administrator (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Stanko", "Markovic", "tabstankovic@gmail.com", "0", "Address", "City", "Country", "064121213", FALSE, TRUE, -1872771714);
 insert into administrator (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Nikola", "Todorčevic", "random1@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 625244223);

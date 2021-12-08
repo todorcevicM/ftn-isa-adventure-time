@@ -206,6 +206,7 @@
 							:src="imageSource(1, i)"
 						/>
 						<h4>{{ cottages[i - 1].name }}</h4>
+						<h6>Rating: 5.00</h6>
 						<h6>${{ cottages[i - 1].pricePerDay }}/day</h6>
 						<h6>{{ cottages[i - 1].address }}</h6>
 					</div>
@@ -230,6 +231,7 @@
 							:src="imageSource(2, i)"
 						/>
 						<h4>{{ adventures[i - 1].name }}</h4>
+						<h6>Rating: 5.00</h6>
 						<h6>${{ adventures[i - 1].pricePerDay }}/day</h6>
 						<h6>{{ adventures[i - 1].address }}</h6>
 					</div>
@@ -251,6 +253,7 @@
 							:src="imageSource(3, i)"
 						/>
 						<h4>{{ boats[i - 1].name }}</h4>
+						<h6>Rating: 5.00</h6>
 						<h6>${{ boats[i - 1].pricePerDay }}/day</h6>
 						<h6>{{ boats[i - 1].address }}</h6>
 					</div>

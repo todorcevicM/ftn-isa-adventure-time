@@ -1,6 +1,7 @@
 package isa.adventuretime.Controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Entity.Room;
 import isa.adventuretime.Service.CottageService;
+import isa.adventuretime.Service.RoomBookingService;
 import isa.adventuretime.Service.RoomService;
 
 @RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
@@ -26,6 +28,9 @@ public class CottageController {
 	@Autowired
 	private RoomService roomService;
 
+	@Autowired
+	private RoomBookingService roomBookingService;
+
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<Cottage>> getCottages() {
 		return new ResponseEntity<ArrayList<Cottage>>(cottageService.findAll(), HttpStatus.OK);
@@ -37,7 +42,6 @@ public class CottageController {
 		if (cottage == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-
 		return new ResponseEntity<Cottage>(cottage, HttpStatus.OK);
 	}
 
@@ -55,8 +59,20 @@ public class CottageController {
 	// }
 
 	@PostMapping(path = "/delete/{id}")
-	public void deleteCottage(@PathVariable("id") Long id) {
+	public Boolean deleteCottage(@PathVariable("id") Long id) {
+		Date now = new Date();
+
+		if (roomBookingService.existsByCottageIdAndEndAfter(id, now)) {
+			return false;
+		}
+
+		ArrayList<Room> rooms = roomService.getAllByCottageId(id);
+		for (Room room : rooms) {
+			roomService.deleteById(room.getId());
+		}
 		cottageService.deleteById(id);
+
+		return true;
 	}
 
 }

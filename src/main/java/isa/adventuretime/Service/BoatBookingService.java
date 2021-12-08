@@ -46,4 +46,8 @@ public class BoatBookingService {
 	public ArrayList<BoatBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {
 		return boatBookingRepo.findAllByRegisteredUserIdAndEndAfter(id, date);
 	}
+
+	public Boolean existsByBookedBoatIdAndEndAfter(Long id, Date date) {
+		return boatBookingRepo.existsByBookedBoatIdAndEndAfter(id, date);
+	}
 }

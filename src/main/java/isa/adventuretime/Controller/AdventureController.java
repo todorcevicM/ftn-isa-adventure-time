@@ -61,9 +61,17 @@ public class AdventureController {
 	// HttpStatus.OK);
 	// }
 
-	@PostMapping(path = "/delete/{id}") 
-	public void deleteAdventure(@PathVariable("id") Long id) {
+	@PostMapping(path = "/delete/{id}")
+	public Boolean deleteAdventure(@PathVariable("id") Long id) {
+		Date now = new Date();
+
+		if (adventureBookingService.existsByBookedInstructorIdAndEndAfter(id, now)) {
+			return false;
+		}
+
 		adventureService.deleteById(id);
+
+		return true;
 	}
 
 }

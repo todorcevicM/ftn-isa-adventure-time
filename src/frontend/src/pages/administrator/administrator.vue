@@ -45,6 +45,31 @@
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
 				<p>Administrator</p>
 				<p style="font-size: 18px">{{ user.email }}</p>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<div class="percentage">
+					<p>Percentage taken on reservation:</p>
+					<p v-if="!percentageUpdateToggle">{{ percentage.value }}</p>
+					<input
+						type="text"
+						v-if="percentageUpdateToggle"
+						v-model="percentage.value"
+					/>
+					<p>%</p>
+					<button
+						v-if="!percentageUpdateToggle"
+						@click="percentageUpdate()"
+					>
+						Update
+					</button>
+					<button
+						v-if="percentageUpdateToggle"
+						@click="percentageUpdateSubmit()"
+						class="entryApprove"
+					>
+						Submit
+					</button>
+				</div>
 			</div>
 			<div class="rightFlex">
 				<p>Address</p>
@@ -136,7 +161,12 @@
 					:key="cottageOwner"
 				>
 					<p class="entryName">{{ cottageOwner.name }}</p>
-					<button class="entryDeny" @click="xxxx()">Delete</button>
+					<button
+						class="entryDeny"
+						@click="deleteCottageOwner(cottageOwner.id)"
+					>
+						Delete
+					</button>
 				</div>
 			</div>
 			<div class="table">
@@ -147,7 +177,12 @@
 					:key="adventure"
 				>
 					<p class="entryName">{{ adventure.name }}</p>
-					<button class="entryDeny" @click="xxxx()">Delete</button>
+					<button
+						class="entryDeny"
+						@click="deleteAdventure(adventure.id)"
+					>
+						Delete
+					</button>
 				</div>
 			</div>
 			<div class="table">
@@ -158,14 +193,21 @@
 					:key="fishingInstructor"
 				>
 					<p class="entryName">{{ fishingInstructor.name }}</p>
-					<button class="entryDeny" @click="xxxx()">Delete</button>
+					<button
+						class="entryDeny"
+						@click="deleteFishingInstructor(fishingInstructor.id)"
+					>
+						Delete
+					</button>
 				</div>
 			</div>
 			<div class="table">
 				<h3>Boats</h3>
 				<div class="tableEntry" v-for="boat in boats" :key="boat">
 					<p class="entryName">{{ boat.name }}</p>
-					<button class="entryDeny" @click="xxxx()">Delete</button>
+					<button class="entryDeny" @click="deleteBoat(boat.id)">
+						Delete
+					</button>
 				</div>
 			</div>
 			<div class="table">
@@ -176,7 +218,12 @@
 					:key="boatOwner"
 				>
 					<p class="entryName">{{ boatOwner.name }}</p>
-					<button class="entryDeny" @click="xxxx()">Delete</button>
+					<button
+						class="entryDeny"
+						@click="deleteBoatOwner(boatOwner.id)"
+					>
+						Delete
+					</button>
 				</div>
 			</div>
 			<div class="table">
@@ -187,7 +234,12 @@
 					:key="registeredUser"
 				>
 					<p class="entryName">{{ registeredUser.name }}</p>
-					<button class="entryDeny" @click="xxxx()">Delete</button>
+					<button
+						class="entryDeny"
+						@click="deleteRegisteredUser(registeredUser.id)"
+					>
+						Delete
+					</button>
 				</div>
 			</div>
 			<!-- Spacer -->
@@ -297,6 +349,12 @@ export default {
 			registeredUsers.value = response.data;
 		});
 
+		var percentage = ref(null);
+		var percentageUpdateToggle = ref(null);
+		axios.get("/api/get/constant/" + "ptosr").then(function (response) {
+			percentage.value = response.data;
+		});
+
 		return {
 			user,
 			registrationRequests,
@@ -313,6 +371,8 @@ export default {
 			boats,
 			boatOwners,
 			registeredUsers,
+			percentage,
+			percentageUpdateToggle,
 			checkFirstLogin() {
 				if (this.user.password == "0") {
 					return 1;
@@ -390,8 +450,109 @@ export default {
 			showPasswordChange() {
 				this.passwordChangeToggle = true;
 			},
+			// Deletion
 			deleteCottage(id) {
-				alert(id);
+				axios
+					.post("/api/cottages/delete/" + id)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+						var booked = response.data;
+						if (booked == false) {
+							alert(
+								"There exist bookings with this item. Deletion is unavailable."
+							);
+							return;
+						} else {
+							alert("Deleted.");
+							window.location.reload();
+						}
+					});
+			},
+			deleteCottageOwner(id) {
+				axios
+					.post("/api/cottageOwner/delete/" + id)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+					});
+				window.location.reload();
+			},
+			deleteAdventure(id) {
+				axios
+					.post("/api/adventures/delete/" + id)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+						var booked = response.data;
+						if (booked == false) {
+							alert(
+								"There exist bookings with this item. Deletion is unavailable."
+							);
+							return;
+						} else {
+							alert("Deleted.");
+							window.location.reload();
+						}
+					});
+			},
+			deleteFishingInstructor(id) {
+				axios
+					.post("/api/fishingInstructor/delete/" + id)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+					});
+				window.location.reload();
+			},
+			deleteBoat(id) {
+				axios.post("/api/boats/delete/" + id).then(function (response) {
+					console.log("Response : ");
+					console.log(response.data);
+					var booked = response.data;
+					if (booked == false) {
+						alert(
+							"There exist bookings with this item. Deletion is unavailable."
+						);
+						return;
+					} else {
+						alert("Deleted.");
+						window.location.reload();
+					}
+				});
+			},
+			deleteBoatOwner(id) {
+				axios
+					.post("/api/boatOwner/delete/" + id)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+					});
+				window.location.reload();
+			},
+			deleteRegisteredUser(id) {
+				axios
+					.post("/api/registeredUser/delete/" + id)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+					});
+				window.location.reload();
+			},
+			percentageUpdate() {
+				this.percentageUpdateToggle = true;
+			},
+			percentageUpdateSubmit() {
+				this.percentage = alert("Percentage: " + this.percentage.value);
+				var stringValue = this.percentage.value;
+				console.log(stringValue);
+				axios
+					.post("/api/update/constant/" + "ptosr" + "/" + stringValue)
+					.then(function (response) {
+						console.log("Response : ");
+						alert(response.data);
+						//window.location.reload();
+					});
 			},
 		};
 	},
@@ -487,7 +648,8 @@ h3 {
 }
 .rightFlex input,
 .firstLogin input,
-.passwordChange input {
+.passwordChange input,
+.percentage input {
 	height: 24px;
 	border-radius: 5px;
 	border: 1px solid rgb(122, 122, 122);
@@ -496,7 +658,8 @@ h3 {
 }
 .rightFlex input:focus,
 .firstLogin input:focus,
-.passwordChange input:focus {
+.passwordChange input:focus,
+.percentage input:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
 }
@@ -565,10 +728,31 @@ button:hover {
 	margin: auto 0;
 	font-size: 20px;
 }
-.tableEntry .entryApprove {
+.entryApprove {
 	background-color: rgb(108, 207, 108);
 }
-.tableEntry .entryDeny {
+.entryApprove:hover {
+	background-color: rgb(49, 121, 49);
+}
+.entryDeny {
 	background-color: rgb(194, 109, 109);
+}
+.entryDeny:hover {
+	background-color: rgb(119, 51, 51);
+}
+.percentage {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.percentage input {
+	width: 40px;
+	margin: 0 10px;
+	text-align: center;
+	font-size: 22px;
+}
+.percentage button {
+	margin: 0 0 0 30px;
+	width: 110px;
 }
 </style> 

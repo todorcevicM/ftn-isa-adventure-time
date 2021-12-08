@@ -20,6 +20,8 @@ public interface RoomBookingRepo extends JpaRepository<RoomBooking, Long> {
 
 	public ArrayList<RoomBooking> findAllByCottageIdAndEndBefore(Long id, Date date);
 
-	public Boolean existsByCottageId(Long id); 
+	public Boolean existsByCottageId(Long id);
+
+	public Boolean existsByCottageIdAndEndAfter(Long id, Date date);
 
 }

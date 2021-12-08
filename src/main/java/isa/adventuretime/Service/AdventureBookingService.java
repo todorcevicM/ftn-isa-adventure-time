@@ -50,4 +50,8 @@ public class AdventureBookingService {
 	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndEndBefore(Long adventureId, Date date) {
 		return adventureBookingRepo.findAllByBookedAdventureIdAndEndBefore(adventureId, date);
 	}
+
+	public Boolean existsByBookedInstructorIdAndEndAfter(Long id, Date date) {
+		return adventureBookingRepo.existsByBookedInstructorIdAndEndAfter(id, date);
+	}
 }

@@ -29,7 +29,11 @@ public class RoomService {
 		return roomRepo.save(room);
 	}
 
-	public void deleteAllByCottageId(Long id) {
-		roomRepo.deleteAllByCottageId(id);
+	public void deleteById(Long id) {
+		roomRepo.deleteById(id);
+	}
+
+	public ArrayList<Room> getAllByCottageId(Long cottageId) {
+		return roomRepo.findAllByCottageId(cottageId);
 	}
 }
