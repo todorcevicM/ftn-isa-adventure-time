@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.mail.internet.AddressException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -135,81 +136,51 @@ public class UserController {
 		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
 
-	@PostMapping(value = ("/update"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> userUpdate(RequestEntity<User> user) throws Exception {
-		User updatedUser = new User();
-		// System.out.println(user);
-		// System.out.println(user.getBody());
-		// System.out.println(user.getBody().getUserType());
-		switch (user.getBody().getUserType()) {
+	@PostMapping(value = ("/update"))
+	public ResponseEntity<User> userUpdate(RequestEntity<String> user) throws Exception {
+
+		String splitArray[] = user.getBody().split(",");
+		String split2[] = new String[20];
+		for (String s : splitArray) {
+			if (s.contains("userType")) {
+				System.out.println(s);
+				split2 = s.split("\"");
+				break;
+			}
+		}
+
+		String userTypeString = split2[split2.length - 1];
+		ObjectMapper mapper = new ObjectMapper();
+		
+		switch (userTypeString) {
 			case "registeredUser":
-				RegisteredUser registeredUser = registeredUserService.findByEmail(user.getBody().getEmail());
-				updatedUser = new User(
-						user.getBody().getName(),
-						user.getBody().getLastname(),
-						user.getBody().getEmail(),
-						user.getBody().getPassword(),
-						user.getBody().getAddress(),
-						user.getBody().getCity(),
-						user.getBody().getCountry(),
-						user.getBody().getTelephoneNumber());
-				registeredUser.updateUserWithUser(updatedUser);
+				RegisteredUser newRegisteredUser = mapper.readValue(user.getBody(), RegisteredUser.class);
+				RegisteredUser registeredUser = registeredUserService.findByEmail(newRegisteredUser.getEmail());
+				registeredUser.updateUserWithUser(newRegisteredUser);
 				registeredUserService.saveRegisteredUser(registeredUser);
 				return new ResponseEntity<User>((User) registeredUser, HttpStatus.OK);
 			case "boatOwner":
-				BoatOwner boatOwner = boatOwnerService.findByEmail(user.getBody().getEmail());
-				updatedUser = new User(
-						user.getBody().getName(),
-						user.getBody().getLastname(),
-						user.getBody().getEmail(),
-						user.getBody().getPassword(),
-						user.getBody().getAddress(),
-						user.getBody().getCity(),
-						user.getBody().getCountry(),
-						user.getBody().getTelephoneNumber());
-				boatOwner.updateUserWithUser(updatedUser);
+				BoatOwner newBoatOwner = mapper.readValue(user.getBody(), BoatOwner.class);
+				BoatOwner boatOwner = boatOwnerService.findByEmail(newBoatOwner.getEmail());
+				boatOwner.updateUserWithUser(newBoatOwner);
 				boatOwnerService.saveBoatOwner(boatOwner);
 				return new ResponseEntity<User>((User) boatOwner, HttpStatus.OK);
 			case "cottageOwner":
-				CottageOwner cottageOwner = cottageOwnerService.findByEmail(user.getBody().getEmail());
-				updatedUser = new User(
-						user.getBody().getName(),
-						user.getBody().getLastname(),
-						user.getBody().getEmail(),
-						user.getBody().getPassword(),
-						user.getBody().getAddress(),
-						user.getBody().getCity(),
-						user.getBody().getCountry(),
-						user.getBody().getTelephoneNumber());
-				cottageOwner.updateUserWithUser(updatedUser);
+				CottageOwner newCottageOwner = mapper.readValue(user.getBody(), CottageOwner.class);
+				CottageOwner cottageOwner = cottageOwnerService.findByEmail(newCottageOwner.getEmail());
+				cottageOwner.updateUserWithUser(newCottageOwner);
 				cottageOwnerService.saveCottageOwner(cottageOwner);
 				return new ResponseEntity<User>((User) cottageOwner, HttpStatus.OK);
 			case "fishingInstructor":
-				FishingInstructor fishingInstructor = fishingInstructorService.findByEmail(user.getBody().getEmail());
-				updatedUser = new User(
-						user.getBody().getName(),
-						user.getBody().getLastname(),
-						user.getBody().getEmail(),
-						user.getBody().getPassword(),
-						user.getBody().getAddress(),
-						user.getBody().getCity(),
-						user.getBody().getCountry(),
-						user.getBody().getTelephoneNumber());
-				fishingInstructor.updateUserWithUser(updatedUser);
-				fishingInstructorService.saveFishingInstructor(fishingInstructor);
+				FishingInstructor newFishingInstructor = mapper.readValue(user.getBody(), FishingInstructor.class);
+				FishingInstructor fishingInstructor = fishingInstructorService.findByEmail(newFishingInstructor.getEmail());
+				fishingInstructor.updateFishingInstructor(newFishingInstructor, newFishingInstructor.getStartWorkPeriod(), newFishingInstructor.getEndWorkPeriod());
+				fishingInstructor = fishingInstructorService.saveFishingInstructor(fishingInstructor);
 				return new ResponseEntity<User>((User) fishingInstructor, HttpStatus.OK);
 			case "administrator":
-				Administrator administrator = administratorService.findByEmail(user.getBody().getEmail());
-				updatedUser = new User(
-						user.getBody().getName(),
-						user.getBody().getLastname(),
-						user.getBody().getEmail(),
-						user.getBody().getPassword(),
-						user.getBody().getAddress(),
-						user.getBody().getCity(),
-						user.getBody().getCountry(),
-						user.getBody().getTelephoneNumber());
-				administrator.updateUserWithUser(updatedUser);
+				Administrator newAdministrator = mapper.readValue(user.getBody(), Administrator.class);
+				Administrator administrator = administratorService.findByEmail(newAdministrator.getEmail());
+				administrator.updateUserWithUser(newAdministrator);
 				administratorService.saveAdministrator(administrator);
 				return new ResponseEntity<User>((User) administrator, HttpStatus.OK);
 		}

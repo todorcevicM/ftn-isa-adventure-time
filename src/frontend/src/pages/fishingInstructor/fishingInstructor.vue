@@ -55,6 +55,18 @@
 					v-model="newUser.newTelephoneNumber"
 				/>
 
+				<p>Start Work Time</p>
+				<p class="smallText" v-if="!updateToggle">
+					{{ user.startWorkPeriod }}
+				</p>
+				<input type="text" v-if="updateToggle" v-model="newUser.newStartWorkPeriod" />			
+				
+				<p>End Work Time</p>
+				<p class="smallText" v-if="!updateToggle">
+					{{ user.endWorkPeriod }}
+				</p>
+				<input type="text" v-if="updateToggle" v-model="newUser.newEndWorkPeriod" />		
+
 				<button @click="updateDetails()" v-if="!updateToggle">
 					Update Details
 				</button>
@@ -155,6 +167,7 @@ export default {
 				"/api/fishingInstructor/getByEmail/" + localStorage["emailHash"]
 			)
 			.then(function (response) {
+				console.log(response.data);
 				user.value = response.data;
 			});
 		var newUser = ref({
@@ -162,6 +175,8 @@ export default {
 			newCity: localStorage.city,
 			newCountry: localStorage.country,
 			newTelephoneNumber: localStorage.telephoneNumber,
+			newStartWorkPeriod: localStorage.startWorkPeriod,
+			newEndWorkPeriod: localStorage.endWorkPeriod,
 		});
 		var updateToggle = ref(null);
 
@@ -169,6 +184,7 @@ export default {
 		var repeatPassword = ref(null);
 		var matching = ref(null);
 		var passwordChangeToggle = ref(null);
+	
 
 		var pastAdventureBookings = ref(null);
 		axios
@@ -201,7 +217,9 @@ export default {
 					this.newUser.newAddress == "" ||
 					this.newUser.newCity == "" ||
 					this.newUser.newCountry == "" ||
-					this.newUser.newTelephoneNumber == ""
+					this.newUser.newTelephoneNumber == "" || 
+					this.newUser.newStartWorkPeriod == "" ||
+					this.newUser.newEndWorkPeriod == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
@@ -211,10 +229,19 @@ export default {
 				sendingUser.city = this.newUser.newCity;
 				sendingUser.country = this.newUser.newCountry;
 				sendingUser.telephoneNumber = this.newUser.newTelephoneNumber;
+				sendingUser.startWorkPeriod = this.newUser.newStartWorkPeriod;
+				sendingUser.endWorkPeriod = this.newUser.newEndWorkPeriod;
 				sendingUser.userType = "fishingInstructor";
 				console.log(sendingUser);
+				localStorage["sendingUser"] = JSON.stringify(sendingUser);
+				console.log(localStorage["sendingUser"]);
+
 				axios
-					.post("/api/user/update", sendingUser)
+					.post("/api/user/update", localStorage["sendingUser"], {
+						headers: {
+							"Content-Type": "application/json",
+						},
+					})
 					.then(function (response) {
 						console.log("Response : ");
 						console.log(response.data);

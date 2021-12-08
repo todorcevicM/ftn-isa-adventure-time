@@ -1,6 +1,6 @@
 package isa.adventuretime.Entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +31,12 @@ public class FishingInstructor extends User {
 
 	public FishingInstructor() {
 		super();
+	}
+
+	public void updateFishingInstructor(User user, Date startWorkPeriod, Date endWorkPeriod) {
+		this.updateUserWithUser(user);
+		this.startWorkPeriod = startWorkPeriod;
+		this.endWorkPeriod = endWorkPeriod;
 	}
 
 }
