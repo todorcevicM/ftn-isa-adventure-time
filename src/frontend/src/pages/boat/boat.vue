@@ -17,9 +17,7 @@
 			</div>
 			<div class="rightFlex">
 				<p>Address : {{ boat.address }}</p>
-				<p style="font-size: 22px">
-					({{ boat.geoLng }}, {{ boat.geoLat }})
-				</p>
+				<p class="smallText">({{ boat.geoLng }}, {{ boat.geoLat }})</p>
 				<p>Promo : {{ boat.promoDescription }}</p>
 				<p>Rules : {{ boat.rules }}</p>
 				<p>Info : {{ boat.priceAndInfo }}</p>
@@ -114,7 +112,7 @@ body {
 	display: flex;
 	flex-direction: column;
 }
-.leftFlex h4 {
+h4 {
 	margin: 0;
 	font-weight: 400;
 	font-size: 50px;
@@ -133,10 +131,19 @@ body {
 .rightFlex {
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
+	background-color: rgb(241, 241, 241);
+	padding: 20px;
+	border-radius: 15px;
+	border: 2px solid #da9e46;
 }
 .rightFlex p {
 	margin: 4px 0;
 	font-size: 36px;
+}
+.rightFlex .smallText {
+	margin: 0;
+	font-size: 22px;
 }
 button {
 	margin: 0 auto;
@@ -147,6 +154,7 @@ button {
 	border-radius: 4px;
 	font-family: Aleo;
 	font-size: 24px;
+	transition: 0.15s;
 }
 button:hover {
 	background-color: #9e6b1d;

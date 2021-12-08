@@ -2,44 +2,228 @@
 	<div>
 		<div id="logo-container">
 			<div class="underlined">
-				<img
-					src="../../assets/wheel.svg"
-					style="margin-bottom: -6px; margin-right: -7px"
-				/>
-				<p
-					style="
-						font-size: 75px;
-						letter-spacing: -2px;
-						display: inline;
-					"
-				>
-					RegisteredUser PAGE
-				</p>
+				<img src="../../assets/wheel.svg" />
+				<p>Adventure Time</p>
 			</div>
-			<p style="font-size: 36px; text-align: center; margin: 7px">
-				Plan your fishing trip with ease.
-			</p>
 		</div>
-		<div style="height: 670px; font-size: 30px; margin: 50px 0 0 200px">
-			<p style="margin: 0">
-				<a href="#">Sign up</a> to schedule one of our adventures,
-			</p>
-			<p style="margin: 0; font-size: 23px">
-				or continue browsing as a guest.
-			</p>
+		<div class="mainFlex">
+			<div class="leftFlex">
+				<!-- <div>
+					<img class="itemImage" :src="imageSource(adventure.id)" />
+				</div> -->
+				<h4>{{ user.name }} {{ user.lastname }}</h4>
+				<p>Registered User</p>
+				<p style="color: rgb(96, 96, 236)">Platinum Account</p>
+				<p>Penalties: 0</p>
+			</div>
+			<div class="rightFlex">
+				<p>Email</p>
+				<p class="smallText" v-if="!updateToggle">{{ user.email }}</p>
+				<input type="text" v-if="updateToggle" v-model="newEmail" />
 
-			<p style="margin-top: 50; font-size: 23px">
-				Return from GET fetch: {{ returnGET }}
-			</p>
-			<p style="margin-top: 50; font-size: 23px">
-				Return from POST fetch: {{ returnPOST }}
-			</p>
+				<p>Address</p>
+				<p class="smallText" v-if="!updateToggle">{{ user.address }}</p>
+				<input type="text" v-if="updateToggle" v-model="newAddress" />
+
+				<p>City</p>
+				<p class="smallText" v-if="!updateToggle">{{ user.city }}</p>
+				<input type="text" v-if="updateToggle" v-model="newCity" />
+
+				<p>Country</p>
+				<p class="smallText" v-if="!updateToggle">{{ user.country }}</p>
+				<input type="text" v-if="updateToggle" v-model="newCountry" />
+
+				<p>Telephone Number</p>
+				<p class="smallText" v-if="!updateToggle">
+					{{ user.telephoneNumber }}
+				</p>
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newTelephoneNumber"
+				/>
+
+				<button @click="updateDetails()" v-if="!updateToggle">
+					Update Details
+				</button>
+				<button
+					@click="sendUpdatedDetails()"
+					v-if="updateToggle"
+					style="background-color: rgb(108, 207, 108)"
+				>
+					Submit
+				</button>
+			</div>
 		</div>
-		<div id="card"></div>
-		<!-- <p>Message from backend :</p>
-    <code>{{ msg }}</code>
-    <h1>i rember 👌😊🦩</h1>
-    <button @click="log">Log!</button> -->
+		<div class="lowerFlex">
+			<!-- past boat booking -->
+			<div class="table">
+				<h3>Past Boat Bookings</h3>
+				<button>Sort</button>
+				<div
+					class="tableEntry"
+					v-for="pbb in pastBoatBookings"
+					:key="pbb"
+				>
+					<p class="entryName">{{ pbb.start }}</p>
+					<p class="entryRequestText">{{ pbb.end }}</p>
+					<p>{{ pbb.extraService }}</p>
+					<p>Cena: {{ pbb.price }}.00</p>
+					<button class="entryApprove" @click="approve()">
+						Approve
+					</button>
+					<button class="entryDeny" @click="deny()">Deny</button>
+				</div>
+			</div>
+			<!-- past adventure booking -->
+			<div class="table">
+				<h3>Past Adventure Bookings</h3>
+				<button>Sort</button>
+				<div
+					class="tableEntry"
+					v-for="pab in pastAdventureBookings"
+					:key="pab"
+				>
+					<p class="entryName">{{ pab.start }}</p>
+					<p class="entryRequestText">{{ pab.end }}</p>
+					<p>{{ pab.extraService }}</p>
+					<p>Cena: {{ pab.price }}.00</p>
+					<button class="entryApprove" @click="approve()">
+						Approve
+					</button>
+					<button class="entryDeny" @click="deny()">Deny</button>
+				</div>
+			</div>
+			<!-- past room booking -->
+			<div class="table">
+				<h3>Past Room Bookings</h3>
+				<button>Sort</button>
+				<div
+					class="tableEntry"
+					v-for="prb in pastRoomBookings"
+					:key="prb"
+				>
+					<p class="entryName">{{ prb.start }}</p>
+					<p class="entryRequestText">{{ prb.end }}</p>
+					<p>{{ prb.extraService }}</p>
+					<p>Cena: {{ prb.price }}.00</p>
+					<button class="entryApprove" @click="approve()">
+						Approve
+					</button>
+					<button class="entryDeny" @click="deny()">Deny</button>
+				</div>
+			</div>
+
+			<!-- future boat booking -->
+			<div class="table">
+				<h3>Future Boat Bookings</h3>
+				<button>Sort</button>
+				<div
+					class="tableEntry"
+					v-for="pbb in futureBoatBookings"
+					:key="pbb"
+				>
+					<p class="entryName">{{ pbb.start }}</p>
+					<p class="entryRequestText">{{ pbb.end }}</p>
+					<p>{{ pbb.extraService }}</p>
+					<p>Cena: {{ pbb.price }}.00</p>
+					<button class="entryApprove" @click="approve()">
+						Cancel
+					</button>
+					<button class="entryDeny" @click="deny()">Deny</button>
+				</div>
+			</div>
+			<!-- future adventure booking -->
+			<div class="table">
+				<h3>Future Adventure Bookings</h3>
+				<button>Sort</button>
+				<div
+					class="tableEntry"
+					v-for="pab in futureAdventureBookings"
+					:key="pab"
+				>
+					<p class="entryName">{{ pab.start }}</p>
+					<p class="entryRequestText">{{ pab.end }}</p>
+					<p>{{ pab.extraService }}</p>
+					<p>Cena: {{ pab.price }}.00</p>
+					<button class="entryApprove" @click="approve()">
+						Cancel
+					</button>
+					<button class="entryDeny" @click="deny()">Deny</button>
+				</div>
+			</div>
+			<!-- future room booking -->
+			<div class="table">
+				<h3>Future Room Bookings</h3>
+				<button>Sort</button>
+				<div
+					class="tableEntry"
+					v-for="prb in futureAdventureBookings"
+					:key="prb"
+				>
+					<p class="entryName">{{ prb.start }}</p>
+					<p class="entryRequestText">{{ prb.end }}</p>
+					<p>{{ prb.extraService }}</p>
+					<p>Cena: {{ prb.price }}.00</p>
+					<button class="entryApprove" @click="approve()">
+						Cancel
+					</button>
+					<button class="entryDeny" @click="deny()">Deny</button>
+				</div>
+			</div>
+
+			<!-- sub boat -->
+			<div class="table">
+				<h3>Subscribed Boat</h3>
+				<button>Sort</button>
+				<div class="tableEntry" v-for="pbb in subBoat" :key="pbb">
+					<p class="entryName">{{ pbb.name }}</p>
+					<p class="entryRequestText">{{ pbb.promoDescription }}</p>
+					<p>{{ pbb.extraService }}</p>
+					<p>Cena: {{ pbb.pricePerDay }}.00</p>
+					<button class="entryApprove" @click="approve()">
+						Approve
+					</button>
+					<button class="entryDeny" @click="deny()">Deny</button>
+				</div>
+			</div>
+			<!-- sub adventure -->
+			<div class="table">
+				<h3>Subscribed Adventure</h3>
+				<button>Sort</button>
+				<div class="tableEntry" v-for="pab in subAdventure" :key="pab">
+					<p class="entryName">{{ pab.name }}</p>
+					<p class="entryRequestText">{{ pab.promoDescription }}</p>
+					<p>{{ pab.extraService }}</p>
+					<p>Cena: {{ pab.pricePerDay }}.00</p>
+					<button class="entryApprove" @click="approve()">
+						Approve
+					</button>
+					<button class="entryDeny" @click="deny()">Deny</button>
+				</div>
+			</div>
+			<!-- sub cottage -->
+			<div class="table">
+				<h3>Subscribed Cottage</h3>
+				<button>Sort</button>
+				<div class="tableEntry" v-for="prb in subCottage" :key="prb">
+					<p class="entryName">{{ prb.name }}</p>
+					<p class="entryRequestText">{{ prb.promoDescription }}</p>
+					<p>{{ prb.extraService }}</p>
+					<p>Cena: {{ prb.pricePerDay }}.00</p>
+					<button class="entryApprove" @click="approve()">
+						Approve
+					</button>
+					<button class="entryDeny" @click="deny()">Deny</button>
+				</div>
+			</div>
+
+			<!-- Spacer -->
+			<div style="height: 80px"></div>
+			<button @click="wantsDeletion()">Delete My Account</button>
+			<button @click="wantsDeletion()">Submit a Complaint</button>
+			<button @click="wantsDeletion()">Change My Password</button>
+		</div>
 	</div>
 </template> 
 
@@ -48,32 +232,123 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		const returnGET = ref(null); // TODO: Sta ovo znaci?
-		const returnPOST = ref(null); // TODO: Sta ovo znaci?
-		axios.get("/api/get").then((data) => (returnGET.value = data.data)); // TODO: Kakva je ovo sintaksa
-		var x = 3;
+		var user = ref(null);
+		var updateToggle = ref(null);
 		axios
-			.post("/api/post", x)
-			.then((data) => (returnPOST.value = data.data)); // Ovo data => ... je valjda isto sto i function(data){...} ❗❗❗
-		// axios.post("/api/post", {})
-		//   .then(function (data) {
-		//     returnPOST.value = data.data;
-		//   })
+			.get("/api/registeredUser/getByEmail/" + localStorage["emailHash"])
+			.then(function (response) {
+				user.value = response.data;
+				localStorage["userId"] = user.value.id;
+			});
 
-		// Ovo u Notion :
-		// axios
-		//   .post("/api/post", {})
-		//   .then(function (response) {
-		//     console.log(response + " AAAAAAAAAAAAAAAAA");
-		//   })
-		//   .catch(function (error) {
-		//     console.log(error + " BBBBBBBBBBBBBBBB");
-		//   });
+		var pastBoatBookings = ref(null);
+		axios
+			.get(
+				"/api/registeredUser/pastBoatBookings/" + localStorage["userId"]
+			)
+			.then(function (response) {
+				pastBoatBookings.value = response.data;
+			});
 
-		// Za u <template>
+		var pastAdventureBookings = ref(null);
+		axios
+			.get(
+				"/api/registeredUser/pastAdventureBookings/" +
+					localStorage["userId"]
+			)
+			.then(function (response) {
+				pastAdventureBookings.value = response.data;
+			});
+
+		var pastRoomBookings = ref(null);
+		axios
+			.get(
+				"/api/registeredUser/pastRoomBookings/" + localStorage["userId"]
+			)
+			.then(function (response) {
+				pastRoomBookings.value = response.data;
+			});
+
+		var futureBoatBookings = ref(null);
+		axios
+			.get(
+				"/api/registeredUser/futureBoatBookings/" +
+					localStorage["userId"]
+			)
+			.then(function (response) {
+				futureBoatBookings.value = response.data;
+			});
+
+		var futureAdventureBookings = ref(null);
+		axios
+			.get(
+				"/api/registeredUser/futureAdventureBookings/" +
+					localStorage["userId"]
+			)
+			.then(function (response) {
+				futureAdventureBookings.value = response.data;
+			});
+
+		var futureRoomBookings = ref(null);
+		axios
+			.get(
+				"/api/registeredUser/futureRoomBookings/" +
+					localStorage["userId"]
+			)
+			.then(function (response) {
+				futureRoomBookings.value = response.data;
+			});
+
+		var subBoat = ref(null);
+		axios
+			.get("/api/registeredUser/subBoat/" + localStorage["userId"])
+			.then(function (response) {
+				console.log(response.data);
+				subBoat.value = response.data;
+			});
+
+		var subAdventure = ref(null);
+		axios
+			.get("/api/registeredUser/subAdventure/" + localStorage["userId"])
+			.then(function (response) {
+				subAdventure.value = response.data;
+			});
+
+		var subCottage = ref(null);
+		axios
+			.get("/api/registeredUser/subCottage/" + localStorage["userId"])
+			.then(function (response) {
+				subCottage.value = response.data;
+			});
+
 		return {
-			returnGET,
-			returnPOST,
+			user,
+			pastBoatBookings,
+			pastAdventureBookings,
+			pastRoomBookings,
+			futureBoatBookings,
+			futureAdventureBookings,
+			futureRoomBookings,
+			subBoat,
+			subAdventure,
+			subCottage,
+			updateToggle,
+			wantsDeletion() {
+				alert("Not implemented yet!");
+			},
+			updateDetails() {
+				this.updateToggle = true;
+			},
+			// approve() {
+			// 	alert("Not implemented yet!");
+			// },
+			// deny() {
+			// 	alert("Not implemented yet!");
+			// },
+			// sendUpdatedDetails() {
+			// 	alert("Updates sent!");
+			// 	// TODO: Send details.
+			// },
 		};
 	},
 };
@@ -82,31 +357,140 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
 body {
-	background-image: url("../../assets/adventure-time-background.jpg");
-	background-color: #1a2022;
+	/* background-image: url("../../assets/adventure-time-background.jpg"); */
+	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
 	color: #10120e;
 	font-family: Aleo;
 }
 #logo-container {
-	margin: 3em 70em 0 10em;
+	margin-top: 8px;
+	text-align: center;
 }
 .underlined {
+	display: inline-block;
 	border-bottom: #ad6800 3px solid;
-	height: 80px;
+	height: 43px;
 }
-#card {
-	background-color: white;
-	height: 400px;
+.underlined img {
+	height: 40px;
+	margin-bottom: -6px;
+	margin-right: -7px;
+}
+.underlined p {
+	margin-left: 10px;
+	font-size: 40px;
+	letter-spacing: -1px;
+	display: inline;
+}
+.mainFlex {
+	margin: 50px 200px 0px;
+	display: flex;
+	justify-content: space-between;
+}
+.leftFlex {
+	display: flex;
+	flex-direction: column;
+}
+h4 {
 	margin: 0;
-	border-radius: 24px;
+	font-weight: 400;
+	font-size: 50px;
 }
-a {
-	color: #ad6800;
-	text-decoration: none;
+h3 {
+	margin: 0;
+	font-weight: 400;
+	font-size: 35px;
 }
-a:hover {
-	color: #53380e;
+.leftFlex p {
+	margin: 0;
+	font-size: 27px;
+	font-weight: 100;
 }
-</style>
+.leftFlex img {
+	width: 800px;
+	height: 450px;
+	border-radius: 15px;
+	object-fit: cover;
+}
+.rightFlex {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background-color: rgb(241, 241, 241);
+	padding: 20px;
+	border-radius: 15px;
+	border: 2px solid #da9e46;
+}
+.rightFlex p {
+	margin: 4px 0;
+	font-size: 30px;
+}
+.rightFlex .smallText {
+	margin: 0;
+	font-size: 22px;
+}
+.rightFlex input {
+	height: 24px;
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 18px;
+	background-color: #f0f0f0;
+}
+.rightFlex input:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
+}
+button {
+	margin: 0 auto;
+	height: 40px;
+	width: 290px;
+	background-color: #da9e46;
+	border: none;
+	border-radius: 4px;
+	font-family: Aleo;
+	font-size: 24px;
+	transition: 0.15s;
+	margin-top: 20px;
+}
+button:hover {
+	background-color: #9e6b1d;
+	color: white;
+	cursor: pointer;
+}
+.lowerFlex {
+	margin: 0px 200px;
+	display: flex;
+	flex-direction: column;
+}
+.lowerFlex h3 {
+	border-bottom: solid 1px rgb(145, 145, 145);
+}
+.tableEntry {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 55px;
+	border-bottom: solid 1px rgb(145, 145, 145);
+}
+.tableEntry .entryName {
+	margin: auto 0;
+	width: 160px;
+}
+.tableEntry .entryRequestText {
+	width: 800px;
+	margin: auto 0;
+}
+.tableEntry button {
+	width: 110px;
+	margin: auto 0;
+	font-size: 20px;
+}
+.tableEntry .entryApprove {
+	background-color: rgb(108, 207, 108);
+}
+.tableEntry .entryDeny {
+	background-color: rgb(194, 109, 109);
+}
+</style> 

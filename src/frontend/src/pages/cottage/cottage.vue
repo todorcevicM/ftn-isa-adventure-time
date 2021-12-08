@@ -17,12 +17,16 @@
 			</div>
 			<div class="rightFlex">
 				<p>Address : {{ cottage.address }}</p>
-				<p style="font-size: 22px">
+				<p class="smallText">
 					({{ cottage.geoLng }}, {{ cottage.geoLat }})
 				</p>
 				<p>Promo : {{ cottage.promoDescription }}</p>
 				<p>Rules : {{ cottage.rules }}</p>
 				<p>Info : {{ cottage.priceAndInfo }}</p>
+				<p>Rooms :</p>
+				<p v-for="(item, key) in rooms" class="smallText" :key="item">
+					Room {{ key + 1 }} : {{ item.numberOfBeds }} beds.
+				</p>
 				<p>Start : {{ cottage.reservationStart }}</p>
 				<p>End : {{ cottage.reservationEnd }}</p>
 				<p>{{ cottage.maxUsers }} person limit.</p>
@@ -47,6 +51,13 @@ export default {
 			// Mora localStorage da bi se izbegao limit scope-a .then()-a
 		});
 
+		var rooms = ref(null);
+		axios
+			.get("/api/rooms/getAllByCottageId/" + id)
+			.then(function (response) {
+				rooms.value = response.data;
+			});
+
 		var owner = ref(null);
 		axios
 			.get("/api/cottageOwner/get/" + localStorage["cottageOwner"])
@@ -58,6 +69,7 @@ export default {
 		return {
 			cottage,
 			owner,
+			rooms,
 			imageSource(id) {
 				return require("../../assets/images/cottage" + id + ".png");
 			},
@@ -109,7 +121,7 @@ body {
 	display: flex;
 	flex-direction: column;
 }
-.leftFlex h4 {
+h4 {
 	margin: 0;
 	font-weight: 400;
 	font-size: 50px;
@@ -128,10 +140,19 @@ body {
 .rightFlex {
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
+	background-color: rgb(241, 241, 241);
+	padding: 20px;
+	border-radius: 15px;
+	border: 2px solid #da9e46;
 }
 .rightFlex p {
 	margin: 4px 0;
 	font-size: 36px;
+}
+.rightFlex .smallText {
+	margin: 0;
+	font-size: 22px;
 }
 button {
 	margin: 0 auto;
@@ -142,6 +163,7 @@ button {
 	border-radius: 4px;
 	font-family: Aleo;
 	font-size: 24px;
+	transition: 0.15s;
 }
 button:hover {
 	background-color: #9e6b1d;

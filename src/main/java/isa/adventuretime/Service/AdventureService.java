@@ -24,4 +24,20 @@ public class AdventureService {
 	public ArrayList<Adventure> findAll() {
 		return adventureRepo.findAll();
 	}
+
+	public ArrayList<Adventure> findAllByIdIn(ArrayList<Long> ids) {
+		return adventureRepo.findAllByIdIn(ids);
+	}
+
+	public Adventure save(Adventure adventure) {
+		return adventureRepo.save(adventure);
+	}
+
+	public ArrayList<Adventure> getPastAdventuresByInstructorId(Long id) {
+		return adventureRepo.getPastAdventuresByInstructorId(id);
+	}
+
+	public void deleteById(Long id) {
+		adventureRepo.deleteById(id);
+	}
 }

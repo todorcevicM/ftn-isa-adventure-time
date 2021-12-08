@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Service.AdventureService;
+
 import org.springframework.http.MediaType;
 
 import java.util.Date;
@@ -35,9 +36,9 @@ public class AdventureController {
 	}
 
 	@GetMapping(path = "/get/{id}")
-	public ResponseEntity<Adventure> getAdventure(@PathVariable("id") Long id){
+	public ResponseEntity<Adventure> getAdventure(@PathVariable("id") Long id) {
 		Adventure adventure = adventureService.getById(id);
-		if(adventure == null) {
+		if (adventure == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Adventure>(adventure, HttpStatus.OK);
@@ -50,4 +51,19 @@ public class AdventureController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<ArrayList<Date>>(dates, HttpStatus.OK);
 	}
+
+	// @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// public ResponseEntity<Adventure> saveAdventure(RequestEntity<Adventure>
+	// adventure) {
+	// // TODO: Prosledi objekat, ne RequestEntity
+	// return new ResponseEntity<Adventure>(adventureService.save(adventure),
+	// HttpStatus.OK);
+	// }
+
+	@PostMapping(path = "/delete/{id}") 
+	public void deleteAdventure(@PathVariable("id") Long id) {
+		adventureService.deleteById(id);
+	}
+
 }

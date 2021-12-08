@@ -17,6 +17,10 @@ public class FishingInstructorService{
         fishingInstructorRepo = repo;
     }
 
+    public ArrayList<FishingInstructor> getAll(){
+        return (ArrayList<FishingInstructor>) fishingInstructorRepo.findAll();
+    }
+
     public FishingInstructor getById(Long Id){
         return fishingInstructorRepo.getById(Id);
     }
@@ -39,5 +43,9 @@ public class FishingInstructorService{
 
     public ArrayList<FishingInstructor> findAllByAuthenticated(Boolean authenticated){
         return fishingInstructorRepo.findAllByAuthenticated(authenticated);
+    }
+
+    public void deleteById(Long id){
+        fishingInstructorRepo.deleteById(id);
     }
 }

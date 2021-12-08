@@ -45,17 +45,26 @@ public class User {
 
 	public void updateWithUser(User user) {
 		this.address = user.address;
-		this.authenticated = user.authenticated;
+		this.authenticated = user.authenticated; // Ne treba
 		this.city = user.city;
 		this.country = user.country;
 		// this.email = user.email; NOT Allowed
-		this.emailHash = user.emailHash;
-		this.lastname = user.lastname;
-		this.name = user.name;
+		this.emailHash = user.emailHash; // Ne treba
+		this.lastname = user.lastname; // Ne treba
+		this.name = user.name; // Ne treba
 		this.telephoneNumber = user.telephoneNumber;
 		this.wantsDeletion = user.wantsDeletion;
-		this.userType = user.getUserType();
+		this.userType = user.getUserType(); // Ne treba
+		this.password = user.getPassword(); // Ne treba
+	}
+
+	public void updateUserWithUser(User user) {
 		this.password = user.getPassword();
+		this.address = user.address;
+		this.city = user.city;
+		this.country = user.country;
+		this.telephoneNumber = user.telephoneNumber;
+		this.wantsDeletion = user.wantsDeletion;
 	}
 
 }

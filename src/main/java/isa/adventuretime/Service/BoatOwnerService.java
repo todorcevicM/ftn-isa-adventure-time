@@ -17,6 +17,10 @@ public class BoatOwnerService {
 		boatOwnerRepo = repo;
 	}
 
+	public ArrayList<BoatOwner> getAll() {
+		return (ArrayList<BoatOwner>) boatOwnerRepo.findAll();
+	}
+
 	public BoatOwner getById(Long Id) {
 		return boatOwnerRepo.getById(Id);
 	}
@@ -40,4 +44,9 @@ public class BoatOwnerService {
 	public ArrayList<BoatOwner> findAllByAuthenticated(Boolean authenticated){
 		return boatOwnerRepo.findAllByAuthenticated(authenticated);
 	}
+
+	public void deleteById(Long id) {
+		boatOwnerRepo.deleteById(id);
+	}
+
 }

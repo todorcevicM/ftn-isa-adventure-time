@@ -54,4 +54,8 @@ public class BoatController {
 		return new ResponseEntity<ArrayList<Date>>(dates, HttpStatus.OK);
 	}
 
+	@PostMapping(path = "/delete/{id}")
+	public void deleteBoat(@PathVariable("id") Long id) {
+		boatService.deleteById(id);
+	}
 }

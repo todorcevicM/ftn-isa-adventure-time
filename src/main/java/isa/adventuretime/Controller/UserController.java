@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isa.adventuretime.DTO.UnauthenticatedUser;
+import isa.adventuretime.DTO.UnauthenticatedUserDTO;
 import isa.adventuretime.Entity.Administrator;
 import isa.adventuretime.Entity.BoatOwner;
 import isa.adventuretime.Entity.CottageOwner;
@@ -23,7 +23,7 @@ import isa.adventuretime.Entity.FishingInstructor;
 import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RegisteredUser;
 import isa.adventuretime.Entity.RequestForAdmin;
-import isa.adventuretime.Entity.UnregisteredUser;
+import isa.adventuretime.Entity.Subscription;
 import isa.adventuretime.Entity.User;
 import isa.adventuretime.Service.AdministratorService;
 import isa.adventuretime.Service.BoatOwnerService;
@@ -32,6 +32,7 @@ import isa.adventuretime.Service.FishingInstructorService;
 import isa.adventuretime.Service.MailService;
 import isa.adventuretime.Service.RegisteredUserService;
 import isa.adventuretime.Service.RequestForAdminService;
+import isa.adventuretime.Service.SubscriptionService;
 
 @RestController
 @RequestMapping(path = "/api/user")
@@ -55,7 +56,11 @@ public class UserController {
 	@Autowired
 	private MailService mailService;
 
-	@Autowired RequestForAdminService requestForAdminService;
+	@Autowired
+	RequestForAdminService requestForAdminService;
+
+	@Autowired
+	private SubscriptionService subscriptionService;
 
 	@PostMapping(value = ("/login"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> userLogin(RequestEntity<ArrayList<String>> credentials) throws Exception {
@@ -118,7 +123,7 @@ public class UserController {
 		if (newUser != null) {
 			if (newUser.getAuthenticated() == true) {
 				if (password.equals(newUser.getPassword())) {
-					newUser.setUserType("admin");
+					newUser.setUserType("administrator");
 					return new ResponseEntity<User>(newUser, HttpStatus.OK);
 				} else {
 					return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
@@ -132,31 +137,79 @@ public class UserController {
 
 	@PostMapping(value = ("/update"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> userUpdate(RequestEntity<User> user) throws Exception {
-
+		User updatedUser = new User();
+		// System.out.println(user);
+		// System.out.println(user.getBody());
+		// System.out.println(user.getBody().getUserType());
 		switch (user.getBody().getUserType()) {
 			case "registeredUser":
 				RegisteredUser registeredUser = registeredUserService.findByEmail(user.getBody().getEmail());
-				registeredUser.updateWithUser(user.getBody());
+				updatedUser = new User(
+						user.getBody().getName(),
+						user.getBody().getLastname(),
+						user.getBody().getEmail(),
+						user.getBody().getPassword(),
+						user.getBody().getAddress(),
+						user.getBody().getCity(),
+						user.getBody().getCountry(),
+						user.getBody().getTelephoneNumber());
+				registeredUser.updateUserWithUser(updatedUser);
 				registeredUserService.saveRegisteredUser(registeredUser);
 				return new ResponseEntity<User>((User) registeredUser, HttpStatus.OK);
 			case "boatOwner":
 				BoatOwner boatOwner = boatOwnerService.findByEmail(user.getBody().getEmail());
-				boatOwner.updateWithUser(user.getBody());
+				updatedUser = new User(
+						user.getBody().getName(),
+						user.getBody().getLastname(),
+						user.getBody().getEmail(),
+						user.getBody().getPassword(),
+						user.getBody().getAddress(),
+						user.getBody().getCity(),
+						user.getBody().getCountry(),
+						user.getBody().getTelephoneNumber());
+				boatOwner.updateUserWithUser(updatedUser);
 				boatOwnerService.saveBoatOwner(boatOwner);
 				return new ResponseEntity<User>((User) boatOwner, HttpStatus.OK);
 			case "cottageOwner":
 				CottageOwner cottageOwner = cottageOwnerService.findByEmail(user.getBody().getEmail());
-				cottageOwner.updateWithUser(user.getBody());
+				updatedUser = new User(
+						user.getBody().getName(),
+						user.getBody().getLastname(),
+						user.getBody().getEmail(),
+						user.getBody().getPassword(),
+						user.getBody().getAddress(),
+						user.getBody().getCity(),
+						user.getBody().getCountry(),
+						user.getBody().getTelephoneNumber());
+				cottageOwner.updateUserWithUser(updatedUser);
 				cottageOwnerService.saveCottageOwner(cottageOwner);
 				return new ResponseEntity<User>((User) cottageOwner, HttpStatus.OK);
 			case "fishingInstructor":
 				FishingInstructor fishingInstructor = fishingInstructorService.findByEmail(user.getBody().getEmail());
-				fishingInstructor.updateWithUser(user.getBody());
+				updatedUser = new User(
+						user.getBody().getName(),
+						user.getBody().getLastname(),
+						user.getBody().getEmail(),
+						user.getBody().getPassword(),
+						user.getBody().getAddress(),
+						user.getBody().getCity(),
+						user.getBody().getCountry(),
+						user.getBody().getTelephoneNumber());
+				fishingInstructor.updateUserWithUser(updatedUser);
 				fishingInstructorService.saveFishingInstructor(fishingInstructor);
 				return new ResponseEntity<User>((User) fishingInstructor, HttpStatus.OK);
-			case "admin":
+			case "administrator":
 				Administrator administrator = administratorService.findByEmail(user.getBody().getEmail());
-				administrator.updateWithUser(user.getBody());
+				updatedUser = new User(
+						user.getBody().getName(),
+						user.getBody().getLastname(),
+						user.getBody().getEmail(),
+						user.getBody().getPassword(),
+						user.getBody().getAddress(),
+						user.getBody().getCity(),
+						user.getBody().getCountry(),
+						user.getBody().getTelephoneNumber());
+				administrator.updateUserWithUser(updatedUser);
 				administratorService.saveAdministrator(administrator);
 				return new ResponseEntity<User>((User) administrator, HttpStatus.OK);
 		}
@@ -164,9 +217,8 @@ public class UserController {
 	}
 
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> registerUser(RequestEntity<UnregisteredUser> request)
+	public ResponseEntity<String> registerUser(RequestEntity<UnauthenticatedUserDTO> request)
 			throws AddressException, UnsupportedEncodingException {
-
 		String new_user_email = request.getBody().getEmail();
 		String returnedString = "User has been successfully created!";
 		System.out.println(request.getBody().getEmail());
@@ -174,12 +226,14 @@ public class UserController {
 		System.out.println(request.getBody().getCity());
 		System.out.println(request.getBody().getCountry());
 
+		RequestForAdmin requestForAdmin = new RequestForAdmin();
+
 		if (registeredUserService.findByEmail(new_user_email) == null
 				&& boatOwnerService.findByEmail(new_user_email) == null
 				&& cottageOwnerService.findByEmail(new_user_email) == null
 				&& fishingInstructorService.findByEmail(new_user_email) == null) {
-
-			switch (request.getBody().getType()) {
+			System.out.println(request.getBody().getUserType());
+			switch (request.getBody().getUserType()) {
 				case "registeredUser":
 					RegisteredUser registeredUser = new RegisteredUser(request.getBody().getName(),
 							request.getBody().getLastname(), request.getBody().getEmail(),
@@ -194,7 +248,15 @@ public class UserController {
 							request.getBody().getAddress(),
 							request.getBody().getCity(), request.getBody().getCountry(),
 							request.getBody().getTelephoneNumber());
-					boatOwnerService.register(boatOwner);
+					boatOwner.setAuthenticated(false);
+					BoatOwner newBoatOwner = boatOwnerService.register(boatOwner);
+
+					requestForAdmin = new RequestForAdmin(
+							newBoatOwner.getId(),
+							HeadEntityEnum.BOAT_OWNER,
+							request.getBody().getUserRegistrationReason());
+					requestForAdminService.saveRequestForAdmin(requestForAdmin);
+
 					break;
 				case "cottageOwner":
 					CottageOwner cottageOwner = new CottageOwner(request.getBody().getName(),
@@ -202,7 +264,15 @@ public class UserController {
 							request.getBody().getPassword(),
 							request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
 							request.getBody().getTelephoneNumber());
-					cottageOwnerService.register(cottageOwner);
+					cottageOwner.setAuthenticated(false);
+					CottageOwner newCottageOwner = cottageOwnerService.register(cottageOwner);
+
+					requestForAdmin = new RequestForAdmin(
+							newCottageOwner.getId(),
+							HeadEntityEnum.COTTAGE_OWNER,
+							request.getBody().getUserRegistrationReason());
+					requestForAdminService.saveRequestForAdmin(requestForAdmin);
+
 					break;
 				case "fishingInstructor":
 					FishingInstructor fishingInstructor = new FishingInstructor(request.getBody().getName(),
@@ -210,7 +280,15 @@ public class UserController {
 							request.getBody().getPassword(),
 							request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
 							request.getBody().getTelephoneNumber());
-					fishingInstructorService.register(fishingInstructor);
+					fishingInstructor.setAuthenticated(false);
+					FishingInstructor newFishingInstructor = fishingInstructorService.register(fishingInstructor);
+
+					requestForAdmin = new RequestForAdmin(
+							newFishingInstructor.getId(),
+							HeadEntityEnum.FISHING_INSTRUCTOR,
+							request.getBody().getUserRegistrationReason());
+					requestForAdminService.saveRequestForAdmin(requestForAdmin);
+
 					break;
 				default:
 					returnedString = "Error - Unrecognized type!";
@@ -224,33 +302,34 @@ public class UserController {
 		return new ResponseEntity<String>(returnedString, HttpStatus.OK);
 	}
 
-
 	@GetMapping(path = "/getUnauthenticated")
-	public ResponseEntity<ArrayList<UnauthenticatedUser>> getUnauthenticated() {
-		ArrayList<UnauthenticatedUser> unauthenticatedUsers = new ArrayList<>();
+	public ResponseEntity<ArrayList<UnauthenticatedUserDTO>> getUnauthenticated() {
+		ArrayList<UnauthenticatedUserDTO> unauthenticatedUsers = new ArrayList<>();
 		ArrayList<RequestForAdmin> requestForAdmins = requestForAdminService.findAll();
-		System.out.println("---------");
-		System.out.println(requestForAdmins.size());
-	
+
 		ArrayList<BoatOwner> boatOwners = boatOwnerService.findAllByAuthenticated(false);
 		ArrayList<CottageOwner> cottageOwners = cottageOwnerService.findAllByAuthenticated(false);
 		ArrayList<FishingInstructor> fishingInstructors = fishingInstructorService.findAllByAuthenticated(false);
 
-		for (RequestForAdmin requestForAdmin : requestForAdmins) 
+		for (RequestForAdmin requestForAdmin : requestForAdmins)
 			switch (requestForAdmin.getForType()) {
 				case BOAT_OWNER:
 					for (BoatOwner boatOwner : boatOwners) {
-						if(requestForAdmin.getRequesterId() == boatOwner.getId() && requestForAdmin.getForType().equals(HeadEntityEnum.BOAT_OWNER)){
-							unauthenticatedUsers.add(new UnauthenticatedUser(boatOwner, requestForAdmin, HeadEntityEnum.BOAT_OWNER));
+						if (requestForAdmin.getRequesterId() == boatOwner.getId()
+								&& requestForAdmin.getForType().equals(HeadEntityEnum.BOAT_OWNER)) {
+							unauthenticatedUsers.add(
+									new UnauthenticatedUserDTO(boatOwner, requestForAdmin, HeadEntityEnum.BOAT_OWNER));
 							boatOwners.remove(boatOwner);
 						}
 						break;
-					}	
+					}
 					break;
 				case FISHING_INSTRUCTOR:
 					for (FishingInstructor fishingInstructor : fishingInstructors) {
-						if(requestForAdmin.getRequesterId() == fishingInstructor.getId() && requestForAdmin.getForType().equals(HeadEntityEnum.FISHING_INSTRUCTOR)){
-							unauthenticatedUsers.add(new UnauthenticatedUser(fishingInstructor, requestForAdmin, HeadEntityEnum.FISHING_INSTRUCTOR));
+						if (requestForAdmin.getRequesterId() == fishingInstructor.getId()
+								&& requestForAdmin.getForType().equals(HeadEntityEnum.FISHING_INSTRUCTOR)) {
+							unauthenticatedUsers.add(new UnauthenticatedUserDTO(fishingInstructor, requestForAdmin,
+									HeadEntityEnum.FISHING_INSTRUCTOR));
 							fishingInstructors.remove(fishingInstructor);
 						}
 						break;
@@ -258,8 +337,10 @@ public class UserController {
 					break;
 				case COTTAGE_OWNER:
 					for (CottageOwner cottageOwner : cottageOwners) {
-						if(requestForAdmin.getRequesterId() == cottageOwner.getId() && requestForAdmin.getForType().equals(HeadEntityEnum.COTTAGE_OWNER)){
-							unauthenticatedUsers.add(new UnauthenticatedUser(cottageOwner, requestForAdmin, HeadEntityEnum.COTTAGE_OWNER));
+						if (requestForAdmin.getRequesterId() == cottageOwner.getId()
+								&& requestForAdmin.getForType().equals(HeadEntityEnum.COTTAGE_OWNER)) {
+							unauthenticatedUsers.add(new UnauthenticatedUserDTO(cottageOwner, requestForAdmin,
+									HeadEntityEnum.COTTAGE_OWNER));
 							cottageOwners.remove(cottageOwner);
 						}
 						break;
@@ -270,7 +351,7 @@ public class UserController {
 					break;
 			}
 
-		return new ResponseEntity<ArrayList<UnauthenticatedUser>>(unauthenticatedUsers, HttpStatus.OK);
+		return new ResponseEntity<ArrayList<UnauthenticatedUserDTO>>(unauthenticatedUsers, HttpStatus.OK);
 
 	}
 

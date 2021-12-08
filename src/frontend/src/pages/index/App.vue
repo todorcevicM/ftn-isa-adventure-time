@@ -25,6 +25,7 @@
 			</p>
 		</div>
 
+		<!-- Login -->
 		<!-- <div v-if="loginState" style="height: 500px"></div> -->
 		<div v-if="loginState" class="popupLogin">
 			<div style="height: 20px"></div>
@@ -52,6 +53,7 @@
 		<!-- Optional Spacer -->
 		<div v-if="loginState" style="height: 200px"></div>
 
+		<!-- Registration -->
 		<div v-if="popupState" class="popupRegister">
 			<div style="height: 20px"></div>
 			<!-- Spacer -->
@@ -172,11 +174,19 @@
 			<p>{{ signUpMessageText }}</p>
 		</div>
 		<div class="mainCard">
-			<div style="text-align: center">
+			<div class="search" style="text-align: center">
 				<img
 					src="../../assets/wheel.svg"
 					style="width: 48px; margin-top: 18px"
 				/>
+				<input
+					type="text"
+					placeholder="Search..."
+					v-model="searchQuery"
+				/>
+				<div v-if="searchQuery" class="searchResult">
+					<p>No results found...</p>
+				</div>
 			</div>
 			<div class="largeCategory">
 				<h1>Browse Cottages</h1>
@@ -300,6 +310,7 @@ export default {
 		var boatNumToDisplay = ref(null);
 		var showAllBoatsToggle = ref(null);
 		showAllBoatsToggle = true;
+		var searchQuery = ref(null);
 
 		axios.get("/api/cottages/get").then(function (response) {
 			cottages.value = response.data;
@@ -339,6 +350,7 @@ export default {
 			showAllAdventuresToggle,
 			boatNumToDisplay,
 			showAllBoatsToggle,
+			searchQuery,
 			passwordMatchCheck(firstPassword, repeatPassword) {
 				if (firstPassword == repeatPassword) {
 					this.matching = "Passwords Match!";
@@ -417,7 +429,7 @@ export default {
 					// this.signUpMessageText = "Sample Text";
 					if (this.firstPassword == this.repeatPassword) {
 						var user = {
-							type: "",
+							userType: "",
 							email: this.userEmail,
 							name: this.userFirstName,
 							lastname: this.userLastName,
@@ -430,16 +442,16 @@ export default {
 						};
 						switch (this.userType) {
 							case "Standard User":
-								user.type = "registeredUser";
+								user.userType = "registeredUser";
 								break;
 							case "Boat Owner":
-								user.type = "boatOwner";
+								user.userType = "boatOwner";
 								break;
 							case "Cottage Owner":
-								user.type = "cottageOwner";
+								user.userType = "cottageOwner";
 								break;
 							case "Fishing Instructor":
-								user.type = "fishingInstructor";
+								user.userType = "fishingInstructor";
 								break;
 						}
 
@@ -473,10 +485,10 @@ export default {
 									// 	signUpMessageText
 									// );
 								} else {
-									// TODO: Ovde je isti problem
 									alert(
 										"A registration request has been sent to the Administrator. Keep your eye open for a verification email!"
 									);
+									// TODO: Ovde je isti problem
 									// popupState.value = false; // Zatvara sign up popup
 									// signUpMessageOn = true;
 									// signUpMessageKind = "success";
@@ -541,11 +553,12 @@ export default {
 									);
 								}
 							}
-							window.location.replace(
-								"/administrator/" + localStorage.getItem("id")
+							window.location.assign(
+								"/" +
+									localStorage.getItem("userType") +
+									"/" +
+									localStorage.getItem("emailHash")
 							);
-							// window.location.href =
-							// 	"/" + localStorage.getItem("userType");
 						})
 						.catch(function (error) {
 							console.log(error.response.status);
@@ -674,6 +687,7 @@ h1 {
 	font-size: 46px;
 	letter-spacing: 1px;
 	border-bottom: #ad6800 3px solid;
+	margin-top: 10px;
 }
 .largeCategory {
 	margin-left: 224px;
@@ -819,5 +833,30 @@ select:focus {
 }
 .bottomCard a:hover {
 	color: rgb(175, 61, 45);
+}
+.search {
+	text-align: center;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.search input {
+	border-radius: 5px;
+	margin-top: 10px;
+}
+.searchResult {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 370px;
+	height: 470px;
+	margin-top: 20px;
+	border-radius: 15px;
+	background-color: rgb(230, 230, 230);
+}
+.searchResult p {
+	text-align: center;
+	color: rgb(71, 71, 71);
+	font-size: 35px;
 }
 </style>

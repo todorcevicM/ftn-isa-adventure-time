@@ -16,6 +16,10 @@ public class CottageOwnerService {
 		this.cottageOwnerRepo = aR;
 	}
 
+	public ArrayList<CottageOwner> getAll() {
+		return (ArrayList<CottageOwner>) cottageOwnerRepo.findAll();
+	}
+
 	public CottageOwner getById(Long id) {
 		return cottageOwnerRepo.getById(id);
 	}
@@ -38,5 +42,9 @@ public class CottageOwnerService {
 
 	public ArrayList<CottageOwner> findAllByAuthenticated(Boolean authenticated){
 		return cottageOwnerRepo.findAllByAuthenticated(authenticated);
+	}
+
+	public void deleteById(Long id) {
+		cottageOwnerRepo.deleteById(id);
 	}
 }

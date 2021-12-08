@@ -15,11 +15,12 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Subscription {
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
-    
-    private Long subberId;
-    private Long subbedId;
-    private HeadEntityEnum forEntity; 
+
+	private Long subberId;
+	private Long subbedId;
+	private HeadEntityEnum forEntity;
+
 }
