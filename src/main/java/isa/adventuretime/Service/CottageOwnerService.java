@@ -16,6 +16,10 @@ public class CottageOwnerService {
 		this.cottageOwnerRepo = aR;
 	}
 
+	public ArrayList<CottageOwner> getAll() {
+		return (ArrayList<CottageOwner>) cottageOwnerRepo.findAll();
+	}
+
 	public CottageOwner getById(Long id) {
 		return cottageOwnerRepo.getById(id);
 	}

@@ -36,6 +36,11 @@ public class CottageOwnerController {
 	@Autowired
 	private RoomService roomService;
 
+	@GetMapping("/get")
+	public ResponseEntity<ArrayList<CottageOwner>> getAll() {
+		return new ResponseEntity<ArrayList<CottageOwner>>(cottageOwnerService.getAll(), HttpStatus.OK);
+	}
+
 	@GetMapping("/get/{id}")
 	public ResponseEntity<CottageOwner> getCottageOwner(@PathVariable("id") Long id) {
 		return new ResponseEntity<>(cottageOwnerService.getById(id), HttpStatus.OK);

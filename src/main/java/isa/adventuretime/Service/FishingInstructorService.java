@@ -17,6 +17,10 @@ public class FishingInstructorService{
         fishingInstructorRepo = repo;
     }
 
+    public ArrayList<FishingInstructor> getAll(){
+        return (ArrayList<FishingInstructor>) fishingInstructorRepo.findAll();
+    }
+
     public FishingInstructor getById(Long Id){
         return fishingInstructorRepo.getById(Id);
     }

@@ -1,5 +1,7 @@
 package isa.adventuretime.Controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,11 @@ public class BoatOwnerController {
 
 	@Autowired
 	private BoatOwnerService boatOwnerService;
+
+	@GetMapping("/get")
+	public ResponseEntity<ArrayList<BoatOwner>> getAll() {
+		return new ResponseEntity<>(boatOwnerService.getAll(), HttpStatus.OK);
+	}
 
 	@GetMapping("/get/{id}")
 	public ResponseEntity<BoatOwner> getBoatOwner(@PathVariable("id") Long id) {

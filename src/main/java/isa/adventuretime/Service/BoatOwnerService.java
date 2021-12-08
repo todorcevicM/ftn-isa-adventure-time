@@ -17,6 +17,10 @@ public class BoatOwnerService {
 		boatOwnerRepo = repo;
 	}
 
+	public ArrayList<BoatOwner> getAll() {
+		return (ArrayList<BoatOwner>) boatOwnerRepo.findAll();
+	}
+
 	public BoatOwner getById(Long Id) {
 		return boatOwnerRepo.getById(Id);
 	}

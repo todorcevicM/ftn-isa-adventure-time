@@ -18,7 +18,6 @@ import isa.adventuretime.Service.FishingInstructorService;
 import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Entity.AdventureBooking;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -33,6 +32,11 @@ public class FishingInstructorController {
 
 	@Autowired
 	private AdventureBookingService adventureBookingService;
+
+	@GetMapping(path = "/get")
+	public ResponseEntity<ArrayList<FishingInstructor>> getAll() {
+		return new ResponseEntity<>(fishingInstructorService.getAll(), HttpStatus.OK);
+	}
 
 	@GetMapping("/get/{id}")
 	public ResponseEntity<FishingInstructor> getFishingInstructor(@PathVariable("id") Long id) {
