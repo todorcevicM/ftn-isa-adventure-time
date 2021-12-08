@@ -95,7 +95,6 @@
 		</div>
 		<div class="lowerFlex">
 			<div class="table">
-				<!-- Registration Requests -->
 				<h3>Registration Requests</h3>
 
 				<div
@@ -113,8 +112,87 @@
 					<button class="entryDeny" @click="deny()">Deny</button>
 				</div>
 			</div>
+			<div class="table">
+				<h3>Cottages</h3>
+				<div
+					class="tableEntry"
+					v-for="cottage in cottages"
+					:key="cottage"
+				>
+					<p class="entryName">{{ cottage.name }}</p>
+					<button
+						class="entryDeny"
+						@click="deleteCottage(cottage.id)"
+					>
+						Delete
+					</button>
+				</div>
+			</div>
+			<div class="table">
+				<h3>Cottage Owners</h3>
+				<div
+					class="tableEntry"
+					v-for="cottageOwner in cottageOwners"
+					:key="cottageOwner"
+				>
+					<p class="entryName">{{ cottageOwner.name }}</p>
+					<button class="entryDeny" @click="xxxx()">Delete</button>
+				</div>
+			</div>
+			<div class="table">
+				<h3>Adventures</h3>
+				<div
+					class="tableEntry"
+					v-for="adventure in adventures"
+					:key="adventure"
+				>
+					<p class="entryName">{{ adventure.name }}</p>
+					<button class="entryDeny" @click="xxxx()">Delete</button>
+				</div>
+			</div>
+			<div class="table">
+				<h3>Fishing Instructors</h3>
+				<div
+					class="tableEntry"
+					v-for="fishingInstructor in fishingInstructors"
+					:key="fishingInstructor"
+				>
+					<p class="entryName">{{ fishingInstructor.name }}</p>
+					<button class="entryDeny" @click="xxxx()">Delete</button>
+				</div>
+			</div>
+			<div class="table">
+				<h3>Boats</h3>
+				<div class="tableEntry" v-for="boat in boats" :key="boat">
+					<p class="entryName">{{ boat.name }}</p>
+					<button class="entryDeny" @click="xxxx()">Delete</button>
+				</div>
+			</div>
+			<div class="table">
+				<h3>Boat Owners</h3>
+				<div
+					class="tableEntry"
+					v-for="boatOwner in boatOwners"
+					:key="boatOwner"
+				>
+					<p class="entryName">{{ boatOwner.name }}</p>
+					<button class="entryDeny" @click="xxxx()">Delete</button>
+				</div>
+			</div>
+			<div class="table">
+				<h3>Registered Users</h3>
+				<div
+					class="tableEntry"
+					v-for="registeredUser in registeredUsers"
+					:key="registeredUser"
+				>
+					<p class="entryName">{{ registeredUser.name }}</p>
+					<button class="entryDeny" @click="xxxx()">Delete</button>
+				</div>
+			</div>
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
+			<!-- Password Change -->
 			<button @click="showPasswordChange()" v-if="!passwordChangeToggle">
 				Change My Password
 			</button>
@@ -190,6 +268,35 @@ export default {
 		var matching = ref(null);
 		var passwordChangeToggle = ref(null);
 
+		var cottages = ref(null);
+		axios.get("/api/cottages/get").then(function (response) {
+			cottages.value = response.data;
+		});
+		var cottageOwners = ref(null);
+		axios.get("/api/cottageOwner/get").then(function (response) {
+			cottageOwners.value = response.data;
+		});
+		var adventures = ref(null);
+		axios.get("/api/adventures/get").then(function (response) {
+			adventures.value = response.data;
+		});
+		var fishingInstructors = ref(null);
+		axios.get("/api/fishingInstructor/get").then(function (response) {
+			fishingInstructors.value = response.data;
+		});
+		var boats = ref(null);
+		axios.get("/api/boats/get").then(function (response) {
+			boats.value = response.data;
+		});
+		var boatOwners = ref(null);
+		axios.get("/api/boatOwner/get").then(function (response) {
+			boatOwners.value = response.data;
+		});
+		var registeredUsers = ref(null);
+		axios.get("/api/registeredUser/get").then(function (response) {
+			registeredUsers.value = response.data;
+		});
+
 		return {
 			user,
 			registrationRequests,
@@ -199,6 +306,13 @@ export default {
 			repeatPassword,
 			matching,
 			passwordChangeToggle,
+			cottages,
+			cottageOwners,
+			adventures,
+			fishingInstructors,
+			boats,
+			boatOwners,
+			registeredUsers,
 			checkFirstLogin() {
 				if (this.user.password == "0") {
 					return 1;
@@ -275,6 +389,9 @@ export default {
 			},
 			showPasswordChange() {
 				this.passwordChangeToggle = true;
+			},
+			deleteCottage(id) {
+				alert(id);
 			},
 		};
 	},
@@ -425,6 +542,9 @@ button:hover {
 .lowerFlex h3 {
 	border-bottom: solid 1px rgb(145, 145, 145);
 }
+.table {
+	margin-top: 20px;
+}
 .tableEntry {
 	display: flex;
 	flex-direction: row;
@@ -434,7 +554,7 @@ button:hover {
 }
 .tableEntry .entryName {
 	margin: auto 0;
-	width: 160px;
+	width: 180px;
 }
 .tableEntry .entryRequestText {
 	width: 800px;

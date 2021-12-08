@@ -97,7 +97,7 @@ public class RegisteredUserController {
 		ArrayList<Subscription> subscriptions = subscriptionService.findAllSubberById(id);
 		ArrayList<Long> ids = new ArrayList<>();
 		for (Subscription subscription : subscriptions) {
-			if (subscription.getForEntity().equals(HeadEntityEnum.BOAT_OWNER)) 
+			if (subscription.getForEntity().equals(HeadEntityEnum.BOAT_OWNER))
 				ids.add(subscription.getSubbedId());
 		}
 		return new ResponseEntity<ArrayList<Boat>>(
@@ -148,6 +148,11 @@ public class RegisteredUserController {
 		} else {
 			return new ResponseEntity<>(registeredUser, HttpStatus.OK);
 		}
+	}
+
+	@GetMapping(path = "/get")
+	public ResponseEntity<ArrayList<RegisteredUser>> getAll() {
+		return new ResponseEntity<>(registeredUserService.getAll(), HttpStatus.OK);
 	}
 
 	@PostMapping(path = "/delete/{id}")
