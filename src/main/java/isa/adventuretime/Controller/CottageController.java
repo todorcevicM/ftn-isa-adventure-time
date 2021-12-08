@@ -75,4 +75,9 @@ public class CottageController {
 		return true;
 	}
 
+	@GetMapping(path = "/getAllByOwnerId/{id}")
+	public ResponseEntity<ArrayList<Cottage>> getAllByOwnerId(@PathVariable("id") Long id) {
+		return new ResponseEntity<ArrayList<Cottage>>(cottageService.getAllByOwnerId(id), HttpStatus.OK);
+	}
+
 }

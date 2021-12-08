@@ -6,29 +6,23 @@
 				<p>Adventure Time</p>
 			</div>
 			<div v-if="checkFirstLogin() == 1" class="firstLogin">
-				<div
-					style="
+				<div style="
 						display: flex;
 						flex-direction: row;
 						justify-content: space-around;
-					"
-				>
+					">
 					<div>
 						<p>Enter new password :</p>
 						<input type="password" v-model="firstPassword" />
 					</div>
 					<div>
 						<p>Repeat password :</p>
-						<input
-							type="password"
-							v-model="repeatPassword"
-							@input="
+						<input type="password" v-model="repeatPassword" @input="
 								passwordMatchCheck(
 									firstPassword,
 									repeatPassword
 								)
-							"
-						/>
+							" />
 					</div>
 				</div>
 				<div class="spacer">
@@ -48,72 +42,47 @@
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
 				<div class="percentage">
-					<p>Percentage taken on reservation:</p>
+					<p style="margin-right: 12px">Percentage taken on reservation:</p>
 					<p v-if="!percentageUpdateToggle">{{ percentage.value }}</p>
-					<input
-						type="text"
-						v-if="percentageUpdateToggle"
-						v-model="percentage.value"
-					/>
+					<input type="text" v-if="percentageUpdateToggle" v-model="percentage.value" />
 					<p>%</p>
-					<button
-						v-if="!percentageUpdateToggle"
-						@click="percentageUpdate()"
-					>
+					<button v-if="!percentageUpdateToggle" @click="percentageUpdate()">
 						Update
 					</button>
-					<button
-						v-if="percentageUpdateToggle"
-						@click="percentageUpdateSubmit()"
-						class="entryApprove"
-					>
+					<button v-if="percentageUpdateToggle" @click="percentageUpdateSubmit()" class="entryApprove">
 						Submit
 					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<div class="percentage">
+					<p>Business Reports</p>
+					<button @click="wantsDeletion()" style="width: 200px">Show Reports</button>
 				</div>
 			</div>
 			<div class="rightFlex">
 				<p>Address</p>
 				<p class="smallText" v-if="!updateToggle">{{ user.address }}</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newUser.newAddress"
-				/>
+				<input type="text" v-if="updateToggle" v-model="newUser.newAddress" />
 
 				<p>City</p>
 				<p class="smallText" v-if="!updateToggle">{{ user.city }}</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newUser.newCity"
-				/>
+				<input type="text" v-if="updateToggle" v-model="newUser.newCity" />
 
 				<p>Country</p>
 				<p class="smallText" v-if="!updateToggle">{{ user.country }}</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newUser.newCountry"
-				/>
+				<input type="text" v-if="updateToggle" v-model="newUser.newCountry" />
 
 				<p>Telephone Number</p>
 				<p class="smallText" v-if="!updateToggle">
 					{{ user.telephoneNumber }}
 				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newUser.newTelephoneNumber"
-				/>
+				<input type="text" v-if="updateToggle" v-model="newUser.newTelephoneNumber" />
 
 				<button @click="updateDetails()" v-if="!updateToggle">
 					Update Details
 				</button>
-				<button
-					@click="sendUpdatedDetails()"
-					v-if="updateToggle"
-					style="background-color: rgb(108, 207, 108)"
-				>
+				<button @click="sendUpdatedDetails()" v-if="updateToggle" style="background-color: rgb(108, 207, 108)">
 					Submit
 				</button>
 			</div>
@@ -122,11 +91,7 @@
 			<div class="table">
 				<h3>Registration Requests</h3>
 
-				<div
-					class="tableEntry"
-					v-for="req in registrationRequests"
-					:key="req"
-				>
+				<div class="tableEntry" v-for="req in registrationRequests" :key="req">
 					<p class="entryName">{{ req.name }}</p>
 					<p class="entryRequestText">
 						{{ req.userRegistrationReason }}
@@ -139,64 +104,36 @@
 			</div>
 			<div class="table">
 				<h3>Cottages</h3>
-				<div
-					class="tableEntry"
-					v-for="cottage in cottages"
-					:key="cottage"
-				>
+				<div class="tableEntry" v-for="cottage in cottages" :key="cottage">
 					<p class="entryName">{{ cottage.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteCottage(cottage.id)"
-					>
+					<button class="entryDeny" @click="deleteCottage(cottage.id)">
 						Delete
 					</button>
 				</div>
 			</div>
 			<div class="table">
 				<h3>Cottage Owners</h3>
-				<div
-					class="tableEntry"
-					v-for="cottageOwner in cottageOwners"
-					:key="cottageOwner"
-				>
+				<div class="tableEntry" v-for="cottageOwner in cottageOwners" :key="cottageOwner">
 					<p class="entryName">{{ cottageOwner.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteCottageOwner(cottageOwner.id)"
-					>
+					<button class="entryDeny" @click="deleteCottageOwner(cottageOwner.id)">
 						Delete
 					</button>
 				</div>
 			</div>
 			<div class="table">
 				<h3>Adventures</h3>
-				<div
-					class="tableEntry"
-					v-for="adventure in adventures"
-					:key="adventure"
-				>
+				<div class="tableEntry" v-for="adventure in adventures" :key="adventure">
 					<p class="entryName">{{ adventure.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteAdventure(adventure.id)"
-					>
+					<button class="entryDeny" @click="deleteAdventure(adventure.id)">
 						Delete
 					</button>
 				</div>
 			</div>
 			<div class="table">
 				<h3>Fishing Instructors</h3>
-				<div
-					class="tableEntry"
-					v-for="fishingInstructor in fishingInstructors"
-					:key="fishingInstructor"
-				>
+				<div class="tableEntry" v-for="fishingInstructor in fishingInstructors" :key="fishingInstructor">
 					<p class="entryName">{{ fishingInstructor.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteFishingInstructor(fishingInstructor.id)"
-					>
+					<button class="entryDeny" @click="deleteFishingInstructor(fishingInstructor.id)">
 						Delete
 					</button>
 				</div>
@@ -212,32 +149,18 @@
 			</div>
 			<div class="table">
 				<h3>Boat Owners</h3>
-				<div
-					class="tableEntry"
-					v-for="boatOwner in boatOwners"
-					:key="boatOwner"
-				>
+				<div class="tableEntry" v-for="boatOwner in boatOwners" :key="boatOwner">
 					<p class="entryName">{{ boatOwner.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteBoatOwner(boatOwner.id)"
-					>
+					<button class="entryDeny" @click="deleteBoatOwner(boatOwner.id)">
 						Delete
 					</button>
 				</div>
 			</div>
 			<div class="table">
 				<h3>Registered Users</h3>
-				<div
-					class="tableEntry"
-					v-for="registeredUser in registeredUsers"
-					:key="registeredUser"
-				>
+				<div class="tableEntry" v-for="registeredUser in registeredUsers" :key="registeredUser">
 					<p class="entryName">{{ registeredUser.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteRegisteredUser(registeredUser.id)"
-					>
+					<button class="entryDeny" @click="deleteRegisteredUser(registeredUser.id)">
 						Delete
 					</button>
 				</div>
@@ -249,29 +172,23 @@
 				Change My Password
 			</button>
 			<div v-if="passwordChangeToggle" class="passwordChange">
-				<div
-					style="
+				<div style="
 						display: flex;
 						flex-direction: row;
 						justify-content: space-around;
-					"
-				>
+					">
 					<div>
 						<p>Enter new password :</p>
 						<input type="password" v-model="firstPassword" />
 					</div>
 					<div>
 						<p>Repeat password :</p>
-						<input
-							type="password"
-							v-model="repeatPassword"
-							@input="
+						<input type="password" v-model="repeatPassword" @input="
 								passwordMatchCheck(
 									firstPassword,
 									repeatPassword
 								)
-							"
-						/>
+							" />
 					</div>
 				</div>
 				<div class="spacer">
@@ -282,477 +199,513 @@
 			<button @click="wantsDeletion()">Delete My Account</button>
 		</div>
 	</div>
-</template> 
+</template>
 
 <script>
-import { ref } from "vue";
-import axios from "axios";
-export default {
-	setup() {
-		var user = ref(null);
-		var updateToggle = ref(null);
-		axios
-			.get("/api/administrator/get/" + localStorage["emailHash"])
-			.then(function (response) {
-				user.value = response.data;
-				localStorage.address = user.value.address;
-				localStorage.city = user.value.city;
-				localStorage.country = user.value.country;
-				localStorage.telephoneNumber = user.value.telephoneNumber;
-				// userType iz ovog user-a je null jer je tako namesteno da bi se izbegao DTO
-				// Posto znamo da radimo sa ovim tipom user-a,
-				// samo u send metodi stavljamo userType koji treba
-			});
-		var newUser = ref({
-			newAddress: localStorage.address,
-			newCity: localStorage.city,
-			newCountry: localStorage.country,
-			newTelephoneNumber: localStorage.telephoneNumber,
-		});
-
-		var registrationRequests = ref(null);
-		axios.get("/api/user/getUnauthenticated").then(function (response) {
-			registrationRequests.value = response.data;
-		});
-
-		var firstPassword = ref(null);
-		var repeatPassword = ref(null);
-		var matching = ref(null);
-		var passwordChangeToggle = ref(null);
-
-		var cottages = ref(null);
-		axios.get("/api/cottages/get").then(function (response) {
-			cottages.value = response.data;
-		});
-		var cottageOwners = ref(null);
-		axios.get("/api/cottageOwner/get").then(function (response) {
-			cottageOwners.value = response.data;
-		});
-		var adventures = ref(null);
-		axios.get("/api/adventures/get").then(function (response) {
-			adventures.value = response.data;
-		});
-		var fishingInstructors = ref(null);
-		axios.get("/api/fishingInstructor/get").then(function (response) {
-			fishingInstructors.value = response.data;
-		});
-		var boats = ref(null);
-		axios.get("/api/boats/get").then(function (response) {
-			boats.value = response.data;
-		});
-		var boatOwners = ref(null);
-		axios.get("/api/boatOwner/get").then(function (response) {
-			boatOwners.value = response.data;
-		});
-		var registeredUsers = ref(null);
-		axios.get("/api/registeredUser/get").then(function (response) {
-			registeredUsers.value = response.data;
-		});
-
-		var percentage = ref(null);
-		var percentageUpdateToggle = ref(null);
-		axios.get("/api/get/constant/" + "ptosr").then(function (response) {
-			percentage.value = response.data;
-		});
-
-		return {
-			user,
-			registrationRequests,
-			updateToggle,
-			newUser,
-			firstPassword,
-			repeatPassword,
-			matching,
-			passwordChangeToggle,
-			cottages,
-			cottageOwners,
-			adventures,
-			fishingInstructors,
-			boats,
-			boatOwners,
-			registeredUsers,
-			percentage,
-			percentageUpdateToggle,
-			checkFirstLogin() {
-				if (this.user.password == "0") {
-					return 1;
-				} else {
-					return 0;
-				}
-			},
-			wantsDeletion() {
-				alert("Not implemented yet!");
-			},
-			updateDetails() {
-				this.updateToggle = true;
-			},
-			approve() {
-				alert("Not implemented yet!");
-			},
-			deny() {
-				alert("Not implemented yet!");
-				// TODO: Tacka 3.25, mora da se otvori dijalog gde admin upisuje razlog za deny.
-			},
-			sendUpdatedDetails() {
-				if (
-					this.newUser.newAddress == "" ||
-					this.newUser.newCity == "" ||
-					this.newUser.newCountry == "" ||
-					this.newUser.newTelephoneNumber == ""
-				) {
-					alert("Please fill out all inputs.");
-					return;
-				}
-				var sendingUser = this.user;
-				sendingUser.address = this.newUser.newAddress;
-				sendingUser.city = this.newUser.newCity;
-				sendingUser.country = this.newUser.newCountry;
-				sendingUser.telephoneNumber = this.newUser.newTelephoneNumber;
-				sendingUser.userType = "administrator";
-				console.log(sendingUser);
-				axios
-					.post("/api/user/update", sendingUser)
-					.then(function (response) {
-						console.log("Response : ");
-						console.log(response.data);
-					});
-				window.location.reload();
-			},
-			passwordMatchCheck(firstPassword, repeatPassword) {
-				if (firstPassword == repeatPassword) {
-					this.matching = "Passwords Match!";
-					return this.matching;
-				} else {
-					this.matching = "Passwords don't match!";
-					return this.matching;
-				}
-			},
-			updatePassword() {
-				if (this.matching == "Passwords don't match!") {
-					alert("Passwords don't match!");
-					return;
-				} else if (this.repeatPassword == null) {
-					alert("All fields need to be filled.");
-					return;
-				}
-				var sendingUser = this.user;
-				sendingUser.password = this.repeatPassword;
-				sendingUser.userType = "administrator";
-				console.log(sendingUser);
-				axios
-					.post("/api/user/update", sendingUser)
-					.then(function (response) {
-						console.log("Response : ");
-						console.log(response.data);
-					});
-				window.location.reload();
-			},
-			showPasswordChange() {
-				this.passwordChangeToggle = true;
-			},
-			// Deletion
-			deleteCottage(id) {
-				axios
-					.post("/api/cottages/delete/" + id)
-					.then(function (response) {
-						console.log("Response : ");
-						console.log(response.data);
-						var booked = response.data;
-						if (booked == false) {
-							alert(
-								"There exist bookings with this item. Deletion is unavailable."
-							);
-							return;
-						} else {
-							alert("Deleted.");
-							window.location.reload();
-						}
-					});
-			},
-			deleteCottageOwner(id) {
-				axios
-					.post("/api/cottageOwner/delete/" + id)
-					.then(function (response) {
-						console.log("Response : ");
-						console.log(response.data);
-					});
-				window.location.reload();
-			},
-			deleteAdventure(id) {
-				axios
-					.post("/api/adventures/delete/" + id)
-					.then(function (response) {
-						console.log("Response : ");
-						console.log(response.data);
-						var booked = response.data;
-						if (booked == false) {
-							alert(
-								"There exist bookings with this item. Deletion is unavailable."
-							);
-							return;
-						} else {
-							alert("Deleted.");
-							window.location.reload();
-						}
-					});
-			},
-			deleteFishingInstructor(id) {
-				axios
-					.post("/api/fishingInstructor/delete/" + id)
-					.then(function (response) {
-						console.log("Response : ");
-						console.log(response.data);
-					});
-				window.location.reload();
-			},
-			deleteBoat(id) {
-				axios.post("/api/boats/delete/" + id).then(function (response) {
-					console.log("Response : ");
-					console.log(response.data);
-					var booked = response.data;
-					if (booked == false) {
-						alert(
-							"There exist bookings with this item. Deletion is unavailable."
-						);
-						return;
-					} else {
-						alert("Deleted.");
-						window.location.reload();
-					}
+	import { ref } from "vue";
+	import axios from "axios";
+	export default {
+		setup() {
+			var user = ref(null);
+			var updateToggle = ref(null);
+			axios
+				.get("/api/administrator/get/" + localStorage["emailHash"])
+				.then(function (response) {
+					user.value = response.data;
+					localStorage.address = user.value.address;
+					localStorage.city = user.value.city;
+					localStorage.country = user.value.country;
+					localStorage.telephoneNumber = user.value.telephoneNumber;
+					// userType iz ovog user-a je null jer je tako namesteno da bi se izbegao DTO
+					// Posto znamo da radimo sa ovim tipom user-a,
+					// samo u send metodi stavljamo userType koji treba
 				});
-			},
-			deleteBoatOwner(id) {
-				axios
-					.post("/api/boatOwner/delete/" + id)
-					.then(function (response) {
+			var newUser = ref({
+				newAddress: localStorage.address,
+				newCity: localStorage.city,
+				newCountry: localStorage.country,
+				newTelephoneNumber: localStorage.telephoneNumber,
+			});
+
+			var registrationRequests = ref(null);
+			axios.get("/api/user/getUnauthenticated").then(function (response) {
+				registrationRequests.value = response.data;
+			});
+
+			var firstPassword = ref(null);
+			var repeatPassword = ref(null);
+			var matching = ref(null);
+			var passwordChangeToggle = ref(null);
+
+			var cottages = ref(null);
+			axios.get("/api/cottages/get").then(function (response) {
+				cottages.value = response.data;
+			});
+			var cottageOwners = ref(null);
+			axios.get("/api/cottageOwner/get").then(function (response) {
+				cottageOwners.value = response.data;
+			});
+			var adventures = ref(null);
+			axios.get("/api/adventures/get").then(function (response) {
+				adventures.value = response.data;
+			});
+			var fishingInstructors = ref(null);
+			axios.get("/api/fishingInstructor/get").then(function (response) {
+				fishingInstructors.value = response.data;
+			});
+			var boats = ref(null);
+			axios.get("/api/boats/get").then(function (response) {
+				boats.value = response.data;
+			});
+			var boatOwners = ref(null);
+			axios.get("/api/boatOwner/get").then(function (response) {
+				boatOwners.value = response.data;
+			});
+			var registeredUsers = ref(null);
+			axios.get("/api/registeredUser/get").then(function (response) {
+				registeredUsers.value = response.data;
+			});
+
+			var percentage = ref(null);
+			var percentageUpdateToggle = ref(null);
+			axios.get("/api/get/constant/" + "ptosr").then(function (response) {
+				percentage.value = response.data;
+			});
+
+			return {
+				user,
+				registrationRequests,
+				updateToggle,
+				newUser,
+				firstPassword,
+				repeatPassword,
+				matching,
+				passwordChangeToggle,
+				cottages,
+				cottageOwners,
+				adventures,
+				fishingInstructors,
+				boats,
+				boatOwners,
+				registeredUsers,
+				percentage,
+				percentageUpdateToggle,
+				checkFirstLogin() {
+					if (this.user.password == "0") {
+						return 1;
+					} else {
+						return 0;
+					}
+				},
+				wantsDeletion() {
+					alert("Not implemented yet!");
+				},
+				updateDetails() {
+					this.updateToggle = true;
+				},
+				approve() {
+					alert("Not implemented yet!");
+				},
+				deny() {
+					alert("Not implemented yet!");
+					// TODO: Tacka 3.25, mora da se otvori dijalog gde admin upisuje razlog za deny.
+				},
+				sendUpdatedDetails() {
+					if (
+						this.newUser.newAddress == "" ||
+						this.newUser.newCity == "" ||
+						this.newUser.newCountry == "" ||
+						this.newUser.newTelephoneNumber == ""
+					) {
+						alert("Please fill out all inputs.");
+						return;
+					}
+					var sendingUser = this.user;
+					sendingUser.address = this.newUser.newAddress;
+					sendingUser.city = this.newUser.newCity;
+					sendingUser.country = this.newUser.newCountry;
+					sendingUser.telephoneNumber = this.newUser.newTelephoneNumber;
+					sendingUser.userType = "administrator";
+					console.log(sendingUser);
+					axios
+						.post("/api/user/update", sendingUser)
+						.then(function (response) {
+							console.log("Response : ");
+							console.log(response.data);
+						});
+					window.location.reload();
+				},
+				passwordMatchCheck(firstPassword, repeatPassword) {
+					if (firstPassword == repeatPassword) {
+						this.matching = "Passwords Match!";
+						return this.matching;
+					} else {
+						this.matching = "Passwords don't match!";
+						return this.matching;
+					}
+				},
+				updatePassword() {
+					if (this.matching == "Passwords don't match!") {
+						alert("Passwords don't match!");
+						return;
+					} else if (this.repeatPassword == null) {
+						alert("All fields need to be filled.");
+						return;
+					}
+					var sendingUser = this.user;
+					sendingUser.password = this.repeatPassword;
+					sendingUser.userType = "administrator";
+					console.log(sendingUser);
+					axios
+						.post("/api/user/update", sendingUser)
+						.then(function (response) {
+							console.log("Response : ");
+							console.log(response.data);
+						});
+					window.location.reload();
+				},
+				showPasswordChange() {
+					this.passwordChangeToggle = true;
+				},
+				// Deletion
+				deleteCottage(id) {
+					axios
+						.post("/api/cottages/delete/" + id)
+						.then(function (response) {
+							console.log("Response : ");
+							console.log(response.data);
+							var booked = response.data;
+							if (booked == false) {
+								alert(
+									"There exist bookings with this item. Deletion is unavailable."
+								);
+								return;
+							} else {
+								alert("Deleted.");
+								window.location.reload();
+							}
+						});
+				},
+				deleteCottageOwner(id) {
+					axios
+						.post("/api/cottageOwner/delete/" + id)
+						.then(function (response) {
+							console.log("Response : ");
+							console.log(response.data);
+						});
+					window.location.reload();
+				},
+				deleteAdventure(id) {
+					axios
+						.post("/api/adventures/delete/" + id)
+						.then(function (response) {
+							console.log("Response : ");
+							console.log(response.data);
+							var booked = response.data;
+							if (booked == false) {
+								alert(
+									"There exist bookings with this item. Deletion is unavailable."
+								);
+								return;
+							} else {
+								alert("Deleted.");
+								window.location.reload();
+							}
+						});
+				},
+				deleteFishingInstructor(id) {
+					axios
+						.post("/api/fishingInstructor/delete/" + id)
+						.then(function (response) {
+							console.log("Response : ");
+							console.log(response.data);
+						});
+					window.location.reload();
+				},
+				deleteBoat(id) {
+					axios.post("/api/boats/delete/" + id).then(function (response) {
 						console.log("Response : ");
 						console.log(response.data);
+						var booked = response.data;
+						if (booked == false) {
+							alert(
+								"There exist bookings with this item. Deletion is unavailable."
+							);
+							return;
+						} else {
+							alert("Deleted.");
+							window.location.reload();
+						}
 					});
-				window.location.reload();
-			},
-			deleteRegisteredUser(id) {
-				axios
-					.post("/api/registeredUser/delete/" + id)
-					.then(function (response) {
-						console.log("Response : ");
-						console.log(response.data);
-					});
-				window.location.reload();
-			},
-			percentageUpdate() {
-				this.percentageUpdateToggle = true;
-			},
-			percentageUpdateSubmit() {
-				this.percentage = alert("Percentage: " + this.percentage.value);
-				var stringValue = this.percentage.value;
-				console.log(stringValue);
-				axios
-					.post("/api/update/constant/" + "ptosr" + "/" + stringValue)
-					.then(function (response) {
-						console.log("Response : ");
-						alert(response.data);
-						//window.location.reload();
-					});
-			},
-		};
-	},
-};
+				},
+				deleteBoatOwner(id) {
+					axios
+						.post("/api/boatOwner/delete/" + id)
+						.then(function (response) {
+							console.log("Response : ");
+							console.log(response.data);
+						});
+					window.location.reload();
+				},
+				deleteRegisteredUser(id) {
+					axios
+						.post("/api/registeredUser/delete/" + id)
+						.then(function (response) {
+							console.log("Response : ");
+							console.log(response.data);
+						});
+					window.location.reload();
+				},
+				percentageUpdate() {
+					this.percentageUpdateToggle = true;
+				},
+				percentageUpdateSubmit() {
+					var percent = this.percentage.value;
+					// this.percentage = alert("Percentage: " + this.percentage.value);
+					axios
+						.post("/api/update/constant/" + "ptosr" + "/" + percent)
+						.then(function (response) {
+							console.log("Response : " + response.data);
+							// alert(response.data);
+							window.location.reload();
+						});
+				},
+			};
+		},
+	};
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
-body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
-	background-color: #e6e4df;
-	background-size: 100%;
-	background-repeat: no-repeat;
-	color: #10120e;
-	font-family: Aleo;
-}
-#logo-container {
-	margin-top: 8px;
-	text-align: center;
-}
-.underlined {
-	display: inline-block;
-	border-bottom: #ad6800 3px solid;
-	height: 43px;
-}
-.underlined img {
-	height: 40px;
-	margin-bottom: -6px;
-	margin-right: -7px;
-}
-.underlined p {
-	margin-left: 10px;
-	font-size: 40px;
-	letter-spacing: -1px;
-	display: inline;
-}
-.mainFlex {
-	margin: 50px 200px 0px;
-	display: flex;
-	justify-content: space-between;
-}
-.leftFlex {
-	display: flex;
-	flex-direction: column;
-}
-h4 {
-	margin: 0;
-	font-weight: 400;
-	font-size: 50px;
-}
-h3 {
-	margin: 0;
-	font-weight: 400;
-	font-size: 35px;
-}
-.leftFlex p {
-	margin: 0;
-	font-size: 27px;
-	font-weight: 100;
-}
-.leftFlex img {
-	width: 800px;
-	height: 450px;
-	border-radius: 15px;
-	object-fit: cover;
-}
-.rightFlex,
-.firstLogin,
-.passwordChange {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	background-color: rgb(241, 241, 241);
-	padding: 20px;
-	border-radius: 15px;
-	border: 2px solid #da9e46;
-}
-.firstLogin {
-	margin: 20px 40em;
-}
-.passwordChange {
-	margin: 20px 28em;
-}
-.rightFlex p,
-.firstLogin p,
-.passwordChange p {
-	margin: 4px 0;
-	font-size: 25px;
-}
-.rightFlex .smallText {
-	margin: 0;
-	font-size: 22px;
-}
-.rightFlex input,
-.firstLogin input,
-.passwordChange input,
-.percentage input {
-	height: 24px;
-	border-radius: 5px;
-	border: 1px solid rgb(122, 122, 122);
-	font-size: 18px;
-	background-color: #f0f0f0;
-}
-.rightFlex input:focus,
-.firstLogin input:focus,
-.passwordChange input:focus,
-.percentage input:focus {
-	outline: none !important;
-	border: 1px solid #ad6800;
-}
-.firstLogin button,
-.passwordChange button {
-	margin-top: 10px;
-	width: 170px;
-}
-.firstLogin .spacer,
-.passwordChange .spacer {
-	height: 30px;
-	text-align: center;
-}
-.firstLogin .spacer p,
-.passwordChange .spacer p {
-	font-size: 16px;
-	color: gray;
-	margin: 0;
-	margin-top: 6px;
-}
-button {
-	margin: 0 auto;
-	height: 40px;
-	width: 290px;
-	background-color: #da9e46;
-	border: none;
-	border-radius: 4px;
-	font-family: Aleo;
-	font-size: 24px;
-	transition: 0.15s;
-	margin-top: 20px;
-}
-button:hover {
-	background-color: #9e6b1d;
-	color: white;
-	cursor: pointer;
-}
-.lowerFlex {
-	margin: 0px 200px;
-	display: flex;
-	flex-direction: column;
-}
-.lowerFlex h3 {
-	border-bottom: solid 1px rgb(145, 145, 145);
-}
-.table {
-	margin-top: 20px;
-}
-.tableEntry {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	height: 55px;
-	border-bottom: solid 1px rgb(145, 145, 145);
-}
-.tableEntry .entryName {
-	margin: auto 0;
-	width: 180px;
-}
-.tableEntry .entryRequestText {
-	width: 800px;
-	margin: auto 0;
-}
-.tableEntry button {
-	width: 110px;
-	margin: auto 0;
-	font-size: 20px;
-}
-.entryApprove {
-	background-color: rgb(108, 207, 108);
-}
-.entryApprove:hover {
-	background-color: rgb(49, 121, 49);
-}
-.entryDeny {
-	background-color: rgb(194, 109, 109);
-}
-.entryDeny:hover {
-	background-color: rgb(119, 51, 51);
-}
-.percentage {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-.percentage input {
-	width: 40px;
-	margin: 0 10px;
-	text-align: center;
-	font-size: 22px;
-}
-.percentage button {
-	margin: 0 0 0 30px;
-	width: 110px;
-}
-</style> 
+	@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
+
+	body {
+		/* background-image: url("../../assets/adventure-time-background.jpg"); */
+		background-color: #e6e4df;
+		background-size: 100%;
+		background-repeat: no-repeat;
+		color: #10120e;
+		font-family: Aleo;
+	}
+
+	#logo-container {
+		margin-top: 8px;
+		text-align: center;
+	}
+
+	.underlined {
+		display: inline-block;
+		border-bottom: #ad6800 3px solid;
+		height: 43px;
+	}
+
+	.underlined img {
+		height: 40px;
+		margin-bottom: -6px;
+		margin-right: -7px;
+	}
+
+	.underlined p {
+		margin-left: 10px;
+		font-size: 40px;
+		letter-spacing: -1px;
+		display: inline;
+	}
+
+	.mainFlex {
+		margin: 50px 200px 0px;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.leftFlex {
+		display: flex;
+		flex-direction: column;
+	}
+
+	h4 {
+		margin: 0;
+		font-weight: 400;
+		font-size: 50px;
+	}
+
+	h3 {
+		margin: 0;
+		font-weight: 400;
+		font-size: 35px;
+	}
+
+	.leftFlex p {
+		margin: 0;
+		font-size: 27px;
+		font-weight: 100;
+	}
+
+	.leftFlex img {
+		width: 800px;
+		height: 450px;
+		border-radius: 15px;
+		object-fit: cover;
+	}
+
+	.rightFlex,
+	.firstLogin,
+	.passwordChange {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		background-color: rgb(241, 241, 241);
+		padding: 20px;
+		border-radius: 15px;
+		border: 2px solid #da9e46;
+	}
+
+	.firstLogin {
+		margin: 20px 40em;
+	}
+
+	.passwordChange {
+		margin: 20px 28em;
+	}
+
+	.rightFlex p,
+	.firstLogin p,
+	.passwordChange p {
+		margin: 4px 0;
+		font-size: 25px;
+	}
+
+	.rightFlex .smallText {
+		margin: 0;
+		font-size: 22px;
+	}
+
+	.rightFlex input,
+	.firstLogin input,
+	.passwordChange input,
+	.percentage input {
+		height: 24px;
+		border-radius: 5px;
+		border: 1px solid rgb(122, 122, 122);
+		font-size: 18px;
+		background-color: #f0f0f0;
+	}
+
+	.rightFlex input:focus,
+	.firstLogin input:focus,
+	.passwordChange input:focus,
+	.percentage input:focus {
+		outline: none !important;
+		border: 1px solid #ad6800;
+	}
+
+	.firstLogin button,
+	.passwordChange button {
+		margin-top: 10px;
+		width: 170px;
+	}
+
+	.firstLogin .spacer,
+	.passwordChange .spacer {
+		height: 30px;
+		text-align: center;
+	}
+
+	.firstLogin .spacer p,
+	.passwordChange .spacer p {
+		font-size: 16px;
+		color: gray;
+		margin: 0;
+		margin-top: 6px;
+	}
+
+	button {
+		margin: 0 auto;
+		height: 40px;
+		width: 290px;
+		background-color: #da9e46;
+		border: none;
+		border-radius: 4px;
+		font-family: Aleo;
+		font-size: 24px;
+		transition: 0.15s;
+		margin-top: 20px;
+	}
+
+	button:hover {
+		background-color: #9e6b1d;
+		color: white;
+		cursor: pointer;
+	}
+
+	.lowerFlex {
+		margin: 0px 200px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.lowerFlex h3 {
+		border-bottom: solid 1px rgb(145, 145, 145);
+	}
+
+	.table {
+		margin-top: 20px;
+	}
+
+	.tableEntry {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		height: 55px;
+		border-bottom: solid 1px rgb(145, 145, 145);
+	}
+
+	.tableEntry .entryName {
+		margin: auto 0;
+		width: 180px;
+	}
+
+	.tableEntry .entryRequestText {
+		width: 800px;
+		margin: auto 0;
+	}
+
+	.tableEntry button {
+		width: 110px;
+		margin: auto 0;
+		font-size: 20px;
+	}
+
+	.entryApprove {
+		background-color: rgb(108, 207, 108);
+	}
+
+	.entryApprove:hover {
+		background-color: rgb(49, 121, 49);
+	}
+
+	.entryDeny {
+		background-color: rgb(194, 109, 109);
+	}
+
+	.entryDeny:hover {
+		background-color: rgb(119, 51, 51);
+	}
+
+	.percentage {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.percentage input {
+		width: 40px;
+		margin: 0 10px;
+		text-align: center;
+		font-size: 22px;
+	}
+
+	.percentage button {
+		margin: 0 0 0 30px;
+		width: 110px;
+	}
+</style>

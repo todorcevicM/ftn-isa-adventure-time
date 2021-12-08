@@ -13,6 +13,12 @@
 				</div> -->
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
 				<p>Fishing Instructor</p>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<div>
+					<p>Business Reports</p>
+					<button @click="wantsDeletion()">Show Reports</button>
+				</div>
 			</div>
 			<div class="rightFlex">
 				<p>Email</p>
@@ -35,244 +41,258 @@
 				<p class="smallText" v-if="!updateToggle">
 					{{ user.telephoneNumber }}
 				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newTelephoneNumber"
-				/>
+				<input type="text" v-if="updateToggle" v-model="newTelephoneNumber" />
 
 				<button @click="updateDetails()" v-if="!updateToggle">
 					Update Details
 				</button>
-				<button
-					@click="sendUpdatedDetails()"
-					v-if="updateToggle"
-					style="background-color: rgb(108, 207, 108)"
-				>
+				<button @click="sendUpdatedDetails()" v-if="updateToggle" style="background-color: rgb(108, 207, 108)">
 					Submit
 				</button>
 			</div>
 		</div>
 		<div class="lowerFlex">
+			<h3>Past Adventure Bookings</h3>
+			<button>Sort</button>
 			<div class="table">
-				<h3>Past Adventure Bookings</h3>
-					<button>Sort</button>
-					<div
-						class="tableEntry"
-						v-for="pab in pastAdventureBookings"
-						:key="pab"
-					>
-						<div
-						class="tableEntry"
-						v-for="booking in pab.adventureBookings"
-						:key="booking"
-						>
-							<p class="entryName">{{ pab.adventureName }}</p>	
+				<div class="tableEntry" v-for="pab in pastAdventureBookings" :key="pab">
+					<p class="entryName">{{ pab.adventureName }}</p>
+					<div class="table">
+
+						<div class="tableEntry" v-for="booking in pab.adventureBookings" :key="booking">
 							<!-- <p class="entryRequestText">{{ booking.start }}</p>
-							<p class="entryRequestText">{{ booking.end }}</p> -->
+								<p class="entryRequestText">{{ booking.end }}</p> -->
 							<p> {{booking.registeredUserId}} </p>
 							<p> {{booking.extraService}} </p>
-							<p>Cena: {{booking.price}}.00</p>		
+							<p>Cena: {{booking.price}}.00</p>
 
 							<button class="entryApprove" @click="viewUser(booking.registeredUserId)">
 								View User
 							</button>
 							<button class="entryDeny" @click="deny()">Deny</button>
 						</div>
+
 					</div>
+				</div>
 			</div>
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<button @click="wantsDeletion()">Delete My Account</button>
-			<button @click="wantsDeletion()">Change My Password</button>	
+			<button @click="wantsDeletion()">Change My Password</button>
 		</div>
 	</div>
-</template> 
+</template>
 
 <script>
-import { ref } from "vue";
-import axios from "axios";
-export default {
-	setup() {
-		var user = ref(null);
-		var updateToggle = ref(null);
-		axios
-			.get(
-				"/api/fishingInstructor/getByEmail/" + localStorage["emailHash"]
-			)
-			.then(function (response) {
-				user.value = response.data;
+	import { ref } from "vue";
+	import axios from "axios";
+	export default {
+		setup() {
+			var user = ref(null);
+			var updateToggle = ref(null);
+			axios
+				.get(
+					"/api/fishingInstructor/getByEmail/" + localStorage["emailHash"]
+				)
+				.then(function (response) {
+					user.value = response.data;
+				});
+
+			var pastAdventureBookings = ref(null);
+			axios.get("/api/fishingInstructor/pastAdventureBookings/" + localStorage["userId"]).then(function (response) {
+				console.log(response.data);
+				pastAdventureBookings.value = response.data;
 			});
 
-		var pastAdventureBookings = ref(null);
-		axios.get("/api/fishingInstructor/pastAdventureBookings/" + localStorage["userId"]).then(function (response) {
-			console.log(response.data);
-			pastAdventureBookings.value = response.data;
-		});
 
-
-		return {
-			user,
-			pastAdventureBookings,
-			updateToggle,
-			wantsDeletion() {
-				alert("Not implemented yet!");
-			},
-			updateDetails() {
-				this.updateToggle = true;
-			},
-			// approve() {
-			// 	alert("Not implemented yet!");
-			// },
-			// deny() {
-			// 	alert("Not implemented yet!");
-			// },
-			// sendUpdatedDetails() {
-			// 	alert("Updates sent!");
-			// 	// TODO: Send details.
-			// },
-		};
-	},
-};
+			return {
+				user,
+				pastAdventureBookings,
+				updateToggle,
+				wantsDeletion() {
+					alert("Not implemented yet!");
+				},
+				updateDetails() {
+					this.updateToggle = true;
+				},
+				// approve() {
+				// 	alert("Not implemented yet!");
+				// },
+				// deny() {
+				// 	alert("Not implemented yet!");
+				// },
+				// sendUpdatedDetails() {
+				// 	alert("Updates sent!");
+				// 	// TODO: Send details.
+				// },
+			};
+		},
+	};
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
-body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
-	background-color: #e6e4df;
-	background-size: 100%;
-	background-repeat: no-repeat;
-	color: #10120e;
-	font-family: Aleo;
-}
-#logo-container {
-	margin-top: 8px;
-	text-align: center;
-}
-.underlined {
-	display: inline-block;
-	border-bottom: #ad6800 3px solid;
-	height: 43px;
-}
-.underlined img {
-	height: 40px;
-	margin-bottom: -6px;
-	margin-right: -7px;
-}
-.underlined p {
-	margin-left: 10px;
-	font-size: 40px;
-	letter-spacing: -1px;
-	display: inline;
-}
-.mainFlex {
-	margin: 50px 200px 0px;
-	display: flex;
-	justify-content: space-between;
-}
-.leftFlex {
-	display: flex;
-	flex-direction: column;
-}
-h4 {
-	margin: 0;
-	font-weight: 400;
-	font-size: 50px;
-}
-h3 {
-	margin: 0;
-	font-weight: 400;
-	font-size: 35px;
-}
-.leftFlex p {
-	margin: 0;
-	font-size: 27px;
-	font-weight: 100;
-}
-.leftFlex img {
-	width: 800px;
-	height: 450px;
-	border-radius: 15px;
-	object-fit: cover;
-}
-.rightFlex {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	background-color: rgb(241, 241, 241);
-	padding: 20px;
-	border-radius: 15px;
-	border: 2px solid #da9e46;
-}
-.rightFlex p {
-	margin: 4px 0;
-	font-size: 30px;
-}
-.rightFlex .smallText {
-	margin: 0;
-	font-size: 22px;
-}
-.rightFlex input {
-	height: 24px;
-	border-radius: 5px;
-	border: 1px solid rgb(122, 122, 122);
-	font-size: 18px;
-	background-color: #f0f0f0;
-}
-.rightFlex input:focus {
-	outline: none !important;
-	border: 1px solid #ad6800;
-}
-button {
-	margin: 0 auto;
-	height: 40px;
-	width: 290px;
-	background-color: #da9e46;
-	border: none;
-	border-radius: 4px;
-	font-family: Aleo;
-	font-size: 24px;
-	transition: 0.15s;
-	margin-top: 20px;
-}
-button:hover {
-	background-color: #9e6b1d;
-	color: white;
-	cursor: pointer;
-}
-.lowerFlex {
-	margin: 0px 200px;
-	display: flex;
-	flex-direction: column;
-}
-.lowerFlex h3 {
-	border-bottom: solid 1px rgb(145, 145, 145);
-}
-.tableEntry {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	height: 55px;
-	border-bottom: solid 1px rgb(145, 145, 145);
-}
-.tableEntry .entryName {
-	margin: auto 0;
-	width: 160px;
-}
-.tableEntry .entryRequestText {
-	width: 800px;
-	margin: auto 0;
-}
-.tableEntry button {
-	width: 110px;
-	margin: auto 0;
-	font-size: 20px;
-}
-.tableEntry .entryApprove {
-	background-color: rgb(108, 207, 108);
-}
-.tableEntry .entryDeny {
-	background-color: rgb(194, 109, 109);
-}
-</style> 
+	@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
+
+	body {
+		/* background-image: url("../../assets/adventure-time-background.jpg"); */
+		background-color: #e6e4df;
+		background-size: 100%;
+		background-repeat: no-repeat;
+		color: #10120e;
+		font-family: Aleo;
+	}
+
+	#logo-container {
+		margin-top: 8px;
+		text-align: center;
+	}
+
+	.underlined {
+		display: inline-block;
+		border-bottom: #ad6800 3px solid;
+		height: 43px;
+	}
+
+	.underlined img {
+		height: 40px;
+		margin-bottom: -6px;
+		margin-right: -7px;
+	}
+
+	.underlined p {
+		margin-left: 10px;
+		font-size: 40px;
+		letter-spacing: -1px;
+		display: inline;
+	}
+
+	.mainFlex {
+		margin: 50px 200px 0px;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.leftFlex {
+		display: flex;
+		flex-direction: column;
+	}
+
+	h4 {
+		margin: 0;
+		font-weight: 400;
+		font-size: 50px;
+	}
+
+	h3 {
+		margin: 0;
+		font-weight: 400;
+		font-size: 35px;
+	}
+
+	.leftFlex p {
+		margin: 0;
+		font-size: 27px;
+		font-weight: 100;
+	}
+
+	.leftFlex img {
+		width: 800px;
+		height: 450px;
+		border-radius: 15px;
+		object-fit: cover;
+	}
+
+	.rightFlex {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		background-color: rgb(241, 241, 241);
+		padding: 20px;
+		border-radius: 15px;
+		border: 2px solid #da9e46;
+	}
+
+	.rightFlex p {
+		margin: 4px 0;
+		font-size: 30px;
+	}
+
+	.rightFlex .smallText {
+		margin: 0;
+		font-size: 22px;
+	}
+
+	.rightFlex input {
+		height: 24px;
+		border-radius: 5px;
+		border: 1px solid rgb(122, 122, 122);
+		font-size: 18px;
+		background-color: #f0f0f0;
+	}
+
+	.rightFlex input:focus {
+		outline: none !important;
+		border: 1px solid #ad6800;
+	}
+
+	button {
+		margin: 0 auto;
+		height: 40px;
+		width: 290px;
+		background-color: #da9e46;
+		border: none;
+		border-radius: 4px;
+		font-family: Aleo;
+		font-size: 24px;
+		transition: 0.15s;
+		margin-top: 20px;
+	}
+
+	button:hover {
+		background-color: #9e6b1d;
+		color: white;
+		cursor: pointer;
+	}
+
+	.lowerFlex {
+		margin: 0px 200px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.lowerFlex h3 {
+		border-bottom: solid 1px rgb(145, 145, 145);
+	}
+
+	.tableEntry {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		height: 55px;
+		border-bottom: solid 1px rgb(145, 145, 145);
+	}
+
+	.tableEntry .entryName {
+		margin: auto 0;
+		width: 160px;
+	}
+
+	.tableEntry .entryRequestText {
+		width: 800px;
+		margin: auto 0;
+	}
+
+	.tableEntry button {
+		width: 110px;
+		margin: auto 0;
+		font-size: 20px;
+	}
+
+	.tableEntry .entryApprove {
+		background-color: rgb(108, 207, 108);
+	}
+
+	.tableEntry .entryDeny {
+		background-color: rgb(194, 109, 109);
+	}
+</style>
