@@ -13,6 +13,7 @@
 				</div> -->
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
 				<p>Registered User</p>
+				<p>Penalties: 0</p>
 			</div>
 			<div class="rightFlex">
 				<p>Email</p>
@@ -57,6 +58,7 @@
 			<!-- past boat booking -->
 			<div class="table">
 				<h3>Past Boat Bookings</h3>
+				<button>Sort</button>
 				<div
 					class="tableEntry"
 					v-for="pbb in pastBoatBookings"
@@ -75,6 +77,7 @@
 			<!-- past adventure booking -->
 			<div class="table">
 				<h3>Past Adventure Bookings</h3>
+				<button>Sort</button>
 				<div
 					class="tableEntry"
 					v-for="pab in pastAdventureBookings"
@@ -93,6 +96,7 @@
 			<!-- past room booking -->
 			<div class="table">
 				<h3>Past Room Bookings</h3>
+				<button>Sort</button>
 				<div
 					class="tableEntry"
 					v-for="prb in pastRoomBookings"
@@ -113,6 +117,7 @@
 			<!-- future boat booking -->
 			<div class="table">
 				<h3>Future Boat Bookings</h3>
+				<button>Sort</button>
 				<div
 					class="tableEntry"
 					v-for="pbb in futureBoatBookings"
@@ -123,7 +128,7 @@
 					<p> {{pbb.extraService}} </p>
 					<p>Cena: {{pbb.price}}.00</p>
 					<button class="entryApprove" @click="approve()">
-						Approve
+						Cancel
 					</button>
 					<button class="entryDeny" @click="deny()">Deny</button>
 				</div>
@@ -131,6 +136,7 @@
 			<!-- future adventure booking -->
 			<div class="table">
 				<h3>Future Adventure Bookings</h3>
+				<button>Sort</button>
 				<div
 					class="tableEntry"
 					v-for="pab in futureAdventureBookings"
@@ -141,7 +147,7 @@
 					<p> {{pab.extraService}} </p>
 					<p>Cena: {{pab.price}}.00</p>
 					<button class="entryApprove" @click="approve()">
-						Approve
+						Cancel
 					</button>
 					<button class="entryDeny" @click="deny()">Deny</button>
 				</div>
@@ -149,6 +155,7 @@
 			<!-- future room booking -->
 			<div class="table">
 				<h3>Future Room Bookings</h3>
+				<button>Sort</button>
 				<div
 					class="tableEntry"
 					v-for="prb in futureAdventureBookings"
@@ -159,7 +166,7 @@
 					<p> {{prb.extraService}} </p>
 					<p>Cena: {{prb.price}}.00</p>
 					<button class="entryApprove" @click="approve()">
-						Approve
+						Cancel
 					</button>
 					<button class="entryDeny" @click="deny()">Deny</button>
 				</div>
@@ -169,6 +176,7 @@
 			<!-- sub boat -->
 			<div class="table">
 				<h3>Subscribed Boat</h3>
+				<button>Sort</button>
 				<div
 					class="tableEntry"
 					v-for="pbb in subBoat"
@@ -187,6 +195,7 @@
 			<!-- sub adventure -->
 			<div class="table">
 				<h3>Subscribed Adventure</h3>
+				<button>Sort</button>
 				<div
 					class="tableEntry"
 					v-for="pab in subAdventure"
@@ -205,6 +214,7 @@
 			<!-- sub cottage -->
 			<div class="table">
 				<h3>Subscribed Cottage</h3>
+				<button>Sort</button>
 				<div
 					class="tableEntry"
 					v-for="prb in subCottage"
@@ -226,6 +236,7 @@
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<button @click="wantsDeletion()">Delete My Account</button>
+			<button @click="wantsDeletion()">Submit a complaint</button>
 		</div>
 	</div>
 </template> 
