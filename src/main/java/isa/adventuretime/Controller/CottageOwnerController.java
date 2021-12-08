@@ -33,9 +33,6 @@ public class CottageOwnerController {
 	@Autowired
 	private CottageService cottageService;
 
-	@Autowired
-	private RoomService roomService;
-
 	@GetMapping("/get")
 	public ResponseEntity<ArrayList<CottageOwner>> getAll() {
 		return new ResponseEntity<ArrayList<CottageOwner>>(cottageOwnerService.getAll(), HttpStatus.OK);
