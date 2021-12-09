@@ -106,23 +106,41 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
+			<div class="search" style="text-align: center">
+				<img
+					src="../../assets/wheel.svg"
+					style="width: 48px; margin-top: 18px"
+				/>
+				<input
+					type="text"
+					placeholder="Search..."
+					v-model="searchQuery"
+				/>
+				<div v-if="searchQuery" class="searchResult">
+					<p>No results found...</p>
+				</div>
+			</div>
+			<div
+				style="
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+				"
+			>
+				<h3>Past Room Bookings</h3>
+				<button style="margin: 0">Sort</button>
+			</div>
 			<div class="table">
 				<div class="table">
-					<h3>Past Room Bookings</h3>
-					<button>Sort</button>
-					<div
-						class="tableEntry"
-						v-for="prb in pastRoomBookings"
-						:key="prb"
-					>
-						<p class="entryName">{{ prb.cottageName }}</p>
+					<div v-for="prb in pastRoomBookings" :key="prb">
+						<p class="entryName" style="font-size: 26px; margin: 0">
+							{{ prb.cottageName }}
+						</p>
 						<div
 							class="tableEntry"
 							v-for="booking in prb.roomBookings"
 							:key="booking"
 						>
-							<!-- <p class="entryRequestText">{{ booking.start }}</p>
-							<p class="entryRequestText">{{ booking.end }}</p> -->
 							<p>{{ booking.registeredUserId }}</p>
 							<p>{{ booking.extraService }}</p>
 							<p>Cena: {{ booking.price }}.00</p>
@@ -151,7 +169,10 @@
 				>
 					<p class="entryName">{{ cottage.name }}</p>
 					<!-- TODO: class ovog dugmeta djota -->
-					<button class="entryApprove" @click="viewCottage(cottage.id)">
+					<button
+						class="entryApprove"
+						@click="viewCottage(cottage.id)"
+					>
 						View
 					</button>
 					<button
@@ -241,6 +262,7 @@ export default {
 				cottages.value = response.data;
 			});
 
+		var searchQuery = ref(null);
 		return {
 			user,
 			pastRoomBookings,
@@ -251,6 +273,7 @@ export default {
 			matching,
 			passwordChangeToggle,
 			cottages,
+			searchQuery,
 			wantsDeletion() {
 				alert("Not implemented yet!");
 			},
@@ -580,5 +603,45 @@ button:hover {
 .businessReports button {
 	margin: 0 0 0 30px;
 	width: 110px;
+}
+
+.search {
+	text-align: center;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.search input {
+	border-radius: 5px;
+	margin-top: 10px;
+}
+.searchResult {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 370px;
+	height: 470px;
+	margin-top: 20px;
+	border-radius: 15px;
+	background-color: rgb(230, 230, 230);
+}
+.searchResult p {
+	text-align: center;
+	color: rgb(71, 71, 71);
+	font-size: 35px;
+}
+input,
+select {
+	width: 260px;
+	height: 32px;
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 20px;
+	background-color: #f0f0f0;
+}
+input:focus,
+select:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
 }
 </style>

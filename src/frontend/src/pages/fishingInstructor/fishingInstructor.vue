@@ -58,7 +58,6 @@
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-
 			</div>
 			<div class="rightFlex">
 				<p>Address</p>
@@ -99,13 +98,21 @@
 				<p class="smallText" v-if="!updateToggle">
 					{{ user.startWorkPeriod }}
 				</p>
-				<input type="text" v-if="updateToggle" v-model="newUser.newStartWorkPeriod" />			
-				
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newUser.newStartWorkPeriod"
+				/>
+
 				<p>End Work Time</p>
 				<p class="smallText" v-if="!updateToggle">
 					{{ user.endWorkPeriod }}
 				</p>
-				<input type="text" v-if="updateToggle" v-model="newUser.newEndWorkPeriod" />		
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newUser.newEndWorkPeriod"
+				/>
 
 				<button @click="updateDetails()" v-if="!updateToggle">
 					Update Details
@@ -120,37 +127,51 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
-			<h3>Past Adventure Bookings</h3>
-			<button>Sort</button>
+			<div class="search" style="text-align: center">
+				<img
+					src="../../assets/wheel.svg"
+					style="width: 48px; margin-top: 18px"
+				/>
+				<input
+					type="text"
+					placeholder="Search..."
+					v-model="searchQuery"
+				/>
+				<div v-if="searchQuery" class="searchResult">
+					<p>No results found...</p>
+				</div>
+			</div>
+			<div
+				style="
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+				"
+			>
+				<h3>Past Adventure Bookings</h3>
+				<button style="margin: 0">Sort</button>
+			</div>
 			<div class="table">
-				<div
-					class="tableEntry"
-					v-for="pab in pastAdventureBookings"
-					:key="pab"
-				>
-					<p class="entryName">{{ pab.adventureName }}</p>
-					<div class="table">
-						<div
-							class="tableEntry"
-							v-for="booking in pab.adventureBookings"
-							:key="booking"
-						>
-							<!-- <p class="entryRequestText">{{ booking.start }}</p>
-								<p class="entryRequestText">{{ booking.end }}</p> -->
-							<p>{{ booking.registeredUserId }}</p>
-							<p>{{ booking.extraService }}</p>
-							<p>Cena: {{ booking.price }}.00</p>
+				<div v-for="pab in pastAdventureBookings" :key="pab">
+					<p class="entryName" style="font-size: 26px; margin: 0">
+						{{ pab.adventureName }}
+					</p>
+					<div
+						class="tableEntry"
+						v-for="booking in pab.adventureBookings"
+						:key="booking"
+					>
+						<p>User ID: {{ booking.registeredUserId }}</p>
+						<p>{{ booking.extraService }}</p>
+						<p>Cena: {{ booking.price }}.00</p>
 
-							<button
-								class="entryApprove"
-								@click="viewUser(booking.registeredUserId)"
-							>
-								View User
-							</button>
-							<button class="entryDeny" @click="deny()">
-								Deny
-							</button>
-						</div>
+						<button
+							class="entryApprove"
+							@click="viewUser(booking.registeredUserId)"
+						>
+							View User
+						</button>
+						<button class="entryDeny" @click="deny()">Deny</button>
 					</div>
 				</div>
 			</div>
@@ -165,7 +186,10 @@
 				>
 					<p class="entryName">{{ adventure.name }}</p>
 					<!-- TODO: class ovog dugmeta djota -->
-					<button class="entryApprove" @click="viewAdventure(adventure.id)">
+					<button
+						class="entryApprove"
+						@click="viewAdventure(adventure.id)"
+					>
 						View
 					</button>
 					<button
@@ -262,7 +286,7 @@ export default {
 				console.log(response.data);
 				pastAdventureBookings.value = response.data;
 			});
-
+		var searchQuery = ref(null);
 		return {
 			user,
 			pastAdventureBookings,
@@ -273,6 +297,7 @@ export default {
 			matching,
 			passwordChangeToggle,
 			adventures,
+			searchQuery,
 			wantsDeletion() {
 				alert("Not implemented yet!");
 			},
@@ -284,7 +309,7 @@ export default {
 					this.newUser.newAddress == "" ||
 					this.newUser.newCity == "" ||
 					this.newUser.newCountry == "" ||
-					this.newUser.newTelephoneNumber == "" || 
+					this.newUser.newTelephoneNumber == "" ||
 					this.newUser.newStartWorkPeriod == "" ||
 					this.newUser.newEndWorkPeriod == ""
 				) {
@@ -613,5 +638,45 @@ button:hover {
 .businessReports button {
 	margin: 0 0 0 30px;
 	width: 110px;
+}
+
+.search {
+	text-align: center;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.search input {
+	border-radius: 5px;
+	margin-top: 10px;
+}
+.searchResult {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 370px;
+	height: 470px;
+	margin-top: 20px;
+	border-radius: 15px;
+	background-color: rgb(230, 230, 230);
+}
+.searchResult p {
+	text-align: center;
+	color: rgb(71, 71, 71);
+	font-size: 35px;
+}
+input,
+select {
+	width: 260px;
+	height: 32px;
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 20px;
+	background-color: #f0f0f0;
+}
+input:focus,
+select:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
 }
 </style>
