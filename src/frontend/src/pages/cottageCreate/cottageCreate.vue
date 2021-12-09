@@ -7,20 +7,6 @@
 			</div>
 		</div>
 		<div class="mainFlex">
-			<!-- <div class="leftFlex">
-				<div>
-					<img class="itemImage" :src="imageSource(cottage.id)" />
-				</div>
-				<div>
-					<img
-						class="itemImage"
-						src="../../assets/images/interior.png"
-					/>
-				</div>
-				<h4>{{ cottage.name }}</h4>
-				<p>${{ cottage.pricePerDay }}.00 / Day</p>
-				<p>Rating: 5.00</p>
-			</div> -->
 			<div class="rightFlex">
 				<p>Name</p>
 				<input type="text" v-model="newCottage.newName" />
@@ -99,9 +85,7 @@ export default {
 			.get("/api/cottageOwner/getByEmail/" + emailHash)
 			.then(function (response) {
 				cottageOwnerName.value = response.data.name;
-				console.log("aaaaaaaaaaaaaaaaaaaaaaaaa" + response.data.id);
 				cottageOwnerId.value = response.data.id;
-				console.log("bbbbbbbbbbbbbbbbbbbbbb" + cottageOwnerId.value);
 				localStorage.setItem("cottageOwnerId", response.data.id);
 			});
 
@@ -183,9 +167,9 @@ export default {
 					});
 
 				alert("Cottage is created!");
-				// window.location.assign(
-				// 	"/cottageOwner/" + localStorage.emailHash
-				// );
+				window.location.assign(
+					"/cottageOwner/" + localStorage.emailHash
+				);
 			},
 			addRoom() {
 				var numOfBeds = prompt("Enter number of beds: ");

@@ -7,115 +7,42 @@
 			</div>
 		</div>
 		<div class="mainFlex">
-			<div class="leftFlex">
-				<div>
-					<img class="itemImage" :src="imageSource(adventure.id)" />
-				</div>
-				<h4>{{ adventure.name }}</h4>
-				<p>${{ adventure.pricePerDay }}.00 / Day</p>
-				<p>Rating: 5.00</p>
-			</div>
 			<div class="rightFlex">
 				<p>Name</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ adventure.name }}
-				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newAdventure.newName"
-				/>
+				<input type="text" v-model="newAdventure.newName"/>
 				<p>Address</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ adventure.address }}
-				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newAdventure.newAddress"
-				/>
-				<p class="smallText">
-					({{ adventure.geoLng }}, {{ adventure.geoLat }})
-				</p>
+				<input type="text" v-model="newAdventure.newAddress"/>
+				<p>Longitude</p>
+				<input type="text" v-model="newAdventure.newGeoLng" />
+				<p>Latitude</p>
+				<input type="text" v-model="newAdventure.newGeoLat" />
 
 				<p>Promo</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ adventure.promoDescription }}
-				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newAdventure.newPromoDescription"
-				/>
+				<input type="text" v-model="newAdventure.newPromoDescription"/>
 
 				<p>Rules</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ adventure.rules }}
-				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newAdventure.newRules"
-				/>
+				<input type="text" v-model="newAdventure.newRules"/>
 
 				<p>Info</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ adventure.priceAndInfo }}
-				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newAdventure.newPriceAndInfo"
-				/>
+				<input type="text" v-model="newAdventure.newPriceAndInfo"/>
 
 				<p>Equipment</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ adventure.equipment }}
-				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newAdventure.newEquipment"
-				/>
+				<input type="text" v-model="newAdventure.newEquipment"/>
 
 				<p>Person limit</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ adventure.maxUsers }}
-				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newAdventure.newMaxUsers"
-				/>
+				<input type="text" v-model="newAdventure.newMaxUsers"/>
 
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newAdventure.newPercentTakenIfCancelled"
-				/>
+				<input type="text" v-model="newAdventure.newPercentTakenIfCancelled"/>
 				<p>% taken if cancelled</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ adventure.percentTakenIfCancelled }}
-				</p>
+				
 
-				<p>Owner : {{ instructor.name }}</p>
+				<p>Owner : {{ fishingInstructorName }}</p>
 
 				<p>Bio :</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ adventure.instructorBio }}
-				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newAdventure.newInstructorBio"
-				/>
+				<input type="text" v-model="newAdventure.newInstructorBio"/>
 
-				<button @click="updateDetails()" v-if="!updateToggle">
-					Update Details
-				</button>
 				<button
-					@click="sendUpdatedDetails()"
-					v-if="updateToggle"
+					@click="submit()"
 					style="background-color: rgb(108, 207, 108)"
 				>
 					Submit
@@ -130,70 +57,58 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		var urlArray = window.location.href.split("/");
-		var id = urlArray[4];
+		var emailHash = localStorage.emailHash;
+		var fishingInstructorName = ref(null);
+		var fishingInstructorId = ref(null);
 
-		var adventure = ref(null);
-		axios.get("/api/adventures/get/" + id).then(function (response) {
-			for (const key in response.data) {
-				if (!(key === "password")) {
-					localStorage.setItem(key, response.data[key]);
-				}
-			}
-			adventure.value = response.data;
-			localStorage["fishingInstructor"] = adventure.value.instructorId;
-		});
-
-		var instructor = ref(null);
 		axios
-			.get(
-				"/api/fishingInstructor/get/" +
-					localStorage["fishingInstructor"]
-			)
+			.get("/api/fishingInstructor/getByEmail/" + emailHash)
 			.then(function (response) {
-				instructor.value = response.data;
+				fishingInstructorName.value = response.data.name;
+				fishingInstructorId.value = response.data.id;
+				console.log(fishingInstructorName.value);
+				localStorage.setItem("fishingInstructorId", response.data.id);
 			});
 
-		var updateToggle = ref(null);
 		var newAdventure = ref({
-			newName: localStorage.name,
-			newAddress: localStorage.address,
-			newPromoDescription: localStorage.promoDescription,
-			newInstructorBio: localStorage.instructorBio,
-			newRules: localStorage.rules,
-			newPriceAndInfo: localStorage.priceAndInfo,
-			newEquipment: localStorage.equipment,
-			newMaxUsers: localStorage.maxUsers,
-			newPercentTakenIfCancelled: localStorage.percentTakenIfCancelled,
+			newName: "",
+			newAddress: "",
+			newGeoLng: "",
+			newGeoLat: "",
+			newPromoDescription: "",
+			newRules: "",
+			newPriceAndInfo: "",
+			newEquipment: "",
+			newMaxUsers: "",
+			newPercentTakenIfCancelled: "",
+			newInstructorBio: "",
+			newInstructorId: localStorage.fishingInstructorId,
 		});
+
 		// Za u <template>
 		return {
-			adventure,
-			instructor,
-			updateToggle,
+			emailHash,
+			fishingInstructorName,
+			fishingInstructorId,
 			newAdventure,
-			imageSource(id) {
-				return require("../../assets/images/adventure" + id + ".png");
-			},
-			updateDetails() {
-				this.updateToggle = true;
-			},
-			sendUpdatedDetails() {
+			submit() {
 				if (
 					this.newAdventure.newName == "" ||
 					this.newAdventure.newAddress == "" ||
+					this.newAdventure.newGeoLng == "" ||
+					this.newAdventure.newGeoLat == "" ||
+					this.newAdventure.newPromoDescription == "" ||
 					this.newAdventure.newRules == "" ||
 					this.newAdventure.newPriceAndInfo == "" ||
-					this.newAdventure.newPromoDescription == "" ||
 					this.newAdventure.newEquipment == "" ||
-					this.newAdventure.newInstructorBio == "" ||
 					this.newAdventure.newMaxUsers == "" ||
+					this.newAdventure.newInstructorBio == "" ||
 					this.newAdventure.newPercentTakenIfCancelled == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
 				}
-				var sendingAdventure = this.adventure;
+				var sendingAdventure = this.newAdventure;
 				sendingAdventure.name = this.newAdventure.newName;
 				sendingAdventure.address = this.newAdventure.newAddress;
 				sendingAdventure.promoDescription =
@@ -209,12 +124,12 @@ export default {
 					this.newAdventure.newPercentTakenIfCancelled;
 
 				axios
-					.post("/api/adventures/update/", sendingAdventure)
+					.post("/api/adventures/update", sendingAdventure)
 					.then(function (response) {
 						console.log(response);
 						console.log(response.data);
 					});
-				window.location.reload();
+				window.location.assign("/fishingInstructor/" + localStorage.emailHash);
 			},
 		};
 	},

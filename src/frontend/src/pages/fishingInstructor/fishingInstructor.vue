@@ -199,6 +199,11 @@
 						Delete
 					</button>
 				</div>
+				<div style="display: flex">
+					<button class="entryApprove" @click="addNewAdventure()">
+						Add New Adventure
+					</button>
+				</div>
 			</div>
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
@@ -402,6 +407,8 @@ export default {
 				window.location.assign(
 					"/adventureCreate/" + localStorage.emailHash
 				);
+				console.log(localStorage.emailHash);
+				
 			},
 		};
 	},
