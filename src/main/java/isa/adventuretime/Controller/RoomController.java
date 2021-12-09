@@ -2,6 +2,7 @@ package isa.adventuretime.Controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,23 @@ public class RoomController {
 		room.setNumberOfBeds(numberOfBeds.getBody());
 		room = roomService.save(room);
 		return new ResponseEntity<>(room, HttpStatus.OK);
+	}
+
+	@PostMapping(path = "/createAll/{id}")
+	public ResponseEntity<ArrayList<Room>> addAllRooms(@PathVariable("id") Long id,
+			RequestEntity<String> numberOfBeds) {
+		ArrayList<Room> rooms = new ArrayList<>();
+
+		String bed[] = numberOfBeds.getBody().split(",");
+		for (int i = 0; i < bed.length; i++) {
+			int noBeds = Integer.parseInt(bed[i].split("\"")[3]);
+			Room room = new Room(noBeds, id);
+			room = roomService.save(room);
+			rooms.add(room);
+		}
+
+		return new ResponseEntity<>(rooms, HttpStatus.OK);
+
 	}
 
 	// @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,

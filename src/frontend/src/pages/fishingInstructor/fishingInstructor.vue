@@ -398,6 +398,11 @@ export default {
 				// console.log(id);
 				window.location.href = "/adventureEdit/" + id;
 			},
+			addNewAdventure() {
+				window.location.assign(
+					"/adventureCreate/" + localStorage.emailHash
+				);
+			},
 		};
 	},
 };

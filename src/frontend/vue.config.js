@@ -50,6 +50,14 @@ module.exports = {
 			entry: "src/pages/adventureEdit/main.js",
 			title: "Adventure Edit Page",
 		},
+		cottageCreate: {
+			entry: "src/pages/cottageCreate/main.js",
+			title: "Cottage Create Page",
+		},
+		adventureCreate: {
+			entry: "src/pages/adventureCreate/main.js",
+			title: "Adventure Create Page",
+		},
 	},
 	devServer: {
 		port: 3000,

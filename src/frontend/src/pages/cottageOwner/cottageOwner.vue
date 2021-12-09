@@ -162,6 +162,7 @@
 			<div style="height: 80px"></div>
 			<div class="table">
 				<h3>Cottages</h3>
+
 				<div
 					class="tableEntry"
 					v-for="cottage in cottages"
@@ -180,6 +181,11 @@
 						@click="deleteCottage(cottage.id)"
 					>
 						Delete
+					</button>
+				</div>
+				<div style="display: flex">
+					<button class="entryApprove" @click="addNewCottage()">
+						Add New Cottage
 					</button>
 				</div>
 			</div>
@@ -362,6 +368,11 @@ export default {
 			viewCottage(id) {
 				// console.log(id);
 				window.location.href = "/cottageEdit/" + id;
+			},
+			addNewCottage() {
+				window.location.assign(
+					"/cottageCreate/" + localStorage.emailHash
+				);
 			},
 		};
 	},
