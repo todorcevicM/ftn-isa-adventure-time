@@ -20,6 +20,11 @@
 				<h4>{{ cottage.name }}</h4>
 				<p>${{ cottage.pricePerDay }}.00 / Day</p>
 				<p>Rating: 5.00</p>
+
+				<p v-if="!uploadedImage"> Add a new image: </p>
+				<input v-if="!uploadedImage" type="file" @change="onFileChange"/>
+				<button v-if="!uploadedImage" @click="uploadImage(cottage.id)">Upload</button>
+				<img v-if="uploadedImage" class="itemImage" :src="addedImageSource(cottage.id)" />
 			</div>
 			<div class="rightFlex">
 				<p>Name</p>
@@ -152,6 +157,8 @@ export default {
 		var urlArray = window.location.href.split("/");
 		var id = urlArray[4];
 
+		var uploadedImage = ref(null);
+
 		var cottage = ref(null);
 		axios.get("/api/cottages/get/" + id).then(function (response) {
 			for (const key in response.data) {
@@ -195,6 +202,7 @@ export default {
 			owner,
 			rooms,
 			updateToggle,
+			uploadedImage,
 			newCottage,
 			imageSource(id) {
 				return require("../../assets/images/cottage" + id + ".png");
@@ -275,6 +283,25 @@ export default {
 						console.log(response.data);
 					});
 				window.location.reload();
+			},
+			onFileChange(e) {
+				var files = e.target.files || e.dataTransfer.files;
+				if (!files.length) return;
+				this.selectedFile = files[0];
+			},
+			uploadImage(id) {
+				const newFormData = new FormData();
+				newFormData.append("file", this.selectedFile);
+				var api = "cottage_" + id + ".png";
+				axios.post("/api/image/save/" + api, newFormData, {
+					}).then(function(response) {
+						console.log(response.data);
+					}
+				);
+				this.uploadedImage = true;
+			},
+			addedImageSource(id) {
+				return require("../../assets/images/cottage_" + id + ".png");
 			},
 		};
 	},

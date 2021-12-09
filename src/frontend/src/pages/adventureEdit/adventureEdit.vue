@@ -14,6 +14,13 @@
 				<h4>{{ adventure.name }}</h4>
 				<p>${{ adventure.pricePerDay }}.00 / Day</p>
 				<p>Rating: 5.00</p>
+
+						<p v-if="!uploadedImage"> Add a new image: </p>
+						<input v-if="!uploadedImage" type="file" @change="onFileChange"/>
+						<button v-if="!uploadedImage" @click="uploadImage(adventure.id)">Upload</button>
+				
+						<img v-if="uploadedImage" class="itemImage" :src="addedImageSource(adventure.id)" />
+					
 			</div>
 			<div class="rightFlex">
 				<p>Name</p>
@@ -130,6 +137,7 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
+		var uploadedImage = localStorage.uploadedImage ? true : false;
 		var urlArray = window.location.href.split("/");
 		var id = urlArray[4];
 
@@ -166,12 +174,15 @@ export default {
 			newMaxUsers: localStorage.maxUsers,
 			newPercentTakenIfCancelled: localStorage.percentTakenIfCancelled,
 		});
+
 		// Za u <template>
 		return {
 			adventure,
 			instructor,
 			updateToggle,
 			newAdventure,
+			uploadedImage,
+			selectedFile: null,
 			imageSource(id) {
 				return require("../../assets/images/adventure" + id + ".png");
 			},
@@ -215,6 +226,27 @@ export default {
 						console.log(response.data);
 					});
 				window.location.reload();
+			},
+			onFileChange(e) {
+				var files = e.target.files || e.dataTransfer.files;
+				if (!files.length) return;
+				this.selectedFile = files[0];
+			},
+			uploadImage(id) {
+				const newFormData = new FormData();
+				newFormData.append("file", this.selectedFile);
+				var api = "adventure_" + id + ".png";
+				axios.post("/api/image/save/" + api, newFormData, {
+					}).then(function(response) {
+						console.log(response.data);
+					}
+				);
+				this.uploadedImage = true;		
+				localStorage.uploadedImage = true;	
+					
+			},
+			addedImageSource(id) {
+				return require("../../assets/images/adventure_" + id + ".png");
 			},
 		};
 	},

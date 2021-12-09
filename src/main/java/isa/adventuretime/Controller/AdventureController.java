@@ -32,7 +32,6 @@ public class AdventureController {
 
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<Adventure>> getAdventures() {
-		System.out.println("aaaaaaaaaaaaaaaaaaa");
 		return new ResponseEntity<ArrayList<Adventure>>(adventureService.findAll(), HttpStatus.OK);
 	}
 
@@ -52,15 +51,6 @@ public class AdventureController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<ArrayList<Date>>(dates, HttpStatus.OK);
 	}
-
-	// @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
-	// produces = MediaType.APPLICATION_JSON_VALUE)
-	// public ResponseEntity<Adventure> saveAdventure(RequestEntity<Adventure>
-	// adventure) {
-	// // TODO: Prosledi objekat, ne RequestEntity
-	// return new ResponseEntity<Adventure>(adventureService.save(adventure),
-	// HttpStatus.OK);
-	// }
 
 	@PostMapping(path = "/delete/{id}")
 	public Boolean deleteAdventure(@PathVariable("id") Long id) {
