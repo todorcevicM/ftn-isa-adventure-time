@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,6 +79,11 @@ public class CottageController {
 	@GetMapping(path = "/getAllByOwnerId/{id}")
 	public ResponseEntity<ArrayList<Cottage>> getAllByOwnerId(@PathVariable("id") Long id) {
 		return new ResponseEntity<ArrayList<Cottage>>(cottageService.getAllByOwnerId(id), HttpStatus.OK);
+	}
+
+	@PostMapping(path = "/update")
+	public ResponseEntity<Cottage> updateCottage(RequestEntity<Cottage> cottage) {
+		return new ResponseEntity<Cottage>(cottageService.save(cottage.getBody()), HttpStatus.OK);
 	}
 
 }

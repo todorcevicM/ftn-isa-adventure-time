@@ -74,4 +74,9 @@ public class AdventureController {
 		return true;
 	}
 
+	@PostMapping(path = "/update")
+	public ResponseEntity<Adventure> updateAdventure(RequestEntity<Adventure> adventure) {
+		return new ResponseEntity<Adventure>(adventureService.save(adventure.getBody()), HttpStatus.OK);
+	}
+
 }

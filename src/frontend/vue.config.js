@@ -42,6 +42,14 @@ module.exports = {
 			entry: "src/pages/registeredUserProfile/main.js",
 			title: "User Profile Page",
 		},
+		cottageEdit: {
+			entry: "src/pages/cottageEdit/main.js",
+			title: "Cottage Edit Page",
+		},
+		adventureEdit: {
+			entry: "src/pages/adventureEdit/main.js",
+			title: "Adventure Edit Page",
+		},
 	},
 	devServer: {
 		port: 3000,

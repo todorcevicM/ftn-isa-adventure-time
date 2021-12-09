@@ -333,8 +333,12 @@ export default {
 					});
 			},
 			viewUser(id) {
-				console.log(id);
+				// console.log(id);
 				window.location.href = "/registeredUserProfile/" + id;
+			},
+			viewCottage(id) {
+				// console.log(id);
+				window.location.href = "/cottageEdit/" + id;
 			},
 		};
 	},
