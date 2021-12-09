@@ -19,6 +19,44 @@
 						Show Reports
 					</button>
 				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>New Report</p>
+					<button @click="wantsDeletion()" style="width: 200px">
+						Fill
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>Quick Reservation</p>
+					<button @click="wantsDeletion()" style="width: 200px">
+						Create
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>New Reservation</p>
+					<button @click="wantsDeletion()" style="width: 200px">
+						Create
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>Occupancy Calendar</p>
+					<button @click="wantsDeletion()" style="width: 200px">
+						Show
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
 			</div>
 			<div class="rightFlex">
 				<p>Address</p>
@@ -104,6 +142,26 @@
 			</div>
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
+			<div class="table">
+				<h3>Cottages</h3>
+				<div
+					class="tableEntry"
+					v-for="cottage in cottages"
+					:key="cottage"
+				>
+					<p class="entryName">{{ cottage.name }}</p>
+					<!-- TODO: class ovog dugmeta djota -->
+					<button class="entryApprove" @click="viewCottage(cottage.id)">
+						View
+					</button>
+					<button
+						class="entryDeny"
+						@click="deleteCottage(cottage.id)"
+					>
+						Delete
+					</button>
+				</div>
+			</div>
 			<!-- Password Change -->
 			<button @click="showPasswordChange()" v-if="!passwordChangeToggle">
 				Change My Password
@@ -192,6 +250,7 @@ export default {
 			repeatPassword,
 			matching,
 			passwordChangeToggle,
+			cottages,
 			wantsDeletion() {
 				alert("Not implemented yet!");
 			},
@@ -255,14 +314,27 @@ export default {
 			showPasswordChange() {
 				this.passwordChangeToggle = true;
 			},
-			// TODO: ovde treba da se prikazu ti dobavljeni podaci
-			viewUser(registeredUserId) {
+			deleteCottage(id) {
 				axios
-					.get("/api/registeredUser/getUser/" + registeredUserId)
+					.post("/api/cottages/delete/" + id)
 					.then(function (response) {
+						console.log("Response : ");
 						console.log(response.data);
+						var booked = response.data;
+						if (booked == false) {
+							alert(
+								"There exist bookings with this item. Deletion is unavailable."
+							);
+							return;
+						} else {
+							alert("Deleted.");
+							window.location.reload();
+						}
 					});
-				console.log(registeredUserId);
+			},
+			viewUser(id) {
+				console.log(id);
+				window.location.href = "/registeredUserProfile/" + id;
 			},
 		};
 	},

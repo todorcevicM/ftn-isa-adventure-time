@@ -14,6 +14,7 @@
 				<h4>{{ adventure.name }}</h4>
 				<p>${{ adventure.pricePerDay }}.00 / Day</p>
 				<p>Rating: 5.00</p>
+				<p>Percent Taken If Canceled: 5%</p>
 				<button @click="reserve()">Reserve</button>
 			</div>
 			<div class="rightFlex">

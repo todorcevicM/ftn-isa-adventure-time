@@ -18,7 +18,6 @@ import isa.adventuretime.Entity.RoomBooking;
 import isa.adventuretime.Service.CottageOwnerService;
 import isa.adventuretime.Service.CottageService;
 import isa.adventuretime.Service.RoomBookingService;
-import isa.adventuretime.Service.RoomService;
 
 @RestController
 @RequestMapping("/api/cottageOwner")

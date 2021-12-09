@@ -37,7 +37,11 @@ module.exports = {
 		boat: {
 			entry: "src/pages/boat/main.js",
 			title: "Boat Home Page",
-		}
+		},
+		registeredUserProfile: {
+			entry: "src/pages/registeredUserProfile/main.js",
+			title: "User Profile Page",
+		},
 	},
 	devServer: {
 		port: 3000,

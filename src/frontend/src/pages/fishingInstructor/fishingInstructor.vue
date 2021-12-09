@@ -13,12 +13,52 @@
 				<p style="font-size: 18px">{{ user.email }}</p>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
 				<div class="percentage">
 					<p>Business Reports</p>
 					<button @click="wantsDeletion()" style="width: 200px">
-						Show Reports
+						Show
 					</button>
 				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>New Report</p>
+					<button @click="wantsDeletion()" style="width: 200px">
+						Fill
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>Quick Reservation</p>
+					<button @click="wantsDeletion()" style="width: 200px">
+						Create
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>New Reservation</p>
+					<button @click="wantsDeletion()" style="width: 200px">
+						Create
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>Occupancy Calendar</p>
+					<button @click="wantsDeletion()" style="width: 200px">
+						Show
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+
 			</div>
 			<div class="rightFlex">
 				<p>Address</p>
@@ -279,6 +319,10 @@ export default {
 			},
 			showPasswordChange() {
 				this.passwordChangeToggle = true;
+			},
+			viewUser(id) {
+				console.log(id);
+				window.location.href = "/registeredUserProfile/" + id;
 			},
 		};
 	},

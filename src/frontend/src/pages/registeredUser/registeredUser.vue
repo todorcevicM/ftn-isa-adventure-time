@@ -15,12 +15,6 @@
 				<p>Penalties: 0</p>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<div class="percentage">
-					<p>Business Reports</p>
-					<button @click="wantsDeletion()" style="width: 200px">
-						Show Reports
-					</button>
-				</div>
 			</div>
 			<div class="rightFlex">
 				<p>Address</p>
