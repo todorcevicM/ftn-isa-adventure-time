@@ -156,6 +156,28 @@
 			</div>
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
+			<div class="table">
+				<h3>Adventures</h3>
+				<div
+					class="tableEntry"
+					v-for="adventure in adventures"
+					:key="adventure"
+				>
+					<p class="entryName">{{ adventure.name }}</p>
+					<!-- TODO: class ovog dugmeta djota -->
+					<button class="entryApprove" @click="viewAdventure(adventure.id)">
+						View
+					</button>
+					<button
+						class="entryDeny"
+						@click="deleteAdventure(adventure.id)"
+					>
+						Delete
+					</button>
+				</div>
+			</div>
+			<!-- Spacer -->
+			<div style="height: 80px"></div>
 			<!-- Password Change -->
 			<button @click="showPasswordChange()" v-if="!passwordChangeToggle">
 				Change My Password
@@ -224,7 +246,11 @@ export default {
 		var repeatPassword = ref(null);
 		var matching = ref(null);
 		var passwordChangeToggle = ref(null);
-	
+		var adventures = ref(null);
+		axios.get("/api/adventures/get").then(function (response) {
+			console.log(response.data);
+			adventures.value = response.data;
+		});
 
 		var pastAdventureBookings = ref(null);
 		axios
@@ -246,6 +272,7 @@ export default {
 			repeatPassword,
 			matching,
 			passwordChangeToggle,
+			adventures,
 			wantsDeletion() {
 				alert("Not implemented yet!");
 			},
@@ -323,6 +350,28 @@ export default {
 			viewUser(id) {
 				console.log(id);
 				window.location.href = "/registeredUserProfile/" + id;
+			},
+			deleteAdventure(id) {
+				axios
+					.post("/api/adventures/delete/" + id)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+						var booked = response.data;
+						if (booked == false) {
+							alert(
+								"There exist bookings with this item. Deletion is unavailable."
+							);
+							return;
+						} else {
+							alert("Deleted.");
+							window.location.reload();
+						}
+					});
+			},
+			viewAdventure(id) {
+				// console.log(id);
+				window.location.href = "/adventureEdit/" + id;
 			},
 		};
 	},

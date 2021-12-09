@@ -32,6 +32,7 @@ public class AdventureController {
 
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<Adventure>> getAdventures() {
+		System.out.println("aaaaaaaaaaaaaaaaaaa");
 		return new ResponseEntity<ArrayList<Adventure>>(adventureService.findAll(), HttpStatus.OK);
 	}
 

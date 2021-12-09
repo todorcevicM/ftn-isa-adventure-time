@@ -314,6 +314,10 @@ export default {
 			showPasswordChange() {
 				this.passwordChangeToggle = true;
 			},
+			viewUser(id) {
+				// console.log(id);
+				window.location.href = "/registeredUserProfile/" + id;
+			},
 			deleteCottage(id) {
 				axios
 					.post("/api/cottages/delete/" + id)
@@ -331,10 +335,6 @@ export default {
 							window.location.reload();
 						}
 					});
-			},
-			viewUser(id) {
-				// console.log(id);
-				window.location.href = "/registeredUserProfile/" + id;
 			},
 			viewCottage(id) {
 				// console.log(id);

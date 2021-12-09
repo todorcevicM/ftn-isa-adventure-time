@@ -75,8 +75,21 @@
 					v-if="updateToggle"
 					v-model="newCottage.newReservationEnd"
 				/>
-				
-				<p>{{ cottage.maxUsers }} person limit.</p>
+
+				<p>Person limit</p>
+				<p class="smallText" v-if="!updateToggle">{{ cottage.maxUsers }}</p>
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newCottage.newMaxUsers"
+				/>
+				<p class="smallText" v-if="!updateToggle">{{cottage.percentTakenIfCancelled}}</p>
+				<input 
+					type="text"
+					v-if="updateToggle"
+					v-model="newCottage.newPercentTakenIfCancelled"
+				/>
+				<p>% taken if cancelled. </p>
 
 				<p>Owner : {{ owner.name }}</p>
 
@@ -133,12 +146,15 @@
 
 			var updateToggle = ref(null);
 			var newCottage = ref({
+				newName: localStorage.name,
 				newAddress: localStorage.address,
 				newRules: localStorage.rules,
 				newPriceAndInfo: localStorage.priceAndInfo,
 				newPromoDescription: localStorage.promoDescription,
 				newReservationStart: localStorage.reservationStart,
 				newReservationEnd: localStorage.reservationEnd,
+				newMaxUsers: localStorage.maxUsers,
+				newPercentTakenIfCancelled: localStorage.percentTakenIfCancelled,
 			});
 
 			// Za u <template>
@@ -158,23 +174,29 @@
 				},
 				sendUpdatedDetails() {
 					if (
+						this.newCottage.newName == "" ||
 						this.newCottage.newAddress == "" ||
 						this.newCottage.newRules == "" ||
 						this.newCottage.newPriceAndInfo == "" ||
 						this.newCottage.newPromoDescription == "" || 
 						this.newCottage.newReservationStart == "" ||
-						this.newCottage.newReservationEnd == ""
+						this.newCottage.newReservationEnd == "" ||
+						this.newCottage.newMaxUsers == "" ||
+						this.newCottage.newPercentTakenIfCancelled == ""
 					) {
 						alert("Please fill out all inputs.");
 						return;
 					}
 					var sendingCottage = this.cottage;
+					sendingCottage.name = this.newCottage.newName;
 					sendingCottage.address = this.newCottage.newAddress;
 					sendingCottage.rules = this.newCottage.newRules;
 					sendingCottage.priceAndInfo = this.newCottage.newPriceAndInfo;
 					sendingCottage.promoDescription = this.newCottage.newPromoDescription;
 					sendingCottage.reservationStart = this.newCottage.newReservationStart;
 					sendingCottage.reservationEnd = this.newCottage.newReservationEnd;
+					sendingCottage.maxUsers = this.newCottage.newMaxUsers;
+					sendingCottage.percentTakenIfCancelled = this.newCottage.newPercentTakenIfCancelled;
 					axios
 						.post("/api/cottages/update", sendingCottage)
 						.then(function (response) {

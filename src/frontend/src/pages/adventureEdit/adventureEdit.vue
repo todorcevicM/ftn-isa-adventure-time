@@ -67,6 +67,11 @@
 					v-model="newAdventure.newMaxUsers"
 				/>
 				<p class="smallText" v-if="!updateToggle">{{adventure.percentTakenIfCancelled}}</p>
+				<input 
+					type="text"
+					v-if="updateToggle"
+					v-model="newAdventure.newPercentTakenIfCancelled"
+				/>
 				<p>% taken if cancelled. </p>
 
 				<p>Owner : {{ instructor.name }}</p>
