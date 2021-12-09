@@ -37,4 +37,8 @@ public class RoomBookingService {
 	public Boolean existsByCottageIdAndEndAfter(Long id, Date date) {
 		return roomBookingRepo.existsByCottageIdAndEndAfter(id, date);
 	}
+
+	public Boolean existsByIdAndEndAfter(Long id, Date date) {
+		return roomBookingRepo.existsByIdAndEndAfter(id, date);
+	}
 }

@@ -22,4 +22,11 @@ public class Room {
 	private int numberOfBeds;
 	private Long cottageId;
 
+	public Room() {
+	}
+
+	public Room(int numberOfBeds, Long cottageId) {
+		this.numberOfBeds = numberOfBeds;
+		this.cottageId = cottageId;
+	}
 }
