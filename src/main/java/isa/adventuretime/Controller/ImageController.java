@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.netty.handler.codec.AsciiHeadersEncoder.NewlineType;
+
 
 @RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
 @RequestMapping(path = "/api/image")
@@ -24,10 +26,10 @@ public class ImageController {
 	public ResponseEntity<String> saveImage(@PathVariable("namePic") String namePic, @RequestParam ("file") MultipartFile multipartFile) throws Exception {
         System.out.println("New picture name:");
         System.out.println(namePic);
-        String imgName = new String("adventure_1.png");
-        Path filepath = Paths.get("src/frontend/src/assets/images", namePic);
+        String imgName = namePic + ".png";
+        Path filepath = Paths.get("src/frontend/src/assets/images", imgName);
         if(System.getProperty("os.name").indexOf("Win") >= 0)
-            filepath = Paths.get("src\\frontend\\src\\assets\\images", namePic);
+            filepath = Paths.get("src\\frontend\\src\\assets\\images", imgName);
                 
         try (OutputStream os = Files.newOutputStream(filepath)) {
             os.write(multipartFile.getBytes());

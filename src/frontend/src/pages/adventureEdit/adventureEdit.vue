@@ -17,7 +17,7 @@
 
 						<p v-if="!uploadedImage"> Add a new image: </p>
 						<input v-if="!uploadedImage" type="file" @change="onFileChange"/>
-						<button v-if="!uploadedImage" @click="uploadImage(adventure.id)">Upload</button>
+						<button v-if="canUpload" @click="uploadImage(adventure.id)">Upload</button>
 				
 						<img v-if="uploadedImage" class="itemImage" :src="addedImageSource(adventure.id)" />
 					
@@ -137,7 +137,8 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		var uploadedImage = localStorage.uploadedImage ? true : false;
+		var uploadedImage = ref(false);
+		var canUpload = ref(false);
 		var urlArray = window.location.href.split("/");
 		var id = urlArray[4];
 
@@ -182,6 +183,7 @@ export default {
 			updateToggle,
 			newAdventure,
 			uploadedImage,
+			canUpload,
 			selectedFile: null,
 			imageSource(id) {
 				return require("../../assets/images/adventure" + id + ".png");
@@ -242,11 +244,15 @@ export default {
 					}
 				);
 				this.uploadedImage = true;		
-				localStorage.uploadedImage = true;	
+				console.log(this.uploadedImage);
 					
 			},
 			addedImageSource(id) {
-				return require("../../assets/images/adventure_" + id + ".png");
+
+				console.log(this.uploadedImage);
+				if (this.uploadedImage) {
+					return require("../../assets/images/adventure_" + id + ".png");
+				}
 			},
 		};
 	},

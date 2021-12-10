@@ -21,10 +21,13 @@
 				<p>${{ cottage.pricePerDay }}.00 / Day</p>
 				<p>Rating: 5.00</p>
 
-				<p v-if="!uploadedImage"> Add a new image: </p>
-				<input v-if="!uploadedImage" type="file" @change="onFileChange"/>
-				<button v-if="!uploadedImage" @click="uploadImage(cottage.id)">Upload</button>
-				<img v-if="uploadedImage" class="itemImage" :src="addedImageSource(cottage.id)" />
+				<div id="glupsam">
+
+					<p v-if="!uploadedImage"> Add a new image: </p>
+					<input v-if="!uploadedImage" type="file" @change="onFileChange"/>
+					<button v-if="!uploadedImage" @click="uploadImage(cottage.id)">Upload</button>
+					<img class="itemImage" :src="addedImageSource(cottage.id)" />
+				</div>
 			</div>
 			<div class="rightFlex">
 				<p>Name</p>
@@ -157,7 +160,8 @@ export default {
 		var urlArray = window.location.href.split("/");
 		var id = urlArray[4];
 
-		var uploadedImage = ref(null);
+		var uploadedImage = false;
+		var canUpload = false;
 
 		var cottage = ref(null);
 		axios.get("/api/cottages/get/" + id).then(function (response) {
@@ -203,6 +207,8 @@ export default {
 			rooms,
 			updateToggle,
 			uploadedImage,
+			canUpload,
+			selectedFile: null,
 			newCottage,
 			imageSource(id) {
 				return require("../../assets/images/cottage" + id + ".png");
@@ -285,23 +291,42 @@ export default {
 				window.location.reload();
 			},
 			onFileChange(e) {
+				console.log(e);
 				var files = e.target.files || e.dataTransfer.files;
+				console.log(files[0]);
 				if (!files.length) return;
 				this.selectedFile = files[0];
+				this.canUpload = true;
+				console.log(this.canUpload);
 			},
 			uploadImage(id) {
-				const newFormData = new FormData();
-				newFormData.append("file", this.selectedFile);
-				var api = "cottage_" + id + ".png";
-				axios.post("/api/image/save/" + api, newFormData, {
-					}).then(function(response) {
-						console.log(response.data);
-					}
-				);
-				this.uploadedImage = true;
+				if (this.canUpload) {
+					console.log("Uploading image...");
+					const newFormData = new FormData();
+					newFormData.append("file", this.selectedFile);
+					console.log("Form data : ");
+					var api = "cottage_" + id;
+					axios.post("/api/image/save/" + api, newFormData, {
+						}).then(function(response) {
+							console.log(response.data);
+						}
+					);
+					console.log("Image uploaded.");
+					this.uploadedImage = true;
+				}
 			},
 			addedImageSource(id) {
-				return require("../../assets/images/cottage_" + id + ".png");
+				console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+				console.log(this.uploadedImage)
+				console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+				// if (this.uploadedImage) {
+				try {
+					return require("../../assets/images/cottage_" + id + ".png")	 
+				} catch (e) {
+					return require("../../assets/images/cottage" + id + ".png")
+				}
+
+				// }
 			},
 		};
 	},
