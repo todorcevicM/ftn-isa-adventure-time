@@ -2,9 +2,7 @@ package isa.adventuretime.Controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-
 import javax.mail.internet.AddressException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import isa.adventuretime.DTO.UnauthenticatedUserDTO;
 import isa.adventuretime.Entity.Administrator;
 import isa.adventuretime.Entity.BoatOwner;
@@ -24,7 +21,6 @@ import isa.adventuretime.Entity.FishingInstructor;
 import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RegisteredUser;
 import isa.adventuretime.Entity.RequestForAdmin;
-import isa.adventuretime.Entity.Subscription;
 import isa.adventuretime.Entity.User;
 import isa.adventuretime.Service.AdministratorService;
 import isa.adventuretime.Service.BoatOwnerService;
@@ -33,7 +29,6 @@ import isa.adventuretime.Service.FishingInstructorService;
 import isa.adventuretime.Service.MailService;
 import isa.adventuretime.Service.RegisteredUserService;
 import isa.adventuretime.Service.RequestForAdminService;
-import isa.adventuretime.Service.SubscriptionService;
 
 @RestController
 @RequestMapping(path = "/api/user")
@@ -60,8 +55,8 @@ public class UserController {
 	@Autowired
 	RequestForAdminService requestForAdminService;
 
-	@Autowired
-	private SubscriptionService subscriptionService;
+	// @Autowired
+	// private SubscriptionService subscriptionService;
 
 	@PostMapping(value = ("/login"), consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> userLogin(RequestEntity<ArrayList<String>> credentials) throws Exception {
@@ -151,7 +146,7 @@ public class UserController {
 
 		String userTypeString = split2[split2.length - 1];
 		ObjectMapper mapper = new ObjectMapper();
-		
+
 		switch (userTypeString) {
 			case "registeredUser":
 				RegisteredUser newRegisteredUser = mapper.readValue(user.getBody(), RegisteredUser.class);
@@ -173,8 +168,10 @@ public class UserController {
 				return new ResponseEntity<User>((User) cottageOwner, HttpStatus.OK);
 			case "fishingInstructor":
 				FishingInstructor newFishingInstructor = mapper.readValue(user.getBody(), FishingInstructor.class);
-				FishingInstructor fishingInstructor = fishingInstructorService.findByEmail(newFishingInstructor.getEmail());
-				fishingInstructor.updateFishingInstructor(newFishingInstructor, newFishingInstructor.getStartWorkPeriod(), newFishingInstructor.getEndWorkPeriod());
+				FishingInstructor fishingInstructor = fishingInstructorService
+						.findByEmail(newFishingInstructor.getEmail());
+				fishingInstructor.updateFishingInstructor(newFishingInstructor,
+						newFishingInstructor.getStartWorkPeriod(), newFishingInstructor.getEndWorkPeriod());
 				fishingInstructor = fishingInstructorService.saveFishingInstructor(fishingInstructor);
 				return new ResponseEntity<User>((User) fishingInstructor, HttpStatus.OK);
 			case "administrator":

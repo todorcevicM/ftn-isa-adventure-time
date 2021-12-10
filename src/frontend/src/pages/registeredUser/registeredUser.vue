@@ -65,9 +65,11 @@
 		</div>
 		<div class="lowerFlex">
 			<!-- past boat booking -->
-			<div class="table">
+			<div class="tableHeader">
 				<h3>Past Boat Bookings</h3>
-				<button>Sort</button>
+				<button style="margin: 0">Sort</button>
+			</div>
+			<div class="table">
 				<div
 					class="tableEntry"
 					v-for="pbb in pastBoatBookings"
@@ -84,9 +86,11 @@
 				</div>
 			</div>
 			<!-- past adventure booking -->
-			<div class="table">
+			<div class="tableHeader">
 				<h3>Past Adventure Bookings</h3>
-				<button>Sort</button>
+				<button style="margin: 0">Sort</button>
+			</div>
+			<div class="table">
 				<div
 					class="tableEntry"
 					v-for="pab in pastAdventureBookings"
@@ -103,9 +107,11 @@
 				</div>
 			</div>
 			<!-- past room booking -->
-			<div class="table">
+			<div class="tableHeader">
 				<h3>Past Room Bookings</h3>
-				<button>Sort</button>
+				<button style="margin: 0">Sort</button>
+			</div>
+			<div class="table">
 				<div
 					class="tableEntry"
 					v-for="prb in pastRoomBookings"
@@ -123,9 +129,11 @@
 			</div>
 
 			<!-- future boat booking -->
-			<div class="table">
+			<div class="tableHeader">
 				<h3>Future Boat Bookings</h3>
-				<button>Sort</button>
+				<button style="margin: 0">Sort</button>
+			</div>
+			<div class="table">
 				<div
 					class="tableEntry"
 					v-for="pbb in futureBoatBookings"
@@ -142,9 +150,11 @@
 				</div>
 			</div>
 			<!-- future adventure booking -->
-			<div class="table">
+			<div class="tableHeader">
 				<h3>Future Adventure Bookings</h3>
-				<button>Sort</button>
+				<button style="margin: 0">Sort</button>
+			</div>
+			<div class="table">
 				<div
 					class="tableEntry"
 					v-for="pab in futureAdventureBookings"
@@ -161,9 +171,11 @@
 				</div>
 			</div>
 			<!-- future room booking -->
-			<div class="table">
+			<div class="tableHeader">
 				<h3>Future Room Bookings</h3>
-				<button>Sort</button>
+				<button style="margin: 0">Sort</button>
+			</div>
+			<div class="table">
 				<div
 					class="tableEntry"
 					v-for="prb in futureAdventureBookings"
@@ -181,9 +193,11 @@
 			</div>
 
 			<!-- sub boat -->
+			<div class="tableHeader">
+				<h3>Subscribed Boats</h3>
+				<button style="margin: 0">Sort</button>
+			</div>
 			<div class="table">
-				<h3>Subscribed Boat</h3>
-				<button>Sort</button>
 				<div class="tableEntry" v-for="pbb in subBoat" :key="pbb">
 					<p class="entryName">{{ pbb.name }}</p>
 					<p class="entryRequestText">{{ pbb.promoDescription }}</p>
@@ -196,9 +210,11 @@
 				</div>
 			</div>
 			<!-- sub adventure -->
+			<div class="tableHeader">
+				<h3>Subscribed Adventures</h3>
+				<button style="margin: 0">Sort</button>
+			</div>
 			<div class="table">
-				<h3>Subscribed Adventure</h3>
-				<button>Sort</button>
 				<div class="tableEntry" v-for="pab in subAdventure" :key="pab">
 					<p class="entryName">{{ pab.name }}</p>
 					<p class="entryRequestText">{{ pab.promoDescription }}</p>
@@ -211,9 +227,11 @@
 				</div>
 			</div>
 			<!-- sub cottage -->
+			<div class="tableHeader">
+				<h3>Subscribed Cottages</h3>
+				<button style="margin: 0">Sort</button>
+			</div>
 			<div class="table">
-				<h3>Subscribed Cottage</h3>
-				<button>Sort</button>
 				<div class="tableEntry" v-for="prb in subCottage" :key="prb">
 					<p class="entryName">{{ prb.name }}</p>
 					<p class="entryRequestText">{{ prb.promoDescription }}</p>
@@ -225,7 +243,97 @@
 					<button class="entryDeny" @click="deny()">Deny</button>
 				</div>
 			</div>
+		</div>
+		<!-- Spacer -->
+		<div style="margin-top: 60px"></div>
+		<!-- Main Card kopiran sa App.vue -->
+		<div class="mainCard">
+			<div class="search" style="text-align: center">
+				<img
+					src="../../assets/wheel.svg"
+					style="width: 48px; margin-top: 18px"
+				/>
+				<input
+					type="text"
+					placeholder="Search..."
+					v-model="searchQuery"
+				/>
+				<div v-if="searchQuery" class="searchResult">
+					<p>No results found...</p>
+				</div>
+			</div>
+			<div class="largeCategory">
+				<h1>Browse Cottages</h1>
+				<a v-if="showAllCottagesToggle" @click="showAllCottages()"
+					>Show All</a
+				>
+				<div class="categoryItems">
+					<div
+						v-for="i in cottageNumToDisplay ? cottages.length : 3"
+						:key="i"
+					>
+						<img
+							@click="imageRedirect(1, i)"
+							class="itemImage"
+							:src="imageSource(1, i)"
+						/>
+						<h4>{{ cottages[i - 1].name }}</h4>
+						<h6>Rating: 5.00</h6>
+						<h6>${{ cottages[i - 1].pricePerDay }}/day</h6>
+						<h6>{{ cottages[i - 1].address }}</h6>
+					</div>
+				</div>
+			</div>
+			<div class="largeCategory">
+				<h1>Browse Adventures</h1>
+				<a v-if="showAllAdventuresToggle" @click="showAllAdventures()"
+					>Show All</a
+				>
+				<div class="categoryItems">
+					<div
+						v-for="i in adventureNumToDisplay
+							? adventures.length
+							: 3"
+						:key="i"
+					>
+						<img
+							@click="imageRedirect(2, i)"
+							class="itemImage"
+							:src="imageSource(2, i)"
+						/>
+						<h4>{{ adventures[i - 1].name }}</h4>
+						<h6>Rating: 5.00</h6>
+						<h6>${{ adventures[i - 1].pricePerDay }}/day</h6>
+						<h6>{{ adventures[i - 1].address }}</h6>
+					</div>
+				</div>
+			</div>
+			<div class="largeCategory">
+				<h1>Browse Boats</h1>
+				<a v-if="showAllBoatsToggle" @click="showAllBoats()"
+					>Show All</a
+				>
+				<div class="categoryItems">
+					<div
+						v-for="i in boatNumToDisplay ? boats.length : 3"
+						:key="i"
+					>
+						<img
+							@click="imageRedirect(3, i)"
+							class="itemImage"
+							:src="imageSource(3, i)"
+						/>
+						<h4>{{ boats[i - 1].name }}</h4>
+						<h6>Rating: 5.00</h6>
+						<h6>${{ boats[i - 1].pricePerDay }}/day</h6>
+						<h6>{{ boats[i - 1].address }}</h6>
+					</div>
+				</div>
+			</div>
+		</div>
 
+		<!-- ------- -->
+		<div class="lowestFlex">
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<button @click="wantsDeletion()">Submit a Complaint</button>
@@ -356,7 +464,6 @@ export default {
 		axios
 			.get("/api/registeredUser/subBoat/" + localStorage["userId"])
 			.then(function (response) {
-				console.log(response.data);
 				subBoat.value = response.data;
 			});
 
@@ -374,6 +481,28 @@ export default {
 				subCottage.value = response.data;
 			});
 
+		var cottages = ref(null);
+		var adventures = ref(null);
+		var boats = ref(null);
+		var cottageNumToDisplay = ref(null);
+		var showAllCottagesToggle = ref(null);
+		showAllCottagesToggle = true;
+		var adventureNumToDisplay = ref(null);
+		var showAllAdventuresToggle = ref(null);
+		showAllAdventuresToggle = true;
+		var boatNumToDisplay = ref(null);
+		var showAllBoatsToggle = ref(null);
+		showAllBoatsToggle = true;
+		var searchQuery = ref(null);
+		axios.get("/api/cottages/get").then(function (response) {
+			cottages.value = response.data;
+		});
+		axios.get("/api/adventures/get").then(function (response) {
+			adventures.value = response.data;
+		});
+		axios.get("/api/boats/get").then(function (response) {
+			boats.value = response.data;
+		});
 		return {
 			user,
 			pastBoatBookings,
@@ -391,6 +520,16 @@ export default {
 			repeatPassword,
 			matching,
 			passwordChangeToggle,
+			searchQuery,
+			cottages,
+			adventures,
+			boats,
+			cottageNumToDisplay,
+			showAllCottagesToggle,
+			adventureNumToDisplay,
+			showAllAdventuresToggle,
+			boatNumToDisplay,
+			showAllBoatsToggle,
 			wantsDeletion() {
 				alert("Not implemented yet!");
 			},
@@ -454,13 +593,57 @@ export default {
 			showPasswordChange() {
 				this.passwordChangeToggle = true;
 			},
+			showAllCottages() {
+				this.showAllCottagesToggle = false;
+				this.cottageNumToDisplay = true;
+			},
+			showAllAdventures() {
+				this.showAllAdventuresToggle = false;
+				this.adventureNumToDisplay = true;
+			},
+			showAllBoats() {
+				this.showAllBoatsToggle = false;
+				this.boatNumToDisplay = true;
+			},
+			imageRedirect(type, id) {
+				switch (type) {
+					case 1:
+						window.location.href = "/cottage/" + id;
+						break;
+					case 2:
+						window.location.href = "/adventure/" + id;
+						break;
+					case 3:
+						window.location.href = "/boat/" + id;
+						break;
+				}
+			},
+			imageSource(type, id) {
+				switch (type) {
+					case 1:
+						// console.log("CASE 1 ID ZA IMAGESOURCE : " + id);
+						return require("../../assets/images/cottage" +
+							id +
+							".png");
+					case 2:
+						// console.log("CASE 2 ID ZA IMAGESOURCE : " + id);
+						return require("../../assets/images/adventure" +
+							id +
+							".png");
+					case 3:
+						// console.log("CASE 3 ID ZA IMAGESOURCE : " + id);
+						return require("../../assets/images/boat" +
+							id +
+							".png");
+				}
+			},
 		};
 	},
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 
 body {
 	/* background-image: url("../../assets/adventure-time-background.jpg"); */
@@ -494,7 +677,104 @@ body {
 	letter-spacing: -1px;
 	display: inline;
 }
-
+a {
+	color: #ad6800;
+	text-decoration: none;
+}
+a:hover {
+	color: #573b0d;
+	cursor: pointer;
+}
+.mainCard {
+	background-color: white;
+	/* height: 1900px; */
+	margin: 0;
+	border-radius: 24px;
+	padding-bottom: 30px;
+}
+.categoryItems {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	row-gap: 20px;
+}
+.itemImage {
+	margin: 0px 3px;
+	border-radius: 15px;
+	object-fit: cover;
+	width: 360px;
+	height: 360px;
+	transition: all 0.2s ease-in-out;
+}
+.itemImage:hover {
+	transform: scale(1.02);
+	cursor: pointer;
+}
+.largeCategory {
+	margin-left: 224px;
+	margin-right: 224px;
+}
+.largeCategory a {
+	margin-left: 30px;
+	font-size: 24px;
+}
+input,
+select {
+	width: 260px;
+	height: 32px;
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 20px;
+	background-color: #f0f0f0;
+}
+input:focus,
+select:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
+}
+.search {
+	text-align: center;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.search input {
+	border-radius: 5px;
+	margin-top: 10px;
+}
+.searchResult {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 370px;
+	height: 470px;
+	margin-top: 20px;
+	border-radius: 15px;
+	background-color: rgb(230, 230, 230);
+}
+.searchResult p {
+	text-align: center;
+	color: rgb(71, 71, 71);
+	font-size: 35px;
+}
+.categoryItems div h4 {
+	font-size: 32px;
+	font-weight: 400;
+	margin: 0;
+}
+h6 {
+	font-size: 26px;
+	font-weight: lighter;
+	margin: 0;
+}
+h1 {
+	display: inline-block;
+	font-size: 46px;
+	letter-spacing: 1px;
+	border-bottom: #ad6800 3px solid;
+	margin-top: 10px;
+}
 .mainFlex {
 	margin: 50px 200px 0px;
 	display: flex;
@@ -627,8 +907,10 @@ button:hover {
 	flex-direction: column;
 }
 
-.lowerFlex h3 {
-	border-bottom: solid 1px rgb(145, 145, 145);
+.lowestFlex {
+	margin: 0px 200px;
+	display: flex;
+	flex-direction: column;
 }
 
 .table {
@@ -694,5 +976,11 @@ button:hover {
 .businessReports button {
 	margin: 0 0 0 30px;
 	width: 110px;
+}
+.tableHeader {
+	margin-top: 30px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 </style>

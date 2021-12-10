@@ -126,7 +126,7 @@
 					<input
 						v-model="userCountry"
 						type="text"
-						placeholder="California"
+						placeholder="Canada"
 					/>
 				</div>
 			</div>
@@ -146,7 +146,6 @@
 					/>
 				</div>
 			</div>
-			<!--v-if="matching != null"-->
 			<div class="spacer">
 				<p>{{ matching }}</p>
 			</div>
@@ -194,8 +193,6 @@
 					>Show All</a
 				>
 				<div class="categoryItems">
-					<!-- v-for c in cottages bi iteriralo kroz sve, hocemo samo prva 3 -->
-					<!-- i in 3 ide od 1 do 3, ne od 0 do 2 -->
 					<div
 						v-for="i in cottageNumToDisplay ? cottages.length : 3"
 						:key="i"
@@ -218,7 +215,6 @@
 					>Show All</a
 				>
 				<div class="categoryItems">
-					<!-- TODO: ne radi ovaj kurac ovde -->
 					<div
 						v-for="i in adventureNumToDisplay
 							? adventures.length
@@ -261,9 +257,9 @@
 			</div>
 		</div>
 		<!-- Spacers -->
-		<div v-if="!showAllCottagesToggle" style="height: 500px"></div>
-		<div v-if="!showAllAdventuresToggle" style="height: 500px"></div>
-		<div v-if="!showAllBoatsToggle" style="height: 500px"></div>
+		<div v-if="!showAllCottagesToggle" style="height: 550px"></div>
+		<div v-if="!showAllAdventuresToggle" style="height: 550px"></div>
+		<div v-if="!showAllBoatsToggle" style="height: 550px"></div>
 		<!-- Spacers -->
 		<div class="bottomCard">
 			<p>
@@ -304,6 +300,7 @@ export default {
 		var signUpMessageOn = ref(null);
 		var signUpMessageKind = ref(null);
 		var signUpMessageText = ref(null);
+
 		var cottageNumToDisplay = ref(null);
 		var showAllCottagesToggle = ref(null);
 		showAllCottagesToggle = true;
@@ -605,7 +602,7 @@ export default {
 						window.location.href = "/boat/" + id;
 						break;
 				}
-			},	
+			},
 		};
 	},
 };
@@ -817,6 +814,7 @@ select:focus {
 	cursor: pointer;
 }
 .bottomCard {
+	margin-top: 30px;
 	background-color: #3f3f3f;
 	height: 150px;
 	border-top-left-radius: 20px;

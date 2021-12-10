@@ -2,8 +2,6 @@ package isa.adventuretime.Controller;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import isa.adventuretime.Entity.Room;
 import isa.adventuretime.Service.RoomBookingService;
 import isa.adventuretime.Service.RoomService;

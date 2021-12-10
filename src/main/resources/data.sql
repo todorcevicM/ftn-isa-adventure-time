@@ -1,38 +1,38 @@
 insert into business_constants (description, value, name) values ("Percentage taken on successful reservation.", 15.00, "ptosr");
 
-insert into administrator (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Marko", "Stankovic", "stankovictab@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 1291623784);
-insert into administrator (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Stanko", "Markovic", "tabstankovic@gmail.com", "0", "Address", "City", "Country", "064121213", FALSE, TRUE, -1872771714);
-insert into administrator (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Nikola", "Todorčevic", "random1@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 625244223);
+insert into administrator (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Marko", "Stankovic", "stankovictab@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, 1291623784);
+insert into administrator (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Stanko", "Markovic", "tabstankovic@gmail.com", "0", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, -1872771714);
+insert into administrator (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Nikola", "Todorčevic", "random1@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, 625244223);
 
-insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Damon", "Beasley", "random2@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -1171707136);
-insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Arden", "Dodge", "random3@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 1326308801);
-insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Jemima", "Fishman", "random4@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -470642558);
+insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Damon", "Beasley", "random2@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, -1171707136);
+insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Arden", "Dodge", "random3@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, 1326308801);
+insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Jemima", "Fishman", "random4@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, -470642558);
 --neodobren
-insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Doug", "Leon", "random16@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, FALSE, 924836377);
+insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Doug", "Leon", "random16@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, FALSE, 924836377);
 
 
-insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Clair", "Albertson", "random5@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 2027373379);
-insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Gil", "Sumner", "random6@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 230422020);
-insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Gus", "Clemens", "random7@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -1566529339);
+insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Clair", "Albertson", "random5@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, 2027373379);
+insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Gil", "Sumner", "random6@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, 230422020);
+insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Gus", "Clemens", "random7@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, -1566529339);
 --neodobren
-insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Ted", "Osbourne", "random17@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, FALSE, -872114982);
+insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Ted", "Osbourne", "random17@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, FALSE, -872114982);
 
 
-insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Meadow", "Ready", "random8@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 931486598, "2023-01-01", "2023-01-15" );
-insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Topher", "Craft", "random9@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -865464761, "2023-01-01", "2023-01-15" );
-insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Rickie", "Croft", "random10@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -1178357357, "2023-01-01", "2023-01-15" );
+insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Meadow", "Ready", "random8@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, 931486598, "2023-01-01", "2023-01-15" );
+insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Topher", "Craft", "random9@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, -865464761, "2023-01-01", "2023-01-15" );
+insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Rickie", "Croft", "random10@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, -1178357357, "2023-01-01", "2023-01-15" );
 --neodobren
-insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Wendell", "Wade", "random18@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, FALSE, 1625900955, "2023-01-01", "2023-01-15" );
+insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash, start_work_period, end_work_period) values ("Wendell", "Wade", "random18@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, FALSE, 1625900955, "2023-01-01", "2023-01-15" );
 
-insert into request_for_admin(for_type, user_registration_reason, requester_id) values (1, "UwU pwease xDDD, sucky sucky ten bucky", 4);
-insert into request_for_admin(for_type, user_registration_reason, requester_id) values (3, "UwO pwease DDxxxDDD, sucky sucky ten bucky", 4);
-insert into request_for_admin(for_type, user_registration_reason, requester_id) values (5, "OwO pwease MMMDDD, sucky sucky ten bucky", 4);
+insert into request_for_admin(for_type, user_registration_reason, requester_id) values (1, "Hteo bih da izdajem sta imam :D", 4);
+insert into request_for_admin(for_type, user_registration_reason, requester_id) values (3, "Hteo bih da izdajem sta imam xD", 4);
+insert into request_for_admin(for_type, user_registration_reason, requester_id) values (5, "Hteo bih da izdajem sta imam :P", 4);
 
-insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Oliver", "Brooks", "random11@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 1319658580);
-insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Max", "Morris", "random12@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -477292779);
-insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Rory", "Atkinson", "random13@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 2020723158);
-insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Jennifer", "Wells", "random14@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, 223771799);
-insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Isabel", "Poole", "random15@gmail.com", "testpassword", "Address", "City", "Country", "064121213", FALSE, TRUE, -1573179560);
+insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Oliver", "Brooks", "random11@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, 1319658580);
+insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Max", "Morris", "random12@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, -477292779);
+insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Rory", "Atkinson", "random13@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, 2020723158);
+insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Jennifer", "Wells", "random14@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, 223771799);
+insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, wants_deletion, authenticated, email_hash) values ("Isabel", "Poole", "random15@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, TRUE, -1573179560);
 
 insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id) values ("Old Pine Cabin", "Montauk, New York", 41.049690, -71.909219, "Sample Promo Description", "Sample Rules", 130.00, "Sample Price and Info", "2020-01-01", "2023-01-01", 4, 1);
 insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id) values ("Wayward Cottage", "Burlington, Vermont", 44.415146, -73.254865, "Sample Promo Description", "Sample Rules", 185.00, "Sample Price and Info", "2020-01-01", "2023-01-01", 3, 1);
@@ -58,19 +58,19 @@ insert into subscription (for_entity, subbed_id, subber_id) values (3, 1, 1);
 insert into subscription (for_entity, subbed_id, subber_id) values (5, 1, 1);  
 
 insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users)
-            values(1, "Nepotopivi 2", "JoMama", "15", 123456, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Don't talk about Nepotopivi 1", 50, "2023-01-01", "2023-01-15", "Lorem", 7);
+            values(1, "Nepotopivi 2", "Yamaha", "15", 1, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Don't talk about Nepotopivi 1", 50, "2023-01-01", "2023-01-15", "Lorem", 7);
 
 insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users)
-            values(1, "Miss Melanoma", "JoMama", "15", 123456, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Nije lose", 50, "2023-01-01", "2023-01-15", "Lorem", 7);
+            values(1, "Miss Melanoma", "Yamaha", "15", 1, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Nije lose", 50, "2023-01-01", "2023-01-15", "Lorem", 7);
 
 insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users)
-            values(1, "Brzi", "JoMama", "15", 123456, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Ipak nije tako brz", 50, "2023-01-01", "2023-01-15", "Lorem", 7);
+            values(1, "Brzi", "Yamaha", "15", 1, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Ipak nije tako brz", 50, "2023-01-01", "2023-01-15", "Lorem", 7);
 
 insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users)
-            values(1, "Just A Splash", "JoMama", "15", 123456, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Potopio nepotopivog1", 50, "2023-01-01", "2023-01-15", "Lorem", 7);
+            values(1, "Just A Splash", "Yamaha", "15", 1, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Potopio nepotopivog1", 50, "2023-01-01", "2023-01-15", "Lorem", 7);
 
 insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users)
-            values(1, "Peti Sveti", "JoMama", "15", 123456, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "VeryFastBoy", "Potopio nepotopivog1", 50, "2023-01-01", "2023-01-15", "Lorem", 7);
+            values(1, "Peti Sveti", "Yamaha", "15", 1, 321, 321, "Sonar", "Address", 44.374710, -68.191748, "Holie", "Ovaj jeste Sveti Peti", 50, "2023-01-01", "2023-01-15", "Lorem", 7);
 
 
 --rezervacije u prvoj polovini januara, pravice problem u januaru
