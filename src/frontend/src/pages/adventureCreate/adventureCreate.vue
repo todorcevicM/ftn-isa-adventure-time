@@ -59,16 +59,18 @@ export default {
 	setup() {
 		var emailHash = localStorage.emailHash;
 		var fishingInstructorName = ref(null);
-		var fishingInstructorId = ref(null);
+		var fishingInstructorIdFromPostRequest = ref(null);
 
 		axios
 			.get("/api/fishingInstructor/getByEmail/" + emailHash)
 			.then(function (response) {
 				fishingInstructorName.value = response.data.name;
-				fishingInstructorId.value = response.data.id;
-				console.log(fishingInstructorName.value);
-				localStorage.setItem("fishingInstructorId", response.data.id);
+				console.log(response.data.id);
+				localStorage["fishingInstructorIdFromPostRequest"] = response.data.id;
 			});
+		
+		// console.log(fishingInstructorId.value);
+		console.log(localStorage["fishingInstructorIdFromPostRequest"]);
 
 		var newAdventure = ref({
 			newName: "",
@@ -82,14 +84,14 @@ export default {
 			newMaxUsers: "",
 			newPercentTakenIfCancelled: "",
 			newInstructorBio: "",
-			newInstructorId: localStorage.fishingInstructorId,
+			newInstructorId: localStorage["fishingInstructorIdFromPostRequest"],
 		});
 
 		// Za u <template>
 		return {
 			emailHash,
 			fishingInstructorName,
-			fishingInstructorId,
+			fishingInstructorIdFromPostRequest,
 			newAdventure,
 			submit() {
 				if (
@@ -122,6 +124,9 @@ export default {
 				sendingAdventure.maxUsers = this.newAdventure.newMaxUsers;
 				sendingAdventure.percentTakenIfCancelled =
 					this.newAdventure.newPercentTakenIfCancelled;
+				sendingAdventure.instructorId = this.newAdventure.newInstructorId;
+				sendingAdventure.geoLng = this.newAdventure.newGeoLng;
+				sendingAdventure.geoLat = this.newAdventure.newGeoLat;
 
 				axios
 					.post("/api/adventures/update", sendingAdventure)

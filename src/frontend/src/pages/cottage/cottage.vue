@@ -51,6 +51,7 @@
 			var cottage = ref(null);
 			axios.get("/api/cottages/get/" + id).then(function (response) {
 				cottage.value = response.data;
+				
 				localStorage["cottageOwner"] = cottage.value.ownerId;
 				// Mora localStorage da bi se izbegao limit scope-a .then()-a
 			});
@@ -75,7 +76,13 @@
 				owner,
 				rooms,
 				imageSource(id) {
-					return require("../../assets/images/cottage" + id + ".png");
+					try {
+						return require("../../assets/images/cottage" + id + ".png");
+					}
+					catch (e) {
+						// TODO: return praznu sliku ili nesto tako
+						return require("../../assets/images/cottage1.png")
+					}
 				},
 				reserve() {
 					alert("Not implemented yet!");

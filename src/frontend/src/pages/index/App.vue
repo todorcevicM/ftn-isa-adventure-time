@@ -605,7 +605,7 @@ export default {
 						window.location.href = "/boat/" + id;
 						break;
 				}
-			},
+			},	
 		};
 	},
 };

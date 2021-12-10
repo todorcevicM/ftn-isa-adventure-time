@@ -14,13 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.netty.handler.codec.AsciiHeadersEncoder.NewlineType;
-
 
 @RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
 @RequestMapping(path = "/api/image")
 public class ImageController {
-    private static String OS = System.getProperty("os.name").toLowerCase();
 
     @PostMapping(path = "/save/{namePic}")
 	public ResponseEntity<String> saveImage(@PathVariable("namePic") String namePic, @RequestParam ("file") MultipartFile multipartFile) throws Exception {

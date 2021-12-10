@@ -141,9 +141,11 @@ export default {
 		var canUpload = ref(false);
 		var urlArray = window.location.href.split("/");
 		var id = urlArray[4];
+		console.log(id);
 
 		var adventure = ref(null);
 		axios.get("/api/adventures/get/" + id).then(function (response) {
+			console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + id);
 			for (const key in response.data) {
 				if (!(key === "password")) {
 					localStorage.setItem(key, response.data[key]);
@@ -151,6 +153,8 @@ export default {
 			}
 			adventure.value = response.data;
 			localStorage["fishingInstructor"] = adventure.value.instructorId;
+			console.log(localStorage["fishingInstructor"]);
+			console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbb" + id);
 		});
 
 		var instructor = ref(null);
@@ -186,7 +190,12 @@ export default {
 			canUpload,
 			selectedFile: null,
 			imageSource(id) {
-				return require("../../assets/images/adventure" + id + ".png");
+				try {
+					return require("../../assets/images/adventure" + id + ".png");
+				}
+				catch (err) {
+					return require("../../assets/images/adventure1.png");
+				}
 			},
 			updateDetails() {
 				this.updateToggle = true;
@@ -248,11 +257,13 @@ export default {
 					
 			},
 			addedImageSource(id) {
-
-				console.log(this.uploadedImage);
-				if (this.uploadedImage) {
+				try {
 					return require("../../assets/images/adventure_" + id + ".png");
 				}
+				catch (err) {
+					return require("../../assets/images/adventure1.png");
+				}
+			
 			},
 		};
 	},

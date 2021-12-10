@@ -85,7 +85,6 @@ export default {
 			.get("/api/cottageOwner/getByEmail/" + emailHash)
 			.then(function (response) {
 				cottageOwnerName.value = response.data.name;
-				cottageOwnerId.value = response.data.id;
 				localStorage.setItem("cottageOwnerId", response.data.id);
 			});
 
@@ -124,7 +123,9 @@ export default {
 					this.newCottage.newReservationStart == "" ||
 					this.newCottage.newReservationEnd == "" ||
 					this.newCottage.newMaxUsers == "" ||
-					this.newCottage.newPercentTakenIfCancelled == ""
+					this.newCottage.newPercentTakenIfCancelled == "" || 
+					this.newCottage.newGeoLng == "" ||
+					this.newCottage.newGeoLat == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
@@ -148,6 +149,8 @@ export default {
 					this.newCottage.newReservationEnd;
 				sendingCottage.maxUsers = this.newCottage.newMaxUsers;
 				sendingCottage.ownerId = this.newCottage.newOwnerId;
+				sendingCottage.geoLng = this.newCottage.newGeoLng;
+				sendingCottage.geoLat = this.newCottage.newGeoLat;
 
 				axios
 					.post("/api/cottages/update", sendingCottage)

@@ -167,6 +167,10 @@ export default {
 		axios.get("/api/cottages/get/" + id).then(function (response) {
 			for (const key in response.data) {
 				if (!(key === "password")) {
+					if (key === "name") {
+						localStorage.setItem("cottageName", response.data[key]);
+						continue;
+					}
 					localStorage.setItem(key, response.data[key]);
 				}
 			}
@@ -190,7 +194,7 @@ export default {
 
 		var updateToggle = ref(null);
 		var newCottage = ref({
-			newName: localStorage.name,
+			newName: localStorage.cottageName,
 			newAddress: localStorage.address,
 			newRules: localStorage.rules,
 			newPriceAndInfo: localStorage.priceAndInfo,
@@ -198,6 +202,8 @@ export default {
 			newReservationStart: localStorage.reservationStart,
 			newReservationEnd: localStorage.reservationEnd,
 			newMaxUsers: localStorage.maxUsers,
+			newGeoLng: localStorage.geoLng,
+			newGeoLat: localStorage.geoLat,
 		});
 
 		// Za u <template>
@@ -211,8 +217,13 @@ export default {
 			selectedFile: null,
 			newCottage,
 			imageSource(id) {
-				return require("../../assets/images/cottage" + id + ".png");
-			},
+					try {
+						return require("../../assets/images/cottage" + id + ".png");
+					}
+					catch (e) {
+						return require("../../assets/images/cottage1.png")
+					}
+				},
 			deleteRoom(roomId) {
 				axios
 					.post("/api/rooms/delete/" + roomId)
@@ -248,7 +259,9 @@ export default {
 					this.newCottage.newReservationStart == "" ||
 					this.newCottage.newReservationEnd == "" ||
 					this.newCottage.newMaxUsers == "" ||
-					this.newCottage.newPercentTakenIfCancelled == ""
+					this.newCottage.newPercentTakenIfCancelled == "" || 
+					this.newCottage.newGeoLng == "" ||
+					this.newCottage.newGeoLat == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
@@ -267,6 +280,9 @@ export default {
 				sendingCottage.maxUsers = this.newCottage.newMaxUsers;
 				sendingCottage.percentTakenIfCancelled =
 					this.newCottage.newPercentTakenIfCancelled;
+				sendingCottage.geoLng = this.newCottage.newGeoLng;
+				sendingCottage.geoLat = this.newCottage.newGeoLat;
+				
 				axios
 					.post("/api/cottages/update", sendingCottage)
 					.then(function (response) {
@@ -316,14 +332,11 @@ export default {
 				}
 			},
 			addedImageSource(id) {
-				console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-				console.log(this.uploadedImage)
-				console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
 				// if (this.uploadedImage) {
 				try {
 					return require("../../assets/images/cottage_" + id + ".png")	 
 				} catch (e) {
-					return require("../../assets/images/cottage" + id + ".png")
+					return require("../../assets/images/cottage1.png")
 				}
 
 				// }
