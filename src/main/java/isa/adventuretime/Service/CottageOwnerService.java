@@ -96,11 +96,17 @@ public class CottageOwnerService {
 			CottageOwner cottageOwner = cottageOwnerRepo.getById(id);
 			cottageOwner.setDeleted(true);
 			cottageOwnerRepo.save(cottageOwner);
+
+			deletionRequestRepo.findByForTypeAndRequesterId(HeadEntityEnum.COTTAGE_OWNER, id)
+					.ifPresent(deletionRequest -> {
+						deletionRequestRepo.delete(deletionRequest);
+					});
+
 			return true;
 		}
 	}
 
-	public void createRequestForDeletion(Long id, Date date, String reason) {
+	public void createDeletionRequest(Long id, String reason) {
 		Optional<CottageOwner> cottageOwnerOptional = cottageOwnerRepo.findById(id);
 		CottageOwner cottageOwner = cottageOwnerOptional.get();
 

@@ -56,7 +56,7 @@ public class FishingInstructorService {
 		return fishingInstructorRepo.findAllByAuthenticated(authenticated);
 	}
 
-	public void markDeleted(Long id) {
+	public Boolean markDeleted(Long id) {
 		Date now = new Date();
 		ArrayList<Adventure> adventures = adventureRepo.findAllByInstructorId(id);
 		boolean flag = false;
@@ -72,6 +72,7 @@ public class FishingInstructorService {
 				adventure.setHidden(flag);
 				adventureRepo.save(adventure);
 			}
+			return false;
 		} else {
 			for (Adventure adventure : adventures) {
 				adventureRepo.delete(adventure);
@@ -79,11 +80,16 @@ public class FishingInstructorService {
 			FishingInstructor fishingInstructor = fishingInstructorRepo.getById(id);
 			fishingInstructor.setDeleted(true);
 			fishingInstructorRepo.save(fishingInstructor);
+			deletionRequestRepo.findByForTypeAndRequesterId(HeadEntityEnum.FISHING_INSTRUCTOR, id)
+					.ifPresent(deletionRequest -> {
+						deletionRequestRepo.delete(deletionRequest);
+					});
+			return true;
 		}
 
 	}
 
-	public void createRequestForDeletion(Long id, Date date, String reason) {
+	public void createDeletionRequest(Long id, String reason) {
 		Optional<FishingInstructor> fishingInstructorOptional = fishingInstructorRepo.findById(id);
 		FishingInstructor fishingInstructor = fishingInstructorOptional.get();
 

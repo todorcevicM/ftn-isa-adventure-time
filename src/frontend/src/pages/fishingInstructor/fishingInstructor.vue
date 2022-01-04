@@ -16,7 +16,7 @@
 				<!-- TODO: ovaj class -->
 				<div class="percentage">
 					<p>Business Reports</p>
-					<button @click="wantsDeletion()" style="width: 200px">
+					<button @click="notImplemented()" style="width: 200px">
 						Show
 					</button>
 				</div>
@@ -25,7 +25,7 @@
 				<!-- TODO: ovaj class -->
 				<div class="percentage">
 					<p>New Report</p>
-					<button @click="wantsDeletion()" style="width: 200px">
+					<button @click="notImplemented()" style="width: 200px">
 						Fill
 					</button>
 				</div>
@@ -34,7 +34,7 @@
 				<!-- TODO: ovaj class -->
 				<div class="percentage">
 					<p>Quick Reservation</p>
-					<button @click="wantsDeletion()" style="width: 200px">
+					<button @click="notImplemented()" style="width: 200px">
 						Create
 					</button>
 				</div>
@@ -43,7 +43,7 @@
 				<!-- TODO: ovaj class -->
 				<div class="percentage">
 					<p>New Reservation</p>
-					<button @click="wantsDeletion()" style="width: 200px">
+					<button @click="notImplemented()" style="width: 200px">
 						Create
 					</button>
 				</div>
@@ -52,7 +52,7 @@
 				<!-- TODO: ovaj class -->
 				<div class="percentage">
 					<p>Occupancy Calendar</p>
-					<button @click="wantsDeletion()" style="width: 200px">
+					<button @click="notImplemented()" style="width: 200px">
 						Show
 					</button>
 				</div>
@@ -242,7 +242,7 @@
 				</div>
 				<button @click="updatePassword()">Update</button>
 			</div>
-			<button @click="wantsDeletion()">Delete My Account</button>
+			<button @click="deleteAccount()">Delete My Account</button>
 		</div>
 	</div>
 </template>
@@ -303,7 +303,7 @@ export default {
 			passwordChangeToggle,
 			adventures,
 			searchQuery,
-			wantsDeletion() {
+			notImplemented() {
 				alert("Not implemented yet!");
 			},
 			updateDetails() {
@@ -408,7 +408,40 @@ export default {
 					"/adventureCreate/" + localStorage.emailHash
 				);
 				console.log(localStorage.emailHash);
-				
+			},
+			deleteAccount() {
+				var reason = prompt("Enter reason for deletion: ");
+				axios
+					.post(
+						"/api/user/createDeletionRequest/" + this.user.id,
+						{ type: "FISHING_INSTRUCTOR", reason: reason },
+						{ headers: { "Content-Type": "application/json" } }
+					)
+					.then(function (response) {
+						if (response.data == true) {
+							alert(
+								"The request for deletion has been submitted."
+							);
+						} else {
+							alert(
+								"Your services are currently reserved, the account cannot be deleted."
+							);
+						}
+					})
+					.catch(function (error) {
+						if (error.response.status == 429) {
+							// TOO_MANY_REQUESTS
+							alert(
+								"A deletion request for your account already exists."
+							);
+							return;
+						} else {
+							alert(
+								"There's been an error while submitting the request : " +
+									error
+							);
+						}
+					});
 			},
 		};
 	},

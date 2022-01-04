@@ -1,30 +1,31 @@
 package isa.adventuretime.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RegisteredUser;
-import isa.adventuretime.Repository.RegisteredUserRepo;
 import isa.adventuretime.Repository.AdventureBookingRepo;
 import isa.adventuretime.Repository.BoatBookingRepo;
+import isa.adventuretime.Repository.DeletionRequestRepo;
+import isa.adventuretime.Repository.RegisteredUserRepo;
 import isa.adventuretime.Repository.RoomBookingRepo;
-import java.util.Date;
 
 @Service
 public class RegisteredUserService {
-	private RegisteredUserRepo registeredUserRepo;
-	private AdventureBookingRepo adventureBookingRepo;
-	private BoatBookingRepo boatBookingRepo;
-	private RoomBookingRepo roomBookingRepo;
-
 	@Autowired
-	public RegisteredUserService(RegisteredUserRepo registeredUserRepo, AdventureBookingRepo adventureBookingRepo,
-			BoatBookingRepo boatBookingRepo, RoomBookingRepo roomBookingRepo) {
-		this.registeredUserRepo = registeredUserRepo;
-		this.adventureBookingRepo = adventureBookingRepo;
-		this.boatBookingRepo = boatBookingRepo;
-		this.roomBookingRepo = roomBookingRepo;
-	}
+	private RegisteredUserRepo registeredUserRepo;
+	@Autowired
+	private AdventureBookingRepo adventureBookingRepo;
+	@Autowired
+	private BoatBookingRepo boatBookingRepo;
+	@Autowired
+	private RoomBookingRepo roomBookingRepo;
+	@Autowired
+	private DeletionRequestRepo deletionRequestRepo;
 
 	public RegisteredUser getById(Long Id) {
 		return registeredUserRepo.getById(Id);
@@ -61,12 +62,16 @@ public class RegisteredUserService {
 			RegisteredUser registeredUser = registeredUserRepo.getById(id);
 			registeredUser.setDeleted(true);
 			registeredUserRepo.save(registeredUser);
+			// deletionRequestRepo.findByForTypeAndRequesterId(HeadEntityEnum.REGISTERED_USER,
+			// id)
+			// .ifPresent(deletionRequest -> {
+			// deletionRequestRepo.delete(deletionRequest);
+			// });
 			return true;
 		}
 	}
 
 	public Boolean hasBookingInNextThreeDays(Long id) {
-		// da li se id nalazi u nekom od bookinga
 		Date now_plus_3 = new Date(System.currentTimeMillis() + 3 * 24 * 60 * 60 * 1000);
 		return adventureBookingRepo.existsByRegisteredUserIdAndStartAfter(id, now_plus_3)
 				|| boatBookingRepo.existsByRegisteredUserIdAndStartAfter(id, now_plus_3)

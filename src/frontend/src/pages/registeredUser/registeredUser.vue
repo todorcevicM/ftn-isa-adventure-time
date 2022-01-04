@@ -336,7 +336,7 @@
 		<div class="lowestFlex">
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
-			<button @click="wantsDeletion()">Submit a Complaint</button>
+			<button @click="notImplemented()">Submit a Complaint</button>
 			<!-- Password Change -->
 			<button @click="showPasswordChange()" v-if="!passwordChangeToggle">
 				Change My Password
@@ -372,7 +372,7 @@
 				</div>
 				<button @click="updatePassword()">Update</button>
 			</div>
-			<button @click="wantsDeletion()">Delete My Account</button>
+			<button @click="deleteAccount()">Delete My Account</button>
 		</div>
 	</div>
 </template>
@@ -530,7 +530,7 @@ export default {
 			showAllAdventuresToggle,
 			boatNumToDisplay,
 			showAllBoatsToggle,
-			wantsDeletion() {
+			notImplemented() {
 				alert("Not implemented yet!");
 			},
 			updateDetails() {
@@ -636,6 +636,32 @@ export default {
 							id +
 							".png");
 				}
+			},
+			deleteAccount() {
+				axios
+					.post(
+						"/api/user/deleteUser/" + this.user.id,
+						"REGISTERED_USER",
+						{ headers: { "Content-Type": "application/json" } }
+					)
+					.then(function (response) {
+						if (response.data == true) {
+							alert(
+								"Your account has been deleted. You will be redirected to the home page."
+							);
+							window.location.href = "http://localhost:3000/";
+						} else {
+							alert(
+								"There are currently active reservations in your name, the account cannot be deleted."
+							);
+						}
+					})
+					.catch(function (error) {
+						alert(
+							"There's been an error while submitting the request : " +
+								error
+						);
+					});
 			},
 		};
 	},

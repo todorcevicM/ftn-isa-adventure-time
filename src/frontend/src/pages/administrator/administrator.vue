@@ -403,9 +403,6 @@ export default {
 
 		var deletionRequests = ref(null);
 		axios.get("/api/user/getDeletionRequests").then(function (response) {
-			// TODO:
-			console.log("RSEPNSOSENSSEE");
-			console.log(response.data);
 			deletionRequests.value = response.data;
 		});
 
@@ -615,12 +612,12 @@ export default {
 						headers: { "Content-Type": "application/json" },
 					})
 					.then(function (response) {
-						alert(response.data);
-						if (response.data == true)
+						if (response.data == true) {
 							alert(
 								"User has been deleted, and an email has been sent."
 							);
-						else {
+							window.location.reload();
+						} else {
 							alert("There's been an error while deleting.");
 						}
 					})
@@ -631,9 +628,31 @@ export default {
 					});
 			},
 			denyDeletionRequest(id, type) {
-				alert(id + " " + type);
 				var reason = prompt("Enter reason for denial :");
-				alert("TODO:", reason);
+				axios
+					.post(
+						"/api/user/denyUserDeletion/" + id,
+						{ type: type, reason: reason },
+						{
+							headers: { "Content-Type": "application/json" },
+						}
+					)
+					.then(function (response) {
+						if (response.data == true) {
+							alert("User has been notified.");
+							window.location.reload();
+						} else {
+							alert(
+								"There's been an error while notifying the user."
+							);
+						}
+					})
+					.catch(function (error) {
+						alert(
+							"There's been an error while notifying the user : " +
+								error
+						);
+					});
 			},
 		};
 	},

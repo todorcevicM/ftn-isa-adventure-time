@@ -568,6 +568,9 @@ export default {
 										"This user isn't authenticated. Please wait for the administrator to authenticate the account, and try again."
 									);
 									break;
+								case 403: // FORBIDDEN
+									alert("Account deleted.");
+									break;
 								case 404: // NOT_FOUND
 									alert("This user doesn't exist.");
 									break;

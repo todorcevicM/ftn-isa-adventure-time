@@ -6,7 +6,7 @@ insert into administrator (name, lastname, email, password, address, city, count
 
 insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Damon", "Beasley", "random2@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -1171707136);
 -- random3@gmail.com
-insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Arden", "Dodge", "stankovictab@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 1326308801);
+insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Arden", "Dodge", "todorcevic.marko8@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 1326308801);
 insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Jemima", "Fishman", "random4@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -470642558);
 --neodobren
 insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Doug", "Leon", "random16@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, 924836377);

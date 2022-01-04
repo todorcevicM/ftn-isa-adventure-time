@@ -71,6 +71,9 @@ public class UserController {
 		// System.out.println(email + " " + password);
 		User newUser = (User) registeredUserService.findByEmail(email);
 		if (newUser != null) {
+			if (newUser.getDeleted()) {
+				return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
+			}
 			if (newUser.getAuthenticated() == true) {
 				if (password.equals(newUser.getPassword())) {
 					newUser.setUserType("registeredUser");
@@ -84,6 +87,9 @@ public class UserController {
 		}
 		newUser = (User) boatOwnerService.findByEmail(email);
 		if (newUser != null) {
+			if (newUser.getDeleted()) {
+				return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
+			}
 			if (newUser.getAuthenticated() == true) {
 				if (password.equals(newUser.getPassword())) {
 					newUser.setUserType("boatOwner");
@@ -97,6 +103,9 @@ public class UserController {
 		}
 		newUser = (User) cottageOwnerService.findByEmail(email);
 		if (newUser != null) {
+			if (newUser.getDeleted()) {
+				return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
+			}
 			if (newUser.getAuthenticated() == true) {
 				if (password.equals(newUser.getPassword())) {
 					newUser.setUserType("cottageOwner");
@@ -110,6 +119,9 @@ public class UserController {
 		}
 		newUser = (User) fishingInstructorService.findByEmail(email);
 		if (newUser != null) {
+			if (newUser.getDeleted()) {
+				return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
+			}
 			if (newUser.getAuthenticated() == true) {
 				if (password.equals(newUser.getPassword())) {
 					newUser.setUserType("fishingInstructor");
@@ -123,15 +135,10 @@ public class UserController {
 		}
 		newUser = (User) administratorService.findByEmail(email);
 		if (newUser != null) {
+			if (newUser.getDeleted()) {
+				return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
+			}
 			if (newUser.getAuthenticated() == true) {
-				if (password.equals(newUser.getPassword())) {
-					newUser.setUserType("administrator");
-					return new ResponseEntity<User>(newUser, HttpStatus.OK);
-				} else {
-					return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
-				}
-			} else {
-				return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
 			}
 		}
 		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
@@ -144,7 +151,7 @@ public class UserController {
 		String split2[] = new String[20];
 		for (String s : splitArray) {
 			if (s.contains("userType")) {
-				System.out.println(s);
+				// System.out.println(s);
 				split2 = s.split("\"");
 				break;
 			}
@@ -272,7 +279,7 @@ public class UserController {
 			System.out.println("Error - User with that E-mail already exists.");
 			returnedString = "Error - User with that E-mail already exists.";
 		}
-		mailService.SendMail(request.getBody().getEmail(), request.getBody().getName());
+		mailService.SendAuthenticationMail(request.getBody().getEmail(), request.getBody().getName());
 		return new ResponseEntity<String>(returnedString, HttpStatus.OK);
 	}
 
@@ -342,36 +349,149 @@ public class UserController {
 		switch (userType.getBody()) {
 			case "\"REGISTERED_USER\"":
 				RegisteredUser registeredUser = registeredUserService.getById(id);
-				mailService.SendMailDeletion(registeredUser.getEmail(), registeredUser.getName(),
+				mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(),
 						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
-				registeredUserService.markDeleted(id);
-				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+				return new ResponseEntity<Boolean>(registeredUserService.markDeleted(id), HttpStatus.OK);
 
 			case "\"BOAT_OWNER\"":
 				BoatOwner boatOwner = boatOwnerService.getById(id);
-				mailService.SendMailDeletion(boatOwner.getEmail(), boatOwner.getName(),
+				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
 						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
-				boatOwnerService.markDeleted(id);
-				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+				return new ResponseEntity<Boolean>(boatOwnerService.markDeleted(id), HttpStatus.OK);
 
 			case "\"COTTAGE_OWNER\"":
 				CottageOwner cottageOwner = cottageOwnerService.getById(id);
-				mailService.SendMailDeletion(cottageOwner.getEmail(), cottageOwner.getName(),
+				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
 						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
-				cottageOwnerService.markDeleted(id);
-				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+				return new ResponseEntity<Boolean>(cottageOwnerService.markDeleted(id), HttpStatus.OK);
 
 			case "\"FISHING_OWNER\"":
 				FishingInstructor fishingInstructor = fishingInstructorService.getById(id);
-				mailService.SendMailDeletion(fishingInstructor.getEmail(), fishingInstructor.getName(),
+				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
 						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
-				fishingInstructorService.markDeleted(id);
+				return new ResponseEntity<Boolean>(fishingInstructorService.markDeleted(id), HttpStatus.OK);
+
+			default:
+				return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		}
+	}
+
+	@PostMapping(path = "/denyUserDeletion/{id}")
+	public ResponseEntity<Boolean> denyUserDeletion(@PathVariable("id") Long id, RequestEntity<String> request)
+			throws AddressException, UnsupportedEncodingException {
+
+		// {"type":"BOAT_OWNER","reason":"test"}
+
+		String splitArray[] = request.getBody().split(",");
+		String typeArray[] = splitArray[0].split(":");
+		String reasonArray[] = splitArray[1].split(":");
+		String type = typeArray[1].replaceAll("\"", "");
+		String reason = reasonArray[1].replaceAll("\"", "").replaceAll("}", "");
+		System.out.println(type);
+		System.out.println(reason);
+
+		switch (type) {
+			// case "REGISTERED_USER":
+			// RegisteredUser registeredUser = registeredUserService.getById(id);
+			// mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(),
+			// "Your request for account deletion has been denied by an administrator.\nThe
+			// reason for the denial for the deletion of your account is :\n"
+			// + reason);
+			// return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+
+			case "BOAT_OWNER":
+				BoatOwner boatOwner = boatOwnerService.getById(id);
+				deletionRequestService
+						.delete(deletionRequestService.getByForTypeAndRequesterId(HeadEntityEnum.BOAT_OWNER, id));
+				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
+						"Your request for account deletion has been denied by an administrator.\nThe reason for the denial for the deletion of your account is :\n"
+								+ reason);
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+
+			case "COTTAGE_OWNER":
+				CottageOwner cottageOwner = cottageOwnerService.getById(id);
+				deletionRequestService
+						.delete(deletionRequestService.getByForTypeAndRequesterId(HeadEntityEnum.COTTAGE_OWNER, id));
+				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
+						"Your request for account deletion has been denied by an administrator.\nThe reason for the denial for the deletion of your account is :\n"
+								+ reason);
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+
+			case "FISHING_INSTRUCTOR":
+				FishingInstructor fishingInstructor = fishingInstructorService.getById(id);
+				deletionRequestService
+						.delete(deletionRequestService.getByForTypeAndRequesterId(HeadEntityEnum.FISHING_INSTRUCTOR,
+								id));
+				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
+						"Your request for account deletion has been denied by an administrator.\nThe reason for the denial for the deletion of your account is :\n"
+								+ reason);
 				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 
 			default:
 				return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 
 		}
+	}
 
+	@PostMapping(path = "createDeletionRequest/{id}")
+	public ResponseEntity<Boolean> createDeletionRequest(@PathVariable("id") Long id, RequestEntity<String> request)
+			throws AddressException, UnsupportedEncodingException {
+
+		// {"type":"BOAT_OWNER","reason":"test"}
+
+		String splitArray[] = request.getBody().split(",");
+		String typeArray[] = splitArray[0].split(":");
+		String reasonArray[] = splitArray[1].split(":");
+		String type = typeArray[1].replaceAll("\"", "");
+		String reason = reasonArray[1].replaceAll("\"", "").replaceAll("}", "");
+		System.out.println(type);
+		System.out.println(reason);
+
+		switch (type) {
+			case "REGISTERED_USER":
+				RegisteredUser registeredUser = registeredUserService.getById(id);
+				// registeredUserService.createDeletionRequest(id, reason);
+				mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(),
+						"Your request for account deletion has been sent to an administrator.\nThe reason for the deletion of your account is :\n"
+								+ reason);
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+
+			case "BOAT_OWNER":
+				BoatOwner boatOwner = boatOwnerService.getById(id);
+				if (deletionRequestService.getByForTypeAndRequesterId(HeadEntityEnum.BOAT_OWNER, id) != null) {
+					return new ResponseEntity<Boolean>(false, HttpStatus.TOO_MANY_REQUESTS);
+				}
+				boatOwnerService.createDeletionRequest(id, reason);
+				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
+						"Your request for account deletion has been sent to an administrator.\nThe reason for the deletion of your account is :\n"
+								+ reason);
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+
+			case "COTTAGE_OWNER":
+				CottageOwner cottageOwner = cottageOwnerService.getById(id);
+				if (deletionRequestService.getByForTypeAndRequesterId(HeadEntityEnum.COTTAGE_OWNER, id) != null) {
+					return new ResponseEntity<Boolean>(false, HttpStatus.TOO_MANY_REQUESTS);
+				}
+				cottageOwnerService.createDeletionRequest(id, reason);
+				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
+						"Your request for account deletion has been sent to an administrator.\nThe reason for the deletion of your account is :\n"
+								+ reason);
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+
+			case "FISHING_INSTRUCTOR":
+				BoatOwner fishingInstructor = boatOwnerService.getById(id);
+				if (deletionRequestService.getByForTypeAndRequesterId(HeadEntityEnum.FISHING_INSTRUCTOR, id) != null) {
+					return new ResponseEntity<Boolean>(false, HttpStatus.TOO_MANY_REQUESTS);
+				}
+				fishingInstructorService.createDeletionRequest(id, reason);
+				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
+						"Your request for account deletion has been sent to an administrator.\nThe reason for the deletion of your account is :\n"
+								+ reason);
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+
+			default:
+				return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+
+		}
 	}
 }

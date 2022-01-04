@@ -82,11 +82,17 @@ public class BoatOwnerService {
 			BoatOwner boatOwner = boatOwnerRepo.getById(id);
 			boatOwner.setDeleted(true);
 			boatOwnerRepo.save(boatOwner);
+
+			deletionRequestRepo.findByForTypeAndRequesterId(HeadEntityEnum.BOAT_OWNER, id)
+					.ifPresent(deletionRequest -> {
+						deletionRequestRepo.delete(deletionRequest);
+					});
+
 			return true;
 		}
 	}
 
-	public void createRequestForDeletion(Long id, Date date, String reason) {
+	public void createDeletionRequest(Long id, String reason) {
 		Optional<BoatOwner> boatOwnerOptional = boatOwnerRepo.findById(id);
 		BoatOwner boatOwner = boatOwnerOptional.get();
 
