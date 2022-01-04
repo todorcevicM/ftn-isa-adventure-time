@@ -1,39 +1,27 @@
 package isa.adventuretime.Controller;
 
-import java.io.UnsupportedEncodingException;
-import javax.mail.internet.AddressException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import isa.adventuretime.Entity.Administrator;
 import isa.adventuretime.Entity.BoatOwner;
 import isa.adventuretime.Entity.CottageOwner;
 import isa.adventuretime.Entity.FishingInstructor;
 import isa.adventuretime.Entity.RegisteredUser;
-import isa.adventuretime.Service.AdministratorService;
 import isa.adventuretime.Service.BoatOwnerService;
 import isa.adventuretime.Service.CottageOwnerService;
 import isa.adventuretime.Service.FishingInstructorService;
-import isa.adventuretime.Service.MailService;
 import isa.adventuretime.Service.RegisteredUserService;
 import isa.adventuretime.Service.BusinessConstantsService;
 import isa.adventuretime.Entity.BusinessConstants;
 
-// TODO: Ovde ima nepotrebnih metoda
 @RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
 @RequestMapping(path = "/api")
 public class MainController {
-
-	@Autowired
-	private AdministratorService as;
-	@Autowired
-	private MailService mailService;
 
 	@Autowired
 	private RegisteredUserService registeredUserService;
@@ -47,12 +35,6 @@ public class MainController {
 	BusinessConstantsService businessConstantsService;
 
 	public MainController() {
-	}
-
-	// jakovljevic1999@gmail.com
-	@GetMapping(path = "/mail")
-	public void frontendSendMailTest() throws AddressException, UnsupportedEncodingException {
-		mailService.SendMail("NMatijevic123@gmail.com", "Nikola");
 	}
 
 	@GetMapping(path = "/conf/{code}")
@@ -82,26 +64,6 @@ public class MainController {
 			return;
 		}
 		System.out.println("Nije nadjen sa tim codom " + code);
-	}
-
-	@GetMapping(path = "/get")
-	public String frontendGETTest() {
-		System.out.println(as.getById(1L).getEmail()); // 1L je long
-		return as.getById(1L).getEmail();
-	}
-
-	@PostMapping(path = "/post", consumes = MediaType.ALL_VALUE)
-	public String frontendPOSTTest(Integer num) {
-		System.out.println(as.getById(1L).getName() + " i dobijeno " + num + " sa fronta!");
-		return as.getById(1L).getName();
-	}
-
-	// JSON Response na isti nacin kao sa Web-a, vanilla, bez koriscenja Jackson-a
-	@GetMapping(path = "/get/json", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Administrator> frontendGETJSONTest() {
-		Administrator test = as.getById(1L);
-		System.out.println("JSON Sent Out!");
-		return new ResponseEntity<>(test, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/get/constant/{name}")

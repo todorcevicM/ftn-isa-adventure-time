@@ -11,5 +11,4 @@ import isa.adventuretime.Entity.RequestForAdmin;
 public interface RequestForAdminRepo extends JpaRepository<RequestForAdmin, Long> {
 	public ArrayList<RequestForAdmin> findAll();
 
-	public RequestForAdmin save(RequestForAdmin requestForAdmin);
 }

@@ -252,6 +252,42 @@
 					</button>
 				</div>
 			</div>
+			<div class="table">
+				<h3>Deletion Requests</h3>
+				<div
+					class="tableEntry"
+					v-for="deletionRequest in deletionRequests"
+					:key="deletionRequest"
+				>
+					<p class="entryName">{{ deletionRequest.name }}</p>
+					<p class="entryName">{{ deletionRequest.lastname }}</p>
+					<p class="entryRequestText">
+						{{ deletionRequest.reason }}
+					</p>
+					<button
+						class="entryApprove"
+						@click="
+							approveDeletionRequest(
+								deletionRequest.requesterId,
+								deletionRequest.forType
+							)
+						"
+					>
+						Approve
+					</button>
+					<button
+						class="entryDeny"
+						@click="
+							denyDeletionRequest(
+								deletionRequest.requesterId,
+								deletionRequest.forType
+							)
+						"
+					>
+						Deny
+					</button>
+				</div>
+			</div>
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<!-- Password Change -->
@@ -365,6 +401,14 @@ export default {
 			percentage.value = response.data;
 		});
 
+		var deletionRequests = ref(null);
+		axios.get("/api/user/getDeletionRequests").then(function (response) {
+			// TODO:
+			console.log("RSEPNSOSENSSEE");
+			console.log(response.data);
+			deletionRequests.value = response.data;
+		});
+
 		return {
 			user,
 			newUser,
@@ -383,6 +427,7 @@ export default {
 			registeredUsers,
 			percentage,
 			percentageUpdateToggle,
+			deletionRequests,
 			checkFirstLogin() {
 				if (this.user.password == "0") {
 					return 1;
@@ -562,6 +607,33 @@ export default {
 						// alert(response.data);
 						window.location.reload();
 					});
+			},
+			approveDeletionRequest(id, type) {
+				// alert(id + " " + type);
+				axios
+					.post("/api/user/deleteUser/" + id, type, {
+						headers: { "Content-Type": "application/json" },
+					})
+					.then(function (response) {
+						alert(response.data);
+						if (response.data == true)
+							alert(
+								"User has been deleted, and an email has been sent."
+							);
+						else {
+							alert("There's been an error while deleting.");
+						}
+					})
+					.catch(function (error) {
+						alert(
+							"There's been an error while deleting : " + error
+						);
+					});
+			},
+			denyDeletionRequest(id, type) {
+				alert(id + " " + type);
+				var reason = prompt("Enter reason for denial :");
+				alert("TODO:", reason);
 			},
 		};
 	},

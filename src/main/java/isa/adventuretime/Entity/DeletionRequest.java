@@ -1,6 +1,5 @@
 package isa.adventuretime.Entity;
 
-import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,27 +14,25 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Cottage {
+public class DeletionRequest {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	protected Long id;
 
+	private Long requesterId;
+	private HeadEntityEnum forType;
+	private String reason;
 	private String name;
-	private String address;
-	private double geoLng;
-	private double geoLat;
-	private String promoDescription; // prethodno samo description
+	private String lastname;
 
-	private String rules;
-	private double pricePerDay;
-	private String priceAndInfo;
+	public DeletionRequest() {
+	}
 
-	private Date reservationStart;
-	private Date reservationEnd;
-	private int maxUsers;
-
-	private Long ownerId;
-
-	private Boolean hidden;
-
+	public DeletionRequest(Long requesterId, HeadEntityEnum forType, String reason, String name, String lastname) {
+		this.requesterId = requesterId;
+		this.forType = forType;
+		this.reason = reason;
+		this.name = name;
+		this.lastname = lastname;
+	}
 }

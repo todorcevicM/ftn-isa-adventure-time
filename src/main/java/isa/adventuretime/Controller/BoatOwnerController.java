@@ -41,7 +41,7 @@ public class BoatOwnerController {
 	}
 
 	@PostMapping(path = "/delete/{id}")
-	public void deleteBoatOwner(@PathVariable("id") Long id) {
-		boatOwnerService.deleteById(id);
+	public ResponseEntity<Boolean> deleteBoatOwner(@PathVariable("id") Long id) {
+		return new ResponseEntity<Boolean>(boatOwnerService.markDeleted(id), HttpStatus.OK);
 	}
 }

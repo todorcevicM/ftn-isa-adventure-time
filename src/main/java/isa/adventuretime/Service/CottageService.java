@@ -8,12 +8,8 @@ import isa.adventuretime.Repository.CottageRepo;
 
 @Service
 public class CottageService {
-	private CottageRepo cottageRepo;
-
 	@Autowired
-	public CottageService(CottageRepo aR) {
-		cottageRepo = aR;
-	}
+	private CottageRepo cottageRepo;
 
 	public ArrayList<Cottage> findAll() {
 		return cottageRepo.findAll();

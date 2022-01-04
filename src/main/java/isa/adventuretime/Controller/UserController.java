@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import isa.adventuretime.DTO.UnauthenticatedUserDTO;
 import isa.adventuretime.Entity.Administrator;
 import isa.adventuretime.Entity.BoatOwner;
 import isa.adventuretime.Entity.CottageOwner;
+import isa.adventuretime.Entity.DeletionRequest;
 import isa.adventuretime.Entity.FishingInstructor;
 import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RegisteredUser;
@@ -25,6 +27,7 @@ import isa.adventuretime.Entity.User;
 import isa.adventuretime.Service.AdministratorService;
 import isa.adventuretime.Service.BoatOwnerService;
 import isa.adventuretime.Service.CottageOwnerService;
+import isa.adventuretime.Service.DeletionRequestService;
 import isa.adventuretime.Service.FishingInstructorService;
 import isa.adventuretime.Service.MailService;
 import isa.adventuretime.Service.RegisteredUserService;
@@ -54,6 +57,9 @@ public class UserController {
 
 	@Autowired
 	RequestForAdminService requestForAdminService;
+
+	@Autowired
+	DeletionRequestService deletionRequestService;
 
 	// @Autowired
 	// private SubscriptionService subscriptionService;
@@ -320,7 +326,52 @@ public class UserController {
 			}
 
 		return new ResponseEntity<ArrayList<UnauthenticatedUserDTO>>(unauthenticatedUsers, HttpStatus.OK);
-
 	}
 
+	@GetMapping(path = "/getDeletionRequests")
+	public ResponseEntity<ArrayList<DeletionRequest>> getDeletionRequests() {
+		ArrayList<DeletionRequest> deletionRequests = deletionRequestService.getAll();
+
+		return new ResponseEntity<ArrayList<DeletionRequest>>(deletionRequests, HttpStatus.OK);
+	}
+
+	@PostMapping(path = "/deleteUser/{id}")
+	public ResponseEntity<Boolean> deleteUser(@PathVariable("id") Long id, RequestEntity<String> userType)
+			throws AddressException, UnsupportedEncodingException {
+
+		switch (userType.getBody()) {
+			case "\"REGISTERED_USER\"":
+				RegisteredUser registeredUser = registeredUserService.getById(id);
+				mailService.SendMailDeletion(registeredUser.getEmail(), registeredUser.getName(),
+						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+				registeredUserService.markDeleted(id);
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+
+			case "\"BOAT_OWNER\"":
+				BoatOwner boatOwner = boatOwnerService.getById(id);
+				mailService.SendMailDeletion(boatOwner.getEmail(), boatOwner.getName(),
+						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+				boatOwnerService.markDeleted(id);
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+
+			case "\"COTTAGE_OWNER\"":
+				CottageOwner cottageOwner = cottageOwnerService.getById(id);
+				mailService.SendMailDeletion(cottageOwner.getEmail(), cottageOwner.getName(),
+						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+				cottageOwnerService.markDeleted(id);
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+
+			case "\"FISHING_OWNER\"":
+				FishingInstructor fishingInstructor = fishingInstructorService.getById(id);
+				mailService.SendMailDeletion(fishingInstructor.getEmail(), fishingInstructor.getName(),
+						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+				fishingInstructorService.markDeleted(id);
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+
+			default:
+				return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+
+		}
+
+	}
 }

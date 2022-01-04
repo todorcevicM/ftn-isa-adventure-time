@@ -18,20 +18,33 @@ import it.ozimov.springboot.mail.service.EmailService;
 @Service
 @EnableEmailTools
 public class MailService {
-    
-    @Autowired
+
+	@Autowired
 	EmailService emailService;
 
-    public void SendMail(String toEmail, String forWho) throws AddressException, UnsupportedEncodingException{
-        Email email = DefaultEmail.builder()
-        .from(new InternetAddress("adventuretimesupport@protonmail.com", "AdventureTimeSupport"))
-        .to(Lists.newArrayList(new InternetAddress(toEmail, forWho)))
-        .subject("Authentication mail")
-        .body("http://localhost:3000/api/conf/"+toEmail.hashCode())
-        .encoding("UTF-8").build();
+	public void SendMail(String toEmail, String forWho) throws AddressException, UnsupportedEncodingException {
+		Email email = DefaultEmail.builder()
+				.from(new InternetAddress("adventuretimesupport@protonmail.com", "AdventureTimeSupport"))
+				.to(Lists.newArrayList(new InternetAddress(toEmail, forWho)))
+				.subject("Authentication mail")
+				.body("http://localhost:3000/api/conf/" + toEmail.hashCode())
+				.encoding("UTF-8").build();
 
 		emailService.send(email);
-	
-    }
+
+	}
+
+	public void SendMailDeletion(String toEmail, String forWho, String body)
+			throws AddressException, UnsupportedEncodingException {
+		Email email = DefaultEmail.builder()
+				.from(new InternetAddress("adventuretimesupport@protonmail.com", "AdventureTimeSupport"))
+				.to(Lists.newArrayList(new InternetAddress(toEmail, forWho)))
+				.subject("Deletion mail")
+				.body(body)
+				.encoding("UTF-8").build();
+
+		emailService.send(email);
+
+	}
 
 }

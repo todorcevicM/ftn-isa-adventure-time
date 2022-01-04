@@ -1,6 +1,8 @@
 package isa.adventuretime.Entity;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,10 +18,12 @@ public class User {
 	protected String city;
 	protected String country;
 	protected String telephoneNumber;
-	protected Boolean wantsDeletion;
 	protected Boolean authenticated;
 	protected int emailHash;
 	// protected String loginStatus;
+
+	@Column(columnDefinition = "boolean default false")
+	protected Boolean deleted;
 
 	private String userType;
 
@@ -36,7 +40,6 @@ public class User {
 		this.city = city;
 		this.country = country;
 		this.telephoneNumber = telephoneNumber;
-		this.wantsDeletion = false;
 		this.authenticated = false;
 		this.emailHash = email.hashCode();
 		this.userType = "";
@@ -53,7 +56,6 @@ public class User {
 		this.lastname = user.lastname; // Ne treba
 		this.name = user.name; // Ne treba
 		this.telephoneNumber = user.telephoneNumber;
-		this.wantsDeletion = user.wantsDeletion;
 		this.userType = user.getUserType(); // Ne treba
 		this.password = user.getPassword(); // Ne treba
 	}
@@ -64,7 +66,6 @@ public class User {
 		this.city = user.city;
 		this.country = user.country;
 		this.telephoneNumber = user.telephoneNumber;
-		this.wantsDeletion = user.wantsDeletion;
 	}
 
 }

@@ -44,4 +44,6 @@ public class Boat {
 	private int maxUsers;
 
 	private Long ownerId;
+
+	private Boolean hidden;
 }

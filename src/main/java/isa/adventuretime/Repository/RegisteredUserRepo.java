@@ -12,4 +12,5 @@ public interface RegisteredUserRepo extends JpaRepository<RegisteredUser, Long> 
 	public RegisteredUser findByEmailHash(int code);
 
 	public Long findIdByEmailHash(int emailHash);
+
 }

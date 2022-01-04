@@ -22,6 +22,8 @@ public class Room {
 	private int numberOfBeds;
 	private Long cottageId;
 
+	private Boolean hidden;
+
 	public Room() {
 	}
 

@@ -50,4 +50,12 @@ public class BoatBookingService {
 	public Boolean existsByBookedBoatIdAndEndAfter(Long id, Date date) {
 		return boatBookingRepo.existsByBookedBoatIdAndEndAfter(id, date);
 	}
+
+	public Boolean existsByBookedBoatIdAndStartAfter(Long id, Date date) {
+		return boatBookingRepo.existsByBookedBoatIdAndStartAfter(id, date);
+	}
+
+	public void deleteById(Long id) {
+		boatBookingRepo.deleteById(id);
+	}
 }

@@ -19,7 +19,6 @@ import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Entity.AdventureBooking;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
 @RestController
 @RequestMapping("/api/fishingInstructor")
 public class FishingInstructorController {
@@ -27,7 +26,7 @@ public class FishingInstructorController {
 	@Autowired
 	private FishingInstructorService fishingInstructorService;
 
-	@Autowired 
+	@Autowired
 	private AdventureService adventureService;
 
 	@Autowired
@@ -54,16 +53,19 @@ public class FishingInstructorController {
 	}
 
 	@GetMapping(path = "/pastAdventureBookings/{instructiorId}")
-	public ResponseEntity<ArrayList<AdventureNameAdventureBookingDTO>> getPastAdventureBookings(@PathVariable("instructiorId") Long instructiorId) {
+	public ResponseEntity<ArrayList<AdventureNameAdventureBookingDTO>> getPastAdventureBookings(
+			@PathVariable("instructiorId") Long instructiorId) {
 		ArrayList<Adventure> adventures = adventureService.getPastAdventuresByInstructorId(instructiorId);
 		ArrayList<AdventureNameAdventureBookingDTO> adventureNameAdventureBookingDTOs = new ArrayList<>();
 
 		for (Adventure adventure : adventures) {
-			ArrayList<AdventureBooking> adventureBookings = new ArrayList<>(); 
-			adventureBookings.addAll(adventureBookingService.findAllByBookedAdventureIdAndEndBefore(adventure.getId(), new java.util.Date()));
-			
+			ArrayList<AdventureBooking> adventureBookings = new ArrayList<>();
+			adventureBookings.addAll(adventureBookingService.findAllByBookedAdventureIdAndEndBefore(adventure.getId(),
+					new java.util.Date()));
+
 			if (adventureBookings.size() > 0) {
-				adventureNameAdventureBookingDTOs.add(new AdventureNameAdventureBookingDTO(adventure.getName(), adventureBookings));
+				adventureNameAdventureBookingDTOs
+						.add(new AdventureNameAdventureBookingDTO(adventure.getName(), adventureBookings));
 			}
 		}
 
@@ -72,7 +74,7 @@ public class FishingInstructorController {
 
 	@PostMapping(path = "/delete/{id}")
 	public void deleteFishingInstructor(@PathVariable("id") Long id) {
-		fishingInstructorService.deleteById(id);
+		fishingInstructorService.markDeleted(id);
 	}
-	
+
 }

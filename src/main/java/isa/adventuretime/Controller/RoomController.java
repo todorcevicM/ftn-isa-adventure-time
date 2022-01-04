@@ -72,10 +72,4 @@ public class RoomController {
 
 	}
 
-	// @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
-	// produces = MediaType.APPLICATION_JSON_VALUE)
-	// public ResponseEntity<Room> saveRoom(RequestEntity<Room> room) {
-	// // TODO: Prosledi objekat, ne RequestEntity
-	// return new ResponseEntity<Room>(roomService.save(room), HttpStatus.OK);
-	// }
 }

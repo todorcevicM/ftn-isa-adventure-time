@@ -54,4 +54,5 @@ public class AdventureBookingService {
 	public Boolean existsByBookedInstructorIdAndEndAfter(Long id, Date date) {
 		return adventureBookingRepo.existsByBookedInstructorIdAndEndAfter(id, date);
 	}
+
 }

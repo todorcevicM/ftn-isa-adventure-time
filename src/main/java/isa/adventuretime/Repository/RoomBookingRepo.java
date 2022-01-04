@@ -26,4 +26,8 @@ public interface RoomBookingRepo extends JpaRepository<RoomBooking, Long> {
 
 	public Boolean existsByIdAndEndAfter(Long id, Date date);
 
+	public Boolean existsByRegisteredUserIdAndStartAfter(Long id, Date date);
+
+	public Boolean existsByBookedRoomIdAndStartAfter(Long id, Date date);
+
 }

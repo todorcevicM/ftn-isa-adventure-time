@@ -156,8 +156,8 @@ public class RegisteredUserController {
 	}
 
 	@PostMapping(path = "/delete/{id}")
-	public void deleteUser(@PathVariable("id") Long id) {
-		registeredUserService.deleteById(id);
+	public ResponseEntity<Boolean> deleteUser(@PathVariable("id") Long id) {
+		return new ResponseEntity<Boolean>(registeredUserService.markDeleted(id), HttpStatus.OK);
 	}
 
 }

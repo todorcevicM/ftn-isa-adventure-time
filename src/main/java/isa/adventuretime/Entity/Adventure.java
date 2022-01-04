@@ -37,4 +37,6 @@ public class Adventure {
 	private int maxUsers;
 	private double pricePerDay;
 
+	private Boolean hidden;
+
 }
