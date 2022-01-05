@@ -2,15 +2,11 @@ package isa.adventuretime.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RegisteredUser;
 import isa.adventuretime.Repository.AdventureBookingRepo;
 import isa.adventuretime.Repository.BoatBookingRepo;
-import isa.adventuretime.Repository.DeletionRequestRepo;
 import isa.adventuretime.Repository.RegisteredUserRepo;
 import isa.adventuretime.Repository.RoomBookingRepo;
 
@@ -24,8 +20,8 @@ public class RegisteredUserService {
 	private BoatBookingRepo boatBookingRepo;
 	@Autowired
 	private RoomBookingRepo roomBookingRepo;
-	@Autowired
-	private DeletionRequestRepo deletionRequestRepo;
+	// @Autowired
+	// private DeletionRequestRepo deletionRequestRepo;
 
 	public RegisteredUser getById(Long Id) {
 		return registeredUserRepo.getById(Id);
