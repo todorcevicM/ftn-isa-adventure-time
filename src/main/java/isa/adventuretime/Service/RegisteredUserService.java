@@ -2,10 +2,8 @@ package isa.adventuretime.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import isa.adventuretime.Entity.RegisteredUser;
 import isa.adventuretime.Repository.AdventureBookingRepo;
 import isa.adventuretime.Repository.BoatBookingRepo;
