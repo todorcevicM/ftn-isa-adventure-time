@@ -141,7 +141,7 @@
 							v-for="booking in prb.roomBookings"
 							:key="booking"
 						>
-							<p>{{ booking.registeredUserId }}</p>
+							<p>User ID: {{ booking.registeredUserId }}</p>
 							<p>{{ booking.extraService }}</p>
 							<p>Cena: {{ booking.price }}.00</p>
 
@@ -151,9 +151,10 @@
 							>
 								View User
 							</button>
-							<button class="entryDeny" @click="deny()">
+							<!-- TODO: zasto je ovo bilo ovde? -->
+							<!-- <button class="entryDeny" @click="deny()">
 								Deny
-							</button>
+							</button> -->
 						</div>
 					</div>
 				</div>

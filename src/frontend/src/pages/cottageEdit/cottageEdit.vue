@@ -204,6 +204,7 @@ export default {
 			newMaxUsers: localStorage.maxUsers,
 			newGeoLng: localStorage.geoLng,
 			newGeoLat: localStorage.geoLat,
+			newPercentTakenIfCancelled: localStorage.percentTakenIfCancelled,
 		});
 
 		// Za u <template>

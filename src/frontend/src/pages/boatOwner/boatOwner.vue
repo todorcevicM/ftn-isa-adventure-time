@@ -3,7 +3,7 @@
 		<div id="logo-container">
 			<div class="underlined">
 				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
+				<p>Boat Time</p>
 			</div>
 		</div>
 		<div class="mainFlex">
@@ -13,12 +13,51 @@
 				<p style="font-size: 18px">{{ user.email }}</p>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
 				<div class="percentage">
 					<p>Business Reports</p>
 					<button @click="notImplemented()" style="width: 200px">
-						Show Reports
+						Show
 					</button>
 				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>New Report</p>
+					<button @click="notImplemented()" style="width: 200px">
+						Fill
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>Quick Reservation</p>
+					<button @click="notImplemented()" style="width: 200px">
+						Create
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>New Reservation</p>
+					<button @click="notImplemented()" style="width: 200px">
+						Create
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
+				<div class="percentage">
+					<p>Occupancy Calendar</p>
+					<button @click="notImplemented()" style="width: 200px">
+						Show
+					</button>
+				</div>
+				<!-- Spacer -->
+				<div style="height: 40px"></div>
 			</div>
 			<div class="rightFlex">
 				<p>Address</p>
@@ -68,9 +107,86 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
+			<div class="search" style="text-align: center">
+				<img
+					src="../../assets/wheel.svg"
+					style="width: 48px; margin-top: 18px"
+				/>
+				<input
+					type="text"
+					placeholder="Search..."
+					v-model="searchQuery"
+				/>
+				<div v-if="searchQuery" class="searchResult">
+					<p>No results found...</p>
+				</div>
+			</div>
+			<div
+				style="
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+				"
+			>
+				<h3>Past Boat Bookings</h3>
+				<button style="margin: 0">Sort</button>
+			</div>
 			<div class="table">
-				<h3>Boat Owner Table</h3>
-				<!-- TODO: Nije za KT -->
+				<div v-for="pbb in pastBoatBookings" :key="pbb">
+					<p class="entryName" style="font-size: 26px; margin: 0">
+						{{ pbb.boatName }}
+					</p>
+					<div
+						class="tableEntry"
+						v-for="booking in pbb.boatBookings"
+						:key="booking"
+					>
+						<p>User ID: {{ booking.registeredUserId }}</p>
+						<p>{{ booking.extraService }}</p>
+						<p>Cena: {{ booking.price }}.00</p>
+
+						<button
+							class="entryApprove"
+							@click="viewUser(booking.registeredUserId)"
+						>
+							View User
+						</button>
+						<!-- TODO: zasto je ovo bilo ovde? -->
+						<!-- <button class="entryDeny" @click="deny()">
+							Deny
+						</button> -->
+					</div>
+				</div>
+			</div>
+			<!-- Spacer -->
+			<div style="height: 80px"></div>
+			<div class="table">
+				<h3>Boats</h3>
+				<div
+					class="tableEntry"
+					v-for="boat in boats"
+					:key="boat"
+				>
+					<p class="entryName">{{ boat.name }}</p>
+					<!-- TODO: class ovog dugmeta djota -->
+					<button
+						class="entryApprove"
+						@click="viewBoat(boat.id)"
+					>
+						View
+					</button>
+					<button
+						class="entryDeny"
+						@click="deleteBoat(boat.id)"
+					>
+						Delete
+					</button>
+				</div>
+				<div style="display: flex">
+					<button class="entryApprove" @click="addNewBoat()">
+						Add New Boat
+					</button>
+				</div>
 			</div>
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
@@ -120,11 +236,16 @@ import axios from "axios";
 export default {
 	setup() {
 		var user = ref(null);
+		// TODO: ovde iz nekog razloga trazi boat kao da mu je email_hash zapravo id
 		axios
-			.get("/api/boatOwner/getByEmail/" + localStorage["emailHash"])
+			.get(
+				"/api/boatOwner/getByEmail/" + localStorage["emailHash"]
+			)
 			.then(function (response) {
+				console.log(response.data);
 				user.value = response.data;
 			});
+
 		var newUser = ref({
 			newAddress: localStorage.address,
 			newCity: localStorage.city,
@@ -132,20 +253,39 @@ export default {
 			newTelephoneNumber: localStorage.telephoneNumber,
 		});
 		var updateToggle = ref(null);
-
 		var firstPassword = ref(null);
 		var repeatPassword = ref(null);
 		var matching = ref(null);
 		var passwordChangeToggle = ref(null);
+		var boats = ref(null);
 
+		axios.get("/api/boats/get").then(function (response) {
+			console.log(response.data);
+			boats.value = response.data;
+		});
+
+		var pastBoatBookings = ref(null);
+		axios
+			.get(
+				"/api/boatOwner/pastBoatBookings/" +
+					localStorage["userId"]
+			)
+			.then(function (response) {
+				console.log(response.data);
+				pastBoatBookings.value = response.data;
+			});
+		var searchQuery = ref(null);
 		return {
 			user,
+			pastBoatBookings,
 			newUser,
 			updateToggle,
 			firstPassword,
 			repeatPassword,
 			matching,
 			passwordChangeToggle,
+			boats,
+			searchQuery,
 			notImplemented() {
 				alert("Not implemented yet!");
 			},
@@ -157,7 +297,9 @@ export default {
 					this.newUser.newAddress == "" ||
 					this.newUser.newCity == "" ||
 					this.newUser.newCountry == "" ||
-					this.newUser.newTelephoneNumber == ""
+					this.newUser.newTelephoneNumber == "" ||
+					this.newUser.newStartWorkPeriod == "" ||
+					this.newUser.newEndWorkPeriod == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
@@ -167,10 +309,19 @@ export default {
 				sendingUser.city = this.newUser.newCity;
 				sendingUser.country = this.newUser.newCountry;
 				sendingUser.telephoneNumber = this.newUser.newTelephoneNumber;
+				sendingUser.startWorkPeriod = this.newUser.newStartWorkPeriod;
+				sendingUser.endWorkPeriod = this.newUser.newEndWorkPeriod;
 				sendingUser.userType = "boatOwner";
 				console.log(sendingUser);
+				localStorage["sendingUser"] = JSON.stringify(sendingUser);
+				console.log(localStorage["sendingUser"]);
+
 				axios
-					.post("/api/user/update", sendingUser)
+					.post("/api/user/update", localStorage["sendingUser"], {
+						headers: {
+							"Content-Type": "application/json",
+						},
+					})
 					.then(function (response) {
 						console.log("Response : ");
 						console.log(response.data);
@@ -208,6 +359,36 @@ export default {
 			},
 			showPasswordChange() {
 				this.passwordChangeToggle = true;
+			},
+			viewUser(id) {
+				console.log(id);
+				window.location.href = "/registeredUserProfile/" + id;
+			},
+			deleteBoat(id) {
+				axios
+					.post("/api/boats/delete/" + id)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+						var booked = response.data;
+						if (booked == false) {
+							alert(
+								"There exist bookings with this item. Deletion is unavailable."
+							);
+							return;
+						} else {
+							alert("Deleted.");
+							window.location.reload();
+						}
+					});
+			},
+			viewBoat(id) {
+				// console.log(id);
+				window.location.href = "/boatEdit/" + id;
+			},
+			addNewBoat() {
+				console.log(localStorage.emailHash);
+				window.location.assign("/boatCreate/" + localStorage.emailHash);
 			},
 			deleteAccount() {
 				var reason = prompt("Enter reason for deletion: ");
@@ -252,7 +433,7 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
 
 body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
+	/* background-image: url("../../assets/boat-time-background.jpg"); */
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -483,5 +664,45 @@ button:hover {
 .businessReports button {
 	margin: 0 0 0 30px;
 	width: 110px;
+}
+
+.search {
+	text-align: center;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.search input {
+	border-radius: 5px;
+	margin-top: 10px;
+}
+.searchResult {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 370px;
+	height: 470px;
+	margin-top: 20px;
+	border-radius: 15px;
+	background-color: rgb(230, 230, 230);
+}
+.searchResult p {
+	text-align: center;
+	color: rgb(71, 71, 71);
+	font-size: 35px;
+}
+input,
+select {
+	width: 260px;
+	height: 32px;
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 20px;
+	background-color: #f0f0f0;
+}
+input:focus,
+select:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
 }
 </style>

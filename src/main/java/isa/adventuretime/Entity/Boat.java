@@ -2,6 +2,7 @@ package isa.adventuretime.Entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,12 +31,15 @@ public class Boat {
 	private int maxSpeed;
 
 	private String navigationEquipment;
+	private String equipment;
 
 	private String address;
 	private double geoLng;
 	private double geoLat;
 
 	private String promoDescription;
+	@Column(columnDefinition = "integer default 0")
+	private int percentTakenIfCancelled;
 	private String rules;
 	private double pricePerDay;
 	private Date reservationStart;

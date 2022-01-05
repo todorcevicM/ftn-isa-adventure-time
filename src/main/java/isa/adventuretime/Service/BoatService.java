@@ -30,4 +30,12 @@ public class BoatService {
 	public void deleteById(Long id) {
 		boatRepo.deleteById(id);
 	}
+
+	public ArrayList<Boat> getPastBoatsByOwnerId(Long id) {
+		return boatRepo.getPastBoatsByOwnerId(id);
+	}
+	
+	public Boat save(Boat boat) {
+		return boatRepo.save(boat);
+	}
 }

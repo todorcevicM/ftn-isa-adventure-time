@@ -18,4 +18,6 @@ public interface BoatRepo extends JpaRepository<Boat, Long> {
 	public ArrayList<Boat> findAllByOwnerId(Long id);
 
 	public ArrayList<Boat> findAllByIdIn(ArrayList<Long> ids);
+
+	public ArrayList<Boat> getPastBoatsByOwnerId(Long id);
 }

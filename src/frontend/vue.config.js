@@ -42,9 +42,9 @@ module.exports = {
 			entry: "src/pages/registeredUserProfile/main.js",
 			title: "User Profile Page",
 		},
-		cottageEdit: {
-			entry: "src/pages/cottageEdit/main.js",
-			title: "Cottage Edit Page",
+		adventureCreate: {
+			entry: "src/pages/adventureCreate/main.js",
+			title: "Adventure Create Page",
 		},
 		adventureEdit: {
 			entry: "src/pages/adventureEdit/main.js",
@@ -54,9 +54,17 @@ module.exports = {
 			entry: "src/pages/cottageCreate/main.js",
 			title: "Cottage Create Page",
 		},
-		adventureCreate: {
-			entry: "src/pages/adventureCreate/main.js",
-			title: "Adventure Create Page",
+		cottageEdit: {
+			entry: "src/pages/cottageEdit/main.js",
+			title: "Cottage Edit Page",
+		},
+		boatCreate: {
+			entry: "src/pages/boatCreate/main.js",
+			title: "Boat Create Page",
+		},
+		boatEdit: {
+			entry: "src/pages/boatEdit/main.js",
+			title: "Boat Edit Page",
 		},
 	},
 	devServer: {

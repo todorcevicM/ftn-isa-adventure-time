@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import isa.adventuretime.Entity.Boat;
 import isa.adventuretime.Entity.BoatBooking;
 
 import java.util.Date;
@@ -24,5 +25,7 @@ public interface BoatBookingRepo extends JpaRepository<BoatBooking, Long> {
 	public Boolean existsByRegisteredUserIdAndStartAfter(Long id, Date date);
 
 	public Boolean existsByBookedBoatIdAndStartAfter(Long id, Date date);
+
+	public ArrayList<BoatBooking> findAllByBookedBoatIdAndEndBefore(Long id, Date date);
 
 }

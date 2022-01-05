@@ -171,7 +171,10 @@
 						>
 							View User
 						</button>
-						<button class="entryDeny" @click="deny()">Deny</button>
+						<!-- TODO: zasto je ovo bilo ovde? -->
+						<!-- <button class="entryDeny" @click="deny()">
+							Deny
+						</button> -->
 					</div>
 				</div>
 			</div>

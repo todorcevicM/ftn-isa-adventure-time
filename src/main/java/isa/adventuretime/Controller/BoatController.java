@@ -25,12 +25,6 @@ public class BoatController {
 
 	@Autowired
 	private BoatBookingService boatBookingService;
-	/*
-	 * @PostMapping(value = ("/login"), consumes = MediaType.APPLICATION_JSON_VALUE,
-	 * produces = MediaType.APPLICATION_JSON_VALUE)
-	 * public ResponseEntity<User> UserLogin(RequestEntity<ArrayList<String>>
-	 * credentials) throws Exception {
-	 */
 
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<Boat>> getBoats() {
@@ -38,7 +32,8 @@ public class BoatController {
 	}
 
 	@GetMapping(path = "/get/{id}")
-	public ResponseEntity<Boat> getAdventure(@PathVariable("id") Long id) {
+	public ResponseEntity<Boat> getBoat(@PathVariable("id") Long id) {
+		System.out.println("ovde");
 		Boat boat = boatService.getById(id);
 		if (boat == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -66,4 +61,12 @@ public class BoatController {
 
 		return true;
 	}
+
+	@PostMapping(path = "/update")
+	public ResponseEntity<Boat> updateBoat(RequestEntity<Boat> boat) {
+		Boat boatToSave = boat.getBody();
+		boatToSave.setHidden(false);
+		return new ResponseEntity<Boat>(boatService.save(boatToSave), HttpStatus.OK);
+	}
+
 }

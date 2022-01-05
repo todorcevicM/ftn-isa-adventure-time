@@ -58,4 +58,8 @@ public class BoatBookingService {
 	public void deleteById(Long id) {
 		boatBookingRepo.deleteById(id);
 	}
+
+	public ArrayList<BoatBooking> findAllByBookedBoatIdAndEndBefore(Long id, Date date) {
+		return boatBookingRepo.findAllByBookedBoatIdAndEndBefore(id, date);
+	}
 }
