@@ -26,7 +26,7 @@
 						:center="{ lat: cottage.geoLng, lng: cottage.geoLat }"
 						:zoom="10"
 						map-type-id="roadmap"
-						style="width: 400px; height: 400px"
+						style="width: 200px; height: 400px"
 					>
 						<GMapMarker
 							:position="{
@@ -91,6 +91,16 @@ export default {
 
 			localStorage["cottageOwner"] = cottage.value.ownerId;
 			// Mora localStorage da bi se izbegao limit scope-a .then()-a
+			// Treba za GET dole
+
+			let newStart = cottage.value.reservationStart.split("T");
+			let newStartSecondPart = newStart[1].split(".")[0];
+			cottage.value.reservationStart =
+				newStartSecondPart + ", " + newStart[0];
+
+			let newEnd = cottage.value.reservationEnd.split("T");
+			let newEndSecondPart = newEnd[1].split(".")[0];
+			cottage.value.reservationEnd = newEndSecondPart + ", " + newEnd[0];
 		});
 
 		var rooms = ref(null);
@@ -188,7 +198,7 @@ h4 {
 	font-weight: 100;
 }
 
-.leftFlex img {
+.leftFlex > div > img {
 	width: 650px;
 	height: 360px;
 	border-radius: 15px;
