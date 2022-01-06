@@ -1,37 +1,71 @@
 <template>
 	<div>
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
-			</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
+				</div>
+			</a>
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
 				<div>
 					<img class="itemImage" :src="imageSource(adventure.id)" />
 				</div>
-				<h4>{{ adventure.name }}</h4>
-				<p>${{ adventure.pricePerDay }}.00 / Day</p>
-				<p>Rating: 5.00</p>
-				<p>Percent Taken If Canceled: 5%</p>
-				<button @click="reserve()">Reserve</button>
+				<div>
+					<!-- Iz nekog razloga ovde mora obrnuto lat i lng -->
+					<!-- I ovaj style ne izgleda da menja nista -->
+					<GMapMap
+						:center="{
+							lat: adventure.geoLng,
+							lng: adventure.geoLat,
+						}"
+						:zoom="10"
+						map-type-id="roadmap"
+						style=""
+					>
+						<GMapMarker
+							:position="{
+								lat: adventure.geoLng,
+								lng: adventure.geoLat,
+							}"
+						/>
+					</GMapMap>
+				</div>
 			</div>
 			<div class="rightFlex">
-				<p>Address : {{ adventure.address }}</p>
-				<p class="smallText">
-					({{ adventure.geoLng }}, {{ adventure.geoLat }})
-				</p>
-				<p>Promo : {{ adventure.promoDescription }}</p>
-				<p>Rules : {{ adventure.rules }}</p>
-				<p>Info : {{ adventure.priceAndInfo }}</p>
-				<p>Equipment : {{ adventure.equipment }}</p>
-				<p>{{ adventure.maxUsers }} person limit.</p>
-				<p>
-					{{ adventure.percentTakenIfCancelled }}% taken if cancelled.
-				</p>
-				<p>Instructor : {{ instructor.name }}</p>
-				<p>Bio : {{ adventure.instructorBio }}</p>
+				<h4>{{ adventure.name }}</h4>
+				<div style="display: flex; justify-content: space-between">
+					<p>${{ adventure.pricePerDay }}.00 / Day</p>
+					<p>Rating: 5.00</p>
+				</div>
+				<!-- Spacer -->
+				<div
+					style="border-bottom: solid #da9e46 1px; margin: 10px 0px"
+				></div>
+				<!-- Spacer -->
+				<p class="smallText">Address</p>
+				<p>{{ adventure.address }}</p>
+				<p class="smallText">Location</p>
+				<p>{{ adventure.location }}</p>
+				<p class="smallText">Promo</p>
+				<p>{{ adventure.promoDescription }}</p>
+				<p class="smallText">Rules</p>
+				<p>{{ adventure.rules }}</p>
+				<p class="smallText">Info</p>
+				<p>{{ adventure.priceAndInfo }}</p>
+				<p class="smallText">Equipment</p>
+				<p>{{ adventure.equipment }}</p>
+				<p class="smallText">Person Limit</p>
+				<p>{{ adventure.maxUsers }} People</p>
+				<p class="smallText">Percentage Taken if Cancelled</p>
+				<p>{{ adventure.percentTakenIfCancelled }}%</p>
+				<p class="smallText">Instructor</p>
+				<p>{{ instructor.name }}</p>
+				<p class="smallText">Instructor Bio</p>
+				<p>{{ adventure.instructorBio }}</p>
+				<button @click="reserve()">Reserve</button>
 			</div>
 		</div>
 	</div>
@@ -110,7 +144,7 @@ body {
 .mainFlex {
 	margin: 50px 200px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 }
 .leftFlex {
 	display: flex;
@@ -119,20 +153,30 @@ body {
 h4 {
 	margin: 0;
 	font-weight: 400;
-	font-size: 50px;
+	font-size: 42px;
 }
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
 	font-weight: 100;
 }
-.leftFlex img {
-	width: 800px;
-	height: 450px;
+
+.leftFlex > div > img {
+	width: 650px;
+	height: 360px;
 	border-radius: 15px;
 	object-fit: cover;
 }
+
+.vue-map {
+	border-radius: 15px !important;
+	width: 650px !important;
+	height: 360px !important;
+}
+
 .rightFlex {
+	height: min-content;
+	min-width: 320px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -141,13 +185,16 @@ h4 {
 	border-radius: 15px;
 	border: 2px solid #da9e46;
 }
+
 .rightFlex p {
 	margin: 4px 0;
-	font-size: 36px;
+	font-size: 24px;
 }
+
 .rightFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
 button {
 	margin: 0 auto;

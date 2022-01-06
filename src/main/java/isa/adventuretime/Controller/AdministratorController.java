@@ -41,17 +41,6 @@ public class AdministratorController {
 
 	@GetMapping(value = "/getAllNotDeleted")
 	public ResponseEntity<ArrayList<Administrator>> getAllNotDeleted() {
-		// ArrayList<Administrator> list = administratorService.getAll();
-		// System.out.println(list);
-		// for (Administrator a : list) {
-		// System.out.println(a.getDeleted());
-		// if (a.getDeleted() == true) {
-		// System.out.println("AAAAAAAAAAAAA");
-		// list.remove(a);
-		// System.out.println("BBBBBBBBBBB");
-		// }
-		// }
-		// System.out.println(list);
 		return new ResponseEntity<ArrayList<Administrator>>(administratorService.findAllByDeleted(), HttpStatus.OK);
 	}
 

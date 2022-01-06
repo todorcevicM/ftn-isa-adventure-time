@@ -33,7 +33,6 @@ public class BoatController {
 
 	@GetMapping(path = "/get/{id}")
 	public ResponseEntity<Boat> getBoat(@PathVariable("id") Long id) {
-		System.out.println("ovde");
 		Boat boat = boatService.getById(id);
 		if (boat == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

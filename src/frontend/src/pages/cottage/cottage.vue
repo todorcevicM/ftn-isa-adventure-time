@@ -26,7 +26,7 @@
 						:center="{ lat: cottage.geoLng, lng: cottage.geoLat }"
 						:zoom="10"
 						map-type-id="roadmap"
-						style="width: 200px; height: 400px"
+						style=""
 					>
 						<GMapMarker
 							:position="{
@@ -63,9 +63,9 @@
 				<p v-for="(item, key) in rooms" :key="item">
 					Room {{ key + 1 }} : {{ item.numberOfBeds }} beds.
 				</p>
-				<p class="smallText">Start</p>
+				<p class="smallText">Reservation Start</p>
 				<p>{{ cottage.reservationStart }}</p>
-				<p class="smallText">End</p>
+				<p class="smallText">Reservation End</p>
 				<p>{{ cottage.reservationEnd }}</p>
 				<p class="smallText">Person Limit</p>
 				<p>{{ cottage.maxUsers }} People</p>
@@ -93,11 +93,11 @@ export default {
 			// Mora localStorage da bi se izbegao limit scope-a .then()-a
 			// Treba za GET dole
 
+			// Formatiranje datuma
 			let newStart = cottage.value.reservationStart.split("T");
 			let newStartSecondPart = newStart[1].split(".")[0];
 			cottage.value.reservationStart =
 				newStartSecondPart + ", " + newStart[0];
-
 			let newEnd = cottage.value.reservationEnd.split("T");
 			let newEndSecondPart = newEnd[1].split(".")[0];
 			cottage.value.reservationEnd = newEndSecondPart + ", " + newEnd[0];
@@ -212,7 +212,8 @@ h4 {
 }
 
 .rightFlex {
-	height: 750px;
+	height: min-content;
+	min-width: 320px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
