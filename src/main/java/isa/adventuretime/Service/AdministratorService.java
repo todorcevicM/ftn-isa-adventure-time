@@ -1,5 +1,7 @@
 package isa.adventuretime.Service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,15 +10,15 @@ import isa.adventuretime.Repository.AdministratorRepo;
 
 @Service
 public class AdministratorService {
-	private AdministratorRepo administratorRepo;
-
 	@Autowired
-	public AdministratorService(AdministratorRepo repo) {
-		this.administratorRepo = repo;
-	}
+	private AdministratorRepo administratorRepo;
 
 	public Administrator getById(Long id) {
 		return administratorRepo.getById(id);
+	}
+
+	public Administrator register(Administrator user) {
+		return administratorRepo.save(user);
 	}
 
 	public Administrator findByEmail(String email) {
@@ -31,4 +33,18 @@ public class AdministratorService {
 		return administratorRepo.findByEmailHash(emailHash);
 	}
 
+	public ArrayList<Administrator> getAll() {
+		return administratorRepo.findAll();
+	}
+
+	public Boolean markDeleted(Long id) {
+		Administrator administrator = administratorRepo.getById(id);
+		administrator.setDeleted(true);
+		administratorRepo.save(administrator);
+		return true;
+	}
+
+	public ArrayList<Administrator> findAllByDeleted() {
+		return administratorRepo.findAllByDeleted(false);
+	}
 }

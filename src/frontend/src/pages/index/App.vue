@@ -297,10 +297,9 @@ export default {
 		var userCity = ref(null);
 		var userCountry = ref(null);
 		var userRegistrationReason = ref(null);
-		var signUpMessageOn = ref(null);
-		var signUpMessageKind = ref(null);
-		var signUpMessageText = ref(null);
-
+		// var signUpMessageOn = ref(null);
+		// var signUpMessageKind = ref(null);
+		// var signUpMessageText = ref(null);
 		var cottageNumToDisplay = ref(null);
 		var showAllCottagesToggle = ref(null);
 		showAllCottagesToggle = true;
@@ -341,9 +340,9 @@ export default {
 			userCity,
 			userCountry,
 			userRegistrationReason,
-			signUpMessageOn,
-			signUpMessageKind,
-			signUpMessageText,
+			// signUpMessageOn,
+			// signUpMessageKind,
+			// signUpMessageText,
 			cottageNumToDisplay,
 			showAllCottagesToggle,
 			adventureNumToDisplay,
@@ -383,11 +382,11 @@ export default {
 				popupState.value = true;
 			},
 			// TODO: Ovo se vise ne koristi, koristimo alert()
-			renderSecondPopup(on, kind, text) {
-				this.signUpMessageOn = on;
-				this.signUpMessageKind = kind;
-				this.signUpMessageText = text;
-			},
+			// renderSecondPopup(on, kind, text) {
+			// 	this.signUpMessageOn = on;
+			// 	this.signUpMessageKind = kind;
+			// 	this.signUpMessageText = text;
+			// },
 			registerUser() {
 				if (
 					this.userType == null ||
@@ -409,6 +408,7 @@ export default {
 					// );
 				} else {
 					// Provera korektnog formata Email-a
+					// TODO: prolazi a@., a ne treba
 					if (
 						!(
 							(
@@ -424,7 +424,7 @@ export default {
 						);
 						return;
 					}
-					this.signUpMessageOn = false;
+					// this.signUpMessageOn = false;
 					// this.signUpMessageKind = "failed";
 					// this.signUpMessageText = "Sample Text";
 					if (this.firstPassword == this.repeatPassword) {

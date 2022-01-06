@@ -43,6 +43,7 @@ public class User {
 		this.authenticated = false;
 		this.emailHash = email.hashCode();
 		this.userType = "";
+		this.deleted = false;
 		// this.loginStatus = "";
 	}
 

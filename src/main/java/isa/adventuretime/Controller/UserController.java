@@ -139,6 +139,14 @@ public class UserController {
 				return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
 			}
 			if (newUser.getAuthenticated() == true) {
+				if (password.equals(newUser.getPassword())) {
+					newUser.setUserType("administrator");
+					return new ResponseEntity<User>(newUser, HttpStatus.OK);
+				} else {
+					return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
+				}
+			} else {
+				return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
 			}
 		}
 		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
@@ -200,21 +208,31 @@ public class UserController {
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerUser(RequestEntity<UnauthenticatedUserDTO> request)
 			throws AddressException, UnsupportedEncodingException {
+
+		// TODO: Posto su dodati deleted i userType u User klasi,
+		// sad moraju svi konstruktori da se menjaju
+
 		String new_user_email = request.getBody().getEmail();
 		String returnedString = "User has been successfully created!";
 		System.out.println(request.getBody().getEmail());
-		System.out.println(request.getBody().getAddress());
-		System.out.println(request.getBody().getCity());
-		System.out.println(request.getBody().getCountry());
 
 		RequestForAdmin requestForAdmin = new RequestForAdmin();
 
-		if (registeredUserService.findByEmail(new_user_email) == null
+		if (administratorService.findByEmail(new_user_email) == null
+				&& registeredUserService.findByEmail(new_user_email) == null
 				&& boatOwnerService.findByEmail(new_user_email) == null
 				&& cottageOwnerService.findByEmail(new_user_email) == null
 				&& fishingInstructorService.findByEmail(new_user_email) == null) {
 			System.out.println(request.getBody().getUserType());
 			switch (request.getBody().getUserType()) {
+				case "administrator":
+					Administrator administrator = new Administrator(request.getBody().getName(),
+							request.getBody().getLastname(), request.getBody().getEmail(),
+							request.getBody().getPassword(),
+							request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
+							request.getBody().getTelephoneNumber());
+					administratorService.register(administrator);
+					break;
 				case "registeredUser":
 					RegisteredUser registeredUser = new RegisteredUser(request.getBody().getName(),
 							request.getBody().getLastname(), request.getBody().getEmail(),
@@ -276,8 +294,8 @@ public class UserController {
 
 			}
 		} else {
-			System.out.println("Error - User with that E-mail already exists.");
 			returnedString = "Error - User with that E-mail already exists.";
+			System.out.println(returnedString);
 		}
 		mailService.SendAuthenticationMail(request.getBody().getEmail(), request.getBody().getName());
 		return new ResponseEntity<String>(returnedString, HttpStatus.OK);
@@ -347,6 +365,12 @@ public class UserController {
 			throws AddressException, UnsupportedEncodingException {
 
 		switch (userType.getBody()) {
+			case "\"ADMINISTRATOR\"":
+				System.out.println("KITAONGINGESS");
+				Administrator administrator = administratorService.getById(id);
+				mailService.SendMail(administrator.getEmail(), administrator.getName(),
+						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+				return new ResponseEntity<Boolean>(administratorService.markDeleted(id), HttpStatus.OK);
 			case "\"REGISTERED_USER\"":
 				RegisteredUser registeredUser = registeredUserService.getById(id);
 				mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(),

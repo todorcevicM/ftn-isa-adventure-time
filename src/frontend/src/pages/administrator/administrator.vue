@@ -76,7 +76,7 @@
 				<div style="height: 40px"></div>
 				<div class="businessReports">
 					<p>Business Reports</p>
-					<button @click="wantsDeletion()" style="width: 200px">
+					<button @click="notImplemented()" style="width: 200px">
 						Show Reports
 					</button>
 				</div>
@@ -267,7 +267,7 @@
 					<button
 						class="entryApprove"
 						@click="
-							approveDeletionRequest(
+							deleteUser(
 								deletionRequest.requesterId,
 								deletionRequest.forType
 							)
@@ -286,6 +286,98 @@
 					>
 						Deny
 					</button>
+				</div>
+			</div>
+			<div v-if="isSuperAdmin == 1" class="table">
+				<h3>Administrator List</h3>
+				<div class="tableEntry" v-for="admin in admins" :key="admin">
+					<p class="entryName">{{ admin.name }}</p>
+					<button
+						v-if="admin.id != 1"
+						class="entryDeny"
+						@click="deleteUser(admin.id, 'ADMINISTRATOR')"
+					>
+						Delete
+					</button>
+				</div>
+				<div style="text-align: center">
+					<button
+						@click="addNewAdministratorToggleFunction()"
+						v-if="!addNewAdministratorToggle"
+					>
+						Add New Administrator
+					</button>
+					<div
+						v-if="addNewAdministratorToggle"
+						class="passwordChange"
+					>
+						<div
+							style="
+								display: flex;
+								flex-direction: row;
+								justify-content: space-around;
+								flex-wrap: wrap;
+							"
+						>
+							<div>
+								<p>First Name</p>
+								<input
+									type="text"
+									v-model="newAdminFirstName"
+									placeholder="John"
+								/>
+							</div>
+							<div>
+								<p>Last Name</p>
+								<input
+									type="text"
+									v-model="newAdminLastName"
+									placeholder="Johnson"
+								/>
+							</div>
+							<div>
+								<p>Phone Number</p>
+								<input
+									type="text"
+									v-model="newAdminPhoneNumber"
+									placeholder="+381 65 123 123 12"
+								/>
+							</div>
+							<div>
+								<p>Address</p>
+								<input
+									type="text"
+									v-model="newAdminAddress"
+									placeholder="42 John Lane"
+								/>
+							</div>
+							<div>
+								<p>City</p>
+								<input
+									type="text"
+									v-model="newAdminCity"
+									placeholder="Johnville"
+								/>
+							</div>
+							<div>
+								<p>Country</p>
+								<input
+									type="text"
+									v-model="newAdminCountry"
+									placeholder="Canada"
+								/>
+							</div>
+							<div>
+								<p>Email</p>
+								<input
+									type="text"
+									v-model="newAdminEmail"
+									placeholder="johnjohnson@gmail.com"
+								/>
+							</div>
+						</div>
+						<button @click="addNewAdministrator()">Add</button>
+					</div>
 				</div>
 			</div>
 			<!-- Spacer -->
@@ -325,7 +417,6 @@
 				</div>
 				<button @click="updatePassword()">Update</button>
 			</div>
-			<button @click="wantsDeletion()">Delete My Account</button>
 		</div>
 	</div>
 </template>
@@ -347,6 +438,7 @@ export default {
 				// userType iz ovog user-a je null jer je tako namesteno da bi se izbegao DTO
 				// Posto znamo da radimo sa ovim tipom user-a,
 				// samo u send metodi stavljamo userType koji treba
+				isSuperAdmin.value = user.value.id;
 			});
 		var newUser = ref({
 			newAddress: localStorage.address,
@@ -406,6 +498,22 @@ export default {
 			deletionRequests.value = response.data;
 		});
 
+		var isSuperAdmin = ref(null);
+		var admins = ref(null);
+		axios
+			.get("/api/administrator/getAllNotDeleted")
+			.then(function (response) {
+				admins.value = response.data;
+			});
+		var addNewAdministratorToggle = ref(null);
+		var newAdminEmail,
+			newAdminFirstName,
+			newAdminLastName,
+			newAdminPhoneNumber,
+			newAdminAddress,
+			newAdminCity,
+			newAdminCountry = ref(null);
+
 		return {
 			user,
 			newUser,
@@ -425,6 +533,16 @@ export default {
 			percentage,
 			percentageUpdateToggle,
 			deletionRequests,
+			isSuperAdmin,
+			admins,
+			addNewAdministratorToggle,
+			newAdminEmail,
+			newAdminFirstName,
+			newAdminLastName,
+			newAdminPhoneNumber,
+			newAdminAddress,
+			newAdminCity,
+			newAdminCountry,
 			checkFirstLogin() {
 				if (this.user.password == "0") {
 					return 1;
@@ -432,7 +550,7 @@ export default {
 					return 0;
 				}
 			},
-			wantsDeletion() {
+			notImplemented() {
 				alert("Not implemented yet!");
 			},
 			updateDetails() {
@@ -605,7 +723,7 @@ export default {
 						window.location.reload();
 					});
 			},
-			approveDeletionRequest(id, type) {
+			deleteUser(id, type) {
 				// alert(id + " " + type);
 				axios
 					.post("/api/user/deleteUser/" + id, type, {
@@ -653,6 +771,66 @@ export default {
 								error
 						);
 					});
+			},
+			addNewAdministratorToggleFunction() {
+				this.addNewAdministratorToggle = true;
+			},
+			addNewAdministrator() {
+				if (
+					this.newAdminEmail == null ||
+					this.newAdminFirstName == null ||
+					this.newAdminLastName == null ||
+					this.newAdminPhoneNumber == null ||
+					this.newAdminAddress == null ||
+					this.newAdminCity == null ||
+					this.newAdminCountry == null
+				) {
+					alert("All fields need to be filled, try again.");
+				} else {
+					// Provera korektnog formata Email-a
+					// TODO: prolazi a@., a ne treba
+					if (
+						!(
+							(
+								this.newAdminEmail.includes("@") &&
+								this.newAdminEmail.indexOf("@") !=
+									this.newAdminEmail.length - 1 &&
+								this.newAdminEmail.indexOf("@") != 0
+							) // Proverava da li imamo nesto posle @ ili pre @
+						)
+					) {
+						alert(
+							"Email isn't in the correct form. Please fill out the form again."
+						);
+						return;
+					}
+					axios
+						.post("/api/user/create", {
+							userType: "administrator",
+							email: this.newAdminEmail,
+							name: this.newAdminFirstName,
+							lastname: this.newAdminLastName,
+							telephoneNumber: this.newAdminPhoneNumber,
+							address: this.newAdminAddress,
+							city: this.newAdminCity,
+							country: this.newAdminCountry,
+							password: "0",
+							userRegistrationReason: "",
+						})
+						.then(function (response) {
+							if (
+								response.data ==
+								"Error - User with that E-mail already exists."
+							) {
+								alert("User with that E-mail already exists.");
+							} else {
+								alert(
+									"A new administrator account has been created."
+								);
+								window.location.reload();
+							}
+						});
+				}
 			},
 		};
 	},
@@ -756,6 +934,7 @@ h3 {
 .passwordChange p {
 	margin: 4px 0;
 	font-size: 25px;
+	text-align: left;
 }
 
 .rightFlex .smallText {

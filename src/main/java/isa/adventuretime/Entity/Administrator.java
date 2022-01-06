@@ -20,4 +20,12 @@ public class Administrator extends User {
 	protected Long id;
 	// Main Admin ima id == 1
 
+	public Administrator(String name, String lastname, String email, String password, String address, String city,
+			String country, String telephoneNumber) {
+		super(name, lastname, email, password, address, city, country, telephoneNumber);
+	}
+
+	public Administrator() {
+		super();
+	}
 }
