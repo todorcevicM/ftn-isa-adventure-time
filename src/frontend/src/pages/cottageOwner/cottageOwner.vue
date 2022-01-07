@@ -1,22 +1,25 @@
 <template>
 	<div>
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
-			</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
+				</div>
+			</a>
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
-				<p>Cottage Owner</p>
+				<p class="smallText">Cottage Owner</p>
 				<p style="font-size: 18px">{{ user.email }}</p>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
+				<!-- TODO: ovaj class -->
 				<div class="percentage">
 					<p>Business Reports</p>
 					<button @click="notImplemented()" style="width: 200px">
-						Show Reports
+						Show
 					</button>
 				</div>
 				<!-- Spacer -->
@@ -59,32 +62,32 @@
 				<div style="height: 40px"></div>
 			</div>
 			<div class="rightFlex">
-				<p>Address</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.address }}</p>
+				<p class="smallText">Address</p>
+				<p v-if="!updateToggle">{{ user.address }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newAddress"
 				/>
 
-				<p>City</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.city }}</p>
+				<p class="smallText">City</p>
+				<p v-if="!updateToggle">{{ user.city }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newCity"
 				/>
 
-				<p>Country</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.country }}</p>
+				<p class="smallText">Country</p>
+				<p v-if="!updateToggle">{{ user.country }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newCountry"
 				/>
 
-				<p>Telephone Number</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Telephone Number</p>
+				<p v-if="!updateToggle">
 					{{ user.telephoneNumber }}
 				</p>
 				<input
@@ -143,7 +146,7 @@
 						>
 							<p>User ID: {{ booking.registeredUserId }}</p>
 							<p>{{ booking.extraService }}</p>
-							<p>Cena: {{ booking.price }}.00</p>
+							<p>Price : {{ booking.price }}.00</p>
 
 							<button
 								class="entryApprove"
@@ -476,7 +479,6 @@ h3 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {
@@ -484,6 +486,10 @@ h3 {
 	height: 450px;
 	border-radius: 15px;
 	object-fit: cover;
+}
+
+.rightFlex {
+	height: 310px;
 }
 
 .rightFlex,
@@ -513,9 +519,11 @@ h3 {
 	font-size: 25px;
 }
 
-.rightFlex .smallText {
+.rightFlex .smallText,
+.leftFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
 
 .rightFlex input,

@@ -9,36 +9,34 @@
 		<div class="mainFlex">
 			<div class="rightFlex">
 				<p>Name</p>
-				<input type="text" v-model="newBoat.newName"/>
+				<input type="text" v-model="newBoat.newName" />
 
 				<p>Type</p>
-				<input type="text" v-model="newBoat.newType"/>
+				<input type="text" v-model="newBoat.newType" />
 				<p>Length</p>
-				<input type="text" v-model="newBoat.newLength"/>
+				<input type="text" v-model="newBoat.newLength" />
 				<p>Engine Number</p>
-				<input type="text" v-model="newBoat.newEngineNumber"/>
+				<input type="text" v-model="newBoat.newEngineNumber" />
 				<p>Engine Power</p>
-				<input type="text" v-model="newBoat.newEnginePower"/>
+				<input type="text" v-model="newBoat.newEnginePower" />
 				<p>Max Speed</p>
-				<input type="text" v-model="newBoat.newMaxSpeed"/>
-
-
+				<input type="text" v-model="newBoat.newMaxSpeed" />
 
 				<p>Address</p>
-				<input type="text" v-model="newBoat.newAddress"/>
+				<input type="text" v-model="newBoat.newAddress" />
 				<p>Longitude</p>
 				<input type="text" v-model="newBoat.newGeoLng" />
 				<p>Latitude</p>
 				<input type="text" v-model="newBoat.newGeoLat" />
 
 				<p>Promo</p>
-				<input type="text" v-model="newBoat.newPromoDescription"/>
+				<input type="text" v-model="newBoat.newPromoDescription" />
 
 				<p>Rules</p>
-				<input type="text" v-model="newBoat.newRules"/>
+				<input type="text" v-model="newBoat.newRules" />
 
 				<p>Info</p>
-				<input type="text" v-model="newBoat.newPriceAndInfo"/>
+				<input type="text" v-model="newBoat.newPriceAndInfo" />
 
 				<p>Start</p>
 				<input type="text" v-model="newBoat.newReservationStart" />
@@ -47,17 +45,19 @@
 				<input type="text" v-model="newBoat.newReservationEnd" />
 
 				<p>Navigation Equipment</p>
-				<input type="text" v-model="newBoat.newNavigationEquipment"/>
+				<input type="text" v-model="newBoat.newNavigationEquipment" />
 
 				<p>Equipment</p>
-				<input type="text" v-model="newBoat.newEquipment"/>
+				<input type="text" v-model="newBoat.newEquipment" />
 
 				<p>Person limit</p>
-				<input type="text" v-model="newBoat.newMaxUsers"/>
-				
-				<input type="text" v-model="newAdventure.newPercentTakenIfCancelled"/>
+				<input type="text" v-model="newBoat.newMaxUsers" />
+
+				<input
+					type="text"
+					v-model="newAdventure.newPercentTakenIfCancelled"
+				/>
 				<p>% taken if cancelled</p>
-				
 
 				<p>Owner : {{ boatOwnerName }}</p>
 
@@ -89,7 +89,7 @@ export default {
 				console.log(response.data.id);
 				localStorage["boatOwnerIdFromPostRequest"] = response.data.id;
 			});
-		
+
 		// console.log(boatOwnerId.value);
 		console.log(localStorage["boatOwnerIdFromPostRequest"]);
 
@@ -150,26 +150,24 @@ export default {
 				var sendingBoat = this.newBoat;
 				sendingBoat.name = this.newBoat.newName;
 				sendingBoat.address = this.newBoat.newAddress;
-				sendingBoat.promoDescription =
-					this.newBoat.newPromoDescription;
+				sendingBoat.promoDescription = this.newBoat.newPromoDescription;
 				sendingBoat.rules = this.newBoat.newRules;
-				sendingBoat.priceAndInfo =
-					this.newBoat.newPriceAndInfo;
-				sendingBoat.reservationStart =
-					this.newBoat.newReservationStart;
-				sendingBoat.reservationEnd =
-					this.newBoat.newReservationEnd;
+				sendingBoat.priceAndInfo = this.newBoat.newPriceAndInfo;
+				sendingBoat.reservationStart = this.newBoat.newReservationStart;
+				sendingBoat.reservationEnd = this.newBoat.newReservationEnd;
 				sendingBoat.maxUsers = this.newBoat.newMaxUsers;
 				sendingBoat.geoLng = this.newBoat.newGeoLng;
 				sendingBoat.geoLat = this.newBoat.newGeoLat;
-				sendingBoat.navigationEquipment = this.newBoat.newNavigationEquipment;
+				sendingBoat.navigationEquipment =
+					this.newBoat.newNavigationEquipment;
 				sendingBoat.equipment = this.newBoat.newEquipment;
 				sendingBoat.type = this.newBoat.newType;
 				sendingBoat.lenght = this.newBoat.newLenght;
 				sendingBoat.engineNumber = this.newBoat.newEngineNumber;
 				sendingBoat.enginePower = this.newBoat.newEnginePower;
 				sendingBoat.maxSpeed = this.newBoat.newMaxSpeed;
-				sendingBoat.percentTakenIfCancelled = this.newBoat.newPercentTakenIfCancelled;
+				sendingBoat.percentTakenIfCancelled =
+					this.newBoat.newPercentTakenIfCancelled;
 				sendingBoat.ownerId = this.newBoat.newOwnerId;
 
 				axios
@@ -233,7 +231,6 @@ h4 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 .leftFlex img {
 	width: 800px;
@@ -331,7 +328,6 @@ h4 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {

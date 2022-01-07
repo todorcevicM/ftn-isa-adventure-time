@@ -895,7 +895,6 @@ h3 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {

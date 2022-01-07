@@ -9,37 +9,39 @@
 		<div class="mainFlex">
 			<div class="rightFlex">
 				<p>Name</p>
-				<input type="text" v-model="newAdventure.newName"/>
+				<input type="text" v-model="newAdventure.newName" />
 				<p>Address</p>
-				<input type="text" v-model="newAdventure.newAddress"/>
+				<input type="text" v-model="newAdventure.newAddress" />
 				<p>Longitude</p>
 				<input type="text" v-model="newAdventure.newGeoLng" />
 				<p>Latitude</p>
 				<input type="text" v-model="newAdventure.newGeoLat" />
 
 				<p>Promo</p>
-				<input type="text" v-model="newAdventure.newPromoDescription"/>
+				<input type="text" v-model="newAdventure.newPromoDescription" />
 
 				<p>Rules</p>
-				<input type="text" v-model="newAdventure.newRules"/>
+				<input type="text" v-model="newAdventure.newRules" />
 
 				<p>Info</p>
-				<input type="text" v-model="newAdventure.newPriceAndInfo"/>
+				<input type="text" v-model="newAdventure.newPriceAndInfo" />
 
 				<p>Equipment</p>
-				<input type="text" v-model="newAdventure.newEquipment"/>
+				<input type="text" v-model="newAdventure.newEquipment" />
 
 				<p>Person limit</p>
-				<input type="text" v-model="newAdventure.newMaxUsers"/>
+				<input type="text" v-model="newAdventure.newMaxUsers" />
 
-				<input type="text" v-model="newAdventure.newPercentTakenIfCancelled"/>
+				<input
+					type="text"
+					v-model="newAdventure.newPercentTakenIfCancelled"
+				/>
 				<p>% taken if cancelled</p>
-				
 
 				<p>Owner : {{ fishingInstructorName }}</p>
 
 				<p>Bio :</p>
-				<input type="text" v-model="newAdventure.newInstructorBio"/>
+				<input type="text" v-model="newAdventure.newInstructorBio" />
 
 				<button
 					@click="submit()"
@@ -66,9 +68,10 @@ export default {
 			.then(function (response) {
 				fishingInstructorName.value = response.data.name;
 				console.log(response.data.id);
-				localStorage["fishingInstructorIdFromPostRequest"] = response.data.id;
+				localStorage["fishingInstructorIdFromPostRequest"] =
+					response.data.id;
 			});
-		
+
 		// console.log(fishingInstructorId.value);
 		console.log(localStorage["fishingInstructorIdFromPostRequest"]);
 
@@ -124,7 +127,8 @@ export default {
 				sendingAdventure.maxUsers = this.newAdventure.newMaxUsers;
 				sendingAdventure.percentTakenIfCancelled =
 					this.newAdventure.newPercentTakenIfCancelled;
-				sendingAdventure.instructorId = this.newAdventure.newInstructorId;
+				sendingAdventure.instructorId =
+					this.newAdventure.newInstructorId;
 				sendingAdventure.geoLng = this.newAdventure.newGeoLng;
 				sendingAdventure.geoLat = this.newAdventure.newGeoLat;
 
@@ -134,7 +138,9 @@ export default {
 						console.log(response);
 						console.log(response.data);
 					});
-				window.location.assign("/fishingInstructor/" + localStorage.emailHash);
+				window.location.assign(
+					"/fishingInstructor/" + localStorage.emailHash
+				);
 			},
 		};
 	},
@@ -189,7 +195,6 @@ h4 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 .leftFlex img {
 	width: 800px;
@@ -230,7 +235,11 @@ button:hover {
 	color: white;
 	cursor: pointer;
 }
-</style><style>
+</style>
+
+
+<style>
+/* TODO: ZASTO IMA 2 STILAAAA */
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 
 body {
@@ -287,7 +296,6 @@ h4 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {

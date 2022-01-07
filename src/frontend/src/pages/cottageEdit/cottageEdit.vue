@@ -22,11 +22,22 @@
 				<p>Rating: 5.00</p>
 
 				<div id="glupsam">
-
-					<p v-if="!uploadedImage"> Add a new image: </p>
-					<input v-if="!uploadedImage" type="file" @change="onFileChange"/>
-					<button v-if="!uploadedImage" @click="uploadImage(cottage.id)">Upload</button>
-					<img class="itemImage" :src="addedImageSource(cottage.id)" />
+					<p v-if="!uploadedImage">Add a new image:</p>
+					<input
+						v-if="!uploadedImage"
+						type="file"
+						@change="onFileChange"
+					/>
+					<button
+						v-if="!uploadedImage"
+						@click="uploadImage(cottage.id)"
+					>
+						Upload
+					</button>
+					<img
+						class="itemImage"
+						:src="addedImageSource(cottage.id)"
+					/>
 				</div>
 			</div>
 			<div class="rightFlex">
@@ -218,13 +229,12 @@ export default {
 			selectedFile: null,
 			newCottage,
 			imageSource(id) {
-					try {
-						return require("../../assets/images/cottage" + id + ".png");
-					}
-					catch (e) {
-						return require("../../assets/images/cottage1.png")
-					}
-				},
+				try {
+					return require("../../assets/images/cottage" + id + ".png");
+				} catch (e) {
+					return require("../../assets/images/cottage1.png");
+				}
+			},
 			deleteRoom(roomId) {
 				axios
 					.post("/api/rooms/delete/" + roomId)
@@ -260,7 +270,7 @@ export default {
 					this.newCottage.newReservationStart == "" ||
 					this.newCottage.newReservationEnd == "" ||
 					this.newCottage.newMaxUsers == "" ||
-					this.newCottage.newPercentTakenIfCancelled == "" || 
+					this.newCottage.newPercentTakenIfCancelled == "" ||
 					this.newCottage.newGeoLng == "" ||
 					this.newCottage.newGeoLat == ""
 				) {
@@ -283,7 +293,7 @@ export default {
 					this.newCottage.newPercentTakenIfCancelled;
 				sendingCottage.geoLng = this.newCottage.newGeoLng;
 				sendingCottage.geoLat = this.newCottage.newGeoLat;
-				
+
 				axios
 					.post("/api/cottages/update", sendingCottage)
 					.then(function (response) {
@@ -323,11 +333,11 @@ export default {
 					newFormData.append("file", this.selectedFile);
 					console.log("Form data : ");
 					var api = "cottage_" + id;
-					axios.post("/api/image/save/" + api, newFormData, {
-						}).then(function(response) {
+					axios
+						.post("/api/image/save/" + api, newFormData, {})
+						.then(function (response) {
 							console.log(response.data);
-						}
-					);
+						});
 					console.log("Image uploaded.");
 					this.uploadedImage = true;
 				}
@@ -335,9 +345,11 @@ export default {
 			addedImageSource(id) {
 				// if (this.uploadedImage) {
 				try {
-					return require("../../assets/images/cottage_" + id + ".png")	 
+					return require("../../assets/images/cottage_" +
+						id +
+						".png");
 				} catch (e) {
-					return require("../../assets/images/cottage1.png")
+					return require("../../assets/images/cottage1.png");
 				}
 
 				// }
@@ -404,7 +416,6 @@ h4 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {

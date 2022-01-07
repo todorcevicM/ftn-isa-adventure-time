@@ -15,12 +15,21 @@
 				<p>${{ adventure.pricePerDay }}.00 / Day</p>
 				<p>Rating: 5.00</p>
 
-						<p v-if="!uploadedImage"> Add a new image: </p>
-						<input v-if="!uploadedImage" type="file" @change="onFileChange"/>
-						<button v-if="canUpload" @click="uploadImage(adventure.id)">Upload</button>
-				
-						<img v-if="uploadedImage" class="itemImage" :src="addedImageSource(adventure.id)" />
-					
+				<p v-if="!uploadedImage">Add a new image:</p>
+				<input
+					v-if="!uploadedImage"
+					type="file"
+					@change="onFileChange"
+				/>
+				<button v-if="canUpload" @click="uploadImage(adventure.id)">
+					Upload
+				</button>
+
+				<img
+					v-if="uploadedImage"
+					class="itemImage"
+					:src="addedImageSource(adventure.id)"
+				/>
 			</div>
 			<div class="rightFlex">
 				<p>Name</p>
@@ -191,9 +200,10 @@ export default {
 			selectedFile: null,
 			imageSource(id) {
 				try {
-					return require("../../assets/images/adventure" + id + ".png");
-				}
-				catch (err) {
+					return require("../../assets/images/adventure" +
+						id +
+						".png");
+				} catch (err) {
 					return require("../../assets/images/adventure1.png");
 				}
 			},
@@ -247,23 +257,22 @@ export default {
 				const newFormData = new FormData();
 				newFormData.append("file", this.selectedFile);
 				var api = "adventure_" + id + ".png";
-				axios.post("/api/image/save/" + api, newFormData, {
-					}).then(function(response) {
+				axios
+					.post("/api/image/save/" + api, newFormData, {})
+					.then(function (response) {
 						console.log(response.data);
-					}
-				);
-				this.uploadedImage = true;		
+					});
+				this.uploadedImage = true;
 				console.log(this.uploadedImage);
-					
 			},
 			addedImageSource(id) {
 				try {
-					return require("../../assets/images/adventure_" + id + ".png");
-				}
-				catch (err) {
+					return require("../../assets/images/adventure_" +
+						id +
+						".png");
+				} catch (err) {
 					return require("../../assets/images/adventure1.png");
 				}
-			
 			},
 		};
 	},
@@ -318,7 +327,6 @@ h4 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 .leftFlex img {
 	width: 800px;
@@ -416,7 +424,6 @@ h4 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {

@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<!-- TODO: Treba da se dodaju nazivi entiteta koji su bili ili ce biti zakazani u tabelama -->
 		<div id="logo-container">
 			<a href="/" style="color: inherit">
 				<div class="underlined">
@@ -14,6 +13,7 @@
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
 				<p class="smallText">Registered User</p>
 				<p style="font-size: 18px">{{ user.email }}</p>
+				<!-- Spacer -->
 				<div style="height: 20px"></div>
 				<p style="color: rgb(96, 96, 236)">Platinum Account</p>
 				<!-- Spacer -->
@@ -754,7 +754,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 
 body {
 	/* background-image: url("../../assets/adventure-time-background.jpg"); */
@@ -912,7 +912,6 @@ h3 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {
@@ -920,6 +919,10 @@ h3 {
 	height: 450px;
 	border-radius: 15px;
 	object-fit: cover;
+}
+
+.rightFlex {
+	height: 310px;
 }
 
 .rightFlex,

@@ -123,7 +123,7 @@ export default {
 					this.newCottage.newReservationStart == "" ||
 					this.newCottage.newReservationEnd == "" ||
 					this.newCottage.newMaxUsers == "" ||
-					this.newCottage.newPercentTakenIfCancelled == "" || 
+					this.newCottage.newPercentTakenIfCancelled == "" ||
 					this.newCottage.newGeoLng == "" ||
 					this.newCottage.newGeoLat == ""
 				) {
@@ -248,7 +248,6 @@ h4 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {

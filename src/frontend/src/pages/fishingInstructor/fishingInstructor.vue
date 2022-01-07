@@ -1,15 +1,17 @@
 <template>
 	<div>
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
-			</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
+				</div>
+			</a>
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
-				<p>Fishing Instructor</p>
+				<p class="smallText">Fishing Instructor</p>
 				<p style="font-size: 18px">{{ user.email }}</p>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
@@ -60,32 +62,32 @@
 				<div style="height: 40px"></div>
 			</div>
 			<div class="rightFlex">
-				<p>Address</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.address }}</p>
+				<p class="smallText">Address</p>
+				<p v-if="!updateToggle">{{ user.address }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newAddress"
 				/>
 
-				<p>City</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.city }}</p>
+				<p class="smallText">City</p>
+				<p v-if="!updateToggle">{{ user.city }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newCity"
 				/>
 
-				<p>Country</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.country }}</p>
+				<p class="smallText">Country</p>
+				<p v-if="!updateToggle">{{ user.country }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newCountry"
 				/>
 
-				<p>Telephone Number</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Telephone Number</p>
+				<p v-if="!updateToggle">
 					{{ user.telephoneNumber }}
 				</p>
 				<input
@@ -94,9 +96,10 @@
 					v-model="newUser.newTelephoneNumber"
 				/>
 
-				<p>Start Work Time</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ user.startWorkPeriod }}
+				<p class="smallText">Start Work Time</p>
+				<p v-if="!updateToggle">
+					{{ formattedDateStart }}
+					<!-- {{ user.startWorkPeriod }} -->
 				</p>
 				<input
 					type="text"
@@ -104,9 +107,9 @@
 					v-model="newUser.newStartWorkPeriod"
 				/>
 
-				<p>End Work Time</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ user.endWorkPeriod }}
+				<p class="smallText">End Work Time</p>
+				<p v-if="!updateToggle">
+					{{ formattedDateEnd }}
 				</p>
 				<input
 					type="text"
@@ -163,7 +166,7 @@
 					>
 						<p>User ID: {{ booking.registeredUserId }}</p>
 						<p>{{ booking.extraService }}</p>
-						<p>Cena: {{ booking.price }}.00</p>
+						<p>Price : {{ booking.price }}.00</p>
 
 						<button
 							class="entryApprove"
@@ -171,10 +174,6 @@
 						>
 							View User
 						</button>
-						<!-- TODO: zasto je ovo bilo ovde? -->
-						<!-- <button class="entryDeny" @click="deny()">
-							Deny
-						</button> -->
 					</div>
 				</div>
 			</div>
@@ -256,6 +255,11 @@ import axios from "axios";
 export default {
 	setup() {
 		var user = ref(null);
+		var unformattedDateStart = ref(null);
+		var unformattedDateEnd = ref(null);
+		var formattedDateStart = ref(null);
+		var formattedDateEnd = ref(null);
+
 		axios
 			.get(
 				"/api/fishingInstructor/getByEmail/" + localStorage["emailHash"]
@@ -263,6 +267,18 @@ export default {
 			.then(function (response) {
 				console.log(response.data);
 				user.value = response.data;
+
+				unformattedDateStart.value = user.value.startWorkPeriod;
+				unformattedDateEnd.value = user.value.endWorkPeriod;
+
+				// Formatiranje datuma
+				let newStart = unformattedDateStart.value.split("T");
+				let newStartSecondPart = newStart[1].split(".")[0];
+				formattedDateStart.value =
+					newStartSecondPart + ", " + newStart[0];
+				let newEnd = unformattedDateEnd.value.split("T");
+				let newEndSecondPart = newEnd[1].split(".")[0];
+				formattedDateEnd.value = newEndSecondPart + ", " + newEnd[0];
 			});
 		var newUser = ref({
 			newAddress: localStorage.address,
@@ -306,6 +322,10 @@ export default {
 			passwordChangeToggle,
 			adventures,
 			searchQuery,
+			unformattedDateStart,
+			unformattedDateEnd,
+			formattedDateStart,
+			formattedDateEnd,
 			notImplemented() {
 				alert("Not implemented yet!");
 			},
@@ -513,7 +533,6 @@ h3 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {
@@ -521,6 +540,10 @@ h3 {
 	height: 450px;
 	border-radius: 15px;
 	object-fit: cover;
+}
+
+.rightFlex {
+	height: 440px;
 }
 
 .rightFlex,
@@ -550,9 +573,11 @@ h3 {
 	font-size: 25px;
 }
 
-.rightFlex .smallText {
+.rightFlex .smallText,
+.leftFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
 
 .rightFlex input,

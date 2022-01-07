@@ -1,26 +1,43 @@
 <template>
 	<div>
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
-			</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
+				</div>
+			</a>
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
 				<div>
 					<img class="itemImage" :src="imageSource(boat.id)" />
 				</div>
+				<div>
+					<img
+						class="itemImage"
+						src="../../assets/images/boatinterior.jpg"
+					/>
+				</div>
 				<h4>{{ boat.name }}</h4>
 				<p>${{ boat.pricePerDay }}.00 / Day</p>
 				<p>Rating: 5.00</p>
 
-						<p v-if="!uploadedImage"> Add a new image: </p>
-						<input v-if="!uploadedImage" type="file" @change="onFileChange"/>
-						<button v-if="canUpload" @click="uploadImage(boat.id)">Upload</button>
-				
-						<img v-if="uploadedImage" class="itemImage" :src="addedImageSource(boat.id)" />
-					
+				<p v-if="!uploadedImage">Add a new image:</p>
+				<input
+					v-if="!uploadedImage"
+					type="file"
+					@change="onFileChange"
+				/>
+				<button v-if="canUpload" @click="uploadImage(boat.id)">
+					Upload
+				</button>
+
+				<img
+					v-if="uploadedImage"
+					class="itemImage"
+					:src="addedImageSource(boat.id)"
+				/>
 			</div>
 			<div class="rightFlex">
 				<p>Name</p>
@@ -37,27 +54,47 @@
 				<p class="smallText" v-if="!updateToggle">
 					{{ boat.type }}
 				</p>
-				<input type="text" v-model="newBoat.newType" v-if="updateToggle"/>
+				<input
+					type="text"
+					v-model="newBoat.newType"
+					v-if="updateToggle"
+				/>
 				<p>Length</p>
 				<p class="smallText" v-if="!updateToggle">
 					{{ boat.length }}
 				</p>
-				<input type="text" v-model="newBoat.newLength" v-if="updateToggle"/>
+				<input
+					type="text"
+					v-model="newBoat.newLength"
+					v-if="updateToggle"
+				/>
 				<p>Engine Number</p>
 				<p class="smallText" v-if="!updateToggle">
 					{{ boat.engineNumber }}
 				</p>
-				<input type="text" v-model="newBoat.newEngineNumber" v-if="updateToggle"/>
+				<input
+					type="text"
+					v-model="newBoat.newEngineNumber"
+					v-if="updateToggle"
+				/>
 				<p>Engine Power</p>
 				<p class="smallText" v-if="!updateToggle">
 					{{ boat.enginePower }}
 				</p>
-				<input type="text" v-model="newBoat.newEnginePower" v-if="updateToggle"/>
+				<input
+					type="text"
+					v-model="newBoat.newEnginePower"
+					v-if="updateToggle"
+				/>
 				<p>Max Speed</p>
 				<p class="smallText" v-if="!updateToggle">
 					{{ boat.maxSpeed }}
 				</p>
-				<input type="text" v-model="newBoat.newMaxSpeed" v-if="updateToggle"/>
+				<input
+					type="text"
+					v-model="newBoat.newMaxSpeed"
+					v-if="updateToggle"
+				/>
 
 				<p>Address</p>
 				<p class="smallText" v-if="!updateToggle">
@@ -70,14 +107,10 @@
 				/>
 
 				<p>Longitude</p>
-				<p class="smallText">
-					({{ boat.geoLng }})
-				</p>
+				<p class="smallText">({{ boat.geoLng }})</p>
 				<!-- <input type="text" v-model="newBoat.newGeoLng" v-if="updateToggle"/> -->
 				<p>Latitude</p>
-				<p class="smallText">
-					({{ boat.geoLat }})
-				</p>
+				<p class="smallText">({{ boat.geoLat }})</p>
 				<!-- <input type="text" v-model="newBoat.newGeoLat" v-if="updateToggle"/> -->
 
 				<p>Promo</p>
@@ -134,13 +167,21 @@
 				<p class="smallText" v-if="!updateToggle">
 					{{ boat.navigationEquipment }}
 				</p>
-				<input type="text" v-model="newBoat.newNavigationEquipment" v-if="updateToggle"/>
+				<input
+					type="text"
+					v-model="newBoat.newNavigationEquipment"
+					v-if="updateToggle"
+				/>
 
 				<p>Equipment</p>
 				<p class="smallText" v-if="!updateToggle">
 					{{ boat.equipment }}
 				</p>
-				<input type="text" v-model="newBoat.newEquipment" v-if="updateToggle"/>
+				<input
+					type="text"
+					v-model="newBoat.newEquipment"
+					v-if="updateToggle"
+				/>
 
 				<p>Person limit</p>
 				<p class="smallText" v-if="!updateToggle">
@@ -204,10 +245,7 @@ export default {
 
 		var owner = ref(null);
 		axios
-			.get(
-				"/api/boatOwner/get/" +
-					localStorage["boatOwner"]
-			)
+			.get("/api/boatOwner/get/" + localStorage["boatOwner"])
 			.then(function (response) {
 				owner.value = response.data;
 			});
@@ -230,7 +268,6 @@ export default {
 			newEngineNumber: localStorage.engineNumber,
 			newEnginePower: localStorage.enginePower,
 			newMaxSpeed: localStorage.maxSpeed,
-
 		});
 
 		// Za u <template>
@@ -245,8 +282,7 @@ export default {
 			imageSource(id) {
 				try {
 					return require("../../assets/images/boat" + id + ".png");
-				}
-				catch (err) {
+				} catch (err) {
 					return require("../../assets/images/boat1.png");
 				}
 			},
@@ -265,7 +301,7 @@ export default {
 					this.newBoat.newRules == "" ||
 					this.newBoat.newPriceAndInfo == "" ||
 					this.newBoat.newPromoDescription == "" ||
-					this.newBoat.newMaxUsers == "" || 
+					this.newBoat.newMaxUsers == "" ||
 					this.newBoat.newReservationStart == "" ||
 					this.newBoat.newReservationEnd == "" ||
 					this.newBoat.newNavigationEquipment == "" ||
@@ -283,21 +319,17 @@ export default {
 				sendingBoat.enginePower = this.newBoat.newEnginePower;
 				sendingBoat.maxSpeed = this.newBoat.newMaxSpeed;
 				sendingBoat.address = this.newBoat.newAddress;
-				sendingBoat.promoDescription =
-					this.newBoat.newPromoDescription;
+				sendingBoat.promoDescription = this.newBoat.newPromoDescription;
 				sendingBoat.rules = this.newBoat.newRules;
-				sendingBoat.priceAndInfo =
-					this.newBoat.newPriceAndInfo;
+				sendingBoat.priceAndInfo = this.newBoat.newPriceAndInfo;
 				sendingBoat.maxUsers = this.newBoat.newMaxUsers;
-				sendingBoat.reservationStart =
-					this.newBoat.newReservationStart;
+				sendingBoat.reservationStart = this.newBoat.newReservationStart;
 				sendingBoat.reservationEnd = this.newBoat.newReservationEnd;
 				sendingBoat.navigationEquipment =
 					this.newBoat.newNavigationEquipment;
 				sendingBoat.equipment = this.newBoat.newEquipment;
 				sendingBoat.percentTakenIfCancelled =
 					this.newBoat.newPercentTakenIfCancelled;
-				
 
 				axios
 					.post("/api/boats/update/", sendingBoat)
@@ -316,22 +348,20 @@ export default {
 				const newFormData = new FormData();
 				newFormData.append("file", this.selectedFile);
 				var api = "boat_" + id + ".png";
-				axios.post("/api/image/save/" + api, newFormData, {
-					}).then(function(response) {
+				axios
+					.post("/api/image/save/" + api, newFormData, {})
+					.then(function (response) {
 						console.log(response.data);
-					}
-				);
-				this.uploadedImage = true;		
+					});
+				this.uploadedImage = true;
 				console.log(this.uploadedImage);
 			},
 			addedImageSource(id) {
 				try {
 					return require("../../assets/images/boat_" + id + ".png");
-				}
-				catch (err) {
+				} catch (err) {
 					return require("../../assets/images/boat1.png");
 				}
-			
 			},
 		};
 	},
@@ -386,7 +416,6 @@ h4 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 .leftFlex img {
 	width: 800px;
@@ -484,7 +513,6 @@ h4 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {

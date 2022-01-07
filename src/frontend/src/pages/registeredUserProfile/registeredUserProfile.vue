@@ -1,56 +1,37 @@
 <template>
 	<div>
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
-			</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
+				</div>
+			</a>
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
-				<p>Registered User Profile</p>
+				<p class="smallText">Registered User Profile</p>
 				<p style="font-size: 18px">{{ user.email }}</p>
-				<p style="color: rgb(96, 96, 236)">Platinum Account</p>
-				<p>Penalties: 0</p>
 				<!-- Spacer -->
-				<div style="height: 40px"></div>
+				<div style="height: 20px"></div>
+				<p style="color: rgb(96, 96, 236)">Platinum Account</p>
+				<!-- Spacer -->
+				<div style="height: 20px"></div>
+				<p>Penalties: 0</p>
 			</div>
 			<div class="rightFlex">
-				<p>Address</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.address }}</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-				/>
-
-				<p>City</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.city }}</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-				/>
-
-				<p>Country</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.country }}</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-				/>
-
-				<p>Telephone Number</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ user.telephoneNumber }}
-				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-				/>
+				<p class="smallText">Address</p>
+				<p>{{ user.address }}</p>
+				<p class="smallText">City</p>
+				<p>{{ user.city }}</p>
+				<p class="smallText">Country</p>
+				<p>{{ user.country }}</p>
+				<p class="smallText">Telephone Number</p>
+				<p>{{ user.telephoneNumber }}</p>
 			</div>
 		</div>
-		<div class="lowerFlex">
-			
-		</div>
+		<div class="lowerFlex"></div>
 	</div>
 </template>
 
@@ -59,17 +40,14 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		console.log(window.location.href);
 		var urlArray = window.location.href.split("/");
 		var id = urlArray[4];
-		console.log(id);
 
 		var user = ref(null);
 		axios
 			.get("/api/registeredUser/getUser/" + id)
 			.then(function (response) {
 				user.value = response.data;
-				console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + user.value);
 			});
 
 		return {
@@ -80,7 +58,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 
 body {
 	/* background-image: url("../../assets/adventure-time-background.jpg"); */
@@ -141,7 +119,6 @@ h3 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {
@@ -178,9 +155,11 @@ h3 {
 	font-size: 25px;
 }
 
-.rightFlex .smallText {
+.rightFlex .smallText,
+.leftFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
 
 .rightFlex input,

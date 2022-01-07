@@ -66,6 +66,10 @@ module.exports = {
 			entry: "src/pages/boatEdit/main.js",
 			title: "Boat Edit Page",
 		},
+		registeredUserSearch: {
+			entry: "src/pages/registeredUserSearch/main.js",
+			title: "Search",
+		},
 	},
 	devServer: {
 		port: 3000,

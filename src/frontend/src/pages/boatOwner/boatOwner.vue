@@ -1,15 +1,17 @@
 <template>
 	<div>
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Boat Time</p>
-			</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
+				</div>
+			</a>
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
-				<p>Boat Owner</p>
+				<p class="smallText">Boat Owner</p>
 				<p style="font-size: 18px">{{ user.email }}</p>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
@@ -60,32 +62,32 @@
 				<div style="height: 40px"></div>
 			</div>
 			<div class="rightFlex">
-				<p>Address</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.address }}</p>
+				<p class="smallText">Address</p>
+				<p v-if="!updateToggle">{{ user.address }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newAddress"
 				/>
 
-				<p>City</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.city }}</p>
+				<p class="smallText">City</p>
+				<p v-if="!updateToggle">{{ user.city }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newCity"
 				/>
 
-				<p>Country</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.country }}</p>
+				<p class="smallText">Country</p>
+				<p v-if="!updateToggle">{{ user.country }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newCountry"
 				/>
 
-				<p>Telephone Number</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Telephone Number</p>
+				<p v-if="!updateToggle">
 					{{ user.telephoneNumber }}
 				</p>
 				<input
@@ -143,7 +145,7 @@
 					>
 						<p>User ID: {{ booking.registeredUserId }}</p>
 						<p>{{ booking.extraService }}</p>
-						<p>Cena: {{ booking.price }}.00</p>
+						<p>Price : {{ booking.price }}.00</p>
 
 						<button
 							class="entryApprove"
@@ -162,23 +164,13 @@
 			<div style="height: 80px"></div>
 			<div class="table">
 				<h3>Boats</h3>
-				<div
-					class="tableEntry"
-					v-for="boat in boats"
-					:key="boat"
-				>
+				<div class="tableEntry" v-for="boat in boats" :key="boat">
 					<p class="entryName">{{ boat.name }}</p>
 					<!-- TODO: class ovog dugmeta djota -->
-					<button
-						class="entryApprove"
-						@click="viewBoat(boat.id)"
-					>
+					<button class="entryApprove" @click="viewBoat(boat.id)">
 						View
 					</button>
-					<button
-						class="entryDeny"
-						@click="deleteBoat(boat.id)"
-					>
+					<button class="entryDeny" @click="deleteBoat(boat.id)">
 						Delete
 					</button>
 				</div>
@@ -238,9 +230,7 @@ export default {
 		var user = ref(null);
 		// TODO: ovde iz nekog razloga trazi boat kao da mu je email_hash zapravo id
 		axios
-			.get(
-				"/api/boatOwner/getByEmail/" + localStorage["emailHash"]
-			)
+			.get("/api/boatOwner/getByEmail/" + localStorage["emailHash"])
 			.then(function (response) {
 				console.log(response.data);
 				user.value = response.data;
@@ -266,10 +256,7 @@ export default {
 
 		var pastBoatBookings = ref(null);
 		axios
-			.get(
-				"/api/boatOwner/pastBoatBookings/" +
-					localStorage["userId"]
-			)
+			.get("/api/boatOwner/pastBoatBookings/" + localStorage["userId"])
 			.then(function (response) {
 				console.log(response.data);
 				pastBoatBookings.value = response.data;
@@ -365,22 +352,20 @@ export default {
 				window.location.href = "/registeredUserProfile/" + id;
 			},
 			deleteBoat(id) {
-				axios
-					.post("/api/boats/delete/" + id)
-					.then(function (response) {
-						console.log("Response : ");
-						console.log(response.data);
-						var booked = response.data;
-						if (booked == false) {
-							alert(
-								"There exist bookings with this item. Deletion is unavailable."
-							);
-							return;
-						} else {
-							alert("Deleted.");
-							window.location.reload();
-						}
-					});
+				axios.post("/api/boats/delete/" + id).then(function (response) {
+					console.log("Response : ");
+					console.log(response.data);
+					var booked = response.data;
+					if (booked == false) {
+						alert(
+							"There exist bookings with this item. Deletion is unavailable."
+						);
+						return;
+					} else {
+						alert("Deleted.");
+						window.location.reload();
+					}
+				});
 			},
 			viewBoat(id) {
 				// console.log(id);
@@ -491,7 +476,6 @@ h3 {
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
-	font-weight: 100;
 }
 
 .leftFlex img {
@@ -499,6 +483,10 @@ h3 {
 	height: 450px;
 	border-radius: 15px;
 	object-fit: cover;
+}
+
+.rightFlex {
+	height: 310px;
 }
 
 .rightFlex,
@@ -528,9 +516,11 @@ h3 {
 	font-size: 25px;
 }
 
-.rightFlex .smallText {
+.rightFlex .smallText,
+.leftFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
 
 .rightFlex input,
