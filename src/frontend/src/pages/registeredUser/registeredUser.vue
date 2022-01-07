@@ -88,6 +88,9 @@
 					<button class="entryApprove" @click="notImplemented()" v-if="!pbb.revision.revised">
 						Revise
 					</button>
+					<button class="entryApprove" @click="notImplemented()">
+						Appeal
+					</button>
 				</div>
 			</div>
 			<!-- past adventure booking -->
@@ -110,6 +113,9 @@
 					<button class="entryApprove" @click="notImplemented()" v-if="!pab.revision.revised">
 						Revise
 					</button>
+					<button class="entryApprove" @click="notImplemented()">
+						Appeal
+					</button>
 				</div>
 			</div>
 			<!-- past room booking -->
@@ -131,6 +137,9 @@
 					<p>Price : {{ prb.roomBooking.price }}.00</p>
 					<button class="entryApprove" @click="notImplemented()" v-if="!prb.revision.revised">
 						Revise
+					</button>
+					<button class="entryApprove" @click="notImplemented()">
+						Appeal
 					</button>
 				</div>
 			</div>

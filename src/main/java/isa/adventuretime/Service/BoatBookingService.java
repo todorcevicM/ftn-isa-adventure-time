@@ -27,6 +27,10 @@ public class BoatBookingService {
 	@Autowired
 	private RevisionRepo revisionRepo;
 
+	public BoatBooking getById(Long id) {
+		return boatBookingRepo.getById(id);
+	}
+
 	public ArrayList<Date> getFreeTime(Long id) {
 		Boat currentBoat = boatRepo.findById(id).get();
 		if (currentBoat == null) {

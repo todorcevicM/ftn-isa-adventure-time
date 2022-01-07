@@ -21,6 +21,10 @@ public class RoomBookingService {
 	@Autowired
 	private RevisionRepo revisionRepo;
 
+	public  RoomBooking getById(Long id) {
+		return roomBookingRepo.getById(id);
+	}
+
 	public ArrayList<RoomBooking> findAllByBookedRoomId(Long id) {
 		return roomBookingRepo.findAllByBookedRoomId(id);
 	}

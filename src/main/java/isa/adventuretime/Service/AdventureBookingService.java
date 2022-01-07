@@ -26,6 +26,10 @@ public class AdventureBookingService {
 	@Autowired
 	private RevisionRepo revisionRepo;
 
+	public AdventureBooking getById(Long id) {
+		return adventureBookingRepo.getById(id);
+	}
+
 	public ArrayList<Date> getFreeTime(Long id) {
 		FishingInstructor fishingInstructor = fishingInstructorRepo.findById(id).get();
 		if (fishingInstructor == null) {
