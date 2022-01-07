@@ -25,6 +25,7 @@ public class Revision {
 	private float rating;
 
 	private Boolean approved;
+	private Boolean denied;
 
 	public Revision() {
 		this.revised = false;

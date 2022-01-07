@@ -54,8 +54,8 @@ public class BoatOwnerService {
 		return boatOwnerRepo.save(boatOwner);
 	}
 
-	public ArrayList<BoatOwner> findAllByAuthenticated(Boolean authenticated) {
-		return boatOwnerRepo.findAllByAuthenticated(authenticated);
+	public ArrayList<BoatOwner> findAllByAuthenticatedAndDenied(Boolean authenticated, Boolean denied) {
+		return boatOwnerRepo.findAllByAuthenticatedAndDenied(authenticated, denied);
 	}
 
 	public Boolean markDeleted(Long id) {
@@ -99,6 +99,20 @@ public class BoatOwnerService {
 		DeletionRequest delReq = new DeletionRequest(id, HeadEntityEnum.BOAT_OWNER, reason,
 				boatOwner.getName(), boatOwner.getLastname());
 		deletionRequestRepo.save(delReq);
+	}
+
+	public Boolean markAuthenticated(Long id) {
+		BoatOwner boatOwner = boatOwnerRepo.getById(id);
+		boatOwner.setAuthenticated(true);
+		boatOwnerRepo.save(boatOwner);
+		return true;
+	}
+
+	public Boolean markDenied(Long id) {
+		BoatOwner boatOwner = boatOwnerRepo.getById(id);
+		boatOwner.setDenied(true);
+		boatOwnerRepo.save(boatOwner);
+		return true;
 	}
 
 }

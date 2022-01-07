@@ -85,7 +85,7 @@
 					<p class="entryRequestText">{{ pbb.end }}</p>
 					<p>{{ pbb.boatBooking.extraService }}</p>
 					<p>Price : {{ pbb.boatBooking.price }}.00</p>
-					<button class="entryApprove" @click="notImplemented()">
+					<button class="entryApprove" @click="notImplemented()" v-if="!pbb.revision.revised">
 						Revise
 					</button>
 				</div>
@@ -105,9 +105,9 @@
 				>
 					<p class="entryName">{{ pab.start }}</p>
 					<p class="entryRequestText">{{ pab.end }}</p>
-					<p>{{ pab.extraService }}</p>
-					<p>Price : {{ pab.price }}.00</p>
-					<button class="entryApprove" @click="notImplemented()">
+					<p>{{ pab.adventureBooking.extraService }}</p>
+					<p>Price : {{ pab.adventureBooking.price }}.00</p>
+					<button class="entryApprove" @click="notImplemented()" v-if="!pab.revision.revised">
 						Revise
 					</button>
 				</div>
@@ -127,9 +127,9 @@
 				>
 					<p class="entryName">{{ prb.start }}</p>
 					<p class="entryRequestText">{{ prb.end }}</p>
-					<p>{{ prb.extraService }}</p>
-					<p>Price : {{ prb.price }}.00</p>
-					<button class="entryApprove" @click="notImplemented()">
+					<p>{{ prb.roomBooking.extraService }}</p>
+					<p>Price : {{ prb.roomBooking.price }}.00</p>
+					<button class="entryApprove" @click="notImplemented()" v-if="!prb.revision.revised">
 						Revise
 					</button>
 				</div>
@@ -438,13 +438,14 @@ export default {
 					let newEndSecondPart = newEnd[1].split(".")[0];
 					pastBoatBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
+					console.log("revisions: " + i + " " + pastBoatBookingsDTO.value[i].revision.revised);
 				}
 			});
 
 		var pastAdventureBookingsDTO = ref(null);
 		axios
 			.get(
-				"/api/registeredUser/pastAdventureBookingsDTO/" +
+				"/api/registeredUser/pastAdventureBookings/" +
 					localStorage["userId"]
 			)
 			.then(function (response) {
@@ -473,7 +474,7 @@ export default {
 		var pastRoomBookingsDTO = ref(null);
 		axios
 			.get(
-				"/api/registeredUser/pastRoomBookingsDTO/" +
+				"/api/registeredUser/pastRoomBookings/" +
 					localStorage["userId"]
 			)
 			.then(function (response) {

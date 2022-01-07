@@ -9,13 +9,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UnauthenticatedUserDTO extends User {
+	private Long id;
 	private String userRegistrationReason;
 
 	public UnauthenticatedUserDTO() {
 
 	}
 
-	public UnauthenticatedUserDTO(User user, RequestForAdmin requestForAdmin, HeadEntityEnum type) {
+	public UnauthenticatedUserDTO(User user, RequestForAdmin requestForAdmin, HeadEntityEnum type, Long id) {
+		this.id = id;
 		this.updateWithUser(user);
 		this.userRegistrationReason = requestForAdmin.getUserRegistrationReason();
 		this.email = user.getEmail();

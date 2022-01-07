@@ -19,9 +19,10 @@ public class User {
 	protected String country;
 	protected String telephoneNumber;
 	protected Boolean authenticated;
+	@Column(columnDefinition = "boolean default false")
+	protected Boolean denied;
 	protected int emailHash;
 	// protected String loginStatus;
-
 	@Column(columnDefinition = "boolean default false")
 	protected Boolean deleted;
 
