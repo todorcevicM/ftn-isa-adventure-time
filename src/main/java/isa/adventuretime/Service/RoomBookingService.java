@@ -62,5 +62,7 @@ public class RoomBookingService {
 		return roomBookingRepo.existsByIdAndEndAfter(id, date);
 	}
 
-
+	public RoomBooking save(RoomBooking roomBooking){
+		return roomBookingRepo.save(roomBooking);
+	}
 }

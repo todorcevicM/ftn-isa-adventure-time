@@ -82,4 +82,8 @@ public class BoatBookingService {
 	public ArrayList<BoatBooking> findAllByBookedBoatIdAndEndBefore(Long id, Date date) {
 		return boatBookingRepo.findAllByBookedBoatIdAndEndBefore(id, date);
 	}
+
+	public BoatBooking save(BoatBooking boatBooking){
+		return boatBookingRepo.save(boatBooking);
+	}
 }
