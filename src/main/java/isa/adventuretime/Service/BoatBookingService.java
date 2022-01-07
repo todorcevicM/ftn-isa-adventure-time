@@ -6,10 +6,15 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import isa.adventuretime.DTO.PastBoatBookingRevisionDTO;
 import isa.adventuretime.Entity.Boat;
 import isa.adventuretime.Entity.BoatBooking;
+import isa.adventuretime.Entity.HeadEntityEnum;
+import isa.adventuretime.Entity.Revision;
 import isa.adventuretime.Repository.BoatBookingRepo;
 import isa.adventuretime.Repository.BoatRepo;
+import isa.adventuretime.Repository.ReviewRepo;
+import isa.adventuretime.Repository.RevisionRepo;
 
 @Service
 public class BoatBookingService {
@@ -18,6 +23,9 @@ public class BoatBookingService {
 
 	@Autowired
 	private BoatRepo boatRepo;
+
+	@Autowired
+	private RevisionRepo revisionRepo;
 
 	public ArrayList<Date> getFreeTime(Long id) {
 		Boat currentBoat = boatRepo.findById(id).get();
@@ -39,8 +47,21 @@ public class BoatBookingService {
 		return dates;
 	}
 
-	public ArrayList<BoatBooking> findAllByRegisteredUserIdAndEndBefore(Long id, Date date) {
-		return boatBookingRepo.findAllByRegisteredUserIdAndEndBefore(id, date);
+	public ArrayList<PastBoatBookingRevisionDTO> findAllByRegisteredUserIdAndEndBefore(Long id, Date date) {
+		ArrayList<BoatBooking> bookings = boatBookingRepo.findAllByRegisteredUserIdAndEndBefore(id, date);
+		ArrayList<PastBoatBookingRevisionDTO> pastBookings = new ArrayList<>();
+		PastBoatBookingRevisionDTO pastBooking;
+
+		for (BoatBooking booking : bookings) {
+			Revision revision = revisionRepo.findByBookingIdAndType(booking.getId(), HeadEntityEnum.BOAT);
+			if (revision == null) {
+				revision = new Revision(HeadEntityEnum.BOAT, booking.getId());
+			}
+			pastBooking = new PastBoatBookingRevisionDTO(booking, revision);
+			pastBookings.add(pastBooking);
+		}
+
+		return pastBookings;
 	}
 
 	public ArrayList<BoatBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {

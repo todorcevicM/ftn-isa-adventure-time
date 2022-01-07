@@ -19,10 +19,8 @@
 						src="../../assets/images/boatinterior.jpg"
 					/>
 				</div>
-				<h4>{{ boat.name }}</h4>
-				<p>${{ boat.pricePerDay }}.00 / Day</p>
-				<p>Rating: 5.00</p>
-
+				<!-- Spacer -->
+				<div style="margin-top: 20px"></div>
 				<p v-if="!uploadedImage">Add a new image:</p>
 				<input
 					v-if="!uploadedImage"
@@ -40,8 +38,8 @@
 				/>
 			</div>
 			<div class="rightFlex">
-				<p>Name</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Name</p>
+				<p v-if="!updateToggle">
 					{{ boat.name }}
 				</p>
 				<input
@@ -50,8 +48,16 @@
 					v-model="newBoat.newName"
 				/>
 
-				<p>Type</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Price per Day</p>
+				<p v-if="!updateToggle">${{ boat.pricePerDay }}.00 / Day</p>
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newBoat.newPricePerDay"
+				/>
+
+				<p class="smallText">Type</p>
+				<p v-if="!updateToggle">
 					{{ boat.type }}
 				</p>
 				<input
@@ -59,8 +65,8 @@
 					v-model="newBoat.newType"
 					v-if="updateToggle"
 				/>
-				<p>Length</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Length</p>
+				<p v-if="!updateToggle">
 					{{ boat.length }}
 				</p>
 				<input
@@ -68,8 +74,8 @@
 					v-model="newBoat.newLength"
 					v-if="updateToggle"
 				/>
-				<p>Engine Number</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Engine Number</p>
+				<p v-if="!updateToggle">
 					{{ boat.engineNumber }}
 				</p>
 				<input
@@ -77,8 +83,8 @@
 					v-model="newBoat.newEngineNumber"
 					v-if="updateToggle"
 				/>
-				<p>Engine Power</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Engine Power</p>
+				<p v-if="!updateToggle">
 					{{ boat.enginePower }}
 				</p>
 				<input
@@ -86,8 +92,8 @@
 					v-model="newBoat.newEnginePower"
 					v-if="updateToggle"
 				/>
-				<p>Max Speed</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Max Speed</p>
+				<p v-if="!updateToggle">
 					{{ boat.maxSpeed }}
 				</p>
 				<input
@@ -96,8 +102,8 @@
 					v-if="updateToggle"
 				/>
 
-				<p>Address</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Address</p>
+				<p v-if="!updateToggle">
 					{{ boat.address }}
 				</p>
 				<input
@@ -106,15 +112,24 @@
 					v-model="newBoat.newAddress"
 				/>
 
-				<p>Longitude</p>
-				<p class="smallText">({{ boat.geoLng }})</p>
-				<!-- <input type="text" v-model="newBoat.newGeoLng" v-if="updateToggle"/> -->
-				<p>Latitude</p>
-				<p class="smallText">({{ boat.geoLat }})</p>
-				<!-- <input type="text" v-model="newBoat.newGeoLat" v-if="updateToggle"/> -->
+				<!-- TODO: I ovde i dole mora da se stavlja -->
+				<!-- <p class="smallText">Longitude</p>
+				<p>{{ boat.geoLng }}</p>
+				<input
+					type="text"
+					v-model="newBoat.newGeoLng"
+					v-if="updateToggle"
+				/>
+				<p class="smallText">Latitude</p>
+				<p>{{ boat.geoLat }}</p>
+				<input
+					type="text"
+					v-model="newBoat.newGeoLat"
+					v-if="updateToggle"
+				/> -->
 
-				<p>Promo</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Promo</p>
+				<p v-if="!updateToggle">
 					{{ boat.promoDescription }}
 				</p>
 				<input
@@ -123,8 +138,8 @@
 					v-model="newBoat.newPromoDescription"
 				/>
 
-				<p>Rules</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Rules</p>
+				<p v-if="!updateToggle">
 					{{ boat.rules }}
 				</p>
 				<input
@@ -133,8 +148,8 @@
 					v-model="newBoat.newRules"
 				/>
 
-				<p>Info</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Info</p>
+				<p v-if="!updateToggle">
 					{{ boat.priceAndInfo }}
 				</p>
 				<input
@@ -143,8 +158,8 @@
 					v-model="newBoat.newPriceAndInfo"
 				/>
 
-				<p>Start</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Reservation Start</p>
+				<p v-if="!updateToggle">
 					{{ boat.reservationStart }}
 				</p>
 				<input
@@ -153,8 +168,8 @@
 					v-model="newBoat.newReservationStart"
 				/>
 
-				<p>End</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Reservation End</p>
+				<p v-if="!updateToggle">
 					{{ boat.reservationEnd }}
 				</p>
 				<input
@@ -163,8 +178,8 @@
 					v-model="newBoat.newReservationEnd"
 				/>
 
-				<p>Navigation Equipment</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Navigation Equipment</p>
+				<p v-if="!updateToggle">
 					{{ boat.navigationEquipment }}
 				</p>
 				<input
@@ -173,37 +188,34 @@
 					v-if="updateToggle"
 				/>
 
-				<p>Equipment</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ boat.equipment }}
-				</p>
+				<p class="smallText">Equipment</p>
+				<p v-if="!updateToggle">{{ boat.equipment }}</p>
 				<input
 					type="text"
 					v-model="newBoat.newEquipment"
 					v-if="updateToggle"
 				/>
 
-				<p>Person limit</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ boat.maxUsers }}
-				</p>
+				<p class="smallText">Person Limit</p>
+				<p v-if="!updateToggle">{{ boat.maxUsers }} People</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newBoat.newMaxUsers"
 				/>
 
+				<p class="smallText">Percentage Taken if Cancelled</p>
+				<p v-if="!updateToggle">
+					{{ boat.percentTakenIfCancelled }}
+				</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newBoat.newPercentTakenIfCancelled"
 				/>
-				<p>% taken if cancelled</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ boat.percentTakenIfCancelled }}
-				</p>
 
-				<p>Owner : {{ owner.name }}</p>
+				<p class="smallText">Owner</p>
+				<p>{{ owner.name }}</p>
 
 				<button @click="updateDetails()" v-if="!updateToggle">
 					Update Details
@@ -240,7 +252,15 @@ export default {
 			}
 			boat.value = response.data;
 			localStorage["boatOwner"] = boat.value.ownerId;
-			console.log(localStorage["boatOwner"]);
+
+			// Formatiranje datuma
+			let newStart = boat.value.reservationStart.split("T");
+			let newStartSecondPart = newStart[1].split(".")[0];
+			boat.value.reservationStart =
+				newStartSecondPart + ", " + newStart[0];
+			let newEnd = boat.value.reservationEnd.split("T");
+			let newEndSecondPart = newEnd[1].split(".")[0];
+			boat.value.reservationEnd = newEndSecondPart + ", " + newEnd[0];
 		});
 
 		var owner = ref(null);
@@ -253,6 +273,7 @@ export default {
 		var updateToggle = ref(null);
 		var newBoat = ref({
 			newName: localStorage.name,
+			newPricePerDay: localStorage.pricePerDay,
 			newAddress: localStorage.address,
 			newPromoDescription: localStorage.promoDescription,
 			newRules: localStorage.rules,
@@ -292,6 +313,7 @@ export default {
 			sendUpdatedDetails() {
 				if (
 					this.newBoat.newName == "" ||
+					this.newBoat.newPricePerDay == "" ||
 					this.newBoat.type == "" ||
 					this.newBoat.length == "" ||
 					this.newBoat.engineNumber == "" ||
@@ -313,6 +335,7 @@ export default {
 				}
 				var sendingBoat = this.boat;
 				sendingBoat.name = this.newBoat.newName;
+				sendingBoat.pricePerDay = this.newBoat.newPricePerDay;
 				sendingBoat.type = this.newBoat.newType;
 				sendingBoat.length = this.newBoat.newLength;
 				sendingBoat.engineNumber = this.newBoat.newEngineNumber;
@@ -402,7 +425,7 @@ body {
 .mainFlex {
 	margin: 50px 200px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 }
 .leftFlex {
 	display: flex;
@@ -411,19 +434,21 @@ body {
 h4 {
 	margin: 0;
 	font-weight: 400;
-	font-size: 50px;
+	font-size: 42px;
 }
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
 }
-.leftFlex img {
-	width: 800px;
-	height: 450px;
+.leftFlex > div > img {
+	width: 650px;
+	height: 360px;
 	border-radius: 15px;
 	object-fit: cover;
 }
 .rightFlex {
+	height: min-content;
+	min-width: 320px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -434,16 +459,17 @@ h4 {
 }
 .rightFlex p {
 	margin: 4px 0;
-	font-size: 36px;
+	font-size: 24px;
 }
 .rightFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
 button {
 	margin: 0 auto;
 	height: 40px;
-	width: 140px;
+	/* width: 140px; */
 	background-color: #da9e46;
 	border: none;
 	border-radius: 4px;
@@ -456,144 +482,18 @@ button:hover {
 	color: white;
 	cursor: pointer;
 }
-</style><style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
-
-body {
-	/* background-image: url("../../assets/boat-time-background.jpg"); */
-	background-color: #e6e4df;
-	background-size: 100%;
-	background-repeat: no-repeat;
-	color: #10120e;
-	font-family: Aleo;
-	margin: 0;
+input,
+select {
+	width: 260px;
+	/* height: 32px; */
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 20px;
+	background-color: #f0f0f0;
 }
-
-#logo-container {
-	margin-top: 8px;
-	text-align: center;
-}
-
-.underlined {
-	display: inline-block;
-	border-bottom: #ad6800 3px solid;
-	height: 43px;
-}
-
-.underlined img {
-	height: 40px;
-	margin-bottom: -6px;
-	margin-right: -7px;
-}
-
-.underlined p {
-	margin-left: 10px;
-	font-size: 40px;
-	letter-spacing: -1px;
-	display: inline;
-}
-
-.mainFlex {
-	margin: 50px 200px;
-	display: flex;
-	justify-content: space-between;
-}
-
-.leftFlex {
-	display: flex;
-	flex-direction: column;
-}
-
-h4 {
-	margin: 0;
-	font-weight: 400;
-	font-size: 50px;
-}
-
-.leftFlex p {
-	margin: 0;
-	font-size: 27px;
-}
-
-.leftFlex img {
-	width: 800px;
-	height: 450px;
-	border-radius: 15px;
-	object-fit: cover;
-}
-
-.rightFlex {
-	width: 350px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	background-color: rgb(241, 241, 241);
-	padding: 20px;
-	border-radius: 15px;
-	border: 2px solid #da9e46;
-}
-
-.rightFlex p {
-	margin: 4px 0;
-	font-size: 36px;
-}
-
-.rightFlex .smallText {
-	margin: 0;
-	font-size: 22px;
-}
-
-button {
-	margin: 0 auto;
-	height: 40px;
-	width: 190px;
-	background-color: #da9e46;
-	border: none;
-	border-radius: 4px;
-	font-family: Aleo;
-	font-size: 24px;
-	transition: 0.15s;
-}
-
-button:hover {
-	background-color: #9e6b1d;
-	color: white;
-	cursor: pointer;
-}
-.addition {
-	background-color: rgb(108, 207, 108);
-	width: 40px;
-	margin: 0;
-}
-.addition:hover {
-	background-color: rgb(49, 121, 49);
-}
-.deletion {
-	background-color: rgb(194, 109, 109);
-	width: 40px;
-	margin: 0;
-}
-.deletion:hover {
-	background-color: rgb(119, 51, 51);
-}
-.edit {
-	background-color: rgb(106, 180, 223);
-	width: 60px;
-	margin: 0;
-}
-.edit:hover {
-	background-color: rgb(48, 108, 143);
-}
-.roomsDiv {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	gap: 10px;
-}
-.roomDiv {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
+input:focus,
+select:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
 }
 </style>

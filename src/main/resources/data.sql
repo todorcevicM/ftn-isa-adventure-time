@@ -114,3 +114,4 @@ insert into adventure_booking(booked_adventure_id, start, end, max_users, price,
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
 			values(1, "1990-01-03", "1990-01-04", 2, 100, false, 1, "", 1);
 
+insert into revision(type, booking_id, revised, revision, rating, approved) values (0, 1, false, "not bad", 4, false);

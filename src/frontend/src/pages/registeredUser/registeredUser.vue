@@ -78,13 +78,16 @@
 			<div class="table">
 				<div
 					class="tableEntry"
-					v-for="pbb in pastBoatBookings"
+					v-for="pbb in pastBoatBookingsDTO"
 					:key="pbb"
 				>
 					<p class="entryName">{{ pbb.start }}</p>
 					<p class="entryRequestText">{{ pbb.end }}</p>
-					<p>{{ pbb.extraService }}</p>
-					<p>Price : {{ pbb.price }}.00</p>
+					<p>{{ pbb.boatBooking.extraService }}</p>
+					<p>Price : {{ pbb.boatBooking.price }}.00</p>
+					<button class="entryApprove" @click="notImplemented()">
+						Revise
+					</button>
 				</div>
 			</div>
 			<!-- past adventure booking -->
@@ -97,13 +100,16 @@
 			<div class="table">
 				<div
 					class="tableEntry"
-					v-for="pab in pastAdventureBookings"
+					v-for="pab in pastAdventureBookingsDTO"
 					:key="pab"
 				>
 					<p class="entryName">{{ pab.start }}</p>
 					<p class="entryRequestText">{{ pab.end }}</p>
 					<p>{{ pab.extraService }}</p>
 					<p>Price : {{ pab.price }}.00</p>
+					<button class="entryApprove" @click="notImplemented()">
+						Revise
+					</button>
 				</div>
 			</div>
 			<!-- past room booking -->
@@ -116,13 +122,16 @@
 			<div class="table">
 				<div
 					class="tableEntry"
-					v-for="prb in pastRoomBookings"
+					v-for="prb in pastRoomBookingsDTO"
 					:key="prb"
 				>
 					<p class="entryName">{{ prb.start }}</p>
 					<p class="entryRequestText">{{ prb.end }}</p>
 					<p>{{ prb.extraService }}</p>
 					<p>Price : {{ prb.price }}.00</p>
+					<button class="entryApprove" @click="notImplemented()">
+						Revise
+					</button>
 				</div>
 			</div>
 
@@ -406,70 +415,84 @@ export default {
 		var matching = ref(null);
 		var passwordChangeToggle = ref(null);
 
-		var pastBoatBookings = ref(null);
+		var pastBoatBookingsDTO = ref(null);
 		axios
 			.get(
 				"/api/registeredUser/pastBoatBookings/" + localStorage["userId"]
 			)
 			.then(function (response) {
-				pastBoatBookings.value = response.data;
+				pastBoatBookingsDTO.value = response.data;
 
 				// Formatiranje datuma
-				var size = pastBoatBookings.value.length;
+				var size = pastBoatBookingsDTO.value.length;
 				for (let i = 0; i < size; i++) {
-					let newStart = pastBoatBookings.value[i].start.split("T");
+					let newStart =
+						pastBoatBookingsDTO.value[i].boatBooking.start.split(
+							"T"
+						);
 					let newStartSecondPart = newStart[1].split(".")[0];
-					pastBoatBookings.value[i].start =
+					pastBoatBookingsDTO.value[i].start =
 						newStartSecondPart + ", " + newStart[0];
-					let newEnd = pastBoatBookings.value[i].end.split("T");
+					let newEnd =
+						pastBoatBookingsDTO.value[i].boatBooking.end.split("T");
 					let newEndSecondPart = newEnd[1].split(".")[0];
-					pastBoatBookings.value[i].end =
+					pastBoatBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
 				}
 			});
 
-		var pastAdventureBookings = ref(null);
+		var pastAdventureBookingsDTO = ref(null);
 		axios
 			.get(
-				"/api/registeredUser/pastAdventureBookings/" +
+				"/api/registeredUser/pastAdventureBookingsDTO/" +
 					localStorage["userId"]
 			)
 			.then(function (response) {
-				pastAdventureBookings.value = response.data;
+				pastAdventureBookingsDTO.value = response.data;
 
 				// Formatiranje datuma
-				var size = pastAdventureBookings.value.length;
+				var size = pastAdventureBookingsDTO.value.length;
 				for (let i = 0; i < size; i++) {
 					let newStart =
-						pastAdventureBookings.value[i].start.split("T");
+						pastAdventureBookingsDTO.value[
+							i
+						].adventureBooking.start.split("T");
 					let newStartSecondPart = newStart[1].split(".")[0];
-					pastAdventureBookings.value[i].start =
+					pastAdventureBookingsDTO.value[i].start =
 						newStartSecondPart + ", " + newStart[0];
-					let newEnd = pastAdventureBookings.value[i].end.split("T");
+					let newEnd =
+						pastAdventureBookingsDTO.value[
+							i
+						].adventureBooking.end.split("T");
 					let newEndSecondPart = newEnd[1].split(".")[0];
-					pastAdventureBookings.value[i].end =
+					pastAdventureBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
 				}
 			});
 
-		var pastRoomBookings = ref(null);
+		var pastRoomBookingsDTO = ref(null);
 		axios
 			.get(
-				"/api/registeredUser/pastRoomBookings/" + localStorage["userId"]
+				"/api/registeredUser/pastRoomBookingsDTO/" +
+					localStorage["userId"]
 			)
 			.then(function (response) {
-				pastRoomBookings.value = response.data;
+				pastRoomBookingsDTO.value = response.data;
 
 				// Formatiranje datuma
-				var size = pastRoomBookings.value.length;
+				var size = pastRoomBookingsDTO.value.length;
 				for (let i = 0; i < size; i++) {
-					let newStart = pastRoomBookings.value[i].start.split("T");
+					let newStart =
+						pastRoomBookingsDTO.value[i].roomBooking.start.split(
+							"T"
+						);
 					let newStartSecondPart = newStart[1].split(".")[0];
-					pastRoomBookings.value[i].start =
+					pastRoomBookingsDTO.value[i].start =
 						newStartSecondPart + ", " + newStart[0];
-					let newEnd = pastRoomBookings.value[i].end.split("T");
+					let newEnd =
+						pastRoomBookingsDTO.value[i].roomBooking.end.split("T");
 					let newEndSecondPart = newEnd[1].split(".")[0];
-					pastRoomBookings.value[i].end =
+					pastRoomBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
 				}
 			});
@@ -590,9 +613,9 @@ export default {
 		});
 		return {
 			user,
-			pastBoatBookings,
-			pastAdventureBookings,
-			pastRoomBookings,
+			pastBoatBookingsDTO,
+			pastAdventureBookingsDTO,
+			pastRoomBookingsDTO,
 			futureBoatBookings,
 			futureAdventureBookings,
 			futureRoomBookings,

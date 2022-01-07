@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import isa.adventuretime.DTO.PastBoatBookingRevisionDTO;
+import isa.adventuretime.DTO.PastAdventureBookingRevisionDTO;
+import isa.adventuretime.DTO.PastRoomBookingRevisionDTO;
 import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Entity.AdventureBooking;
 import isa.adventuretime.Entity.Boat;
@@ -37,7 +41,7 @@ public class RegisteredUserController {
 	private BoatBookingService boatBookingService;
 
 	@Autowired
-	private RoomBookingService roomBookService;
+	private RoomBookingService roomBookingService;
 
 	@Autowired
 	private AdventureBookingService adventureBookingService;
@@ -55,21 +59,27 @@ public class RegisteredUserController {
 	private AdventureService adventureService;
 
 	@GetMapping(path = "/pastBoatBookings/{id}")
-	public ResponseEntity<ArrayList<BoatBooking>> getPastBoatBookings(@PathVariable("id") Long id) throws Exception {
-		return new ResponseEntity<ArrayList<BoatBooking>>(
+	public ResponseEntity<ArrayList<PastBoatBookingRevisionDTO>> getPastBoatBookings(@PathVariable("id") Long id)
+			throws Exception {
+
+		return new ResponseEntity<ArrayList<PastBoatBookingRevisionDTO>>(
 				boatBookingService.findAllByRegisteredUserIdAndEndBefore(id, new java.util.Date()), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/pastAdventureBookings/{id}")
-	public ResponseEntity<ArrayList<AdventureBooking>> getPastAdventureBookings(@PathVariable("id") Long id) {
-		return new ResponseEntity<ArrayList<AdventureBooking>>(
+	public ResponseEntity<ArrayList<PastAdventureBookingRevisionDTO>> getPastAdventureBookings(
+			@PathVariable("id") Long id) {
+
+		return new ResponseEntity<ArrayList<PastAdventureBookingRevisionDTO>>(
 				adventureBookingService.findAllByRegisteredUserIdAndEndBefore(id, new java.util.Date()), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/pastRoomBookings/{id}")
-	public ResponseEntity<ArrayList<RoomBooking>> getPastRoomBookings(@PathVariable("id") Long id) throws Exception {
-		return new ResponseEntity<ArrayList<RoomBooking>>(
-				roomBookService.findAllByRegisteredUserIdAndEndBefore(id, new java.util.Date()), HttpStatus.OK);
+	public ResponseEntity<ArrayList<PastRoomBookingRevisionDTO>> getPastRoomBookings(@PathVariable("id") Long id)
+			throws Exception {
+
+		return new ResponseEntity<ArrayList<PastRoomBookingRevisionDTO>>(
+				roomBookingService.findAllByRegisteredUserIdAndEndBefore(id, new java.util.Date()), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/futureBoatBookings/{id}")
@@ -87,7 +97,7 @@ public class RegisteredUserController {
 	@GetMapping(path = "/futureRoomBookings/{id}")
 	public ResponseEntity<ArrayList<RoomBooking>> getFutureRoomBookings(@PathVariable("id") Long id) throws Exception {
 		return new ResponseEntity<ArrayList<RoomBooking>>(
-				roomBookService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date()), HttpStatus.OK);
+				roomBookingService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date()), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/subBoat/{id}")

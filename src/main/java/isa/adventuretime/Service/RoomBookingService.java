@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import isa.adventuretime.DTO.PastRoomBookingRevisionDTO;
+import isa.adventuretime.Entity.HeadEntityEnum;
+import isa.adventuretime.Entity.Revision;
 import isa.adventuretime.Entity.RoomBooking;
+import isa.adventuretime.Repository.RevisionRepo;
 import isa.adventuretime.Repository.RoomBookingRepo;
 import java.util.Date;
 
@@ -14,12 +18,28 @@ public class RoomBookingService {
 	@Autowired
 	private RoomBookingRepo roomBookingRepo;
 
+	@Autowired
+	private RevisionRepo revisionRepo;
+
 	public ArrayList<RoomBooking> findAllByBookedRoomId(Long id) {
 		return roomBookingRepo.findAllByBookedRoomId(id);
 	}
 
-	public ArrayList<RoomBooking> findAllByRegisteredUserIdAndEndBefore(Long id, Date date) {
-		return roomBookingRepo.findAllByRegisteredUserIdAndEndBefore(id, date);
+	public ArrayList<PastRoomBookingRevisionDTO> findAllByRegisteredUserIdAndEndBefore(Long id, Date date) {
+		ArrayList<RoomBooking> bookings = roomBookingRepo.findAllByRegisteredUserIdAndEndBefore(id, date);
+		ArrayList<PastRoomBookingRevisionDTO> pastBookings = new ArrayList<>();
+		PastRoomBookingRevisionDTO pastBooking;
+
+		for (RoomBooking booking : bookings) {
+			Revision revision = revisionRepo.findByBookingIdAndType(booking.getId(), HeadEntityEnum.COTTAGE);
+			if (revision == null) {
+				revision = new Revision(HeadEntityEnum.COTTAGE, booking.getId());
+			}
+			pastBooking = new PastRoomBookingRevisionDTO(booking, revision);
+			pastBookings.add(pastBooking);
+		}
+
+		return pastBookings;
 	}
 
 	public ArrayList<RoomBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {
