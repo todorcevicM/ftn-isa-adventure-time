@@ -3,11 +3,8 @@ package isa.adventuretime.Controller;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-<<<<<<< HEAD
-=======
 import javax.mail.internet.AddressException;
 
->>>>>>> 98405203277246f7c41b28539c80a1f98eceb38d
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
