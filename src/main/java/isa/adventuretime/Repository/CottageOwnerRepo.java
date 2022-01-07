@@ -16,6 +16,6 @@ public interface CottageOwnerRepo extends JpaRepository<CottageOwner, Long> {
 
 	public CottageOwner findByEmailHash(int code);
 
-	public ArrayList<CottageOwner> findAllByAuthenticated(boolean authenticated);
+	public ArrayList<CottageOwner> findAllByAuthenticatedAndDenied(Boolean authenticated, Boolean denied);
 
 }

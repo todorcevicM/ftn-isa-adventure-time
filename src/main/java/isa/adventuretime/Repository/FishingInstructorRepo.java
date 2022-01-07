@@ -16,6 +16,6 @@ public interface FishingInstructorRepo extends JpaRepository<FishingInstructor, 
 
 	public FishingInstructor findByEmailHash(int code);
 
-	public ArrayList<FishingInstructor> findAllByAuthenticated(boolean authenticated);
+	public ArrayList<FishingInstructor> findAllByAuthenticatedAndDenied(Boolean authenticated, Boolean denied);
 
 }
