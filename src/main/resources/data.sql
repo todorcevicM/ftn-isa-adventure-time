@@ -14,7 +14,7 @@ insert into boat_owner (name, lastname, email, password, address, city, country,
 
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Clair", "Albertson", "random5@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 2027373379);
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Gil", "Sumner", "random6@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 230422020);
-insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Gus", "Clemens", "random7@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -1566529339);
+insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Gus", "Fring", "random7@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -1566529339);
 --neodobren
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Ted", "Osbourne", "random17@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, -872114982);
 

@@ -1,49 +1,45 @@
 <template>
 	<div>
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
-			</div>
-			<div v-if="checkFirstLogin() == 1" class="firstLogin">
-				<div
-					style="
-						display: flex;
-						flex-direction: row;
-						justify-content: space-around;
-					"
-				>
-					<div>
-						<p>Enter new password :</p>
-						<input type="password" v-model="firstPassword" />
-					</div>
-					<div>
-						<p>Repeat password :</p>
-						<input
-							type="password"
-							v-model="repeatPassword"
-							@input="
-								passwordMatchCheck(
-									firstPassword,
-									repeatPassword
-								)
-							"
-						/>
-					</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
 				</div>
-				<div class="spacer">
-					<p>{{ matching }}</p>
+			</a>
+		</div>
+		<div v-if="checkFirstLogin() == 1" class="firstLogin">
+			<div
+				style="
+					display: flex;
+					flex-direction: row;
+					justify-content: space-around;
+				"
+			>
+				<div>
+					<p>Enter new password :</p>
+					<input type="password" v-model="firstPassword" />
 				</div>
-				<button @click="updatePassword()">Update</button>
+				<div>
+					<p>Repeat password :</p>
+					<input
+						type="password"
+						v-model="repeatPassword"
+						@input="
+							passwordMatchCheck(firstPassword, repeatPassword)
+						"
+					/>
+				</div>
 			</div>
+			<div class="spacer">
+				<p>{{ matching }}</p>
+			</div>
+			<button @click="updatePassword()">Update</button>
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
-				<!-- <div>
-					<img class="itemImage" :src="imageSource(adventure.id)" />
-				</div> -->
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
-				<p>Administrator</p>
+				<p class="smallText">Administrator</p>
 				<p style="font-size: 18px">{{ user.email }}</p>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
@@ -82,32 +78,32 @@
 				</div>
 			</div>
 			<div class="rightFlex">
-				<p>Address</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.address }}</p>
+				<p class="smallText">Address</p>
+				<p v-if="!updateToggle">{{ user.address }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newAddress"
 				/>
 
-				<p>City</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.city }}</p>
+				<p class="smallText">City</p>
+				<p v-if="!updateToggle">{{ user.city }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newCity"
 				/>
 
-				<p>Country</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.country }}</p>
+				<p class="smallText">Country</p>
+				<p v-if="!updateToggle">{{ user.country }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newCountry"
 				/>
 
-				<p>Telephone Number</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Telephone Number</p>
+				<p v-if="!updateToggle">
 					{{ user.telephoneNumber }}
 				</p>
 				<input
@@ -937,9 +933,11 @@ h3 {
 	text-align: left;
 }
 
-.rightFlex .smallText {
+.rightFlex .smallText,
+.leftFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
 
 .rightFlex input,
@@ -1001,7 +999,7 @@ button:hover {
 }
 
 .lowerFlex {
-	margin: 0px 200px;
+	margin: 0px 200px 100px;
 	display: flex;
 	flex-direction: column;
 }

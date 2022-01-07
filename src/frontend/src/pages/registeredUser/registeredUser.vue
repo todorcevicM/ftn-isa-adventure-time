@@ -1,48 +1,52 @@
 <template>
 	<div>
+		<!-- TODO: Treba da se dodaju nazivi entiteta koji su bili ili ce biti zakazani u tabelama -->
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
-			</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
+				</div>
+			</a>
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
 				<h4>{{ user.name }} {{ user.lastname }}</h4>
-				<p>Registered User</p>
+				<p class="smallText">Registered User</p>
 				<p style="font-size: 18px">{{ user.email }}</p>
+				<div style="height: 20px"></div>
 				<p style="color: rgb(96, 96, 236)">Platinum Account</p>
-				<p>Penalties: 0</p>
 				<!-- Spacer -->
-				<div style="height: 40px"></div>
+				<div style="height: 20px"></div>
+				<p>Penalties: 0</p>
 			</div>
 			<div class="rightFlex">
-				<p>Address</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.address }}</p>
+				<p class="smallText">Address</p>
+				<p v-if="!updateToggle">{{ user.address }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newAddress"
 				/>
 
-				<p>City</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.city }}</p>
+				<p class="smallText">City</p>
+				<p v-if="!updateToggle">{{ user.city }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newCity"
 				/>
 
-				<p>Country</p>
-				<p class="smallText" v-if="!updateToggle">{{ user.country }}</p>
+				<p class="smallText">Country</p>
+				<p v-if="!updateToggle">{{ user.country }}</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newUser.newCountry"
 				/>
 
-				<p>Telephone Number</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Telephone Number</p>
+				<p v-if="!updateToggle">
 					{{ user.telephoneNumber }}
 				</p>
 				<input
@@ -67,7 +71,9 @@
 			<!-- past boat booking -->
 			<div class="tableHeader">
 				<h3>Past Boat Bookings</h3>
-				<button style="margin: 0">Sort</button>
+				<button style="margin: 0" @click="notImplemented()">
+					Sort
+				</button>
 			</div>
 			<div class="table">
 				<div
@@ -78,17 +84,15 @@
 					<p class="entryName">{{ pbb.start }}</p>
 					<p class="entryRequestText">{{ pbb.end }}</p>
 					<p>{{ pbb.extraService }}</p>
-					<p>Cena: {{ pbb.price }}.00</p>
-					<button class="entryApprove" @click="approve()">
-						Approve
-					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
+					<p>Price : {{ pbb.price }}.00</p>
 				</div>
 			</div>
 			<!-- past adventure booking -->
 			<div class="tableHeader">
 				<h3>Past Adventure Bookings</h3>
-				<button style="margin: 0">Sort</button>
+				<button style="margin: 0" @click="notImplemented()">
+					Sort
+				</button>
 			</div>
 			<div class="table">
 				<div
@@ -99,17 +103,15 @@
 					<p class="entryName">{{ pab.start }}</p>
 					<p class="entryRequestText">{{ pab.end }}</p>
 					<p>{{ pab.extraService }}</p>
-					<p>Cena: {{ pab.price }}.00</p>
-					<button class="entryApprove" @click="approve()">
-						Approve
-					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
+					<p>Price : {{ pab.price }}.00</p>
 				</div>
 			</div>
 			<!-- past room booking -->
 			<div class="tableHeader">
 				<h3>Past Room Bookings</h3>
-				<button style="margin: 0">Sort</button>
+				<button style="margin: 0" @click="notImplemented()">
+					Sort
+				</button>
 			</div>
 			<div class="table">
 				<div
@@ -120,18 +122,16 @@
 					<p class="entryName">{{ prb.start }}</p>
 					<p class="entryRequestText">{{ prb.end }}</p>
 					<p>{{ prb.extraService }}</p>
-					<p>Cena: {{ prb.price }}.00</p>
-					<button class="entryApprove" @click="approve()">
-						Approve
-					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
+					<p>Price : {{ prb.price }}.00</p>
 				</div>
 			</div>
 
 			<!-- future boat booking -->
 			<div class="tableHeader">
 				<h3>Future Boat Bookings</h3>
-				<button style="margin: 0">Sort</button>
+				<button style="margin: 0" @click="notImplemented()">
+					Sort
+				</button>
 			</div>
 			<div class="table">
 				<div
@@ -142,17 +142,18 @@
 					<p class="entryName">{{ pbb.start }}</p>
 					<p class="entryRequestText">{{ pbb.end }}</p>
 					<p>{{ pbb.extraService }}</p>
-					<p>Cena: {{ pbb.price }}.00</p>
-					<button class="entryApprove" @click="approve()">
+					<p>Price : {{ pbb.price }}.00</p>
+					<button class="entryDeny" @click="notImplemented()">
 						Cancel
 					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
 				</div>
 			</div>
 			<!-- future adventure booking -->
 			<div class="tableHeader">
 				<h3>Future Adventure Bookings</h3>
-				<button style="margin: 0">Sort</button>
+				<button style="margin: 0" @click="notImplemented()">
+					Sort
+				</button>
 			</div>
 			<div class="table">
 				<div
@@ -163,17 +164,18 @@
 					<p class="entryName">{{ pab.start }}</p>
 					<p class="entryRequestText">{{ pab.end }}</p>
 					<p>{{ pab.extraService }}</p>
-					<p>Cena: {{ pab.price }}.00</p>
-					<button class="entryApprove" @click="approve()">
+					<p>Price : {{ pab.price }}.00</p>
+					<button class="entryDeny" @click="notImplemented()">
 						Cancel
 					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
 				</div>
 			</div>
 			<!-- future room booking -->
 			<div class="tableHeader">
 				<h3>Future Room Bookings</h3>
-				<button style="margin: 0">Sort</button>
+				<button style="margin: 0" @click="notImplemented()">
+					Sort
+				</button>
 			</div>
 			<div class="table">
 				<div
@@ -184,63 +186,65 @@
 					<p class="entryName">{{ prb.start }}</p>
 					<p class="entryRequestText">{{ prb.end }}</p>
 					<p>{{ prb.extraService }}</p>
-					<p>Cena: {{ prb.price }}.00</p>
-					<button class="entryApprove" @click="approve()">
+					<p>Price : {{ prb.price }}.00</p>
+					<button class="entryDeny" @click="notImplemented()">
 						Cancel
 					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
 				</div>
 			</div>
 
 			<!-- sub boat -->
 			<div class="tableHeader">
 				<h3>Subscribed Boats</h3>
-				<button style="margin: 0">Sort</button>
+				<button style="margin: 0" @click="notImplemented()">
+					Sort
+				</button>
 			</div>
 			<div class="table">
 				<div class="tableEntry" v-for="pbb in subBoat" :key="pbb">
 					<p class="entryName">{{ pbb.name }}</p>
 					<p class="entryRequestText">{{ pbb.promoDescription }}</p>
 					<p>{{ pbb.extraService }}</p>
-					<p>Cena: {{ pbb.pricePerDay }}.00</p>
-					<button class="entryApprove" @click="approve()">
-						Approve
+					<p>Price : {{ pbb.pricePerDay }}.00</p>
+					<button class="entryDeny" @click="notImplemented()">
+						Cancel
 					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
 				</div>
 			</div>
 			<!-- sub adventure -->
 			<div class="tableHeader">
 				<h3>Subscribed Adventures</h3>
-				<button style="margin: 0">Sort</button>
+				<button style="margin: 0" @click="notImplemented()">
+					Sort
+				</button>
 			</div>
 			<div class="table">
 				<div class="tableEntry" v-for="pab in subAdventure" :key="pab">
 					<p class="entryName">{{ pab.name }}</p>
 					<p class="entryRequestText">{{ pab.promoDescription }}</p>
 					<p>{{ pab.extraService }}</p>
-					<p>Cena: {{ pab.pricePerDay }}.00</p>
-					<button class="entryApprove" @click="approve()">
-						Approve
+					<p>Price : {{ pab.pricePerDay }}.00</p>
+					<button class="entryDeny" @click="notImplemented()">
+						Cancel
 					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
 				</div>
 			</div>
 			<!-- sub cottage -->
 			<div class="tableHeader">
 				<h3>Subscribed Cottages</h3>
-				<button style="margin: 0">Sort</button>
+				<button style="margin: 0" @click="notImplemented()">
+					Sort
+				</button>
 			</div>
 			<div class="table">
 				<div class="tableEntry" v-for="prb in subCottage" :key="prb">
 					<p class="entryName">{{ prb.name }}</p>
 					<p class="entryRequestText">{{ prb.promoDescription }}</p>
 					<p>{{ prb.extraService }}</p>
-					<p>Cena: {{ prb.pricePerDay }}.00</p>
-					<button class="entryApprove" @click="approve()">
-						Approve
+					<p>Price : {{ prb.pricePerDay }}.00</p>
+					<button class="entryDeny" @click="notImplemented()">
+						Cancel
 					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
 				</div>
 			</div>
 		</div>
@@ -409,6 +413,19 @@ export default {
 			)
 			.then(function (response) {
 				pastBoatBookings.value = response.data;
+
+				// Formatiranje datuma
+				var size = pastBoatBookings.value.length;
+				for (let i = 0; i < size; i++) {
+					let newStart = pastBoatBookings.value[i].start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					pastBoatBookings.value[i].start =
+						newStartSecondPart + ", " + newStart[0];
+					let newEnd = pastBoatBookings.value[i].end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					pastBoatBookings.value[i].end =
+						newEndSecondPart + ", " + newEnd[0];
+				}
 			});
 
 		var pastAdventureBookings = ref(null);
@@ -419,6 +436,20 @@ export default {
 			)
 			.then(function (response) {
 				pastAdventureBookings.value = response.data;
+
+				// Formatiranje datuma
+				var size = pastAdventureBookings.value.length;
+				for (let i = 0; i < size; i++) {
+					let newStart =
+						pastAdventureBookings.value[i].start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					pastAdventureBookings.value[i].start =
+						newStartSecondPart + ", " + newStart[0];
+					let newEnd = pastAdventureBookings.value[i].end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					pastAdventureBookings.value[i].end =
+						newEndSecondPart + ", " + newEnd[0];
+				}
 			});
 
 		var pastRoomBookings = ref(null);
@@ -428,6 +459,19 @@ export default {
 			)
 			.then(function (response) {
 				pastRoomBookings.value = response.data;
+
+				// Formatiranje datuma
+				var size = pastRoomBookings.value.length;
+				for (let i = 0; i < size; i++) {
+					let newStart = pastRoomBookings.value[i].start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					pastRoomBookings.value[i].start =
+						newStartSecondPart + ", " + newStart[0];
+					let newEnd = pastRoomBookings.value[i].end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					pastRoomBookings.value[i].end =
+						newEndSecondPart + ", " + newEnd[0];
+				}
 			});
 
 		var futureBoatBookings = ref(null);
@@ -438,6 +482,19 @@ export default {
 			)
 			.then(function (response) {
 				futureBoatBookings.value = response.data;
+
+				// Formatiranje datuma
+				var size = futureBoatBookings.value.length;
+				for (let i = 0; i < size; i++) {
+					let newStart = futureBoatBookings.value[i].start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					futureBoatBookings.value[i].start =
+						newStartSecondPart + ", " + newStart[0];
+					let newEnd = futureBoatBookings.value[i].end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					futureBoatBookings.value[i].end =
+						newEndSecondPart + ", " + newEnd[0];
+				}
 			});
 
 		var futureAdventureBookings = ref(null);
@@ -448,6 +505,21 @@ export default {
 			)
 			.then(function (response) {
 				futureAdventureBookings.value = response.data;
+
+				// Formatiranje datuma
+				var size = futureAdventureBookings.value.length;
+				for (let i = 0; i < size; i++) {
+					let newStart =
+						futureAdventureBookings.value[i].start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					futureAdventureBookings.value[i].start =
+						newStartSecondPart + ", " + newStart[0];
+					let newEnd =
+						futureAdventureBookings.value[i].end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					futureAdventureBookings.value[i].end =
+						newEndSecondPart + ", " + newEnd[0];
+				}
 			});
 
 		var futureRoomBookings = ref(null);
@@ -458,6 +530,19 @@ export default {
 			)
 			.then(function (response) {
 				futureRoomBookings.value = response.data;
+
+				// Formatiranje datuma
+				var size = futureRoomBookings.value.length;
+				for (let i = 0; i < size; i++) {
+					let newStart = futureRoomBookings.value[i].start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					futureRoomBookings.value[i].start =
+						newStartSecondPart + ", " + newStart[0];
+					let newEnd = futureRoomBookings.value[i].end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					futureRoomBookings.value[i].end =
+						newEndSecondPart + ", " + newEnd[0];
+				}
 			});
 
 		var subBoat = ref(null);
@@ -669,7 +754,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
 
 body {
 	/* background-image: url("../../assets/adventure-time-background.jpg"); */
@@ -864,9 +949,11 @@ h3 {
 	font-size: 25px;
 }
 
-.rightFlex .smallText {
+.rightFlex .smallText,
+.leftFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
 
 .rightFlex input,
