@@ -13,7 +13,6 @@ import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.Revision;
 import isa.adventuretime.Repository.BoatBookingRepo;
 import isa.adventuretime.Repository.BoatRepo;
-import isa.adventuretime.Repository.ReviewRepo;
 import isa.adventuretime.Repository.RevisionRepo;
 
 @Service

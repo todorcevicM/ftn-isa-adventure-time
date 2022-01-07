@@ -1,21 +1,21 @@
 package isa.adventuretime.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import isa.adventuretime.Entity.Adventure;
+import isa.adventuretime.Repository.AdventureBookingRepo;
 import isa.adventuretime.Repository.AdventureRepo;
 
 @Service
 public class AdventureService {
-	private AdventureRepo adventureRepo;
-
 	@Autowired
-	public AdventureService(AdventureRepo repo) {
-		adventureRepo = repo;
-	}
+	private AdventureRepo adventureRepo;
+	@Autowired
+	private AdventureBookingRepo adventureBookingRepo;
 
 	public Adventure getById(Long Id) {
 		return adventureRepo.getById(Id);
@@ -39,5 +39,17 @@ public class AdventureService {
 
 	public void deleteById(Long id) {
 		adventureRepo.deleteById(id);
+	}
+
+	public ArrayList<Adventure> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests, int grade){
+
+		ArrayList<Adventure> adventures = adventureRepo.findAllByNameContainsAndMaxUsers(searched, guests);
+		ArrayList<Adventure> retAdventures = new ArrayList<>();
+		for (Adventure adventure : adventures) {
+			if(!adventureBookingRepo.existsByBookedInstructorIdAndStartBetweenOrBookedInstructorIdAndEndBetween(adventure.getInstructorId(), startDate, endDate, adventure.getInstructorId(), startDate, endDate)){
+				retAdventures.add(adventure);
+			}
+		}
+		return retAdventures;
 	}
 }

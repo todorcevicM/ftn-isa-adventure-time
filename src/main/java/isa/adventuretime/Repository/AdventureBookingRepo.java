@@ -31,4 +31,7 @@ public interface AdventureBookingRepo extends JpaRepository<AdventureBooking, Lo
 
 	public Boolean existsByBookedAdventureIdAndStartAfter(Long id, Date date);
 
+	public Boolean existsByBookedInstructorIdAndStartBetweenOrBookedInstructorIdAndEndBetween(Long id, Date dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date dateEnd2);
+
+
 }

@@ -24,4 +24,6 @@ public interface BoatBookingRepo extends JpaRepository<BoatBooking, Long> {
 
 	public ArrayList<BoatBooking> findAllByBookedBoatIdAndEndBefore(Long id, Date date);
 
+	public Boolean existsByBookedBoatIdAndStartBetweenOrBookedBoatIdAndEndBetween(Long id, Date dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date dateEnd2);
+
 }
