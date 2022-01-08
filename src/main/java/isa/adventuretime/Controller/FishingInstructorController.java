@@ -16,9 +16,11 @@ import isa.adventuretime.DTO.AdventureNameAdventureBookingDTO;
 import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Entity.AdventureBooking;
 import isa.adventuretime.Entity.FishingInstructor;
+import isa.adventuretime.Entity.RegisteredUser;
 import isa.adventuretime.Service.AdventureBookingService;
 import isa.adventuretime.Service.AdventureService;
 import isa.adventuretime.Service.FishingInstructorService;
+import isa.adventuretime.Service.RegisteredUserService;
 
 @RestController
 @RequestMapping("/api/fishingInstructor")
@@ -32,6 +34,9 @@ public class FishingInstructorController {
 
 	@Autowired
 	private AdventureBookingService adventureBookingService;
+
+	@Autowired
+	private RegisteredUserService registeredUserService;
 
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<FishingInstructor>> getAll() {
@@ -78,6 +83,11 @@ public class FishingInstructorController {
 	@PostMapping(path = "/delete/{id}")
 	public void deleteFishingInstructor(@PathVariable("id") Long id) {
 		fishingInstructorService.markDeleted(id);
+	}
+
+	@GetMapping(path = "/acquireCustomer/{id}")
+	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id){
+		return new ResponseEntity<>(registeredUserService.getAllUsersOfFishingInstructor(id), HttpStatus.OK);
 	}
 
 }

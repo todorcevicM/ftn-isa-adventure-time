@@ -19,6 +19,7 @@ import isa.adventuretime.Entity.RegisteredUser;
 import isa.adventuretime.Entity.RoomBooking;
 import isa.adventuretime.Service.CottageOwnerService;
 import isa.adventuretime.Service.CottageService;
+import isa.adventuretime.Service.RegisteredUserService;
 import isa.adventuretime.Service.RoomBookingService;
 
 @RestController
@@ -34,6 +35,8 @@ public class CottageOwnerController {
 	@Autowired
 	private CottageService cottageService;
 
+	@Autowired
+	private RegisteredUserService registeredUserService;
 
 	@GetMapping("/get")
 	public ResponseEntity<ArrayList<CottageOwner>> getAll() {
@@ -88,7 +91,6 @@ public class CottageOwnerController {
 
 	@GetMapping(path = "/acquireCustomer/{id}")
 	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id){
-
-		return null;
+		return new ResponseEntity<>(registeredUserService.getAllUsersOfCottageOwner(id), HttpStatus.OK);
 	}
 }

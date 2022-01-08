@@ -85,7 +85,6 @@ public class BoatOwnerController {
 
 	@GetMapping(path = "/currentCustomers/{id}")
 	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id){
-
 		return new ResponseEntity<>(registeredUserService.getAllUsersOfBoatOwner(id), HttpStatus.OK);
 	}
 }

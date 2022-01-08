@@ -75,4 +75,12 @@ public class RegisteredUserService {
 	public ArrayList<RegisteredUser> getAllUsersOfBoatOwner(Long boatOwnerId){
 		return registeredUserRepo.getAllUsersOfBoatOwner(boatOwnerId);
 	}
+
+	public ArrayList<RegisteredUser> getAllUsersOfCottageOwner(Long cottageOwnerId){
+		return registeredUserRepo.getAllUsersOfCottageOwner(cottageOwnerId);
+	}
+
+	public ArrayList<RegisteredUser> getAllUsersOfFishingInstructor(Long fishingInstructorId){
+		return registeredUserRepo.getAllUsersOfFishingInstructor(fishingInstructorId);
+	}
 }
