@@ -151,7 +151,6 @@ public class BookingController {
 		Date endDate = date.getTime();
 
 
-		//TODO: grade - Nikola
 		switch (type) {
 			case "Adventure":
 				ArrayList<Adventure> adventures = adventureService.getAllBySearchQuery(name, startDate, endDate, Integer.parseInt(numberOfGuests), 0);
@@ -175,13 +174,15 @@ public class BookingController {
 		
 	}
     
+    //TODO: test this
     @PostMapping(path = "/cancelBooking")
     public Boolean cancleBooking(RequestEntity<String> bookingParam){
-        //TODO: test this
-        String split[] = bookingParam.getBody().split(";");
-        
-        Long id = Long.parseLong(split[0]);
-        String forType = split[1];
+    
+
+        System.out.println(bookingParam.getBody());
+        String split[] = bookingParam.getBody().split(",");
+        Long id = Long.parseLong(split[0].split("\"")[2].split(":")[1]);
+        String forType = split[1].split("\"")[2];
         
         Calendar date = Calendar.getInstance();
         date.add(Calendar.DAY_OF_MONTH, 3);

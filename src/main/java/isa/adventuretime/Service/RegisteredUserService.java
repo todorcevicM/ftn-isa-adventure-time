@@ -1,6 +1,7 @@
 package isa.adventuretime.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,14 +74,17 @@ public class RegisteredUserService {
 	}
 
 	public ArrayList<RegisteredUser> getAllUsersOfBoatOwner(Long boatOwnerId){
-		return registeredUserRepo.getAllUsersOfBoatOwner(boatOwnerId);
+		Date date = Calendar.getInstance().getTime();
+		return registeredUserRepo.getAllUsersOfBoatOwner(date, boatOwnerId);
 	}
 
 	public ArrayList<RegisteredUser> getAllUsersOfCottageOwner(Long cottageOwnerId){
-		return registeredUserRepo.getAllUsersOfCottageOwner(cottageOwnerId);
+		Date date = Calendar.getInstance().getTime();
+		return registeredUserRepo.getAllUsersOfCottageOwner(date, cottageOwnerId);
 	}
 
 	public ArrayList<RegisteredUser> getAllUsersOfFishingInstructor(Long fishingInstructorId){
-		return registeredUserRepo.getAllUsersOfFishingInstructor(fishingInstructorId);
+		Date date = Calendar.getInstance().getTime();
+		return registeredUserRepo.getAllUsersOfFishingInstructor(date, fishingInstructorId);
 	}
 }

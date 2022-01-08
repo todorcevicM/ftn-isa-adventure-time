@@ -46,7 +46,6 @@ public class BoatBooking {
 		this.price = 0;
 	}
 
-	// TODO: nije quick booking a imaju price
 
 
 }

@@ -1,6 +1,7 @@
 package isa.adventuretime.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +56,11 @@ public class CottageService {
 	public ArrayList<CottageWithRoomDTO> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests, int grade){
 		ArrayList<Cottage> potentialCottages = cottageRepo.getAllByNameContains(searched);
 		ArrayList<CottageWithRoomDTO> retCottagesWithRooms = new ArrayList<>();
-		
+		Date date = Calendar.getInstance().getTime();
+
 		for (Cottage cottage : potentialCottages) {
+			if(date.before(cottage.getReservationStart()) || date.after(cottage.getReservationEnd()))
+				continue;
 			for (Room room : roomRepo.findAllByCottageIdAndNumberOfBedsGreaterThanEqual(cottage.getId(), guests)) {
 				if(!roomBookingRepo.existsByBookedRoomIdAndStartBetweenOrBookedRoomIdAndEndBetween(room.getId(), startDate, endDate, room.getId(), startDate, endDate)){
 					CottageWithRoomDTO cwr = new CottageWithRoomDTO(cottage, room);

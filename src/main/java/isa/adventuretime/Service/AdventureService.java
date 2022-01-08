@@ -1,14 +1,17 @@
 package isa.adventuretime.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import isa.adventuretime.Entity.Adventure;
+import isa.adventuretime.Entity.FishingInstructor;
 import isa.adventuretime.Repository.AdventureBookingRepo;
 import isa.adventuretime.Repository.AdventureRepo;
+import isa.adventuretime.Repository.FishingInstructorRepo;
 
 @Service
 public class AdventureService {
@@ -16,6 +19,8 @@ public class AdventureService {
 	private AdventureRepo adventureRepo;
 	@Autowired
 	private AdventureBookingRepo adventureBookingRepo;
+	@Autowired
+	private FishingInstructorRepo fishingInstructorRepo;
 
 	public Adventure getById(Long Id) {
 		return adventureRepo.getById(Id);
@@ -42,10 +47,14 @@ public class AdventureService {
 	}
 
 	public ArrayList<Adventure> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests, int grade){
-
 		ArrayList<Adventure> adventures = adventureRepo.findAllByNameContainsAndMaxUsers(searched, guests);
 		ArrayList<Adventure> retAdventures = new ArrayList<>();
+
+		Date date = Calendar.getInstance().getTime();
 		for (Adventure adventure : adventures) {
+			FishingInstructor fi = fishingInstructorRepo.getById(adventure.getInstructorId());
+			if(date.before(fi.getStartWorkPeriod()) || date.after(fi.getEndWorkPeriod()))
+				continue;
 			if(!adventureBookingRepo.existsByBookedInstructorIdAndStartBetweenOrBookedInstructorIdAndEndBetween(adventure.getInstructorId(), startDate, endDate, adventure.getInstructorId(), startDate, endDate)){
 				retAdventures.add(adventure);
 			}

@@ -1,6 +1,7 @@
 package isa.adventuretime.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,11 @@ public class BoatService {
 	public ArrayList<Boat> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests, int grade){
 		ArrayList<Boat> potentialBoats = boatRepo.getAllByNameContainsAndMaxUsersGreaterThanEqual(searched, guests);
 		ArrayList<Boat> retBoats = new ArrayList<>();
+		Date date = Calendar.getInstance().getTime();
 
 		for (Boat boat : potentialBoats) {
+			if(date.before(boat.getReservationStart()) || date.after(boat.getReservationEnd()))
+				continue;
 			if(!boatBookingRepo.existsByBookedBoatIdAndStartBetweenOrBookedBoatIdAndEndBetween(boat.getId(), startDate, endDate, boat.getId(), startDate, endDate)){
 				retBoats.add(boat);
 			} 
