@@ -11,8 +11,8 @@ import isa.adventuretime.Entity.Subscription;
 import isa.adventuretime.Service.SubscriptionService;
 
 @RestController
-@RequestMapping("/api/subsription")
-public class SubsriptionController {
+@RequestMapping("/api/subscription")
+public class SubscriptionController {
     @Autowired
     SubscriptionService subscriptionService;
 
@@ -39,7 +39,7 @@ public class SubsriptionController {
                 System.out.println("Something went wrong, >>> " + split[2]);
                 return null;
         }
-        if(subscriptionService.existsBySubberIdAndSubbedIdAndForEntity(subber, subbed, forType)){
+        if (subscriptionService.existsBySubberIdAndSubbedIdAndForEntity(subber, subbed, forType)){
             System.out.println("There is such subscription");
             return false;
         }
@@ -49,13 +49,13 @@ public class SubsriptionController {
 
     @PostMapping(path = "/unsubscribe")
     public Boolean unsubscribe(RequestEntity<String> subParam){
-        //ako nije vec sub
-        System.out.println(subParam.getBody());
-        String split[] = subParam.getBody().split(";");
-        Long subber = Long.parseLong(split[0]);
-        Long subbed = Long.parseLong(split[1]);
+        String split[] = subParam.getBody().split(",");
+        Long subber = Long.parseLong(split[0].split("\"")[2].split(":")[1]);
+        Long subbed = Long.parseLong(split[1].split("\"")[2].split(":")[1]);
+        String type = split[2].split("\"")[3];
+        
         HeadEntityEnum forType = HeadEntityEnum.ADVENTURE;
-        switch (split[2]) {
+        switch (type) {
             case "ADVENTURE":
                 forType = HeadEntityEnum.ADVENTURE;
                 break;
@@ -70,7 +70,7 @@ public class SubsriptionController {
                 return null;
         }
         Subscription subscription = subscriptionService.getBySubberIdAndSubbedIdAndForEntity(subber, subbed, forType); 
-        if(subscription == null){
+        if (subscription == null){
             System.out.println("There is no such subscription");
             return false;
         }
