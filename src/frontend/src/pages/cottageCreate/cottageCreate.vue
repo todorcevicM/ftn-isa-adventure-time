@@ -16,7 +16,7 @@
 				<p class="smallText">Price per Day</p>
 				<input
 					type="number"
-					min="0"
+					min="1"
 					max="1000"
 					v-model="newCottage.pricePerDay"
 				/>
@@ -24,9 +24,17 @@
 				<input type="text" v-model="newCottage.address" />
 
 				<p class="smallText">Longitude</p>
-				<input type="range" v-model="newCottage.geoLng" />
+				<input
+					type="number"
+					step="0.000001"
+					v-model="newCottage.geoLng"
+				/>
 				<p class="smallText">Latitude</p>
-				<input type="range" v-model="newCottage.geoLat" />
+				<input
+					type="number"
+					step="0.000001"
+					v-model="newCottage.geoLat"
+				/>
 
 				<p class="smallText">Promo</p>
 				<input type="text" v-model="newCottage.promoDescription" />
@@ -91,8 +99,6 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		var emailHash = localStorage.emailHash;
-		var cottageOwnerId = ref(null);
 		var roomsToAdd = ref([]);
 
 		var newCottage = ref({
@@ -114,16 +120,12 @@ export default {
 
 		// Za u <template>
 		return {
-			emailHash,
-			cottageOwnerId,
 			newCottage,
 			roomsToAdd,
 			submit() {
-				// POST za cottage koji vraca id
-				// POST za sobe sa tim id-em
-
 				if (
 					this.newCottage.name == "" ||
+					this.newCottage.pricePerDay == "" ||
 					this.newCottage.address == "" ||
 					this.newCottage.rules == "" ||
 					this.newCottage.priceAndInfo == "" ||
@@ -131,18 +133,14 @@ export default {
 					this.newCottage.reservationStart == "" ||
 					this.newCottage.reservationEnd == "" ||
 					this.newCottage.maxUsers == "" ||
-					this.newCottage.percentTakenIfCancelled == "" ||
 					this.newCottage.geoLng == "" ||
 					this.newCottage.geoLat == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
 				}
+				// isNaN je nepotreban jer se koristi input type="number"
 				if (
-					isNaN(this.newCottage.geoLng) == true ||
-					isNaN(this.newCottage.geoLat) == true ||
-					isNaN(this.newCottage.pricePerDay) == true ||
-					isNaN(this.newCottage.maxUsers) == true ||
 					this.newCottage.pricePerDay < 1 ||
 					this.newCottage.pricePerDay > 1000 ||
 					this.newCottage.maxUsers < 1 ||
@@ -162,22 +160,6 @@ export default {
 					alert("Please add at least one room.");
 					return;
 				}
-
-				// var sendingCottage = this.newCottage;
-				// sendingCottage.name = this.newCottage.newName;
-				// sendingCottage.address = this.newCottage.newAddress;
-				// sendingCottage.rules = this.newCottage.newRules;
-				// sendingCottage.priceAndInfo = this.newCottage.newPriceAndInfo;
-				// sendingCottage.promoDescription =
-				// 	this.newCottage.newPromoDescription;
-				// sendingCottage.reservationStart =
-				// 	this.newCottage.newReservationStart;
-				// sendingCottage.reservationEnd =
-				// 	this.newCottage.newReservationEnd;
-				// sendingCottage.maxUsers = this.newCottage.newMaxUsers;
-				// sendingCottage.ownerId = this.newCottage.newOwnerId;
-				// sendingCottage.geoLng = this.newCottage.newGeoLng;
-				// sendingCottage.geoLat = this.newCottage.newGeoLat;
 
 				axios
 					.post("/api/cottages/update", this.newCottage)

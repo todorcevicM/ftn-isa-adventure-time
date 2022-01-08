@@ -31,6 +31,7 @@ public class Cottage {
 	private String rules;
 	private double pricePerDay;
 	private String priceAndInfo;
+	// Cottage nema percentTakenIfCancelled
 
 	private Date reservationStart;
 	private Date reservationEnd;

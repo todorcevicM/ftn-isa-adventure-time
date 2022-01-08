@@ -46,7 +46,9 @@
 					${{ adventure.pricePerDay }}.00 / Day
 				</p>
 				<input
-					type="text"
+					type="number"
+					min="1"
+					max="1000"
 					v-if="updateToggle"
 					v-model="newAdventure.pricePerDay"
 				/>
@@ -60,21 +62,30 @@
 					v-model="newAdventure.address"
 				/>
 
-				<!-- TODO: I ovde i dole mora da se stavlja -->
-				<!-- <p class="smallText">Longitude</p>
-				<p>{{ adventure.geoLng }}</p>
+				<p class="smallText">Longitude</p>
+				<p v-if="!updateToggle">{{ adventure.geoLng }}</p>
 				<input
-					type="text"
+					type="number"
+					step="0.000001"
 					v-model="newAdventure.geoLng"
 					v-if="updateToggle"
 				/>
 				<p class="smallText">Latitude</p>
-				<p>{{ adventure.geoLat }}</p>
+				<p v-if="!updateToggle">{{ adventure.geoLat }}</p>
 				<input
-					type="text"
+					type="number"
+					step="0.000001"
 					v-model="newAdventure.geoLat"
 					v-if="updateToggle"
-				/> -->
+				/>
+
+				<p class="smallText">Location</p>
+				<p v-if="!updateToggle">{{ adventure.location }}</p>
+				<input
+					type="text"
+					v-model="newAdventure.location"
+					v-if="updateToggle"
+				/>
 
 				<p class="smallText">Promo</p>
 				<p v-if="!updateToggle">
@@ -102,8 +113,8 @@
 				</p>
 				<input
 					type="text"
-					v-if="updateToggle"
 					v-model="newAdventure.priceAndInfo"
+					v-if="updateToggle"
 				/>
 
 				<p class="smallText">Equipment</p>
@@ -112,14 +123,16 @@
 				</p>
 				<input
 					type="text"
-					v-if="updateToggle"
 					v-model="newAdventure.equipment"
+					v-if="updateToggle"
 				/>
 
 				<p class="smallText">Person Limit</p>
 				<p v-if="!updateToggle">{{ adventure.maxUsers }} People</p>
 				<input
-					type="text"
+					type="number"
+					min="1"
+					max="10"
 					v-if="updateToggle"
 					v-model="newAdventure.maxUsers"
 				/>
@@ -129,7 +142,9 @@
 					{{ adventure.percentTakenIfCancelled }}
 				</p>
 				<input
-					type="text"
+					type="number"
+					min="0"
+					max="100"
 					v-if="updateToggle"
 					v-model="newAdventure.percentTakenIfCancelled"
 				/>
@@ -174,12 +189,13 @@ export default {
 			// Ovo se prenosi
 			id: localStorage.id,
 			instructorId: localStorage.instructorId,
-			geoLat: localStorage.geoLat,
-			geoLng: localStorage.geoLng,
 			// Ovo se menja
 			name: localStorage.name,
 			pricePerDay: localStorage.pricePerDay,
 			address: localStorage.address,
+			geoLat: localStorage.geoLat,
+			geoLng: localStorage.geoLng,
+			location: localStorage.location,
 			promoDescription: localStorage.promoDescription,
 			instructorBio: localStorage.instructorBio,
 			rules: localStorage.rules,
@@ -219,17 +235,33 @@ export default {
 					this.newAdventure.name == "" ||
 					this.newAdventure.pricePerDay == "" ||
 					this.newAdventure.address == "" ||
+					this.newAdventure.geoLat == "" ||
+					this.newAdventure.geoLng == "" ||
+					this.newAdventure.location == "" ||
 					this.newAdventure.rules == "" ||
 					this.newAdventure.priceAndInfo == "" ||
 					this.newAdventure.promoDescription == "" ||
 					this.newAdventure.equipment == "" ||
-					this.newAdventure.instructorBio == "" ||
 					this.newAdventure.maxUsers == "" ||
-					this.newAdventure.percentTakenIfCancelled == ""
+					this.newAdventure.percentTakenIfCancelled == "" ||
+					this.newAdventure.instructorBio == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
 				}
+				// isNaN je nepotreban jer se koristi input type="number"
+				if (
+					this.newAdventure.pricePerDay < 1 ||
+					this.newAdventure.pricePerDay > 1000 ||
+					this.newAdventure.maxUsers < 1 ||
+					this.newAdventure.maxUsers > 10 ||
+					this.newAdventure.percentTakenIfCancelled < 0 ||
+					this.newAdventure.percentTakenIfCancelled > 100
+				) {
+					alert("Please fill out numerical inputs correctly.");
+					return;
+				}
+
 				axios
 					.post("/api/adventures/update/", this.newAdventure)
 					.then(function (response) {
@@ -374,6 +406,9 @@ input:focus,
 select:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
+}
+input:invalid {
+	border: 2px solid #b11919;
 }
 .addition {
 	background-color: rgb(108, 207, 108);

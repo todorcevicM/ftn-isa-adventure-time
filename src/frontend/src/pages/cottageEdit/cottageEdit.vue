@@ -58,7 +58,7 @@
 				<p v-if="!updateToggle">${{ cottage.pricePerDay }}.00 / Day</p>
 				<input
 					type="number"
-					min="0"
+					min="1"
 					max="1000"
 					v-if="updateToggle"
 					v-model="newCottage.pricePerDay"
@@ -73,21 +73,22 @@
 					v-model="newCottage.address"
 				/>
 
-				<!-- TODO: I ovde i dole mora da se stavlja -->
-				<!-- <p class="smallText">Longitude</p>
-				<p>{{ cottage.geoLng }}</p>
+				<p class="smallText">Longitude</p>
+				<p v-if="!updateToggle">{{ cottage.geoLng }}</p>
 				<input
-					type="text"
+					type="number"
+					step="0.000001"
 					v-model="newCottage.geoLng"
 					v-if="updateToggle"
 				/>
 				<p class="smallText">Latitude</p>
-				<p>{{ cottage.geoLat }}</p>
+				<p v-if="!updateToggle">{{ cottage.geoLat }}</p>
 				<input
-					type="text"
+					type="number"
+					step="0.000001"
 					v-model="newCottage.geoLat"
 					v-if="updateToggle"
-				/> -->
+				/>
 
 				<p class="smallText">Promo</p>
 				<p v-if="!updateToggle">
@@ -129,16 +130,30 @@
 						<p>
 							Room {{ key + 1 }} : {{ item.numberOfBeds }} beds.
 						</p>
-						<button class="edit" @click="updateRoom(item.id)">
+						<button
+							v-if="updateToggle"
+							class="edit"
+							@click="updateRoom(item.id)"
+						>
 							Edit
 						</button>
-						<button class="deletion" @click="deleteRoom(item.id)">
+						<button
+							v-if="updateToggle"
+							class="deletion"
+							@click="deleteRoom(item.id)"
+						>
 							-
 						</button>
 					</div>
 					<div class="roomDiv">
 						<p></p>
-						<button class="addition" @click="addRoom()">+</button>
+						<button
+							v-if="updateToggle"
+							class="addition"
+							@click="addRoom()"
+						>
+							+
+						</button>
 					</div>
 				</div>
 
@@ -147,7 +162,7 @@
 					{{ formattedReservationStart }}
 				</p>
 				<input
-					type="text"
+					type="date"
 					v-if="updateToggle"
 					v-model="newCottage.reservationStart"
 				/>
@@ -157,7 +172,7 @@
 					{{ formattedReservationEnd }}
 				</p>
 				<input
-					type="text"
+					type="date"
 					v-if="updateToggle"
 					v-model="newCottage.reservationEnd"
 				/>
@@ -165,7 +180,9 @@
 				<p class="smallText">Person Limit</p>
 				<p v-if="!updateToggle">{{ cottage.maxUsers }} People</p>
 				<input
-					type="text"
+					type="number"
+					min="1"
+					max="10"
 					v-if="updateToggle"
 					v-model="newCottage.maxUsers"
 				/>
@@ -200,19 +217,18 @@ export default {
 			// Ovo se prenosi
 			id: localStorage.id,
 			ownerId: localStorage.ownerId,
-			geoLat: localStorage.geoLat,
-			geoLng: localStorage.geoLng,
 			// Ovo se menja
-			name: localStorage.name, // Nesto je ovde bilo cottageName?
+			name: localStorage.name,
 			pricePerDay: localStorage.pricePerDay,
 			address: localStorage.address,
+			geoLat: localStorage.geoLat,
+			geoLng: localStorage.geoLng,
 			promoDescription: localStorage.promoDescription,
 			rules: localStorage.rules,
 			priceAndInfo: localStorage.priceAndInfo,
 			maxUsers: localStorage.maxUsers,
 			reservationStart: localStorage.reservationStart,
 			reservationEnd: localStorage.reservationEnd,
-			percentTakenIfCancelled: localStorage.percentTakenIfCancelled,
 		});
 
 		let newStart = cottage.value.reservationStart.split("T");
@@ -310,17 +326,36 @@ export default {
 					this.newCottage.name == "" ||
 					this.newCottage.pricePerDay == "" ||
 					this.newCottage.address == "" ||
+					this.newCottage.geoLat == "" ||
+					this.newCottage.geoLng == "" ||
 					this.newCottage.rules == "" ||
 					this.newCottage.priceAndInfo == "" ||
 					this.newCottage.promoDescription == "" ||
 					this.newCottage.reservationStart == "" ||
 					this.newCottage.reservationEnd == "" ||
-					this.newCottage.maxUsers == "" ||
-					this.newCottage.percentTakenIfCancelled == ""
+					this.newCottage.maxUsers == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
 				}
+				// isNaN je nepotreban jer se koristi input type="number"
+				if (
+					this.newCottage.pricePerDay < 1 ||
+					this.newCottage.pricePerDay > 1000 ||
+					this.newCottage.maxUsers < 1 ||
+					this.newCottage.maxUsers > 10
+				) {
+					alert("Please fill out numerical inputs correctly.");
+					return;
+				}
+				if (
+					new Date(this.newCottage.reservationStart).getTime() >=
+					new Date(this.newCottage.reservationEnd).getTime()
+				) {
+					alert("Please enter valid dates.");
+					return;
+				}
+
 				axios
 					.post("/api/cottages/update", this.newCottage)
 					.then(function (response) {
@@ -473,6 +508,9 @@ input:focus,
 select:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
+}
+input:invalid {
+	border: 2px solid #b11919;
 }
 .addition {
 	background-color: rgb(108, 207, 108);

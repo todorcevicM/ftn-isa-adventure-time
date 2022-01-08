@@ -47,7 +47,9 @@
 				<p class="smallText">Price per Day</p>
 				<p v-if="!updateToggle">${{ boat.pricePerDay }}.00 / Day</p>
 				<input
-					type="text"
+					type="number"
+					min="1"
+					max="1000"
 					v-if="updateToggle"
 					v-model="newBoat.pricePerDay"
 				/>
@@ -62,7 +64,9 @@
 					{{ boat.boatLength }}
 				</p>
 				<input
-					type="text"
+					type="number"
+					min="1"
+					max="100"
 					v-model="newBoat.boatLength"
 					v-if="updateToggle"
 				/>
@@ -71,7 +75,9 @@
 					{{ boat.engineNumber }}
 				</p>
 				<input
-					type="text"
+					type="number"
+					min="1"
+					max="100"
 					v-model="newBoat.engineNumber"
 					v-if="updateToggle"
 				/>
@@ -80,7 +86,9 @@
 					{{ boat.enginePower }}
 				</p>
 				<input
-					type="text"
+					type="number"
+					min="1"
+					max="900"
 					v-model="newBoat.enginePower"
 					v-if="updateToggle"
 				/>
@@ -89,11 +97,12 @@
 					{{ boat.maxSpeed }}
 				</p>
 				<input
-					type="text"
+					type="number"
+					min="1"
+					max="500"
 					v-model="newBoat.maxSpeed"
 					v-if="updateToggle"
 				/>
-
 				<p class="smallText">Address</p>
 				<p v-if="!updateToggle">
 					{{ boat.address }}
@@ -104,21 +113,22 @@
 					v-model="newBoat.address"
 				/>
 
-				<!-- TODO: I ovde i dole mora da se stavlja -->
-				<!-- <p class="smallText">Longitude</p>
-				<p>{{ boat.geoLng }}</p>
+				<p class="smallText">Longitude</p>
+				<p v-if="!updateToggle">{{ boat.geoLng }}</p>
 				<input
-					type="text"
+					type="number"
+					step="0.000001"
 					v-model="newBoat.geoLng"
 					v-if="updateToggle"
 				/>
 				<p class="smallText">Latitude</p>
-				<p>{{ boat.geoLat }}</p>
+				<p v-if="!updateToggle">{{ boat.geoLat }}</p>
 				<input
-					type="text"
+					type="number"
+					step="0.000001"
 					v-model="newBoat.geoLat"
 					v-if="updateToggle"
-				/> -->
+				/>
 
 				<p class="smallText">Promo</p>
 				<p v-if="!updateToggle">
@@ -155,7 +165,7 @@
 					{{ formattedReservationStart }}
 				</p>
 				<input
-					type="text"
+					type="date"
 					v-if="updateToggle"
 					v-model="newBoat.reservationStart"
 				/>
@@ -165,7 +175,7 @@
 					{{ formattedReservationEnd }}
 				</p>
 				<input
-					type="text"
+					type="date"
 					v-if="updateToggle"
 					v-model="newBoat.reservationEnd"
 				/>
@@ -191,7 +201,9 @@
 				<p class="smallText">Person Limit</p>
 				<p v-if="!updateToggle">{{ boat.maxUsers }} People</p>
 				<input
-					type="text"
+					type="number"
+					min="1"
+					max="10"
 					v-if="updateToggle"
 					v-model="newBoat.maxUsers"
 				/>
@@ -201,7 +213,9 @@
 					{{ boat.percentTakenIfCancelled }}
 				</p>
 				<input
-					type="text"
+					type="number"
+					min="1"
+					max="100"
 					v-if="updateToggle"
 					v-model="newBoat.percentTakenIfCancelled"
 				/>
@@ -236,12 +250,12 @@ export default {
 			// Ovo se prenosi
 			id: localStorage.id,
 			ownerId: localStorage.ownerId,
-			geoLat: localStorage.geoLat,
-			geoLng: localStorage.geoLng,
 			// Ovo se menja
 			name: localStorage.name,
 			pricePerDay: localStorage.pricePerDay,
 			address: localStorage.address,
+			geoLat: localStorage.geoLat,
+			geoLng: localStorage.geoLng,
 			promoDescription: localStorage.promoDescription,
 			rules: localStorage.rules,
 			priceAndInfo: localStorage.priceAndInfo,
@@ -298,6 +312,8 @@ export default {
 					this.newBoat.enginePower == "" ||
 					this.newBoat.maxSpeed == "" ||
 					this.newBoat.address == "" ||
+					this.newBoat.geoLat == "" ||
+					this.newBoat.geoLng == "" ||
 					this.newBoat.rules == "" ||
 					this.newBoat.priceAndInfo == "" ||
 					this.newBoat.promoDescription == "" ||
@@ -311,6 +327,34 @@ export default {
 					alert("Please fill out all inputs.");
 					return;
 				}
+				// isNaN je nepotreban jer se koristi input type="number"
+				if (
+					this.newBoat.pricePerDay < 1 ||
+					this.newBoat.pricePerDay > 1000 ||
+					this.newBoat.maxUsers < 1 ||
+					this.newBoat.maxUsers > 10 ||
+					this.newBoat.percentTakenIfCancelled < 0 ||
+					this.newBoat.percentTakenIfCancelled > 100 ||
+					this.newBoat.boatLength < 1 ||
+					this.newBoat.boatLength > 100 ||
+					this.newBoat.engineNumber < 1 ||
+					this.newBoat.engineNumber > 100 ||
+					this.newBoat.enginePower < 1 ||
+					this.newBoat.enginePower > 900 ||
+					this.newBoat.maxSpeed < 1 ||
+					this.newBoat.maxSpeed > 500
+				) {
+					alert("Please fill out numerical inputs correctly.");
+					return;
+				}
+				if (
+					new Date(this.newBoat.reservationStart).getTime() >=
+					new Date(this.newBoat.reservationEnd).getTime()
+				) {
+					alert("Please enter valid dates.");
+					return;
+				}
+
 				axios
 					.post("/api/boats/update/", this.newBoat)
 					.then(function (response) {
@@ -453,6 +497,9 @@ input:focus,
 select:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
+}
+input:invalid {
+	border: 2px solid #b11919;
 }
 .addition {
 	background-color: rgb(108, 207, 108);

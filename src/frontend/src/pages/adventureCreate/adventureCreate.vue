@@ -1,48 +1,74 @@
 <template>
 	<div>
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
-			</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
+				</div>
+			</a>
 		</div>
 		<div class="mainFlex">
 			<div class="rightFlex">
-				<p>Name</p>
-				<input type="text" v-model="newAdventure.newName" />
-				<p>Address</p>
-				<input type="text" v-model="newAdventure.newAddress" />
-				<p>Longitude</p>
-				<input type="text" v-model="newAdventure.newGeoLng" />
-				<p>Latitude</p>
-				<input type="text" v-model="newAdventure.newGeoLat" />
+				<p class="smallText">Name</p>
+				<input type="text" v-model="newAdventure.name" />
 
-				<p>Promo</p>
-				<input type="text" v-model="newAdventure.newPromoDescription" />
-
-				<p>Rules</p>
-				<input type="text" v-model="newAdventure.newRules" />
-
-				<p>Info</p>
-				<input type="text" v-model="newAdventure.newPriceAndInfo" />
-
-				<p>Equipment</p>
-				<input type="text" v-model="newAdventure.newEquipment" />
-
-				<p>Person limit</p>
-				<input type="text" v-model="newAdventure.newMaxUsers" />
-
+				<p class="smallText">Price per Day</p>
 				<input
-					type="text"
-					v-model="newAdventure.newPercentTakenIfCancelled"
+					type="number"
+					min="1"
+					max="1000"
+					v-model="newAdventure.pricePerDay"
 				/>
-				<p>% taken if cancelled</p>
+				<p class="smallText">Address</p>
+				<input type="text" v-model="newAdventure.address" />
+				<p class="smallText">Longitude</p>
+				<input
+					type="number"
+					step="0.000001"
+					v-model="newAdventure.geoLng"
+				/>
+				<p class="smallText">Latitude</p>
+				<input
+					type="number"
+					step="0.000001"
+					v-model="newAdventure.geoLat"
+				/>
+				<p class="smallText">Location</p>
+				<input type="text" v-model="newAdventure.location" />
 
-				<p>Owner : {{ fishingInstructorName }}</p>
+				<p class="smallText">Promo</p>
+				<input type="text" v-model="newAdventure.promoDescription" />
 
-				<p>Bio :</p>
-				<input type="text" v-model="newAdventure.newInstructorBio" />
+				<p class="smallText">Rules</p>
+				<input type="text" v-model="newAdventure.rules" />
 
+				<p class="smallText">Info</p>
+				<input type="text" v-model="newAdventure.priceAndInfo" />
+
+				<p class="smallText">Equipment</p>
+				<input type="text" v-model="newAdventure.equipment" />
+
+				<p class="smallText">Percentage Taken if Cancelled</p>
+				<input
+					type="number"
+					min="1"
+					max="100"
+					v-model="newAdventure.percentTakenIfCancelled"
+				/>
+
+				<p class="smallText">Instructor Bio</p>
+				<input type="text" v-model="newAdventure.instructorBio" />
+
+				<p class="smallText">Person Limit</p>
+				<input
+					type="number"
+					min="1"
+					max="10"
+					v-model="newAdventure.maxUsers"
+				/>
+				<!-- Spacer -->
+				<div style="margin-top: 15px"></div>
 				<button
 					@click="submit()"
 					style="background-color: rgb(108, 207, 108)"
@@ -52,95 +78,83 @@
 			</div>
 		</div>
 	</div>
-</template> 
+</template>
 
 <script>
 import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		var emailHash = localStorage.emailHash;
-		var fishingInstructorName = ref(null);
-		var fishingInstructorIdFromPostRequest = ref(null);
-
-		axios
-			.get("/api/fishingInstructor/getByEmail/" + emailHash)
-			.then(function (response) {
-				fishingInstructorName.value = response.data.name;
-				console.log(response.data.id);
-				localStorage["fishingInstructorIdFromPostRequest"] =
-					response.data.id;
-			});
-
-		// console.log(fishingInstructorId.value);
-		console.log(localStorage["fishingInstructorIdFromPostRequest"]);
-
 		var newAdventure = ref({
-			newName: "",
-			newAddress: "",
-			newGeoLng: "",
-			newGeoLat: "",
-			newPromoDescription: "",
-			newRules: "",
-			newPriceAndInfo: "",
-			newEquipment: "",
-			newMaxUsers: "",
-			newPercentTakenIfCancelled: "",
-			newInstructorBio: "",
-			newInstructorId: localStorage["fishingInstructorIdFromPostRequest"],
+			// Ovo se prenosi
+			instructorId: localStorage.userId,
+			// Ovo se menja
+			name: "",
+			pricePerDay: "",
+			address: "",
+			geoLng: "",
+			geoLat: "",
+			location: "",
+			promoDescription: "",
+			rules: "",
+			priceAndInfo: "",
+			equipment: "",
+			maxUsers: "",
+			percentTakenIfCancelled: "",
+			instructorBio: "",
 		});
 
 		// Za u <template>
 		return {
-			emailHash,
-			fishingInstructorName,
-			fishingInstructorIdFromPostRequest,
 			newAdventure,
 			submit() {
 				if (
-					this.newAdventure.newName == "" ||
-					this.newAdventure.newAddress == "" ||
-					this.newAdventure.newGeoLng == "" ||
-					this.newAdventure.newGeoLat == "" ||
-					this.newAdventure.newPromoDescription == "" ||
-					this.newAdventure.newRules == "" ||
-					this.newAdventure.newPriceAndInfo == "" ||
-					this.newAdventure.newEquipment == "" ||
-					this.newAdventure.newMaxUsers == "" ||
-					this.newAdventure.newInstructorBio == "" ||
-					this.newAdventure.newPercentTakenIfCancelled == ""
+					this.newAdventure.name == "" ||
+					this.newAdventure.pricePerDay == "" ||
+					this.newAdventure.address == "" ||
+					this.newAdventure.geoLat == "" ||
+					this.newAdventure.geoLng == "" ||
+					this.newAdventure.location == "" ||
+					this.newAdventure.rules == "" ||
+					this.newAdventure.priceAndInfo == "" ||
+					this.newAdventure.promoDescription == "" ||
+					this.newAdventure.equipment == "" ||
+					this.newAdventure.maxUsers == "" ||
+					this.newAdventure.percentTakenIfCancelled == "" ||
+					this.newAdventure.instructorBio == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
 				}
-				var sendingAdventure = this.newAdventure;
-				sendingAdventure.name = this.newAdventure.newName;
-				sendingAdventure.address = this.newAdventure.newAddress;
-				sendingAdventure.promoDescription =
-					this.newAdventure.newPromoDescription;
-				sendingAdventure.instructorBio =
-					this.newAdventure.newInstructorBio;
-				sendingAdventure.rules = this.newAdventure.newRules;
-				sendingAdventure.priceAndInfo =
-					this.newAdventure.newPriceAndInfo;
-				sendingAdventure.equipment = this.newAdventure.newEquipment;
-				sendingAdventure.maxUsers = this.newAdventure.newMaxUsers;
-				sendingAdventure.percentTakenIfCancelled =
-					this.newAdventure.newPercentTakenIfCancelled;
-				sendingAdventure.instructorId =
-					this.newAdventure.newInstructorId;
-				sendingAdventure.geoLng = this.newAdventure.newGeoLng;
-				sendingAdventure.geoLat = this.newAdventure.newGeoLat;
+				// isNaN je nepotreban jer se koristi input type="number"
+				if (
+					this.newAdventure.pricePerDay < 1 ||
+					this.newAdventure.pricePerDay > 1000 ||
+					this.newAdventure.maxUsers < 1 ||
+					this.newAdventure.maxUsers > 10 ||
+					this.newAdventure.percentTakenIfCancelled < 0 ||
+					this.newAdventure.percentTakenIfCancelled > 100
+				) {
+					alert("Please fill out numerical inputs correctly.");
+					return;
+				}
+				if (
+					new Date(this.newAdventure.reservationStart).getTime() >=
+					new Date(this.newAdventure.reservationEnd).getTime()
+				) {
+					alert("Please enter valid dates.");
+					return;
+				}
 
 				axios
-					.post("/api/adventures/update", sendingAdventure)
+					.post("/api/adventures/update", this.newAdventure)
 					.then(function (response) {
-						console.log(response);
 						console.log(response.data);
+						alert("Adventure is created!");
+						window.location.assign(
+							"/fishingInstructor/" + localStorage.emailHash
+						);
 					});
-				window.location.assign(
-					"/fishingInstructor/" + localStorage.emailHash
-				);
 			},
 		};
 	},
@@ -150,7 +164,6 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -181,7 +194,7 @@ body {
 .mainFlex {
 	margin: 50px 200px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 }
 .leftFlex {
 	display: flex;
@@ -190,19 +203,21 @@ body {
 h4 {
 	margin: 0;
 	font-weight: 400;
-	font-size: 50px;
+	font-size: 42px;
 }
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
 }
 .leftFlex img {
-	width: 800px;
-	height: 450px;
+	width: 650px;
+	height: 360px;
 	border-radius: 15px;
 	object-fit: cover;
 }
 .rightFlex {
+	height: min-content;
+	min-width: 320px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -213,16 +228,16 @@ h4 {
 }
 .rightFlex p {
 	margin: 4px 0;
-	font-size: 36px;
+	font-size: 24px;
 }
 .rightFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
 button {
 	margin: 0 auto;
 	height: 40px;
-	width: 140px;
 	background-color: #da9e46;
 	border: none;
 	border-radius: 4px;
@@ -235,113 +250,22 @@ button:hover {
 	color: white;
 	cursor: pointer;
 }
-</style>
-
-
-<style>
-/* TODO: ZASTO IMA 2 STILAAAA */
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
-
-body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
-	background-color: #e6e4df;
-	background-size: 100%;
-	background-repeat: no-repeat;
-	color: #10120e;
-	font-family: Aleo;
-	margin: 0;
+input,
+select {
+	/* width: 260px; */
+	/* height: 32px; */
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 20px;
+	background-color: #f0f0f0;
 }
-
-#logo-container {
-	margin-top: 8px;
-	text-align: center;
+input:focus,
+select:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
 }
-
-.underlined {
-	display: inline-block;
-	border-bottom: #ad6800 3px solid;
-	height: 43px;
-}
-
-.underlined img {
-	height: 40px;
-	margin-bottom: -6px;
-	margin-right: -7px;
-}
-
-.underlined p {
-	margin-left: 10px;
-	font-size: 40px;
-	letter-spacing: -1px;
-	display: inline;
-}
-
-.mainFlex {
-	margin: 50px 200px;
-	display: flex;
-	justify-content: space-between;
-}
-
-.leftFlex {
-	display: flex;
-	flex-direction: column;
-}
-
-h4 {
-	margin: 0;
-	font-weight: 400;
-	font-size: 50px;
-}
-
-.leftFlex p {
-	margin: 0;
-	font-size: 27px;
-}
-
-.leftFlex img {
-	width: 800px;
-	height: 450px;
-	border-radius: 15px;
-	object-fit: cover;
-}
-
-.rightFlex {
-	width: 350px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	background-color: rgb(241, 241, 241);
-	padding: 20px;
-	border-radius: 15px;
-	border: 2px solid #da9e46;
-}
-
-.rightFlex p {
-	margin: 4px 0;
-	font-size: 36px;
-}
-
-.rightFlex .smallText {
-	margin: 0;
-	font-size: 22px;
-}
-
-button {
-	margin: 0 auto;
-	height: 40px;
-	width: 190px;
-	background-color: #da9e46;
-	border: none;
-	border-radius: 4px;
-	font-family: Aleo;
-	font-size: 24px;
-	transition: 0.15s;
-}
-
-button:hover {
-	background-color: #9e6b1d;
-	color: white;
-	cursor: pointer;
+input:invalid {
+	border: 2px solid #b11919;
 }
 .addition {
 	background-color: rgb(108, 207, 108);
