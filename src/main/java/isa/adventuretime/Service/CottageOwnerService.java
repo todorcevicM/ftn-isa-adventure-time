@@ -56,8 +56,8 @@ public class CottageOwnerService {
 		return cottageOwnerRepo.save(cottageOwner);
 	}
 
-	public ArrayList<CottageOwner> findAllByAuthenticated(Boolean authenticated) {
-		return cottageOwnerRepo.findAllByAuthenticated(authenticated);
+	public ArrayList<CottageOwner> findAllByAuthenticatedAndDenied(Boolean authenticated, Boolean denied) {
+		return cottageOwnerRepo.findAllByAuthenticatedAndDenied(authenticated, denied);
 	}
 
 	public Boolean markDeleted(Long id) {
@@ -113,5 +113,19 @@ public class CottageOwnerService {
 		DeletionRequest delReq = new DeletionRequest(id, HeadEntityEnum.COTTAGE_OWNER, reason,
 				cottageOwner.getName(), cottageOwner.getLastname());
 		deletionRequestRepo.save(delReq);
+	}
+
+	public Boolean markAuthenticated(Long id) {
+		CottageOwner cottageOwner = cottageOwnerRepo.getById(id);
+		cottageOwner.setAuthenticated(true);
+		cottageOwnerRepo.save(cottageOwner);
+		return true;
+	}
+
+	public Boolean markDenied(Long id) {
+		CottageOwner cottageOwner = cottageOwnerRepo.getById(id);
+		cottageOwner.setAuthenticated(false);
+		cottageOwnerRepo.save(cottageOwner);
+		return true;
 	}
 }

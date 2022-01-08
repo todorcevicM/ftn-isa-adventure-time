@@ -126,6 +126,39 @@
 		</div>
 		<div class="lowerFlex">
 			<div class="table">
+					<h3>Revisions</h3>
+
+					<div
+						class="tableEntry"
+						v-for="r in revisions"
+						:key="r"
+					>
+						<p class="entryRequestText">
+							{{ r.revision }}
+						</p>
+						<button class="entryApprove" @click="approveRevision(r.id)">
+							Approve
+						</button>
+						<button class="entryDeny" @click="denyRevision(r.id)">Deny</button>
+					</div>
+				</div>
+			<div class="table">
+					<h3>Appeals</h3>
+
+					<div
+						class="tableEntry"
+						v-for="a in appeals"
+						:key="a"
+					>
+						<p class="entryRequestText">
+							{{ a.appeal }}
+						</p>
+						<button class="entryApprove" @click="answerAppeal(a.id)">
+							Answer
+						</button>
+					</div>
+				</div>
+			<div class="table">
 				<h3>Registration Requests</h3>
 
 				<div
@@ -137,10 +170,10 @@
 					<p class="entryRequestText">
 						{{ req.userRegistrationReason }}
 					</p>
-					<button class="entryApprove" @click="approve()">
+					<button class="entryApprove" @click="approveRegistrationRequest(req.id, req.userType)">
 						Approve
 					</button>
-					<button class="entryDeny" @click="deny()">Deny</button>
+					<button class="entryDeny" @click="denyRegistrationRequest(req.id, req.userType)">Deny</button>
 				</div>
 			</div>
 			<div class="table">
@@ -510,6 +543,17 @@ export default {
 			newAdminCity,
 			newAdminCountry = ref(null);
 
+		var revisions = ref(null);
+		axios.get("/api/revision/getAllNotDeniedNotApproved").then(function (response) {
+			revisions.value = response.data;
+		});
+		var appeals = ref(null);
+		axios.get("/api/appeal/getAll").then(function (response) {
+			appeals.value = response.data;
+		});
+	
+
+
 		return {
 			user,
 			newUser,
@@ -539,6 +583,8 @@ export default {
 			newAdminAddress,
 			newAdminCity,
 			newAdminCountry,
+			revisions,
+			appeals,
 			checkFirstLogin() {
 				if (this.user.password == "0") {
 					return 1;
@@ -828,6 +874,103 @@ export default {
 						});
 				}
 			},
+			approveRegistrationRequest(id, type) {
+				// alert(id + " " + type);
+				axios
+					.post("/api/user/approveRegistrationRequest/" + id, type, {
+						headers: { "Content-Type": "application/json" },
+					})
+					.then(function (response) {
+						if (response.data == true) {
+							alert(
+								"User has been created, and an email has been sent."
+							);
+							window.location.reload();
+						} else {
+							alert("There's been an error while creating.");
+						}
+					})
+					.catch(function (error) {
+						alert(
+							"There's been an error while creating : " + error
+						);
+					});
+			},
+			denyRegistrationRequest(id, type) {
+				var reason = prompt("Enter reason for denial :");
+				axios
+					.post(
+						"/api/user/denyRegistrationRequest/" + id,
+						{ type: type, reason: reason },
+						{
+							headers: { "Content-Type": "application/json" },
+						}
+					)
+					.then(function (response) {
+						if (response.data == true) {
+							alert("User has been notified.");
+							window.location.reload();
+						} else {
+							alert(
+								"There's been an error while notifying the user."
+							);
+						}
+					})
+					.catch(function (error) {
+						alert(
+							"There's been an error while notifying the user : " +
+								error
+						);
+					});
+			},
+			approveRevision(revision_id) {
+				axios
+					.post("/api/revision/approveRevision/" + revision_id)
+					.then(function (response) {
+						if (response.data == true) {
+							alert("Revision has been approved.");
+							window.location.reload();
+						} else {
+							alert("There's been an error while approving.");
+						}
+					})
+					.catch(function (error) {
+						alert(
+							"There's been an error while approving : " + error
+						);
+					});
+			},
+			answerAppeal(appeal_id) {
+				let answer = prompt("Enter answer :");
+				if (answer == null) {
+					alert("Answer can't be empty.");
+					return;
+				}	
+
+				axios.post("/api/appeal/answerAppeal/" + appeal_id, answer).then(function (
+					response
+				) {
+					if (response.data == true) {
+						alert("Appeal has been answered.");
+						window.location.reload();
+					} else {
+						alert("There's been an error while answering.");
+					}
+				});
+			},
+			denyRevision(revision_id) {
+				axios.post("/api/revision/denyRevision/" + revision_id).then(
+					function (response) {
+						if (response.data == true) {
+							alert("Revision has been denied.");
+							window.location.reload();
+						} else {
+							alert("There's been an error while denying.");
+						}
+					}
+				)
+			},
+
 		};
 	},
 };

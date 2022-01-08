@@ -25,6 +25,7 @@ public class Revision {
 	private float rating;
 
 	private Boolean approved;
+	private Boolean denied;
 
 	public Revision() {
 		this.revised = false;
@@ -45,5 +46,15 @@ public class Revision {
 		this.bookingId = bookingId;
 		this.revised = false;
 		this.approved = false;
+	}
+
+	public Revision(Revision revision) {
+		this.type = revision.getType();
+		this.bookingId = revision.getBookingId();
+		this.revision = revision.getRevision();
+		this.rating = revision.getRating();
+		this.revised = true;
+		this.approved = false;
+		this.denied = false;
 	}
 }

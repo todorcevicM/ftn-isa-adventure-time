@@ -36,4 +36,5 @@ public class RoomService {
 	public ArrayList<Room> getAllByCottageId(Long cottageId) {
 		return roomRepo.findAllByCottageId(cottageId);
 	}
+
 }

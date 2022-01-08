@@ -114,4 +114,14 @@ insert into adventure_booking(booked_adventure_id, start, end, max_users, price,
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
 			values(1, "1990-01-03", "1990-01-04", 2, 100, false, 1, "", 1);
 
-insert into revision(type, booking_id, revised, revision, rating, approved) values (0, 1, false, "not bad", 4, false);
+insert into revision(type, booking_id, revised, revision, rating, approved, denied) values (0, 4, true, "not bad", 4, false, false);
+
+insert into revision(type, booking_id, revised, revision, rating, approved, denied) values (2, 2, true, "not bad", 4, false, false);
+
+insert into revision(type, booking_id, revised, revision, rating, approved, denied) values (4, 3, true, "not bad", 4, false, false);
+
+insert into appeal(type, booking_id, appeal) values (0, 4, "please change the sink");
+
+insert into appeal(type, booking_id, appeal) values (2, 2, "please change the sink");
+
+insert into appeal(type, booking_id, appeal) values (4, 3, "please change the sink");

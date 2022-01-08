@@ -19,4 +19,5 @@ public interface AdventureRepo extends JpaRepository<Adventure, Long> {
 
 	public ArrayList<Adventure> getPastAdventuresByInstructorId(Long instructorId);
 
+	public ArrayList<Adventure> findAllByNameContainsAndMaxUsers(String name, int maxUsers);
 }

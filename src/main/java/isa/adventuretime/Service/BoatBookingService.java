@@ -13,7 +13,6 @@ import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.Revision;
 import isa.adventuretime.Repository.BoatBookingRepo;
 import isa.adventuretime.Repository.BoatRepo;
-import isa.adventuretime.Repository.ReviewRepo;
 import isa.adventuretime.Repository.RevisionRepo;
 
 @Service
@@ -26,6 +25,10 @@ public class BoatBookingService {
 
 	@Autowired
 	private RevisionRepo revisionRepo;
+
+	public BoatBooking getById(Long id) {
+		return boatBookingRepo.getById(id);
+	}
 
 	public ArrayList<Date> getFreeTime(Long id) {
 		Boat currentBoat = boatRepo.findById(id).get();
@@ -82,5 +85,9 @@ public class BoatBookingService {
 
 	public ArrayList<BoatBooking> findAllByBookedBoatIdAndEndBefore(Long id, Date date) {
 		return boatBookingRepo.findAllByBookedBoatIdAndEndBefore(id, date);
+	}
+
+	public BoatBooking save(BoatBooking boatBooking){
+		return boatBookingRepo.save(boatBooking);
 	}
 }

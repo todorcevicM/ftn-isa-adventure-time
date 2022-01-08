@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RequestForAdmin;
 import isa.adventuretime.Repository.RequestForAdminRepo;
 
@@ -27,6 +28,18 @@ public class RequestForAdminService {
 
 	public RequestForAdmin saveRequestForAdmin(RequestForAdmin requestForAdmin) {
 		return requestForAdminRepo.save(requestForAdmin);
+	}
+
+	public void deleteByForTypeAndRequesterId(HeadEntityEnum forType, Long requesterId) {
+		requestForAdminRepo.deleteByForTypeAndRequesterId(forType, requesterId);
+	}
+
+	public RequestForAdmin findByForTypeAndRequesterId(HeadEntityEnum forType, Long requesterId) {
+		return requestForAdminRepo.findByForTypeAndRequesterId(forType, requesterId);
+	}
+
+	public void delete(RequestForAdmin requestForAdmin) {
+		requestForAdminRepo.delete(requestForAdmin);
 	}
 
 }

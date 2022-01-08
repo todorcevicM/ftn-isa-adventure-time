@@ -85,8 +85,11 @@
 					<p class="entryRequestText">{{ pbb.end }}</p>
 					<p>{{ pbb.boatBooking.extraService }}</p>
 					<p>Price : {{ pbb.boatBooking.price }}.00</p>
-					<button class="entryApprove" @click="notImplemented()">
+					<button class="entryApprove" @click="sendRevision(pbb.boatBooking.id, 'BOAT')" v-if="!pbb.revision.revised">
 						Revise
+					</button>
+					<button class="entryApprove" @click="sendAppeal(pbb.boatBooking.id, 'BOAT')">
+						Appeal
 					</button>
 				</div>
 			</div>
@@ -105,10 +108,13 @@
 				>
 					<p class="entryName">{{ pab.start }}</p>
 					<p class="entryRequestText">{{ pab.end }}</p>
-					<p>{{ pab.extraService }}</p>
-					<p>Price : {{ pab.price }}.00</p>
-					<button class="entryApprove" @click="notImplemented()">
+					<p>{{ pab.adventureBooking.extraService }}</p>
+					<p>Price : {{ pab.adventureBooking.price }}.00</p>
+					<button class="entryApprove" @click="sendRevision(pab.adventureBooking.id, 'ADVENTURE')" v-if="!pab.revision.revised">
 						Revise
+					</button>
+					<button class="entryApprove" @click="sendAppeal(pab.adventureBooking.id, 'ADVENTURE')">
+						Appeal
 					</button>
 				</div>
 			</div>
@@ -127,10 +133,13 @@
 				>
 					<p class="entryName">{{ prb.start }}</p>
 					<p class="entryRequestText">{{ prb.end }}</p>
-					<p>{{ prb.extraService }}</p>
-					<p>Price : {{ prb.price }}.00</p>
-					<button class="entryApprove" @click="notImplemented()">
+					<p>{{ prb.roomBooking.extraService }}</p>
+					<p>Price : {{ prb.roomBooking.price }}.00</p>
+					<button class="entryApprove" @click="sendRevision(prb.roomBooking.id, COTTAGE)" v-if="!prb.revision.revised">
 						Revise
+					</button>
+					<button class="entryApprove" @click="sendAppeal(prb.roomBooking.id, COTTAGE)">
+						Appeal
 					</button>
 				</div>
 			</div>
@@ -437,6 +446,7 @@ export default {
 					let newEndSecondPart = newEnd[1].split(".")[0];
 					pastBoatBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
+					console.log("revisions: " + i + " " + pastBoatBookingsDTO.value[i].revision.revised);
 				}
 			});
 
@@ -472,7 +482,12 @@ export default {
 		var pastRoomBookingsDTO = ref(null);
 		axios
 			.get(
+<<<<<<< HEAD
 				"/api/registeredUser/pastRoomBookings/" + localStorage["userId"]
+=======
+				"/api/registeredUser/pastRoomBookings/" +
+					localStorage["userId"]
+>>>>>>> 4f1967f285cc82642435e19614935613094869a0
 			)
 			.then(function (response) {
 				pastRoomBookingsDTO.value = response.data;
@@ -768,6 +783,49 @@ export default {
 								error
 						);
 					});
+			},
+			sendRevision(bookingId, type) {
+				let revision = prompt("Please enter your revision text");
+				if (revision == null) {
+					alert("You didn't enter any text.");
+					return;
+				}
+				let rating = prompt("Please enter your rating (1-5)");
+				if (rating == null || rating < 1 || rating > 5) {
+					alert("Rating must be between 1 and 5");
+					return;
+				}
+				axios.post("/api/revision/sendRevision", {
+					bookingId: bookingId,
+					revision: revision,
+					rating: rating,
+					type: type,
+				}, { headers: { "Content-Type": "application/json" } }).then(
+					function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+						alert("Revision sent!");
+					}
+				);			
+			},
+			sendAppeal(bookingId, type) {
+				let appeal = prompt("Please enter your appeal text");
+				if (appeal == null) {
+					alert("You didn't enter any text.");
+					return;
+				}
+				axios.post("/api/appeal/sendAppeal", {
+					bookingId: bookingId,
+					appeal: appeal,
+					type: type,
+				}, { headers: { "Content-Type": "application/json" } }).then(
+					function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+						alert("Appeal sent!");
+					}
+				);
+
 			},
 		};
 	},

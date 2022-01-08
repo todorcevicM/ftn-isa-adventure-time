@@ -21,6 +21,10 @@ public class RoomBookingService {
 	@Autowired
 	private RevisionRepo revisionRepo;
 
+	public  RoomBooking getById(Long id) {
+		return roomBookingRepo.getById(id);
+	}
+
 	public ArrayList<RoomBooking> findAllByBookedRoomId(Long id) {
 		return roomBookingRepo.findAllByBookedRoomId(id);
 	}
@@ -60,5 +64,9 @@ public class RoomBookingService {
 
 	public Boolean existsByIdAndEndAfter(Long id, Date date) {
 		return roomBookingRepo.existsByIdAndEndAfter(id, date);
+	}
+
+	public RoomBooking save(RoomBooking roomBooking){
+		return roomBookingRepo.save(roomBooking);
 	}
 }

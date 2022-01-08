@@ -52,8 +52,8 @@ public class FishingInstructorService {
 		return fishingInstructorRepo.save(fishingInstructor);
 	}
 
-	public ArrayList<FishingInstructor> findAllByAuthenticated(Boolean authenticated) {
-		return fishingInstructorRepo.findAllByAuthenticated(authenticated);
+	public ArrayList<FishingInstructor> findAllByAuthenticatedAndDenied(Boolean authenticated, Boolean denied) {
+		return fishingInstructorRepo.findAllByAuthenticatedAndDenied(authenticated, denied);
 	}
 
 	public Boolean markDeleted(Long id) {
@@ -97,4 +97,19 @@ public class FishingInstructorService {
 				fishingInstructor.getName(), fishingInstructor.getLastname());
 		deletionRequestRepo.save(delReq);
 	}
+
+	public Boolean markAuthenticated(Long id) {
+		FishingInstructor fishingInstructor = fishingInstructorRepo.getById(id);
+		fishingInstructor.setAuthenticated(true);
+		fishingInstructorRepo.save(fishingInstructor);
+		return true;
+	}
+	
+	public Boolean markDenied(Long id) {
+		FishingInstructor fishingInstructor = fishingInstructorRepo.getById(id);
+		fishingInstructor.setDenied(true);
+		fishingInstructorRepo.save(fishingInstructor);
+		return true;
+	}
+
 }
