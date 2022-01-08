@@ -47,4 +47,14 @@ public class Revision {
 		this.revised = false;
 		this.approved = false;
 	}
+
+	public Revision(Revision revision) {
+		this.type = revision.getType();
+		this.bookingId = revision.getBookingId();
+		this.revision = revision.getRevision();
+		this.rating = revision.getRating();
+		this.revised = true;
+		this.approved = false;
+		this.denied = false;
+	}
 }

@@ -7,6 +7,7 @@ import javax.mail.internet.AddressException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -74,6 +75,9 @@ public class RevisionsController {
 
     @RequestMapping(value = "/getAllNotDeniedNotApproved")
     public ResponseEntity<ArrayList<Revision>> getAllNotDeniedNotApproved() {
+        for (Revision r : revisionsService.findAllByNotDeniedAndNotApproved()) {
+            System.out.println(r.getId());
+        }
         return new ResponseEntity<>(revisionsService.findAllByNotDeniedAndNotApproved(), HttpStatus.OK);
     }
 
@@ -125,4 +129,17 @@ public class RevisionsController {
 
         return true;
     }
+
+    @PostMapping(value = "/sendRevision")
+    public Revision sendRevision(RequestEntity<Revision> revision) {
+        Revision newRevision = new Revision(revision.getBody());
+        System.out.println(newRevision.getRating());
+        System.out.println(newRevision.getRevision());
+        System.out.println(newRevision.getType());
+        System.out.println(newRevision.getBookingId());
+
+        return revisionsService.save(newRevision);
+    }
+
+
 }

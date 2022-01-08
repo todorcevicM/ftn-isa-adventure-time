@@ -24,5 +24,9 @@ public class AppealService {
     public Appeal save(Appeal appeal) {
         return revisionsRepository.save(appeal);
     }
+
+    public void delete(Appeal appeal) {
+        revisionsRepository.delete(appeal);
+    }
     
 }

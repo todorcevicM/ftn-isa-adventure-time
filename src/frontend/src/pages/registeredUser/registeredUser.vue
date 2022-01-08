@@ -85,10 +85,10 @@
 					<p class="entryRequestText">{{ pbb.end }}</p>
 					<p>{{ pbb.boatBooking.extraService }}</p>
 					<p>Price : {{ pbb.boatBooking.price }}.00</p>
-					<button class="entryApprove" @click="notImplemented()" v-if="!pbb.revision.revised">
+					<button class="entryApprove" @click="sendRevision(pbb.boatBooking.id, 'BOAT')" v-if="!pbb.revision.revised">
 						Revise
 					</button>
-					<button class="entryApprove" @click="notImplemented()">
+					<button class="entryApprove" @click="sendAppeal(pbb.boatBooking.id, 'BOAT')">
 						Appeal
 					</button>
 				</div>
@@ -110,10 +110,10 @@
 					<p class="entryRequestText">{{ pab.end }}</p>
 					<p>{{ pab.adventureBooking.extraService }}</p>
 					<p>Price : {{ pab.adventureBooking.price }}.00</p>
-					<button class="entryApprove" @click="notImplemented()" v-if="!pab.revision.revised">
+					<button class="entryApprove" @click="sendRevision(pab.adventureBooking.id, 'ADVENTURE')" v-if="!pab.revision.revised">
 						Revise
 					</button>
-					<button class="entryApprove" @click="notImplemented()">
+					<button class="entryApprove" @click="sendAppeal(pab.adventureBooking.id, 'ADVENTURE')">
 						Appeal
 					</button>
 				</div>
@@ -135,10 +135,10 @@
 					<p class="entryRequestText">{{ prb.end }}</p>
 					<p>{{ prb.roomBooking.extraService }}</p>
 					<p>Price : {{ prb.roomBooking.price }}.00</p>
-					<button class="entryApprove" @click="notImplemented()" v-if="!prb.revision.revised">
+					<button class="entryApprove" @click="sendRevision(prb.roomBooking.id, COTTAGE)" v-if="!prb.revision.revised">
 						Revise
 					</button>
-					<button class="entryApprove" @click="notImplemented()">
+					<button class="entryApprove" @click="sendAppeal(prb.roomBooking.id, COTTAGE)">
 						Appeal
 					</button>
 				</div>
@@ -780,6 +780,49 @@ export default {
 								error
 						);
 					});
+			},
+			sendRevision(bookingId, type) {
+				let revision = prompt("Please enter your revision text");
+				if (revision == null) {
+					alert("You didn't enter any text.");
+					return;
+				}
+				let rating = prompt("Please enter your rating (1-5)");
+				if (rating == null || rating < 1 || rating > 5) {
+					alert("Rating must be between 1 and 5");
+					return;
+				}
+				axios.post("/api/revision/sendRevision", {
+					bookingId: bookingId,
+					revision: revision,
+					rating: rating,
+					type: type,
+				}, { headers: { "Content-Type": "application/json" } }).then(
+					function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+						alert("Revision sent!");
+					}
+				);			
+			},
+			sendAppeal(bookingId, type) {
+				let appeal = prompt("Please enter your appeal text");
+				if (appeal == null) {
+					alert("You didn't enter any text.");
+					return;
+				}
+				axios.post("/api/appeal/sendAppeal", {
+					bookingId: bookingId,
+					appeal: appeal,
+					type: type,
+				}, { headers: { "Content-Type": "application/json" } }).then(
+					function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+						alert("Appeal sent!");
+					}
+				);
+
 			},
 		};
 	},

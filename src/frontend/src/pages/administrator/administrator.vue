@@ -156,7 +156,6 @@
 						<button class="entryApprove" @click="answerAppeal(a.id)">
 							Answer
 						</button>
-						{# <button class="entryDeny" @click="denyRevision(r.id)">Deny</button> #}
 					</div>
 				</div>
 			<div class="table">
@@ -548,7 +547,7 @@ export default {
 		axios.get("/api/revision/getAllNotDeniedNotApproved").then(function (response) {
 			revisions.value = response.data;
 		});
-		var appeals = ref(null):
+		var appeals = ref(null);
 		axios.get("/api/appeal/getAll").then(function (response) {
 			appeals.value = response.data;
 		});
@@ -942,7 +941,13 @@ export default {
 					});
 			},
 			answerAppeal(appeal_id) {
-				axios.post("/api/appeal/answerAppeal/" + appeal_id).then(function (
+				let answer = prompt("Enter answer :");
+				if (answer == null) {
+					alert("Answer can't be empty.");
+					return;
+				}	
+
+				axios.post("/api/appeal/answerAppeal/" + appeal_id, answer).then(function (
 					response
 				) {
 					if (response.data == true) {

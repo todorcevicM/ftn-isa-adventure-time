@@ -82,7 +82,7 @@ public class AppealController {
         return new ResponseEntity<>(appealService.getAll(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/approveRevision/{id}")
+    @PostMapping(value = "/answerAppeal/{id}")
     public Boolean approveRevision(@PathVariable("id") Long id, RequestEntity<String> answer) throws AddressException, UnsupportedEncodingException {
         Appeal appeal = appealService.getById(id);
         RegisteredUser registeredUser = new RegisteredUser();
@@ -129,6 +129,14 @@ public class AppealController {
                 return false;
         }
 
+        appealService.delete(appeal);
+
         return true;
     }
+
+    @PostMapping(value = "/sendAppeal")
+    public Appeal sendAppeal(RequestEntity<Appeal> appeal) {
+        return appealService.save(appeal.getBody());
+    }
+
 }

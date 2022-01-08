@@ -32,5 +32,5 @@ public class Appeal {
         this.bookingId = bookingId;
         this.appeal = appeal;
     }
-	
+
 }

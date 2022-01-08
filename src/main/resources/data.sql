@@ -119,3 +119,9 @@ insert into revision(type, booking_id, revised, revision, rating, approved, deni
 insert into revision(type, booking_id, revised, revision, rating, approved, denied) values (2, 2, true, "not bad", 4, false, false);
 
 insert into revision(type, booking_id, revised, revision, rating, approved, denied) values (4, 3, true, "not bad", 4, false, false);
+
+insert into appeal(type, booking_id, appeal) values (0, 4, "please change the sink");
+
+insert into appeal(type, booking_id, appeal) values (2, 2, "please change the sink");
+
+insert into appeal(type, booking_id, appeal) values (4, 3, "please change the sink");
