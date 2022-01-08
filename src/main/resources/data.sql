@@ -12,14 +12,14 @@ insert into boat_owner (name, lastname, email, password, address, city, country,
 insert into boat_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Doug", "Leon", "random16@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, 924836377);
 
 
-insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Clair", "Albertson", "random5@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 2027373379);
+insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Mike", "Oxmaul", "random5@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 2027373379);
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Gil", "Sumner", "random6@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 230422020);
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Gus", "Fring", "random7@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -1566529339);
 --neodobren
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Ted", "Osbourne", "random17@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, -872114982);
 
 
-insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Meadow", "Ready", "random8@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 931486598, "2023-01-01", "2023-01-15" );
+insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Zhon", "China", "random8@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 931486598, "2023-01-01", "2023-01-15" );
 insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Topher", "Craft", "random9@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -865464761, "2023-01-01", "2023-01-15" );
 insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Rickie", "Croft", "random10@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -1178357357, "2023-01-01", "2023-01-15" );
 --neodobren
