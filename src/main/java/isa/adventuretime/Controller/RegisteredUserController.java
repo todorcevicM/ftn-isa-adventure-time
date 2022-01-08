@@ -106,7 +106,7 @@ public class RegisteredUserController {
 		ArrayList<Subscription> subscriptions = subscriptionService.findAllSubberById(id);
 		ArrayList<Long> ids = new ArrayList<>();
 		for (Subscription subscription : subscriptions) {
-			if (subscription.getForEntity().equals(HeadEntityEnum.BOAT_OWNER))
+			if (subscription.getForEntity().equals(HeadEntityEnum.BOAT))
 				ids.add(subscription.getSubbedId());
 		}
 		return new ResponseEntity<ArrayList<Boat>>(
@@ -118,7 +118,7 @@ public class RegisteredUserController {
 		ArrayList<Subscription> subscriptions = subscriptionService.findAllSubberById(id);
 		ArrayList<Long> ids = new ArrayList<>();
 		for (Subscription subscription : subscriptions) {
-			if (subscription.getForEntity().equals(HeadEntityEnum.FISHING_INSTRUCTOR))
+			if (subscription.getForEntity().equals(HeadEntityEnum.ADVENTURE))
 				ids.add(subscription.getSubbedId());
 		}
 
@@ -131,7 +131,7 @@ public class RegisteredUserController {
 		ArrayList<Subscription> subscriptions = subscriptionService.findAllSubberById(id);
 		ArrayList<Long> ids = new ArrayList<>();
 		for (Subscription subscription : subscriptions) {
-			if (subscription.getForEntity().equals(HeadEntityEnum.COTTAGE_OWNER))
+			if (subscription.getForEntity().equals(HeadEntityEnum.COTTAGE))
 				ids.add(subscription.getSubbedId());
 		}
 

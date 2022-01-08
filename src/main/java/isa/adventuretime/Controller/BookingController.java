@@ -27,33 +27,19 @@ public class BookingController {
     @Autowired
     RoomBookingService roomBookingService;
 
-
-    //TODO: obrisati nakon testiranja
-    // select sum(rating)/count(rating) from revision where type = X and main_id = Y;
-    @Autowired
-    RatingRepo ratingRepo;
-
-    @PostMapping
-    public void xD(){
-
-    }
-
     @PostMapping(path = "/room")
     public Boolean bookRoom(RequestEntity<RoomBooking> roomBooking){
-        roomBookingService.save(roomBooking.getBody());
-        return true;
+        return roomBookingService.save(roomBooking.getBody()) != null;
     }
 
     @PostMapping(path = "/boat")
     public Boolean bookBoat(RequestEntity<BoatBooking> boatBooking){
-        boatBookingService.save(boatBooking.getBody());
-        return true;
+        return boatBookingService.save(boatBooking.getBody()) != null;
     }
 
     @PostMapping(path = "/adventure")
     public Boolean bookAdventure(RequestEntity<AdventureBooking> adventureBooking){
-        adventureBookingService.save(adventureBooking.getBody());
-        return true;
+        return adventureBookingService.save(adventureBooking.getBody()) != null;
     }
 
 }

@@ -28,5 +28,10 @@ public class RevisionsService {
     public ArrayList<Revision> findAllByNotDeniedAndNotApproved() {
         return revisionsRepository.findAllByDeniedAndApproved(false, false);
     }
+
+    public int getScore(int type, int mainEntityId){
+        return revisionsRepository.getScore(type, mainEntityId);
+    }
+
     
 }

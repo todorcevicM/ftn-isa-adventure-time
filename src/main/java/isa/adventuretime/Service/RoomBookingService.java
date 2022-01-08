@@ -37,7 +37,7 @@ public class RoomBookingService {
 		for (RoomBooking booking : bookings) {
 			Revision revision = revisionRepo.findByBookingIdAndType(booking.getId(), HeadEntityEnum.COTTAGE);
 			if (revision == null) {
-				revision = new Revision(HeadEntityEnum.COTTAGE, booking.getId());
+				revision = new Revision(HeadEntityEnum.COTTAGE, booking.getId(), booking.getCottageId());
 			}
 			pastBooking = new PastRoomBookingRevisionDTO(booking, revision);
 			pastBookings.add(pastBooking);
