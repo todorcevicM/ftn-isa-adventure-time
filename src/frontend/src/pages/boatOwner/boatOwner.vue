@@ -153,10 +153,6 @@
 						>
 							View User
 						</button>
-						<!-- TODO: zasto je ovo bilo ovde? -->
-						<!-- <button class="entryDeny" @click="deny()">
-							Deny
-						</button> -->
 					</div>
 				</div>
 			</div>
@@ -228,14 +224,12 @@ import axios from "axios";
 export default {
 	setup() {
 		var user = ref(null);
-		// TODO: ovde iz nekog razloga trazi boat kao da mu je email_hash zapravo id
 		axios
 			.get("/api/boatOwner/getByEmail/" + localStorage["emailHash"])
 			.then(function (response) {
 				console.log(response.data);
 				user.value = response.data;
 			});
-
 		var newUser = ref({
 			newAddress: localStorage.address,
 			newCity: localStorage.city,
@@ -248,7 +242,6 @@ export default {
 		var matching = ref(null);
 		var passwordChangeToggle = ref(null);
 		var boats = ref(null);
-
 		axios.get("/api/boats/get").then(function (response) {
 			console.log(response.data);
 			boats.value = response.data;
@@ -348,7 +341,6 @@ export default {
 				this.passwordChangeToggle = true;
 			},
 			viewUser(id) {
-				console.log(id);
 				window.location.href = "/registeredUserProfile/" + id;
 			},
 			deleteBoat(id) {
@@ -378,7 +370,6 @@ export default {
 				});
 			},
 			addNewBoat() {
-				console.log(localStorage.emailHash);
 				window.location.assign("/boatCreate/" + localStorage.emailHash);
 			},
 			deleteAccount() {
@@ -422,9 +413,7 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
-
 body {
-	/* background-image: url("../../assets/boat-time-background.jpg"); */
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;

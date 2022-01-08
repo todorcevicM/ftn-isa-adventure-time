@@ -289,7 +289,6 @@ export default {
 			newEndWorkPeriod: localStorage.endWorkPeriod,
 		});
 		var updateToggle = ref(null);
-
 		var firstPassword = ref(null);
 		var repeatPassword = ref(null);
 		var matching = ref(null);
@@ -423,8 +422,16 @@ export default {
 					});
 			},
 			viewAdventure(id) {
-				// console.log(id);
-				window.location.href = "/adventureEdit/" + id;
+				axios
+					.get("/api/adventures/get/" + id)
+					.then(function (response) {
+						for (const key in response.data) {
+							if (!(key === "password")) {
+								localStorage.setItem(key, response.data[key]);
+							}
+						}
+						window.location.href = "/adventureEdit/" + id;
+					});
 			},
 			addNewAdventure() {
 				window.location.assign(
