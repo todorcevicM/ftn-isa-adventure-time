@@ -99,7 +99,7 @@ export default {
 					";" +
 					this.guest;
 				axios
-					.post("/api/reservation/search", searchParam, {
+					.post("/api/booking/search", searchParam, {
 						headers: { "Content-Type": "application/json" },
 					})
 					.then(function (response) {

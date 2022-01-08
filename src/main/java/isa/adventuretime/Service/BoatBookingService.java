@@ -90,4 +90,8 @@ public class BoatBookingService {
 	public BoatBooking save(BoatBooking boatBooking){
 		return boatBookingRepo.save(boatBooking);
 	}
+
+	public void delete(BoatBooking boatBooking){
+		boatBookingRepo.delete(boatBooking);
+	}
 }

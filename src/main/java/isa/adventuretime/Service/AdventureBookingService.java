@@ -82,4 +82,8 @@ public class AdventureBookingService {
 	public AdventureBooking save(AdventureBooking adventureBooking){
 		return adventureBookingRepo.save(adventureBooking);
 	}
+
+	public void delete(AdventureBooking adventureBooking){
+		adventureBookingRepo.delete(adventureBooking);
+	}
 }
