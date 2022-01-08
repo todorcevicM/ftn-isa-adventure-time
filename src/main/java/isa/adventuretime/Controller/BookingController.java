@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -228,6 +230,21 @@ public class BookingController {
 		
 	}
     
+    @GetMapping(path = "/boatBookingDeal/{id}")
+    public ResponseEntity<ArrayList<BoatBooking>> boatBookingDeal(@PathVariable("id") Long id){
+        return new ResponseEntity<>(boatBookingService.findAllByBookedBoatIdAndStartAfterAndQuickBooking(id, true), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/cottageBookingDeal/{id}")
+    public ResponseEntity<ArrayList<BoatBooking>> cottageBookingDeal(@PathVariable("id") Long id){
+        return new ResponseEntity<>(boatBookingService.findAllByBookedBoatIdAndStartAfterAndQuickBooking(id, true), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/adventureBookingDeal/{id}")
+    public ResponseEntity<ArrayList<BoatBooking>> adventureBookingDeal(@PathVariable("id") Long id){
+        return new ResponseEntity<>(boatBookingService.findAllByBookedBoatIdAndStartAfterAndQuickBooking(id, true), HttpStatus.OK);
+    }
+
     //TODO: test this
     @PostMapping(path = "/cancelBooking")
     public Boolean cancleBooking(RequestEntity<String> bookingParam){

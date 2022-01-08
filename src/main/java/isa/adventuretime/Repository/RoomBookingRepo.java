@@ -3,6 +3,7 @@ package isa.adventuretime.Repository;
 import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import isa.adventuretime.Entity.RoomBooking;
@@ -30,6 +31,9 @@ public interface RoomBookingRepo extends JpaRepository<RoomBooking, Long> {
 
 	public Boolean existsByBookedRoomIdAndStartAfter(Long id, Date date);
 
-	public Boolean existsByBookedRoomIdAndStartBetweenOrBookedRoomIdAndEndBetween(Long id, Date dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date dateEnd2);
+	//public Boolean existsByBookedRoomIdAndStartBetweenOrBookedRoomIdAndEndBetween(Long id, Date dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date dateEnd2);
+	@Query(value =  "select * from room_booking where booked_room_id = ? and id not in" +
+					"(select id from room_booking where end < ? OR start > ? )", nativeQuery = true)
+	public ArrayList<RoomBooking> findBadBookings(Long id, Date start, Date end);
 
 }

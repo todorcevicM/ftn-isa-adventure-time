@@ -62,7 +62,7 @@ public class CottageService {
 			if(date.before(cottage.getReservationStart()) || date.after(cottage.getReservationEnd()))
 				continue;
 			for (Room room : roomRepo.findAllByCottageIdAndNumberOfBedsGreaterThanEqual(cottage.getId(), guests)) {
-				if(!roomBookingRepo.existsByBookedRoomIdAndStartBetweenOrBookedRoomIdAndEndBetween(room.getId(), startDate, endDate, room.getId(), startDate, endDate)){
+				if(roomBookingRepo.findBadBookings(room.getId(), startDate, endDate).size() != 0){
 					CottageWithRoomDTO cwr = new CottageWithRoomDTO(cottage, room);
 					retCottagesWithRooms.add(cwr);
 				}

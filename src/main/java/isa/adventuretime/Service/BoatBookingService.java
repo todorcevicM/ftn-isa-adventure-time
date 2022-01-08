@@ -2,6 +2,7 @@ package isa.adventuretime.Service;
 
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,5 +94,12 @@ public class BoatBookingService {
 
 	public void delete(BoatBooking boatBooking){
 		boatBookingRepo.delete(boatBooking);
+	}
+
+	public ArrayList<BoatBooking> findAllByBookedBoatIdAndStartAfterAndQuickBooking(Long bookedBoatId, Boolean quickBooking){
+		System.out.println(bookedBoatId);
+		System.out.println(quickBooking);
+		System.out.println(Calendar.getInstance().getTime());
+		return boatBookingRepo.findAllByBookedBoatIdAndStartAfterAndQuickBooking(bookedBoatId, Calendar.getInstance().getTime(), quickBooking);
 	}
 }
