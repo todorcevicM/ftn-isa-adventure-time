@@ -30,4 +30,23 @@ public class BoatBooking {
 	private double price; // if not default price
 	private String extraService; // if any
 	private int maxUsers; // if not default, is this needed?
+
+	public BoatBooking() {
+
+	}
+
+	public BoatBooking(Long bookedBoatId, Long registeredUserId, Date start, Date end, String extraService, int maxUsers) {
+		this.bookedBoatId = bookedBoatId;
+		this.registeredUserId = registeredUserId;
+		this.start = start;
+		this.end = end;
+		this.extraService = extraService;
+		this.maxUsers = maxUsers;
+		this.quickBooking = false;
+		this.price = 0;
+	}
+
+	// TODO: nije quick booking a imaju price
+
+
 }

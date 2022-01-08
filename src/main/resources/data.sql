@@ -79,40 +79,40 @@ insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power,
 
 --rezervacije u prvoj polovini januara, pravice problem u januaru
 insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
-			values (1, "2023-01-01", "2023-01-01", 1, false, 100, 2, "", 1);
+			values (1, "2023-01-01", "2023-01-01", 1, false, 0, 2, "", 1);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "2023-01-01", "2023-01-02", 100, false, "", 6);
+            values (1, 1, "2023-01-01", "2023-01-02", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "2023-01-03", "2023-01-04", 100, false, "", 6);
+            values (1, 1, "2023-01-03", "2023-01-04", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "2023-01-05", "2023-01-06", 100, false, "", 6);
+            values (1, 1, "2023-01-05", "2023-01-06", 0, false, "", 6);
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(1, "2023-01-01", "2023-02-01", 2, 100, false, 1, "", 1);
+			values(1, "2023-01-01", "2023-02-01", 2, 0, false, 1, "", 1);
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(1, "2023-01-03", "2023-01-04", 2, 100, false, 1, "", 1);
+			values(1, "2023-01-03", "2023-01-04", 2, 0, false, 1, "", 1);
 --Rezervacija u proslosti radi prikaza
 insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
-			values (1, "1990-01-01", "1990-01-01", 1, false, 100, 2, "", 1);
+			values (1, "1990-01-01", "1990-01-01", 1, false, 0, 2, "", 1);
             
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "1990-01-01", "1990-01-02", 100, false, "", 6);
+            values (1, 1, "1990-01-01", "1990-01-02", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "1990-01-03", "1990-01-04", 100, false, "", 6);
+            values (1, 1, "1990-01-03", "1990-01-04", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "1990-01-05", "1990-01-06", 100, false, "", 6);
+            values (1, 1, "1990-01-05", "1990-01-06", 0, false, "", 6);
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(1, "1990-01-01", "1990-02-01", 2, 100, false, 1, "", 1);
+			values(1, "1990-01-01", "1990-02-01", 2, 0, false, 1, "", 1);
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(1, "1990-01-03", "1990-01-04", 2, 100, false, 1, "", 1);
+			values(1, "1990-01-03", "1990-01-04", 2, 0, false, 1, "", 1);
 
 insert into revision(type, booking_id, revised, revision, rating, approved, denied) values (0, 4, true, "not bad", 4, false, false);
 

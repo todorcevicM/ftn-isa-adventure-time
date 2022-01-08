@@ -39,4 +39,6 @@ public class Adventure {
 
 	private Boolean hidden;
 
+	
+
 }

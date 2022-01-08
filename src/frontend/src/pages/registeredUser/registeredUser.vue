@@ -448,6 +448,8 @@ export default {
 		var matching = ref(null);
 		var passwordChangeToggle = ref(null);
 
+		// TODO: revision da sakrijem dugme
+
 		var pastBoatBookingsDTO = ref(null);
 		axios
 			.get(

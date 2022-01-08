@@ -1,6 +1,7 @@
 package isa.adventuretime.Controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,10 +64,11 @@ public class BoatOwnerController {
 		ArrayList<Boat> boats = boatService.getPastBoatsByOwnerId(boatOwnerId);
 		ArrayList<BoatNameBoatBookingDTO> boatNameBoatBookingDTOs = new ArrayList<>();
 
+		Date date = new Date();
 		for (Boat boat : boats) {
 			ArrayList<BoatBooking> boatBookings = new ArrayList<>();
 			boatBookings
-					.addAll(boatBookingService.findAllByBookedBoatIdAndEndBefore(boat.getId(), new java.util.Date()));
+					.addAll(boatBookingService.findAllByBookedBoatIdAndEndBefore(boat.getId(), date));
 
 			if (boatBookings.size() > 0) {
 				boatNameBoatBookingDTOs.add(new BoatNameBoatBookingDTO(boat.getName(), boatBookings));
