@@ -23,4 +23,14 @@ public class Subscription {
 	private Long subbedId;
 	private HeadEntityEnum forEntity;
 
+	public Subscription(){
+		
+	}
+
+	public Subscription(Long subberId, Long subbedId, HeadEntityEnum forEntity){
+		this.subberId = subberId;
+		this.subbedId = subbedId;
+		this.forEntity = forEntity;
+	}
+
 }

@@ -19,6 +19,7 @@ public class Revision {
 	private Long id;
 	private HeadEntityEnum type;
 	private Long bookingId;
+	private Long mainEntityId;
 
 	private Boolean revised;
 	private String revision;
@@ -32,18 +33,20 @@ public class Revision {
 		this.approved = false;
 	}
 
-	public Revision(HeadEntityEnum type, Long bookingId, String revision, float rating) {
+	public Revision(HeadEntityEnum type, Long bookingId, String revision, float rating, Long mainEntityId) {
 		this.type = type;
 		this.bookingId = bookingId;
 		this.revision = revision;
 		this.rating = rating;
+		this.mainEntityId = mainEntityId; 
 		this.revised = true;
 		this.approved = false;
 	}
 
-	public Revision(HeadEntityEnum type, Long bookingId) {
+	public Revision(HeadEntityEnum type, Long bookingId, Long mainEntityId) {
 		this.type = type;
 		this.bookingId = bookingId;
+		this.mainEntityId = mainEntityId;
 		this.revised = false;
 		this.approved = false;
 	}
@@ -53,6 +56,7 @@ public class Revision {
 		this.bookingId = revision.getBookingId();
 		this.revision = revision.getRevision();
 		this.rating = revision.getRating();
+		this.mainEntityId = revision.getMainEntityId();
 		this.revised = true;
 		this.approved = false;
 		this.denied = false;

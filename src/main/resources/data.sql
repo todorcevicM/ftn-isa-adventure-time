@@ -57,9 +57,9 @@ insert into adventure(name, address, geo_lng, geo_lat, promo_description, instru
 insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day, hidden) values ("Ice Fishing", "Arcadia, Alberta", 55.402453, -116.123231, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 85, false);
 insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day, hidden) values ("Net Fishing", "Bering Strait", 65.562156, -168.451294, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 70, false);
 
-insert into subscription (for_entity, subbed_id, subber_id) values (1, 1, 1);
-insert into subscription (for_entity, subbed_id, subber_id) values (3, 1, 1);
-insert into subscription (for_entity, subbed_id, subber_id) values (5, 1, 1);  
+insert into subscription (for_entity, subbed_id, subber_id) values (0, 1, 1);
+insert into subscription (for_entity, subbed_id, subber_id) values (2, 1, 1);
+insert into subscription (for_entity, subbed_id, subber_id) values (4, 1, 1);  
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
             values(1, "Nepotopivi 2", "Yamaha", "15", 1, 321, 321, "Sonar", "Jarkovci, Serbia", 45.043798, 20.027075, "VeryFastBoy", "Don't talk about Nepotopivi 1", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
@@ -79,46 +79,46 @@ insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power,
 
 --rezervacije u prvoj polovini januara, pravice problem u januaru
 insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
-			values (1, "2023-01-01", "2023-01-01", 1, false, 100, 2, "", 1);
+			values (1, "2023-01-01", "2023-01-01", 1, false, 0, 2, "", 1);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "2023-01-01", "2023-01-02", 100, false, "", 6);
+            values (1, 1, "2023-01-01", "2023-01-02", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "2023-01-03", "2023-01-04", 100, false, "", 6);
+            values (1, 1, "2023-01-03", "2023-01-04", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "2023-01-05", "2023-01-06", 100, false, "", 6);
+            values (1, 1, "2023-01-05", "2023-01-06", 0, false, "", 6);
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(1, "2023-01-01", "2023-02-01", 2, 100, false, 1, "", 1);
+			values(1, "2023-01-01", "2023-02-01", 2, 0, false, 1, "", 1);
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(1, "2023-01-03", "2023-01-04", 2, 100, false, 1, "", 1);
+			values(1, "2023-01-03", "2023-01-04", 2, 0, false, 1, "", 1);
 --Rezervacija u proslosti radi prikaza
 insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
-			values (1, "1990-01-01", "1990-01-01", 1, false, 100, 2, "", 1);
+			values (1, "1990-01-01", "1990-01-01", 1, false, 0, 2, "", 1);
             
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "1990-01-01", "1990-01-02", 100, false, "", 6);
+            values (1, 1, "1990-01-01", "1990-01-02", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "1990-01-03", "1990-01-04", 100, false, "", 6);
+            values (1, 1, "1990-01-03", "1990-01-04", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "1990-01-05", "1990-01-06", 100, false, "", 6);
+            values (1, 1, "1990-01-05", "1990-01-06", 0, false, "", 6);
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(1, "1990-01-01", "1990-02-01", 2, 100, false, 1, "", 1);
+			values(1, "1990-01-01", "1990-02-01", 2, 0, false, 1, "", 1);
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(1, "1990-01-03", "1990-01-04", 2, 100, false, 1, "", 1);
+			values(1, "1990-01-03", "1990-01-04", 2, 0, false, 1, "", 1);
 
-insert into revision(type, booking_id, revised, revision, rating, approved, denied) values (0, 4, true, "not bad", 4, false, false);
+insert into revision(type, booking_id, revised, revision, rating, approved, denied, main_entity_id) values (0, 4, true, "not bad", 4, false, false, 1);
 
-insert into revision(type, booking_id, revised, revision, rating, approved, denied) values (2, 2, true, "not bad", 4, false, false);
+insert into revision(type, booking_id, revised, revision, rating, approved, denied, main_entity_id) values (2, 2, true, "not bad", 4, false, false, 1);
 
-insert into revision(type, booking_id, revised, revision, rating, approved, denied) values (4, 3, true, "not bad", 4, false, false);
+insert into revision(type, booking_id, revised, revision, rating, approved, denied, main_entity_id) values (4, 3, true, "not bad", 4, false, false, 1);
 
 insert into appeal(type, booking_id, appeal) values (0, 4, "please change the sink");
 

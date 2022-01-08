@@ -58,7 +58,7 @@ public class BoatBookingService {
 		for (BoatBooking booking : bookings) {
 			Revision revision = revisionRepo.findByBookingIdAndType(booking.getId(), HeadEntityEnum.BOAT);
 			if (revision == null) {
-				revision = new Revision(HeadEntityEnum.BOAT, booking.getId());
+				revision = new Revision(HeadEntityEnum.BOAT, booking.getId(), booking.getBookedBoatId());
 			}
 			pastBooking = new PastBoatBookingRevisionDTO(booking, revision);
 			pastBookings.add(pastBooking);

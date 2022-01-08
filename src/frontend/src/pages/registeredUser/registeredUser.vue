@@ -249,7 +249,7 @@
 					<p class="entryRequestText">{{ pbb.promoDescription }}</p>
 					<p>{{ pbb.extraService }}</p>
 					<p>Price : {{ pbb.pricePerDay }}.00</p>
-					<button class="entryDeny" @click="notImplemented()">
+					<button class="entryDeny" @click="unsubscribe(pbb.id, pbb.ownerId, 'BOAT')">
 						Cancel
 					</button>
 				</div>
@@ -267,7 +267,7 @@
 					<p class="entryRequestText">{{ pab.promoDescription }}</p>
 					<p>{{ pab.extraService }}</p>
 					<p>Price : {{ pab.pricePerDay }}.00</p>
-					<button class="entryDeny" @click="notImplemented()">
+					<button class="entryDeny" @click="unsubscribe(pab.id, pab.instructorId,'ADVENTURE')">
 						Cancel
 					</button>
 				</div>
@@ -285,7 +285,7 @@
 					<p class="entryRequestText">{{ prb.promoDescription }}</p>
 					<p>{{ prb.extraService }}</p>
 					<p>Price : {{ prb.pricePerDay }}.00</p>
-					<button class="entryDeny" @click="notImplemented()">
+					<button class="entryDeny" @click="unsubscribe(prb.id, prb.ownerId, 'COTTAGE')">
 						Cancel
 					</button>
 				</div>
@@ -448,6 +448,8 @@ export default {
 		var matching = ref(null);
 		var passwordChangeToggle = ref(null);
 
+		// TODO: revision da sakrijem dugme
+
 		var pastBoatBookingsDTO = ref(null);
 		axios
 			.get(
@@ -471,12 +473,6 @@ export default {
 					let newEndSecondPart = newEnd[1].split(".")[0];
 					pastBoatBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
-					console.log(
-						"revisions: " +
-							i +
-							" " +
-							pastBoatBookingsDTO.value[i].revision.revised
-					);
 				}
 			});
 
@@ -857,6 +853,24 @@ export default {
 						console.log("Response : ");
 						console.log(response.data);
 						alert("Appeal sent!");
+					});
+			},
+			unsubscribe(bookingId, ownerId, type) {
+				axios
+					.post(
+						"/api/subscription/unsubscribe",
+						{
+							userId: this.user.id,
+							ownerId: ownerId,
+							type: type,
+						},
+						{ headers: { "Content-Type": "application/json" } }
+					)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+						alert("You have been unsubscribed from this booking.");
+						window.location.reload();
 					});
 			},
 		};

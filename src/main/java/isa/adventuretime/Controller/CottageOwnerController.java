@@ -1,6 +1,7 @@
 package isa.adventuretime.Controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,10 +59,12 @@ public class CottageOwnerController {
 		ArrayList<Cottage> cottages = cottageService.findAllByOwnerId(ownerId);
 		ArrayList<CottageNameRoomBookingDTO> cottagesDTO = new ArrayList<>();
 
+		Date date = new Date();
+
 		for (Cottage cottage : cottages) {
 			ArrayList<RoomBooking> roomBookings = new ArrayList<>();
 			roomBookings
-					.addAll(roomBookingService.findAllByCottageIdAndEndBefore(cottage.getId(), new java.util.Date()));
+					.addAll(roomBookingService.findAllByCottageIdAndEndBefore(cottage.getId(), date));
 
 			if (roomBookings.size() > 0) {
 				cottagesDTO.add(new CottageNameRoomBookingDTO(cottage.getName(), roomBookings));

@@ -67,27 +67,24 @@ public class ReservationController {
 		//TODO: grade - Nikola
 		switch (type) {
 			case "Adventure":
-				ArrayList<Adventure> adventures = adventureService.getAllBySearchQuery(name, startDate, endDate,Integer.parseInt(numberOfGuests), 0);
-				if(adventures == null || adventures.isEmpty())
+				ArrayList<Adventure> adventures = adventureService.getAllBySearchQuery(name, startDate, endDate, Integer.parseInt(numberOfGuests), 0);
+				if (adventures == null || adventures.isEmpty())
 					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 				return new ResponseEntity<>(new ArrayList<Object>(adventures), HttpStatus.OK);
 			case "Boat":
-				ArrayList<Boat> boats = boatService.getAllBySearchQuery(name, startDate, endDate,Integer.parseInt(numberOfGuests), 0);
-				if(boats == null || boats.isEmpty())
+				ArrayList<Boat> boats = boatService.getAllBySearchQuery(name, startDate, endDate, Integer.parseInt(numberOfGuests), 0);
+				if (boats == null || boats.isEmpty())
 					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 				return new ResponseEntity<>(new ArrayList<Object>(boats), HttpStatus.OK);
 			case "Cottage":
-				ArrayList<CottageWithRoomDTO>  r =  cottageService.getAllBySearchQuery(name, startDate, endDate,Integer.parseInt(numberOfGuests), 0);
-				if(r == null || r.isEmpty())
+				ArrayList<CottageWithRoomDTO> rooms =  cottageService.getAllBySearchQuery(name, startDate, endDate, Integer.parseInt(numberOfGuests), 0);
+				if (rooms == null || rooms.isEmpty())
 					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-				return new ResponseEntity<>(new ArrayList<Object>(r), HttpStatus.OK);
+				return new ResponseEntity<>(new ArrayList<Object>(rooms), HttpStatus.OK);
 			default:
-			System.out.println("Something went wrong");
-			break;
+				System.out.println("Something went wrong");
+				return null;
 		}
-
-		
-		return null;
 		
 	}
 	

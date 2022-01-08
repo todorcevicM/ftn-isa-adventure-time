@@ -36,14 +36,11 @@ import isa.adventuretime.Service.CottageService;
 import isa.adventuretime.Service.FishingInstructorService;
 import isa.adventuretime.Service.MailService;
 import isa.adventuretime.Service.RegisteredUserService;
-import isa.adventuretime.Service.RevisionsService;
 import isa.adventuretime.Service.RoomBookingService;
 
 @RestController
 @RequestMapping(path = "/api/appeal")
 public class AppealController {
-    @Autowired 
-    private RevisionsService revisionsService;
 
     @Autowired
 	private MailService mailService;

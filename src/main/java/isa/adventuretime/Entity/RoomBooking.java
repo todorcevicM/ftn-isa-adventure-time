@@ -32,4 +32,32 @@ public class RoomBooking {
 	private int maxUsers; // if not default, is this needed?
 	private Long cottageId;
 
+	public RoomBooking() {
+
+	}
+
+	public RoomBooking(Long bookedRoomId, Long RegisteredUserId, boolean quickBooking, Date start, Date end, double price, String extraService, int maxUsers, Long cottageId) {
+		this.bookedRoomId = bookedRoomId;
+		this.registeredUserId = RegisteredUserId;
+		this.quickBooking = quickBooking;
+		this.start = start;
+		this.end = end;
+		this.price = price;
+		this.extraService = extraService;
+		this.maxUsers = maxUsers;
+		this.cottageId = cottageId;
+	}
+	public RoomBooking(Long bookedRoomId, Long RegisteredUserId, Date start, Date end, String extraService, int maxUsers, Long cottageId) {
+		this.bookedRoomId = bookedRoomId;
+		this.registeredUserId = RegisteredUserId;
+		this.start = start;
+		this.end = end;
+		this.extraService = extraService;
+		this.cottageId = cottageId;
+		this.quickBooking = false;
+		this.price = 0;
+	}
+
+	
+
 }

@@ -31,4 +31,20 @@ public class AdventureBooking {
 	private double price; // if not default price
 	private String extraService; // if any
 	private int maxUsers; // if not default, is this needed?
+
+	public AdventureBooking() {
+
+	}
+
+	public AdventureBooking(Long bookedAdventureId, Long bookedInstrucotrId, Long registeredUserId, Date start, Date end, String extraService, int maxUsers) {
+		this.bookedAdventureId = bookedAdventureId;
+		this.bookedInstructorId = bookedInstrucotrId;
+		this.registeredUserId = registeredUserId;
+		this.start = start;
+		this.end = end;
+		this.extraService = extraService;
+		this.maxUsers = maxUsers;
+		this.quickBooking = false;
+		this.price = 0;
+	}
 }

@@ -141,5 +141,18 @@ public class RevisionsController {
         return revisionsService.save(newRevision);
     }
 
+    @PostMapping(path = "/rating")
+    public float calculateRating(RequestEntity<String> scoreParam){
+        String parse[] = scoreParam.getBody().split(";");
+        int type = Integer.parseInt(parse[0]);
+        int mainEntityId = Integer.parseInt(parse[1]);
+        float rating =  0;
+        try{
+            rating = revisionsService.getScore(type, mainEntityId);
+        }catch(Exception exception){
+            return -1;
+        }
+        return rating;
+    }
 
 }
