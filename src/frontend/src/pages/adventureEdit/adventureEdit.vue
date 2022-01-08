@@ -1,20 +1,20 @@
 <template>
 	<div>
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
-			</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
+				</div>
+			</a>
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
 				<div>
 					<img class="itemImage" :src="imageSource(adventure.id)" />
 				</div>
-				<h4>{{ adventure.name }}</h4>
-				<p>${{ adventure.pricePerDay }}.00 / Day</p>
-				<p>Rating: 5.00</p>
-
+				<!-- Spacer -->
+				<div style="margin-top: 20px"></div>
 				<p v-if="!uploadedImage">Add a new image:</p>
 				<input
 					v-if="!uploadedImage"
@@ -32,8 +32,8 @@
 				/>
 			</div>
 			<div class="rightFlex">
-				<p>Name</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Name</p>
+				<p v-if="!updateToggle">
 					{{ adventure.name }}
 				</p>
 				<input
@@ -41,8 +41,17 @@
 					v-if="updateToggle"
 					v-model="newAdventure.newName"
 				/>
-				<p>Address</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Price per Day</p>
+				<p v-if="!updateToggle">
+					${{ adventure.pricePerDay }}.00 / Day
+				</p>
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newAdventure.newPricePerDay"
+				/>
+				<p class="smallText">Address</p>
+				<p v-if="!updateToggle">
 					{{ adventure.address }}
 				</p>
 				<input
@@ -50,12 +59,14 @@
 					v-if="updateToggle"
 					v-model="newAdventure.newAddress"
 				/>
-				<p class="smallText">
-					({{ adventure.geoLng }}, {{ adventure.geoLat }})
-				</p>
 
-				<p>Promo</p>
-				<p class="smallText" v-if="!updateToggle">
+				<!-- TODO: I ovde i dole mora da se stavlja -->
+				<!-- <p class="smallText">
+					({{ adventure.geoLng }}, {{ adventure.geoLat }})
+				</p> -->
+
+				<p class="smallText">Promo</p>
+				<p v-if="!updateToggle">
 					{{ adventure.promoDescription }}
 				</p>
 				<input
@@ -64,8 +75,8 @@
 					v-model="newAdventure.newPromoDescription"
 				/>
 
-				<p>Rules</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Rules</p>
+				<p v-if="!updateToggle">
 					{{ adventure.rules }}
 				</p>
 				<input
@@ -74,8 +85,8 @@
 					v-model="newAdventure.newRules"
 				/>
 
-				<p>Info</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Info</p>
+				<p v-if="!updateToggle">
 					{{ adventure.priceAndInfo }}
 				</p>
 				<input
@@ -84,8 +95,8 @@
 					v-model="newAdventure.newPriceAndInfo"
 				/>
 
-				<p>Equipment</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Equipment</p>
+				<p v-if="!updateToggle">
 					{{ adventure.equipment }}
 				</p>
 				<input
@@ -94,30 +105,30 @@
 					v-model="newAdventure.newEquipment"
 				/>
 
-				<p>Person limit</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ adventure.maxUsers }}
-				</p>
+				<p class="smallText">Person Limit</p>
+				<p v-if="!updateToggle">{{ adventure.maxUsers }} People</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newAdventure.newMaxUsers"
 				/>
 
+				<p class="smallText">Percentage Taken if Cancelled</p>
+				<p v-if="!updateToggle">
+					{{ adventure.percentTakenIfCancelled }}
+				</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newAdventure.newPercentTakenIfCancelled"
 				/>
-				<p>% taken if cancelled</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ adventure.percentTakenIfCancelled }}
-				</p>
 
-				<p>Owner : {{ instructor.name }}</p>
+				<!-- Nema smisla da bude ovde -->
+				<!-- <p class="smallText">Instructor</p>
+				<p>{{ instructor.name }}</p> -->
 
-				<p>Bio :</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Instructor Bio</p>
+				<p v-if="!updateToggle">
 					{{ adventure.instructorBio }}
 				</p>
 				<input
@@ -126,6 +137,8 @@
 					v-model="newAdventure.newInstructorBio"
 				/>
 
+				<!-- Spacer -->
+				<div style="margin-top: 15px"></div>
 				<button @click="updateDetails()" v-if="!updateToggle">
 					Update Details
 				</button>
@@ -154,7 +167,7 @@ export default {
 
 		var adventure = ref(null);
 		axios.get("/api/adventures/get/" + id).then(function (response) {
-			console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + id);
+			alert(id);
 			for (const key in response.data) {
 				if (!(key === "password")) {
 					localStorage.setItem(key, response.data[key]);
@@ -162,8 +175,6 @@ export default {
 			}
 			adventure.value = response.data;
 			localStorage["fishingInstructor"] = adventure.value.instructorId;
-			console.log(localStorage["fishingInstructor"]);
-			console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbb" + id);
 		});
 
 		var instructor = ref(null);
@@ -179,6 +190,7 @@ export default {
 		var updateToggle = ref(null);
 		var newAdventure = ref({
 			newName: localStorage.name,
+			newPricePerDay: localStorage.pricePerDay,
 			newAddress: localStorage.address,
 			newPromoDescription: localStorage.promoDescription,
 			newInstructorBio: localStorage.instructorBio,
@@ -213,6 +225,7 @@ export default {
 			sendUpdatedDetails() {
 				if (
 					this.newAdventure.newName == "" ||
+					this.newAdventure.newPricePerDay == "" ||
 					this.newAdventure.newAddress == "" ||
 					this.newAdventure.newRules == "" ||
 					this.newAdventure.newPriceAndInfo == "" ||
@@ -227,6 +240,7 @@ export default {
 				}
 				var sendingAdventure = this.adventure;
 				sendingAdventure.name = this.newAdventure.newName;
+				sendingAdventure.pricePerDay = this.newAdventure.newPricePerDay;
 				sendingAdventure.address = this.newAdventure.newAddress;
 				sendingAdventure.promoDescription =
 					this.newAdventure.newPromoDescription;
@@ -313,7 +327,7 @@ body {
 .mainFlex {
 	margin: 50px 200px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 }
 .leftFlex {
 	display: flex;
@@ -322,19 +336,21 @@ body {
 h4 {
 	margin: 0;
 	font-weight: 400;
-	font-size: 50px;
+	font-size: 42px;
 }
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
 }
-.leftFlex img {
-	width: 800px;
-	height: 450px;
+.leftFlex > div > img {
+	width: 650px;
+	height: 360px;
 	border-radius: 15px;
 	object-fit: cover;
 }
 .rightFlex {
+	height: min-content;
+	min-width: 320px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -345,16 +361,17 @@ h4 {
 }
 .rightFlex p {
 	margin: 4px 0;
-	font-size: 36px;
+	font-size: 24px;
 }
 .rightFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
 button {
 	margin: 0 auto;
 	height: 40px;
-	width: 140px;
+	/* width: 140px; */
 	background-color: #da9e46;
 	border: none;
 	border-radius: 4px;
@@ -367,109 +384,19 @@ button:hover {
 	color: white;
 	cursor: pointer;
 }
-</style><style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
-
-body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
-	background-color: #e6e4df;
-	background-size: 100%;
-	background-repeat: no-repeat;
-	color: #10120e;
-	font-family: Aleo;
-	margin: 0;
+input,
+select {
+	/* width: 260px; */
+	/* height: 32px; */
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 20px;
+	background-color: #f0f0f0;
 }
-
-#logo-container {
-	margin-top: 8px;
-	text-align: center;
-}
-
-.underlined {
-	display: inline-block;
-	border-bottom: #ad6800 3px solid;
-	height: 43px;
-}
-
-.underlined img {
-	height: 40px;
-	margin-bottom: -6px;
-	margin-right: -7px;
-}
-
-.underlined p {
-	margin-left: 10px;
-	font-size: 40px;
-	letter-spacing: -1px;
-	display: inline;
-}
-
-.mainFlex {
-	margin: 50px 200px;
-	display: flex;
-	justify-content: space-between;
-}
-
-.leftFlex {
-	display: flex;
-	flex-direction: column;
-}
-
-h4 {
-	margin: 0;
-	font-weight: 400;
-	font-size: 50px;
-}
-
-.leftFlex p {
-	margin: 0;
-	font-size: 27px;
-}
-
-.leftFlex img {
-	width: 800px;
-	height: 450px;
-	border-radius: 15px;
-	object-fit: cover;
-}
-
-.rightFlex {
-	width: 350px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	background-color: rgb(241, 241, 241);
-	padding: 20px;
-	border-radius: 15px;
-	border: 2px solid #da9e46;
-}
-
-.rightFlex p {
-	margin: 4px 0;
-	font-size: 36px;
-}
-
-.rightFlex .smallText {
-	margin: 0;
-	font-size: 22px;
-}
-
-button {
-	margin: 0 auto;
-	height: 40px;
-	width: 190px;
-	background-color: #da9e46;
-	border: none;
-	border-radius: 4px;
-	font-family: Aleo;
-	font-size: 24px;
-	transition: 0.15s;
-}
-
-button:hover {
-	background-color: #9e6b1d;
-	color: white;
-	cursor: pointer;
+input:focus,
+select:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
 }
 .addition {
 	background-color: rgb(108, 207, 108);

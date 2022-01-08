@@ -214,9 +214,12 @@
 					v-model="newBoat.newPercentTakenIfCancelled"
 				/>
 
-				<p class="smallText">Owner</p>
-				<p>{{ owner.name }}</p>
+				<!-- Nema smisla da bude ovde -->
+				<!-- <p class="smallText">Owner</p>
+				<p>{{ owner.name }}</p> -->
 
+				<!-- Spacer -->
+				<div style="margin-top: 15px"></div>
 				<button @click="updateDetails()" v-if="!updateToggle">
 					Update Details
 				</button>
@@ -484,7 +487,7 @@ button:hover {
 }
 input,
 select {
-	width: 260px;
+	/* width: 260px; */
 	/* height: 32px; */
 	border-radius: 5px;
 	border: 1px solid rgb(122, 122, 122);
@@ -495,5 +498,41 @@ input:focus,
 select:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
+}
+.addition {
+	background-color: rgb(108, 207, 108);
+	width: 40px;
+	margin: 0;
+}
+.addition:hover {
+	background-color: rgb(49, 121, 49);
+}
+.deletion {
+	background-color: rgb(194, 109, 109);
+	width: 40px;
+	margin: 0;
+}
+.deletion:hover {
+	background-color: rgb(119, 51, 51);
+}
+.edit {
+	background-color: rgb(106, 180, 223);
+	width: 60px;
+	margin: 0;
+}
+.edit:hover {
+	background-color: rgb(48, 108, 143);
+}
+.roomsDiv {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 10px;
+}
+.roomDiv {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }
 </style>

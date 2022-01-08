@@ -400,7 +400,6 @@ export default {
 			.get("/api/registeredUser/getByEmail/" + localStorage["emailHash"])
 			.then(function (response) {
 				user.value = response.data;
-				localStorage["userId"] = user.value.id;
 			});
 		var newUser = ref({
 			newAddress: localStorage.address,
@@ -444,7 +443,7 @@ export default {
 		var pastAdventureBookingsDTO = ref(null);
 		axios
 			.get(
-				"/api/registeredUser/pastAdventureBookingsDTO/" +
+				"/api/registeredUser/pastAdventureBookings/" +
 					localStorage["userId"]
 			)
 			.then(function (response) {
@@ -473,8 +472,7 @@ export default {
 		var pastRoomBookingsDTO = ref(null);
 		axios
 			.get(
-				"/api/registeredUser/pastRoomBookingsDTO/" +
-					localStorage["userId"]
+				"/api/registeredUser/pastRoomBookings/" + localStorage["userId"]
 			)
 			.then(function (response) {
 				pastRoomBookingsDTO.value = response.data;

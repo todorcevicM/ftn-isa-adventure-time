@@ -1,10 +1,12 @@
 <template>
 	<div>
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
-			</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
+				</div>
+			</a>
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
@@ -17,23 +19,25 @@
 						src="../../assets/images/interior.png"
 					/>
 				</div>
-				<h4>{{ cottage.name }}</h4>
-				<p>${{ cottage.pricePerDay }}.00 / Day</p>
-				<p>Rating: 5.00</p>
-
-				<div id="glupsam">
+				<!-- Spacer -->
+				<div style="margin-top: 20px"></div>
+				<div>
 					<p v-if="!uploadedImage">Add a new image:</p>
 					<input
 						v-if="!uploadedImage"
 						type="file"
 						@change="onFileChange"
 					/>
+				</div>
+				<div style="margin: 20px 0px; text-align: center">
 					<button
 						v-if="!uploadedImage"
 						@click="uploadImage(cottage.id)"
 					>
 						Upload
 					</button>
+				</div>
+				<div>
 					<img
 						class="itemImage"
 						:src="addedImageSource(cottage.id)"
@@ -41,8 +45,8 @@
 				</div>
 			</div>
 			<div class="rightFlex">
-				<p>Name</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Name</p>
+				<p v-if="!updateToggle">
 					{{ cottage.name }}
 				</p>
 				<input
@@ -50,8 +54,15 @@
 					v-if="updateToggle"
 					v-model="newCottage.newName"
 				/>
-				<p>Address</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Price per Day</p>
+				<p v-if="!updateToggle">${{ cottage.pricePerDay }}.00 / Day</p>
+				<input
+					type="text"
+					v-if="updateToggle"
+					v-model="newCottage.newPricePerDay"
+				/>
+				<p class="smallText">Address</p>
+				<p v-if="!updateToggle">
 					{{ cottage.address }}
 				</p>
 				<input
@@ -60,12 +71,13 @@
 					v-model="newCottage.newAddress"
 				/>
 
-				<p class="smallText">
+				<!-- TODO: I ovde i dole mora da se stavlja -->
+				<!-- <p class="smallText">
 					({{ cottage.geoLng }}, {{ cottage.geoLat }})
-				</p>
+				</p> -->
 
-				<p>Promo</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Promo</p>
+				<p v-if="!updateToggle">
 					{{ cottage.promoDescription }}
 				</p>
 				<input
@@ -74,8 +86,8 @@
 					v-model="newCottage.newPromoDescription"
 				/>
 
-				<p>Rules</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Rules</p>
+				<p v-if="!updateToggle">
 					{{ cottage.rules }}
 				</p>
 				<input
@@ -84,8 +96,8 @@
 					v-model="newCottage.newRules"
 				/>
 
-				<p>Info</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Info</p>
+				<p v-if="!updateToggle">
 					{{ cottage.priceAndInfo }}
 				</p>
 				<input
@@ -94,14 +106,14 @@
 					v-model="newCottage.newPriceAndInfo"
 				/>
 
-				<p>Rooms :</p>
+				<p class="smallText">Rooms</p>
 				<div class="roomsDiv">
 					<div
 						class="roomDiv"
 						v-for="(item, key) in rooms"
 						:key="item"
 					>
-						<p class="smallText">
+						<p>
 							Room {{ key + 1 }} : {{ item.numberOfBeds }} beds.
 						</p>
 						<button class="edit" @click="updateRoom(item.id)">
@@ -117,8 +129,8 @@
 					</div>
 				</div>
 
-				<p>Start</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Reservation Start</p>
+				<p v-if="!updateToggle">
 					{{ cottage.reservationStart }}
 				</p>
 				<input
@@ -127,8 +139,8 @@
 					v-model="newCottage.newReservationStart"
 				/>
 
-				<p>End</p>
-				<p class="smallText" v-if="!updateToggle">
+				<p class="smallText">Reservation End</p>
+				<p v-if="!updateToggle">
 					{{ cottage.reservationEnd }}
 				</p>
 				<input
@@ -137,17 +149,20 @@
 					v-model="newCottage.newReservationEnd"
 				/>
 
-				<p>Person limit</p>
-				<p class="smallText" v-if="!updateToggle">
-					{{ cottage.maxUsers }}
-				</p>
+				<p class="smallText">Person Limit</p>
+				<p v-if="!updateToggle">{{ cottage.maxUsers }} People</p>
 				<input
 					type="text"
 					v-if="updateToggle"
 					v-model="newCottage.newMaxUsers"
 				/>
-				<p>Owner : {{ owner.name }}</p>
 
+				<!-- Nema smisla da bude ovde -->
+				<!-- <p class="smallText">Owner</p>
+				<p>{{ owner.name }}</p> -->
+
+				<!-- Spacer -->
+				<div style="margin-top: 15px"></div>
 				<button @click="updateDetails()" v-if="!updateToggle">
 					Update Details
 				</button>
@@ -187,6 +202,15 @@ export default {
 			}
 			cottage.value = response.data;
 			localStorage["cottageOwner"] = cottage.value.ownerId;
+
+			// Formatiranje datuma
+			let newStart = cottage.value.reservationStart.split("T");
+			let newStartSecondPart = newStart[1].split(".")[0];
+			cottage.value.reservationStart =
+				newStartSecondPart + ", " + newStart[0];
+			let newEnd = cottage.value.reservationEnd.split("T");
+			let newEndSecondPart = newEnd[1].split(".")[0];
+			cottage.value.reservationEnd = newEndSecondPart + ", " + newEnd[0];
 		});
 
 		var rooms = ref(null);
@@ -206,6 +230,7 @@ export default {
 		var updateToggle = ref(null);
 		var newCottage = ref({
 			newName: localStorage.cottageName,
+			newPricePerDay: localStorage.pricePerDay,
 			newAddress: localStorage.address,
 			newRules: localStorage.rules,
 			newPriceAndInfo: localStorage.priceAndInfo,
@@ -224,10 +249,10 @@ export default {
 			owner,
 			rooms,
 			updateToggle,
+			newCottage,
 			uploadedImage,
 			canUpload,
 			selectedFile: null,
-			newCottage,
 			imageSource(id) {
 				try {
 					return require("../../assets/images/cottage" + id + ".png");
@@ -263,6 +288,7 @@ export default {
 			sendUpdatedDetails() {
 				if (
 					this.newCottage.newName == "" ||
+					this.newCottage.newPricePerDay == "" ||
 					this.newCottage.newAddress == "" ||
 					this.newCottage.newRules == "" ||
 					this.newCottage.newPriceAndInfo == "" ||
@@ -279,6 +305,7 @@ export default {
 				}
 				var sendingCottage = this.cottage;
 				sendingCottage.name = this.newCottage.newName;
+				sendingCottage.pricePerDay = this.newCottage.newPricePerDay;
 				sendingCottage.address = this.newCottage.newAddress;
 				sendingCottage.rules = this.newCottage.newRules;
 				sendingCottage.priceAndInfo = this.newCottage.newPriceAndInfo;
@@ -399,7 +426,7 @@ body {
 .mainFlex {
 	margin: 50px 200px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 }
 
 .leftFlex {
@@ -410,7 +437,7 @@ body {
 h4 {
 	margin: 0;
 	font-weight: 400;
-	font-size: 50px;
+	font-size: 42px;
 }
 
 .leftFlex p {
@@ -419,14 +446,15 @@ h4 {
 }
 
 .leftFlex img {
-	width: 800px;
-	height: 450px;
+	width: 650px;
+	height: 360px;
 	border-radius: 15px;
 	object-fit: cover;
 }
 
 .rightFlex {
-	width: 350px;
+	height: min-content;
+	min-width: 320px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -438,18 +466,19 @@ h4 {
 
 .rightFlex p {
 	margin: 4px 0;
-	font-size: 36px;
+	font-size: 24px;
 }
 
 .rightFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
 
 button {
 	margin: 0 auto;
 	height: 40px;
-	width: 190px;
+	/* width: 190px; */
 	background-color: #da9e46;
 	border: none;
 	border-radius: 4px;
@@ -462,6 +491,20 @@ button:hover {
 	background-color: #9e6b1d;
 	color: white;
 	cursor: pointer;
+}
+input,
+select {
+	/* width: 260px; */
+	/* height: 32px; */
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 20px;
+	background-color: #f0f0f0;
+}
+input:focus,
+select:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
 }
 .addition {
 	background-color: rgb(108, 207, 108);

@@ -280,6 +280,8 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
+		localStorage.clear();
+
 		var cottages = ref(null);
 		var adventures = ref(null);
 		var boats = ref(null);
@@ -553,6 +555,9 @@ export default {
 									);
 								}
 							}
+							// Zbog userId ambiguity-a
+							localStorage["userId"] = localStorage["id"];
+							localStorage.removeItem("id");
 							window.location.assign(
 								"/" +
 									localStorage.getItem("userType") +
