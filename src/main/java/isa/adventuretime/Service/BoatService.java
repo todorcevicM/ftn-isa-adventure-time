@@ -47,10 +47,9 @@ public class BoatService {
 	public ArrayList<Boat> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests, int grade){
 		ArrayList<Boat> potentialBoats = boatRepo.getAllByNameContainsAndMaxUsersGreaterThanEqual(searched, guests);
 		ArrayList<Boat> retBoats = new ArrayList<>();
-		Date date = Calendar.getInstance().getTime();
 
 		for (Boat boat : potentialBoats) {
-			if(date.before(boat.getReservationStart()) || date.after(boat.getReservationEnd()))
+			if(startDate.before(boat.getReservationStart()) || endDate.after(boat.getReservationEnd()))
 				continue;
 			if(boatBookingRepo.findBadBookings(boat.getId(), startDate, endDate).size() == 0){
 				retBoats.add(boat);

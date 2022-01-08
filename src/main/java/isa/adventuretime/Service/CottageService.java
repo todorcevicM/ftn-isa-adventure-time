@@ -56,13 +56,14 @@ public class CottageService {
 	public ArrayList<CottageWithRoomDTO> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests, int grade){
 		ArrayList<Cottage> potentialCottages = cottageRepo.getAllByNameContains(searched);
 		ArrayList<CottageWithRoomDTO> retCottagesWithRooms = new ArrayList<>();
-		Date date = Calendar.getInstance().getTime();
 
 		for (Cottage cottage : potentialCottages) {
-			if(date.before(cottage.getReservationStart()) || date.after(cottage.getReservationEnd()))
+			if (startDate.before(cottage.getReservationStart()) || endDate.after(cottage.getReservationEnd())) {
 				continue;
-			for (Room room : roomRepo.findAllByCottageIdAndNumberOfBedsGreaterThanEqual(cottage.getId(), guests)) {
-				if(roomBookingRepo.findBadBookings(room.getId(), startDate, endDate).size() != 0){
+			}
+			ArrayList<Room> rooms = roomRepo.findAllByCottageIdAndNumberOfBedsGreaterThanEqual(cottage.getId(), guests);
+			for (Room room : rooms) {
+				if(roomBookingRepo.findBadBookings(room.getId(), startDate, endDate).size() == 0){
 					CottageWithRoomDTO cwr = new CottageWithRoomDTO(cottage, room);
 					retCottagesWithRooms.add(cwr);
 				}

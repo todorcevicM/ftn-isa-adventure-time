@@ -38,7 +38,7 @@ insert into registered_user (name, lastname, email, password, address, city, cou
 insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Jennifer", "Wells", "random14@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 223771799);
 insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Isabel", "Poole", "random15@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -1573179560);
 
-insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Old Pine Cabin", "Montauk, New York", 41.049690, -71.909219, "Sample Promo Description", "Sample Rules", 130.00, "Sample Price and Info", "2020-01-01", "2023-01-01", 4, 1, false);
+insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Old Pine Cabin", "Montauk, New York", 41.049690, -71.909219, "Sample Promo Description", "Sample Rules", 130.00, "Sample Price and Info", "2020-01-01", "2026-01-01", 4, 1, false);
 insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Wayward Cottage", "Burlington, Vermont", 44.415146, -73.254865, "Sample Promo Description", "Sample Rules", 185.00, "Sample Price and Info", "2020-01-01", "2023-01-01", 3, 1, false);
 insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Old Fishing Place", "Diamond Lake, Oregon", 43.163765, -122.167166, "Sample Promo Description", "Sample Rules", 90.00, "Sample Price and Info", "2020-01-01", "2023-01-01", 5, 1, false);
 insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Catfish Lounge", "Copper Harbour, Michigan", 47.473378, -87.902598, "Sample Promo Description", "Sample Rules", 150.00, "Sample Price and Info", "2020-01-01", "2023-01-01", 2, 1, false);
@@ -79,7 +79,7 @@ insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power,
 
 --rezervacije u prvoj polovini januara, pravice problem u januaru
 insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
-			values (1, "2023-01-01", "2023-01-05", 1, false, 0, 2, "", 1);
+			values (1, "2020-01-01", "2023-01-05", 1, false, 0, 2, "", 1);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
             values (1, 1, "2023-01-01", "2023-01-02", 0, false, "", 6);

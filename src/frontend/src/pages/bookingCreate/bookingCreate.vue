@@ -113,7 +113,14 @@ export default {
                         userId: localStorage.whichUser
                         }, 
                         { headers: { "Content-Type": "application/json" }
-                    });
+                    }).then(function(response) {
+						if (response.data == true) {
+							alert("Booking created!");
+						}
+						else {
+							alert("Error creating booking!");
+						}
+					});
                 } 
                 else if (localStorage.type == "COTTAGE_OWNER") {
                     axios.post("/api/booking/room", {
@@ -126,7 +133,14 @@ export default {
                         userId: localStorage.whichUser
                         }, 
                         { headers: { "Content-Type": "application/json" }
-                    });
+                    }).then(function(response) {
+						if (response.data == true) {
+							alert("Booking created!");
+						}
+						else {
+							alert("Error creating booking!");
+						}
+					});
                 }
                 else if (localStorage.type == "BOAT_OWNER") {
                     axios.post("/api/booking/boat", {
@@ -139,7 +153,14 @@ export default {
                         userId: localStorage.whichUser
                         }, 
                         { headers: { "Content-Type": "application/json" }
-                    });
+                    }).then(function(response) {
+						if (response.data == true) {
+							alert("Booking created!");
+						}
+						else {
+							alert("Error creating booking!");
+						}
+					});
                 }
             
                 
