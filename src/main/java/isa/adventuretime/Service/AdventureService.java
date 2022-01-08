@@ -45,7 +45,7 @@ public class AdventureService {
 	public void deleteById(Long id) {
 		adventureRepo.deleteById(id);
 	}
-
+	//TODO: test this
 	public ArrayList<Adventure> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests, int grade){
 		ArrayList<Adventure> adventures = adventureRepo.findAllByNameContainsAndMaxUsers(searched, guests);
 		ArrayList<Adventure> retAdventures = new ArrayList<>();
@@ -55,7 +55,7 @@ public class AdventureService {
 			FishingInstructor fi = fishingInstructorRepo.getById(adventure.getInstructorId());
 			if(date.before(fi.getStartWorkPeriod()) || date.after(fi.getEndWorkPeriod()))
 				continue;
-			if(!adventureBookingRepo.existsByBookedInstructorIdAndStartBetweenOrBookedInstructorIdAndEndBetween(adventure.getInstructorId(), startDate, endDate, adventure.getInstructorId(), startDate, endDate)){
+			if(adventureBookingRepo.findBadBookings(adventure.getInstructorId(), startDate, endDate).size() == 0 ){
 				retAdventures.add(adventure);
 			}
 		}
