@@ -39,7 +39,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newAdventure.newName"
+					v-model="newAdventure.name"
 				/>
 				<p class="smallText">Price per Day</p>
 				<p v-if="!updateToggle">
@@ -48,7 +48,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newAdventure.newPricePerDay"
+					v-model="newAdventure.pricePerDay"
 				/>
 				<p class="smallText">Address</p>
 				<p v-if="!updateToggle">
@@ -57,13 +57,24 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newAdventure.newAddress"
+					v-model="newAdventure.address"
 				/>
 
 				<!-- TODO: I ovde i dole mora da se stavlja -->
-				<!-- <p class="smallText">
-					({{ adventure.geoLng }}, {{ adventure.geoLat }})
-				</p> -->
+				<!-- <p class="smallText">Longitude</p>
+				<p>{{ adventure.geoLng }}</p>
+				<input
+					type="text"
+					v-model="newAdventure.geoLng"
+					v-if="updateToggle"
+				/>
+				<p class="smallText">Latitude</p>
+				<p>{{ adventure.geoLat }}</p>
+				<input
+					type="text"
+					v-model="newAdventure.geoLat"
+					v-if="updateToggle"
+				/> -->
 
 				<p class="smallText">Promo</p>
 				<p v-if="!updateToggle">
@@ -72,7 +83,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newAdventure.newPromoDescription"
+					v-model="newAdventure.promoDescription"
 				/>
 
 				<p class="smallText">Rules</p>
@@ -82,7 +93,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newAdventure.newRules"
+					v-model="newAdventure.rules"
 				/>
 
 				<p class="smallText">Info</p>
@@ -92,7 +103,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newAdventure.newPriceAndInfo"
+					v-model="newAdventure.priceAndInfo"
 				/>
 
 				<p class="smallText">Equipment</p>
@@ -102,7 +113,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newAdventure.newEquipment"
+					v-model="newAdventure.equipment"
 				/>
 
 				<p class="smallText">Person Limit</p>
@@ -110,7 +121,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newAdventure.newMaxUsers"
+					v-model="newAdventure.maxUsers"
 				/>
 
 				<p class="smallText">Percentage Taken if Cancelled</p>
@@ -120,12 +131,8 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newAdventure.newPercentTakenIfCancelled"
+					v-model="newAdventure.percentTakenIfCancelled"
 				/>
-
-				<!-- Nema smisla da bude ovde -->
-				<!-- <p class="smallText">Instructor</p>
-				<p>{{ instructor.name }}</p> -->
 
 				<p class="smallText">Instructor Bio</p>
 				<p v-if="!updateToggle">
@@ -134,7 +141,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newAdventure.newInstructorBio"
+					v-model="newAdventure.instructorBio"
 				/>
 
 				<!-- Spacer -->
@@ -152,7 +159,7 @@
 			</div>
 		</div>
 	</div>
-</template> 
+</template>
 
 <script>
 import { ref } from "vue";
@@ -161,52 +168,37 @@ export default {
 	setup() {
 		var uploadedImage = ref(false);
 		var canUpload = ref(false);
-		var urlArray = window.location.href.split("/");
-		var id = urlArray[4];
-		console.log(id);
-
-		var adventure = ref(null);
-		axios.get("/api/adventures/get/" + id).then(function (response) {
-			alert(id);
-			for (const key in response.data) {
-				if (!(key === "password")) {
-					localStorage.setItem(key, response.data[key]);
-				}
-			}
-			adventure.value = response.data;
-			localStorage["fishingInstructor"] = adventure.value.instructorId;
-		});
-
-		var instructor = ref(null);
-		axios
-			.get(
-				"/api/fishingInstructor/get/" +
-					localStorage["fishingInstructor"]
-			)
-			.then(function (response) {
-				instructor.value = response.data;
-			});
-
 		var updateToggle = ref(null);
-		var newAdventure = ref({
-			newName: localStorage.name,
-			newPricePerDay: localStorage.pricePerDay,
-			newAddress: localStorage.address,
-			newPromoDescription: localStorage.promoDescription,
-			newInstructorBio: localStorage.instructorBio,
-			newRules: localStorage.rules,
-			newPriceAndInfo: localStorage.priceAndInfo,
-			newEquipment: localStorage.equipment,
-			newMaxUsers: localStorage.maxUsers,
-			newPercentTakenIfCancelled: localStorage.percentTakenIfCancelled,
+
+		var adventure = ref({
+			// Ovo se prenosi
+			id: localStorage.id,
+			instructorId: localStorage.instructorId,
+			geoLat: localStorage.geoLat,
+			geoLng: localStorage.geoLng,
+			// Ovo se menja
+			name: localStorage.name,
+			pricePerDay: localStorage.pricePerDay,
+			address: localStorage.address,
+			promoDescription: localStorage.promoDescription,
+			instructorBio: localStorage.instructorBio,
+			rules: localStorage.rules,
+			priceAndInfo: localStorage.priceAndInfo,
+			maxUsers: localStorage.maxUsers,
+			equipment: localStorage.equipment,
+			percentTakenIfCancelled: localStorage.percentTakenIfCancelled,
 		});
+
+		// Adventure nema Date-a za formatiranje
+
+		// Za punjenje input-a na pocetku
+		var newAdventure = adventure;
 
 		// Za u <template>
 		return {
 			adventure,
-			instructor,
-			updateToggle,
 			newAdventure,
+			updateToggle,
 			uploadedImage,
 			canUpload,
 			selectedFile: null,
@@ -224,43 +216,30 @@ export default {
 			},
 			sendUpdatedDetails() {
 				if (
-					this.newAdventure.newName == "" ||
-					this.newAdventure.newPricePerDay == "" ||
-					this.newAdventure.newAddress == "" ||
-					this.newAdventure.newRules == "" ||
-					this.newAdventure.newPriceAndInfo == "" ||
-					this.newAdventure.newPromoDescription == "" ||
-					this.newAdventure.newEquipment == "" ||
-					this.newAdventure.newInstructorBio == "" ||
-					this.newAdventure.newMaxUsers == "" ||
-					this.newAdventure.newPercentTakenIfCancelled == ""
+					this.newAdventure.name == "" ||
+					this.newAdventure.pricePerDay == "" ||
+					this.newAdventure.address == "" ||
+					this.newAdventure.rules == "" ||
+					this.newAdventure.priceAndInfo == "" ||
+					this.newAdventure.promoDescription == "" ||
+					this.newAdventure.equipment == "" ||
+					this.newAdventure.instructorBio == "" ||
+					this.newAdventure.maxUsers == "" ||
+					this.newAdventure.percentTakenIfCancelled == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
 				}
-				var sendingAdventure = this.adventure;
-				sendingAdventure.name = this.newAdventure.newName;
-				sendingAdventure.pricePerDay = this.newAdventure.newPricePerDay;
-				sendingAdventure.address = this.newAdventure.newAddress;
-				sendingAdventure.promoDescription =
-					this.newAdventure.newPromoDescription;
-				sendingAdventure.instructorBio =
-					this.newAdventure.newInstructorBio;
-				sendingAdventure.rules = this.newAdventure.newRules;
-				sendingAdventure.priceAndInfo =
-					this.newAdventure.newPriceAndInfo;
-				sendingAdventure.equipment = this.newAdventure.newEquipment;
-				sendingAdventure.maxUsers = this.newAdventure.newMaxUsers;
-				sendingAdventure.percentTakenIfCancelled =
-					this.newAdventure.newPercentTakenIfCancelled;
-
 				axios
-					.post("/api/adventures/update/", sendingAdventure)
+					.post("/api/adventures/update/", this.newAdventure)
 					.then(function (response) {
-						console.log(response);
-						console.log(response.data);
+						for (const key in response.data) {
+							if (!(key === "password")) {
+								localStorage.setItem(key, response.data[key]);
+							}
+						}
+						window.location.reload();
 					});
-				window.location.reload();
 			},
 			onFileChange(e) {
 				var files = e.target.files || e.dataTransfer.files;
@@ -296,7 +275,6 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -371,7 +349,6 @@ h4 {
 button {
 	margin: 0 auto;
 	height: 40px;
-	/* width: 140px; */
 	background-color: #da9e46;
 	border: none;
 	border-radius: 4px;

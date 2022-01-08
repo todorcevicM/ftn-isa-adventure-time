@@ -30,5 +30,6 @@ public class Room {
 	public Room(int numberOfBeds, Long cottageId) {
 		this.numberOfBeds = numberOfBeds;
 		this.cottageId = cottageId;
+		this.hidden = false;
 	}
 }

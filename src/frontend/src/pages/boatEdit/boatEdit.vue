@@ -221,7 +221,7 @@
 			</div>
 		</div>
 	</div>
-</template> 
+</template>
 
 <script>
 import { ref } from "vue";
@@ -311,12 +311,9 @@ export default {
 					alert("Please fill out all inputs.");
 					return;
 				}
-				var sendingBoat = this.newBoat;
 				axios
-					.post("/api/boats/update/", sendingBoat)
+					.post("/api/boats/update/", this.newBoat)
 					.then(function (response) {
-						console.log(response);
-						console.log(response.data);
 						for (const key in response.data) {
 							if (!(key === "password")) {
 								localStorage.setItem(key, response.data[key]);
@@ -357,7 +354,6 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 body {
-	/* background-image: url("../../assets/boat-time-background.jpg"); */
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -432,7 +428,6 @@ h4 {
 button {
 	margin: 0 auto;
 	height: 40px;
-	/* width: 140px; */
 	background-color: #da9e46;
 	border: none;
 	border-radius: 4px;

@@ -52,14 +52,14 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newCottage.newName"
+					v-model="newCottage.name"
 				/>
 				<p class="smallText">Price per Day</p>
 				<p v-if="!updateToggle">${{ cottage.pricePerDay }}.00 / Day</p>
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newCottage.newPricePerDay"
+					v-model="newCottage.pricePerDay"
 				/>
 				<p class="smallText">Address</p>
 				<p v-if="!updateToggle">
@@ -68,13 +68,24 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newCottage.newAddress"
+					v-model="newCottage.address"
 				/>
 
 				<!-- TODO: I ovde i dole mora da se stavlja -->
-				<!-- <p class="smallText">
-					({{ cottage.geoLng }}, {{ cottage.geoLat }})
-				</p> -->
+				<!-- <p class="smallText">Longitude</p>
+				<p>{{ cottage.geoLng }}</p>
+				<input
+					type="text"
+					v-model="newCottage.geoLng"
+					v-if="updateToggle"
+				/>
+				<p class="smallText">Latitude</p>
+				<p>{{ cottage.geoLat }}</p>
+				<input
+					type="text"
+					v-model="newCottage.geoLat"
+					v-if="updateToggle"
+				/> -->
 
 				<p class="smallText">Promo</p>
 				<p v-if="!updateToggle">
@@ -83,7 +94,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newCottage.newPromoDescription"
+					v-model="newCottage.promoDescription"
 				/>
 
 				<p class="smallText">Rules</p>
@@ -93,7 +104,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newCottage.newRules"
+					v-model="newCottage.rules"
 				/>
 
 				<p class="smallText">Info</p>
@@ -103,7 +114,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newCottage.newPriceAndInfo"
+					v-model="newCottage.priceAndInfo"
 				/>
 
 				<p class="smallText">Rooms</p>
@@ -131,22 +142,22 @@
 
 				<p class="smallText">Reservation Start</p>
 				<p v-if="!updateToggle">
-					{{ cottage.reservationStart }}
+					{{ formattedReservationStart }}
 				</p>
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newCottage.newReservationStart"
+					v-model="newCottage.reservationStart"
 				/>
 
 				<p class="smallText">Reservation End</p>
 				<p v-if="!updateToggle">
-					{{ cottage.reservationEnd }}
+					{{ formattedReservationEnd }}
 				</p>
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newCottage.newReservationEnd"
+					v-model="newCottage.reservationEnd"
 				/>
 
 				<p class="smallText">Person Limit</p>
@@ -154,12 +165,8 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newCottage.newMaxUsers"
+					v-model="newCottage.maxUsers"
 				/>
-
-				<!-- Nema smisla da bude ovde -->
-				<!-- <p class="smallText">Owner</p>
-				<p>{{ owner.name }}</p> -->
 
 				<!-- Spacer -->
 				<div style="margin-top: 15px"></div>
@@ -183,73 +190,54 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		var urlArray = window.location.href.split("/");
-		var id = urlArray[4];
-
 		var uploadedImage = false;
 		var canUpload = false;
+		var updateToggle = ref(null);
 
-		var cottage = ref(null);
-		axios.get("/api/cottages/get/" + id).then(function (response) {
-			for (const key in response.data) {
-				if (!(key === "password")) {
-					if (key === "name") {
-						localStorage.setItem("cottageName", response.data[key]);
-						continue;
-					}
-					localStorage.setItem(key, response.data[key]);
-				}
-			}
-			cottage.value = response.data;
-			localStorage["cottageOwner"] = cottage.value.ownerId;
-
-			// Formatiranje datuma
-			let newStart = cottage.value.reservationStart.split("T");
-			let newStartSecondPart = newStart[1].split(".")[0];
-			cottage.value.reservationStart =
-				newStartSecondPart + ", " + newStart[0];
-			let newEnd = cottage.value.reservationEnd.split("T");
-			let newEndSecondPart = newEnd[1].split(".")[0];
-			cottage.value.reservationEnd = newEndSecondPart + ", " + newEnd[0];
+		var cottage = ref({
+			// Ovo se prenosi
+			id: localStorage.id,
+			ownerId: localStorage.ownerId,
+			geoLat: localStorage.geoLat,
+			geoLng: localStorage.geoLng,
+			// Ovo se menja
+			name: localStorage.name, // Nesto je ovde bilo cottageName?
+			pricePerDay: localStorage.pricePerDay,
+			address: localStorage.address,
+			promoDescription: localStorage.promoDescription,
+			rules: localStorage.rules,
+			priceAndInfo: localStorage.priceAndInfo,
+			maxUsers: localStorage.maxUsers,
+			reservationStart: localStorage.reservationStart,
+			reservationEnd: localStorage.reservationEnd,
+			percentTakenIfCancelled: localStorage.percentTakenIfCancelled,
 		});
+
+		let newStart = cottage.value.reservationStart.split("T");
+		let newStartSecondPart = newStart[1].split(".")[0];
+		var formattedReservationStart = newStartSecondPart + ", " + newStart[0];
+		let newEnd = cottage.value.reservationEnd.split("T");
+		let newEndSecondPart = newEnd[1].split(".")[0];
+		var formattedReservationEnd = newEndSecondPart + ", " + newEnd[0];
+
+		// Za punjenje input-a na pocetku
+		var newCottage = cottage;
 
 		var rooms = ref(null);
 		axios
-			.get("/api/rooms/getAllByCottageId/" + id)
+			.get("/api/rooms/getAllByCottageId/" + cottage.value.id)
 			.then(function (response) {
 				rooms.value = response.data;
 			});
 
-		var owner = ref(null);
-		axios
-			.get("/api/cottageOwner/get/" + localStorage["cottageOwner"])
-			.then(function (response) {
-				owner.value = response.data;
-			});
-
-		var updateToggle = ref(null);
-		var newCottage = ref({
-			newName: localStorage.cottageName,
-			newPricePerDay: localStorage.pricePerDay,
-			newAddress: localStorage.address,
-			newRules: localStorage.rules,
-			newPriceAndInfo: localStorage.priceAndInfo,
-			newPromoDescription: localStorage.promoDescription,
-			newReservationStart: localStorage.reservationStart,
-			newReservationEnd: localStorage.reservationEnd,
-			newMaxUsers: localStorage.maxUsers,
-			newGeoLng: localStorage.geoLng,
-			newGeoLat: localStorage.geoLat,
-			newPercentTakenIfCancelled: localStorage.percentTakenIfCancelled,
-		});
-
 		// Za u <template>
 		return {
 			cottage,
-			owner,
+			newCottage,
+			formattedReservationStart,
+			formattedReservationEnd,
 			rooms,
 			updateToggle,
-			newCottage,
 			uploadedImage,
 			canUpload,
 			selectedFile: null,
@@ -287,50 +275,37 @@ export default {
 			},
 			sendUpdatedDetails() {
 				if (
-					this.newCottage.newName == "" ||
-					this.newCottage.newPricePerDay == "" ||
-					this.newCottage.newAddress == "" ||
-					this.newCottage.newRules == "" ||
-					this.newCottage.newPriceAndInfo == "" ||
-					this.newCottage.newPromoDescription == "" ||
-					this.newCottage.newReservationStart == "" ||
-					this.newCottage.newReservationEnd == "" ||
-					this.newCottage.newMaxUsers == "" ||
-					this.newCottage.newPercentTakenIfCancelled == "" ||
-					this.newCottage.newGeoLng == "" ||
-					this.newCottage.newGeoLat == ""
+					this.newCottage.name == "" ||
+					this.newCottage.pricePerDay == "" ||
+					this.newCottage.address == "" ||
+					this.newCottage.rules == "" ||
+					this.newCottage.priceAndInfo == "" ||
+					this.newCottage.promoDescription == "" ||
+					this.newCottage.reservationStart == "" ||
+					this.newCottage.reservationEnd == "" ||
+					this.newCottage.maxUsers == "" ||
+					this.newCottage.percentTakenIfCancelled == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
 				}
-				var sendingCottage = this.cottage;
-				sendingCottage.name = this.newCottage.newName;
-				sendingCottage.pricePerDay = this.newCottage.newPricePerDay;
-				sendingCottage.address = this.newCottage.newAddress;
-				sendingCottage.rules = this.newCottage.newRules;
-				sendingCottage.priceAndInfo = this.newCottage.newPriceAndInfo;
-				sendingCottage.promoDescription =
-					this.newCottage.newPromoDescription;
-				sendingCottage.reservationStart =
-					this.newCottage.newReservationStart;
-				sendingCottage.reservationEnd =
-					this.newCottage.newReservationEnd;
-				sendingCottage.maxUsers = this.newCottage.newMaxUsers;
-				sendingCottage.percentTakenIfCancelled =
-					this.newCottage.newPercentTakenIfCancelled;
-				sendingCottage.geoLng = this.newCottage.newGeoLng;
-				sendingCottage.geoLat = this.newCottage.newGeoLat;
-
 				axios
-					.post("/api/cottages/update", sendingCottage)
+					.post("/api/cottages/update", this.newCottage)
 					.then(function (response) {
-						console.log("Response : ");
-						console.log(response.data);
+						for (const key in response.data) {
+							if (!(key === "password")) {
+								localStorage.setItem(key, response.data[key]);
+							}
+						}
+						window.location.reload();
 					});
-				window.location.reload();
 			},
 			addRoom() {
 				var numOfBeds = prompt("Enter number of beds: ");
+				if (isNaN(numOfBeds.toString()) == true) {
+					alert("Please enter a correct number of beds.");
+					return;
+				}
 				var cottageId = localStorage.id;
 				axios
 					.post("/api/rooms/create/" + cottageId, numOfBeds, {
@@ -339,10 +314,9 @@ export default {
 						},
 					})
 					.then(function (response) {
-						console.log("Response : ");
 						console.log(response.data);
+						window.location.reload();
 					});
-				window.location.reload();
 			},
 			onFileChange(e) {
 				console.log(e);
@@ -370,7 +344,6 @@ export default {
 				}
 			},
 			addedImageSource(id) {
-				// if (this.uploadedImage) {
 				try {
 					return require("../../assets/images/cottage_" +
 						id +
@@ -378,8 +351,6 @@ export default {
 				} catch (e) {
 					return require("../../assets/images/cottage1.png");
 				}
-
-				// }
 			},
 		};
 	},
@@ -388,9 +359,7 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
-
 body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -398,60 +367,50 @@ body {
 	font-family: Aleo;
 	margin: 0;
 }
-
 #logo-container {
 	margin-top: 8px;
 	text-align: center;
 }
-
 .underlined {
 	display: inline-block;
 	border-bottom: #ad6800 3px solid;
 	height: 43px;
 }
-
 .underlined img {
 	height: 40px;
 	margin-bottom: -6px;
 	margin-right: -7px;
 }
-
 .underlined p {
 	margin-left: 10px;
 	font-size: 40px;
 	letter-spacing: -1px;
 	display: inline;
 }
-
 .mainFlex {
 	margin: 50px 200px;
 	display: flex;
 	justify-content: space-around;
 }
-
 .leftFlex {
 	display: flex;
 	flex-direction: column;
 }
-
 h4 {
 	margin: 0;
 	font-weight: 400;
 	font-size: 42px;
 }
-
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
 }
-
 .leftFlex img {
 	width: 650px;
 	height: 360px;
 	border-radius: 15px;
 	object-fit: cover;
 }
-
 .rightFlex {
 	height: min-content;
 	min-width: 320px;
@@ -463,22 +422,18 @@ h4 {
 	border-radius: 15px;
 	border: 2px solid #da9e46;
 }
-
 .rightFlex p {
 	margin: 4px 0;
 	font-size: 24px;
 }
-
 .rightFlex .smallText {
 	margin: 0;
 	font-size: 20px;
 	color: #9e6b1d;
 }
-
 button {
 	margin: 0 auto;
 	height: 40px;
-	/* width: 190px; */
 	background-color: #da9e46;
 	border: none;
 	border-radius: 4px;
@@ -486,7 +441,6 @@ button {
 	font-size: 24px;
 	transition: 0.15s;
 }
-
 button:hover {
 	background-color: #9e6b1d;
 	color: white;

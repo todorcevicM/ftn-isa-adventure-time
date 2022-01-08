@@ -348,7 +348,6 @@ export default {
 				this.passwordChangeToggle = true;
 			},
 			viewUser(id) {
-				// console.log(id);
 				window.location.href = "/registeredUserProfile/" + id;
 			},
 			deleteCottage(id) {
@@ -370,8 +369,14 @@ export default {
 					});
 			},
 			viewCottage(id) {
-				// console.log(id);
-				window.location.href = "/cottageEdit/" + id;
+				axios.get("/api/cottages/get/" + id).then(function (response) {
+					for (const key in response.data) {
+						if (!(key === "password")) {
+							localStorage.setItem(key, response.data[key]);
+						}
+					}
+					window.location.href = "/cottageEdit/" + id;
+				});
 			},
 			addNewCottage() {
 				window.location.assign(
@@ -419,9 +424,7 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
-
 body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
