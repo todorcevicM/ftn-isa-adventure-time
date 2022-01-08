@@ -79,4 +79,7 @@ public class AdventureBookingService {
 		return adventureBookingRepo.existsByBookedInstructorIdAndEndAfter(id, date);
 	}
 
+	public AdventureBooking save(AdventureBooking adventureBooking){
+		return adventureBookingRepo.save(adventureBooking);
+	}
 }
