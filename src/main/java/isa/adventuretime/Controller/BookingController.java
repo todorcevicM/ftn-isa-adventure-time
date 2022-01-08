@@ -1,7 +1,13 @@
 package isa.adventuretime.Controller;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -111,6 +117,102 @@ public class BookingController {
 
         AdventureBooking ab = adventureBookingService.save(adventureBooking);
         return ab != null;
+    }
+
+    @PostMapping(path = "/search")
+	public ResponseEntity<ArrayList<Object>> getReservableBoats(RequestEntity<String> searchParam) {
+		String query = searchParam.getBody();
+		// Trim-ovanje " na pocetku i kraju
+		query = query.substring(1, query.length() - 1);
+		System.out.println(query);
+		String split[] = query.split(";");
+		if (split.length != 6) {
+			System.out.println("User tried using ';' as part of his search");
+			return null;
+		}
+		String name = split[0];
+		String type = split[1];
+		String dateAndTime = split[2];
+		String time = split[3];
+		String numberOfDays = split[4];
+		String numberOfGuests = split[5];
+		System.out.println(dateAndTime);
+		Calendar date = Calendar.getInstance();
+		date.set(	Integer.parseInt(dateAndTime.split("-")[0]), 
+		Integer.parseInt(dateAndTime.split("-")[1]) -1, 
+		Integer.parseInt(dateAndTime.split("-")[2]),
+		Integer.parseInt(time.split(":")[0]),
+		Integer.parseInt(time.split(":")[1]), 0);
+		
+		Date startDate = date.getTime();
+		System.out.println(date.getTime());
+		date.add(Calendar.DAY_OF_MONTH, Integer.parseInt(numberOfDays));
+		System.out.println(date.getTime());
+		Date endDate = date.getTime();
+
+
+		//TODO: grade - Nikola
+		switch (type) {
+			case "Adventure":
+				ArrayList<Adventure> adventures = adventureService.getAllBySearchQuery(name, startDate, endDate, Integer.parseInt(numberOfGuests), 0);
+				if (adventures == null || adventures.isEmpty())
+					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(new ArrayList<Object>(adventures), HttpStatus.OK);
+			case "Boat":
+				ArrayList<Boat> boats = boatService.getAllBySearchQuery(name, startDate, endDate, Integer.parseInt(numberOfGuests), 0);
+				if (boats == null || boats.isEmpty())
+					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(new ArrayList<Object>(boats), HttpStatus.OK);
+			case "Cottage":
+				ArrayList<CottageWithRoomDTO> rooms =  cottageService.getAllBySearchQuery(name, startDate, endDate, Integer.parseInt(numberOfGuests), 0);
+				if (rooms == null || rooms.isEmpty())
+					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(new ArrayList<Object>(rooms), HttpStatus.OK);
+			default:
+				System.out.println("Something went wrong");
+				return null;
+		}
+		
+	}
+    
+    @PostMapping(path = "/cancelBooking")
+    public Boolean cancleBooking(RequestEntity<String> bookingParam){
+        //TODO: test this
+        String split[] = bookingParam.getBody().split(";");
+        
+        Long id = Long.parseLong(split[0]);
+        String forType = split[1];
+        
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DAY_OF_MONTH, 3);
+        
+        switch (forType) {
+            case "ADVENTRUE":
+                AdventureBooking ab = adventureBookingService.getById(id);    
+                if(ab != null && ab.getEnd().before(Calendar.getInstance().getTime())  && ab.getStart().before(date.getTime())){
+                    adventureBookingService.delete(ab);
+                    return true;
+                }
+                break;
+            case "BOAT":
+                BoatBooking bb = boatBookingService.getById(id);    
+                if(bb != null && bb.getEnd().before(Calendar.getInstance().getTime())  && bb.getStart().before(date.getTime())){
+                    boatBookingService.delete(bb);
+                    return true;
+                }
+                break;
+            case "COTTAGE":
+                RoomBooking rb = roomBookingService.getById(id);
+                if(rb != null && rb.getEnd().before(Calendar.getInstance().getTime())  && rb.getStart().before(date.getTime())){
+                    roomBookingService.delete(rb);
+                    return true;
+                }
+                break;
+            default:
+                System.err.println("Something went wrong >>> " + forType);    
+                break;
+        }
+        return false;
     }
 
 }

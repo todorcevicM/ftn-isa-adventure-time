@@ -69,4 +69,8 @@ public class RoomBookingService {
 	public RoomBooking save(RoomBooking roomBooking){
 		return roomBookingRepo.save(roomBooking);
 	}
+
+	public void delete(RoomBooking roomBooking){
+		roomBookingRepo.delete(roomBooking);
+	}
 }
