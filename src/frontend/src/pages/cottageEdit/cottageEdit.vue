@@ -231,6 +231,7 @@ export default {
 			reservationEnd: localStorage.reservationEnd,
 		});
 
+		// Formatiranje datuma
 		let newStart = cottage.value.reservationStart.split("T");
 		let newStartSecondPart = newStart[1].split(".")[0];
 		var formattedReservationStart = newStartSecondPart + ", " + newStart[0];

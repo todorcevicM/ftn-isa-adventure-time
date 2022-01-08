@@ -601,12 +601,26 @@ export default {
 			imageRedirect(type, id) {
 				switch (type) {
 					case 1:
-						window.location.href = "/cottage/" + id;
+						axios
+							.get("/api/cottages/get/" + id)
+							.then(function (response) {
+								for (const key in response.data) {
+									if (!(key === "password")) {
+										localStorage.setItem(
+											key,
+											response.data[key]
+										);
+									}
+								}
+								window.location.href = "/cottage/" + id;
+							});
 						break;
 					case 2:
+						// TODO:
 						window.location.href = "/adventure/" + id;
 						break;
 					case 3:
+						// TODO:
 						window.location.href = "/boat/" + id;
 						break;
 				}

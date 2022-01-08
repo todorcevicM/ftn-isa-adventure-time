@@ -82,37 +82,64 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		var urlArray = window.location.href.split("/");
-		var id = urlArray[4];
-
-		var cottage = ref(null);
-		axios.get("/api/cottages/get/" + id).then(function (response) {
-			cottage.value = response.data;
-
-			localStorage["cottageOwner"] = cottage.value.ownerId;
-			// Mora localStorage da bi se izbegao limit scope-a .then()-a
-			// Treba za GET dole
-
-			// Formatiranje datuma
-			let newStart = cottage.value.reservationStart.split("T");
-			let newStartSecondPart = newStart[1].split(".")[0];
-			cottage.value.reservationStart =
-				newStartSecondPart + ", " + newStart[0];
-			let newEnd = cottage.value.reservationEnd.split("T");
-			let newEndSecondPart = newEnd[1].split(".")[0];
-			cottage.value.reservationEnd = newEndSecondPart + ", " + newEnd[0];
+		var cottage = ref({
+			// Ovo se prenosi
+			id: localStorage.id,
+			ownerId: localStorage.ownerId,
+			// Ovo se menja
+			name: localStorage.name,
+			pricePerDay: localStorage.pricePerDay,
+			address: localStorage.address,
+			// Mora jer GMapMap ne prima string
+			geoLat: parseFloat(localStorage.geoLat),
+			geoLng: parseFloat(localStorage.geoLng),
+			promoDescription: localStorage.promoDescription,
+			rules: localStorage.rules,
+			priceAndInfo: localStorage.priceAndInfo,
+			maxUsers: localStorage.maxUsers,
+			reservationStart: localStorage.reservationStart,
+			reservationEnd: localStorage.reservationEnd,
 		});
+
+		console.log(cottage);
+
+		// Formatiranje datuma
+		let newStart = cottage.value.reservationStart.split("T");
+		let newStartSecondPart = newStart[1].split(".")[0];
+		cottage.value.reservationStart =
+			newStartSecondPart + ", " + newStart[0];
+		let newEnd = cottage.value.reservationEnd.split("T");
+		let newEndSecondPart = newEnd[1].split(".")[0];
+		cottage.value.reservationEnd = newEndSecondPart + ", " + newEnd[0];
+
+		// axios.get("/api/cottages/get/" + id).then(function (response) {
+		// 	cottage.value = response.data;
+
+		// 	localStorage["cottageOwner"] = cottage.value.ownerId;
+		// 	// Mora localStorage da bi se izbegao limit scope-a .then()-a
+		// 	// Treba za GET dole
+
+		// 	// Formatiranje datuma
+		// 	let newStart = cottage.value.reservationStart.split("T");
+		// 	let newStartSecondPart = newStart[1].split(".")[0];
+		// 	cottage.value.reservationStart =
+		// 		newStartSecondPart + ", " + newStart[0];
+		// 	let newEnd = cottage.value.reservationEnd.split("T");
+		// 	let newEndSecondPart = newEnd[1].split(".")[0];
+		// 	cottage.value.reservationEnd = newEndSecondPart + ", " + newEnd[0];
+		// });
 
 		var rooms = ref(null);
 		axios
-			.get("/api/rooms/getAllByCottageId/" + id)
+			.get("/api/rooms/getAllByCottageId/" + cottage.value.id)
 			.then(function (response) {
 				rooms.value = response.data;
 			});
 
+		// Za owner.name gore
 		var owner = ref(null);
 		axios
-			.get("/api/cottageOwner/get/" + localStorage["cottageOwner"])
+			.get("/api/cottageOwner/get/" + cottage.value.ownerId)
 			.then(function (response) {
 				owner.value = response.data;
 			});
