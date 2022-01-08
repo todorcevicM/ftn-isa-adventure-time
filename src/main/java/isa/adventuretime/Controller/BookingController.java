@@ -16,7 +16,6 @@ import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Entity.FishingInstructor;
 import isa.adventuretime.Entity.Room;
 import isa.adventuretime.Entity.RoomBooking;
-import isa.adventuretime.Repository.RatingRepo;
 import isa.adventuretime.Service.AdventureBookingService;
 import isa.adventuretime.Service.AdventureService;
 import isa.adventuretime.Service.BoatBookingService;
@@ -47,17 +46,6 @@ public class BookingController {
 
     @Autowired
     FishingInstructorService fishingInstructorService;
-
-
-    //TODO: obrisati nakon testiranja
-    // select sum(rating)/count(rating) from revision where type = X and main_id = Y;
-    @Autowired
-    RatingRepo ratingRepo;
-
-    @PostMapping
-    public void xD(){
-
-    }
 
     @PostMapping(path = "/room/{param}")
     public Boolean bookRoom(@RequestParam("param") String param, RequestEntity<CottageWithRoomDTO> cottageRoomDTO){
