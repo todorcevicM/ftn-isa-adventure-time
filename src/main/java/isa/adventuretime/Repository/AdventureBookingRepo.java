@@ -1,13 +1,13 @@
 package isa.adventuretime.Repository;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import isa.adventuretime.Entity.AdventureBooking;
-
-import java.util.Date;
 
 @Repository
 public interface AdventureBookingRepo extends JpaRepository<AdventureBooking, Long> {
@@ -31,7 +31,9 @@ public interface AdventureBookingRepo extends JpaRepository<AdventureBooking, Lo
 
 	public Boolean existsByBookedAdventureIdAndStartAfter(Long id, Date date);
 
-	public Boolean existsByBookedInstructorIdAndStartBetweenOrBookedInstructorIdAndEndBetween(Long id, Date dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date dateEnd2);
-
+	//public Boolean existsByBookedInstructorIdAndStartBetweenOrBookedInstructorIdAndEndBetween(Long id, Date dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date dateEnd2);
+	@Query(value =  "select * from adventure_booking where booked_adventure_id = ? and id not in" +
+					"(select id from adventure_booking where end < ? OR start > ? )", nativeQuery = true)
+	public ArrayList<AdventureBooking> findBadBookings(Long id, Date start, Date end);
 
 }
