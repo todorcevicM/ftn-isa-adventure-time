@@ -32,7 +32,6 @@ public class BoatOwnerController {
 	@Autowired
 	private BoatService boatService;
 
-
 	@GetMapping("/get")
 	public ResponseEntity<ArrayList<BoatOwner>> getAll() {
 		return new ResponseEntity<>(boatOwnerService.getAll(), HttpStatus.OK);
@@ -49,7 +48,6 @@ public class BoatOwnerController {
 		if (boatOwner == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			System.out.println(boatOwner.getName());
 			return new ResponseEntity<>(boatOwner, HttpStatus.OK);
 		}
 	}
@@ -67,7 +65,8 @@ public class BoatOwnerController {
 
 		for (Boat boat : boats) {
 			ArrayList<BoatBooking> boatBookings = new ArrayList<>();
-			boatBookings.addAll(boatBookingService.findAllByBookedBoatIdAndEndBefore(boat.getId(), new java.util.Date()));
+			boatBookings
+					.addAll(boatBookingService.findAllByBookedBoatIdAndEndBefore(boat.getId(), new java.util.Date()));
 
 			if (boatBookings.size() > 0) {
 				boatNameBoatBookingDTOs.add(new BoatNameBoatBookingDTO(boat.getName(), boatBookings));

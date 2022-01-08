@@ -61,19 +61,19 @@ insert into subscription (for_entity, subbed_id, subber_id) values (1, 1, 1);
 insert into subscription (for_entity, subbed_id, subber_id) values (3, 1, 1);
 insert into subscription (for_entity, subbed_id, subber_id) values (5, 1, 1);  
 
-insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
+insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
             values(1, "Nepotopivi 2", "Yamaha", "15", 1, 321, 321, "Sonar", "Jarkovci, Serbia", 45.043798, 20.027075, "VeryFastBoy", "Don't talk about Nepotopivi 1", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
 
-insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
+insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
             values(1, "Miss Melanoma", "Yamaha", "15", 1, 321, 321, "Sonar", "Bar Harbour, Maine", 44.374710, -68.191748, "VeryFastBoy", "Nije lose", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
 
-insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
+insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
             values(1, "Brzi", "Yamaha", "15", 1, 321, 321, "Sonar", "Bay City State Park, Michigan", 43.666608, -83.901237, "VeryFastBoy", "Ipak nije tako brz", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
 
-insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
+insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
             values(1, "Just A Splash", "Yamaha", "15", 1, 321, 321, "Sonar", "Claremont, Virginia", 37.231071, -76.954797, "VeryFastBoy", "Potopio nepotopivog1", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
 
-insert into boat(owner_id ,name, type, length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
+insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
             values(1, "Peti Sveti", "Yamaha", "15", 1, 321, 321, "Sonar", "Key West, Florida", 24.549540, -81.780825, "Holie", "Ovaj jeste Sveti Peti", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
 
 

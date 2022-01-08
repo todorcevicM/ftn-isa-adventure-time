@@ -55,7 +55,7 @@
 					</div>
 					<div style="text-align: right">
 						<p class="smallText">Length</p>
-						<p>{{ boat.length }}m</p>
+						<p>{{ boat.boatLength }}m</p>
 					</div>
 				</div>
 

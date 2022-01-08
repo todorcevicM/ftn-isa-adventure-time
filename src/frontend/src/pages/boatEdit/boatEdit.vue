@@ -42,36 +42,28 @@
 				<p v-if="!updateToggle">
 					{{ boat.name }}
 				</p>
-				<input
-					type="text"
-					v-if="updateToggle"
-					v-model="newBoat.newName"
-				/>
+				<input type="text" v-if="updateToggle" v-model="newBoat.name" />
 
 				<p class="smallText">Price per Day</p>
 				<p v-if="!updateToggle">${{ boat.pricePerDay }}.00 / Day</p>
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newBoat.newPricePerDay"
+					v-model="newBoat.pricePerDay"
 				/>
 
 				<p class="smallText">Type</p>
 				<p v-if="!updateToggle">
 					{{ boat.type }}
 				</p>
-				<input
-					type="text"
-					v-model="newBoat.newType"
-					v-if="updateToggle"
-				/>
+				<input type="text" v-model="newBoat.type" v-if="updateToggle" />
 				<p class="smallText">Length</p>
 				<p v-if="!updateToggle">
-					{{ boat.length }}
+					{{ boat.boatLength }}
 				</p>
 				<input
 					type="text"
-					v-model="newBoat.newLength"
+					v-model="newBoat.boatLength"
 					v-if="updateToggle"
 				/>
 				<p class="smallText">Engine Number</p>
@@ -80,7 +72,7 @@
 				</p>
 				<input
 					type="text"
-					v-model="newBoat.newEngineNumber"
+					v-model="newBoat.engineNumber"
 					v-if="updateToggle"
 				/>
 				<p class="smallText">Engine Power</p>
@@ -89,7 +81,7 @@
 				</p>
 				<input
 					type="text"
-					v-model="newBoat.newEnginePower"
+					v-model="newBoat.enginePower"
 					v-if="updateToggle"
 				/>
 				<p class="smallText">Max Speed</p>
@@ -98,7 +90,7 @@
 				</p>
 				<input
 					type="text"
-					v-model="newBoat.newMaxSpeed"
+					v-model="newBoat.maxSpeed"
 					v-if="updateToggle"
 				/>
 
@@ -109,7 +101,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newBoat.newAddress"
+					v-model="newBoat.address"
 				/>
 
 				<!-- TODO: I ovde i dole mora da se stavlja -->
@@ -117,14 +109,14 @@
 				<p>{{ boat.geoLng }}</p>
 				<input
 					type="text"
-					v-model="newBoat.newGeoLng"
+					v-model="newBoat.geoLng"
 					v-if="updateToggle"
 				/>
 				<p class="smallText">Latitude</p>
 				<p>{{ boat.geoLat }}</p>
 				<input
 					type="text"
-					v-model="newBoat.newGeoLat"
+					v-model="newBoat.geoLat"
 					v-if="updateToggle"
 				/> -->
 
@@ -135,7 +127,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newBoat.newPromoDescription"
+					v-model="newBoat.promoDescription"
 				/>
 
 				<p class="smallText">Rules</p>
@@ -145,7 +137,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newBoat.newRules"
+					v-model="newBoat.rules"
 				/>
 
 				<p class="smallText">Info</p>
@@ -155,27 +147,27 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newBoat.newPriceAndInfo"
+					v-model="newBoat.priceAndInfo"
 				/>
 
 				<p class="smallText">Reservation Start</p>
 				<p v-if="!updateToggle">
-					{{ boat.reservationStart }}
+					{{ formattedReservationStart }}
 				</p>
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newBoat.newReservationStart"
+					v-model="newBoat.reservationStart"
 				/>
 
 				<p class="smallText">Reservation End</p>
 				<p v-if="!updateToggle">
-					{{ boat.reservationEnd }}
+					{{ formattedReservationEnd }}
 				</p>
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newBoat.newReservationEnd"
+					v-model="newBoat.reservationEnd"
 				/>
 
 				<p class="smallText">Navigation Equipment</p>
@@ -184,7 +176,7 @@
 				</p>
 				<input
 					type="text"
-					v-model="newBoat.newNavigationEquipment"
+					v-model="newBoat.navigationEquipment"
 					v-if="updateToggle"
 				/>
 
@@ -192,7 +184,7 @@
 				<p v-if="!updateToggle">{{ boat.equipment }}</p>
 				<input
 					type="text"
-					v-model="newBoat.newEquipment"
+					v-model="newBoat.equipment"
 					v-if="updateToggle"
 				/>
 
@@ -201,7 +193,7 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newBoat.newMaxUsers"
+					v-model="newBoat.maxUsers"
 				/>
 
 				<p class="smallText">Percentage Taken if Cancelled</p>
@@ -211,12 +203,8 @@
 				<input
 					type="text"
 					v-if="updateToggle"
-					v-model="newBoat.newPercentTakenIfCancelled"
+					v-model="newBoat.percentTakenIfCancelled"
 				/>
-
-				<!-- Nema smisla da bude ovde -->
-				<!-- <p class="smallText">Owner</p>
-				<p>{{ owner.name }}</p> -->
 
 				<!-- Spacer -->
 				<div style="margin-top: 15px"></div>
@@ -242,64 +230,51 @@ export default {
 	setup() {
 		var uploadedImage = ref(false);
 		var canUpload = ref(false);
-		var urlArray = window.location.href.split("/");
-		var id = urlArray[4];
-		console.log(id);
-
-		var boat = ref(null);
-		axios.get("/api/boats/get/" + id).then(function (response) {
-			for (const key in response.data) {
-				if (!(key === "password")) {
-					localStorage.setItem(key, response.data[key]);
-				}
-			}
-			boat.value = response.data;
-			localStorage["boatOwner"] = boat.value.ownerId;
-
-			// Formatiranje datuma
-			let newStart = boat.value.reservationStart.split("T");
-			let newStartSecondPart = newStart[1].split(".")[0];
-			boat.value.reservationStart =
-				newStartSecondPart + ", " + newStart[0];
-			let newEnd = boat.value.reservationEnd.split("T");
-			let newEndSecondPart = newEnd[1].split(".")[0];
-			boat.value.reservationEnd = newEndSecondPart + ", " + newEnd[0];
-		});
-
-		var owner = ref(null);
-		axios
-			.get("/api/boatOwner/get/" + localStorage["boatOwner"])
-			.then(function (response) {
-				owner.value = response.data;
-			});
-
 		var updateToggle = ref(null);
-		var newBoat = ref({
-			newName: localStorage.name,
-			newPricePerDay: localStorage.pricePerDay,
-			newAddress: localStorage.address,
-			newPromoDescription: localStorage.promoDescription,
-			newRules: localStorage.rules,
-			newPriceAndInfo: localStorage.priceAndInfo,
-			newMaxUsers: localStorage.maxUsers,
-			newReservationStart: localStorage.reservationStart,
-			newReservationEnd: localStorage.reservationEnd,
-			newNavigationEquipment: localStorage.navigationEquipment,
-			newEquipment: localStorage.equipment,
-			newPercentTakenIfCancelled: localStorage.percentTakenIfCancelled,
-			newType: localStorage.type,
-			newLength: localStorage.length,
-			newEngineNumber: localStorage.engineNumber,
-			newEnginePower: localStorage.enginePower,
-			newMaxSpeed: localStorage.maxSpeed,
+
+		var boat = ref({
+			// Ovo se prenosi
+			id: localStorage.id,
+			ownerId: localStorage.ownerId,
+			geoLat: localStorage.geoLat,
+			geoLng: localStorage.geoLng,
+			// Ovo se menja
+			name: localStorage.name,
+			pricePerDay: localStorage.pricePerDay,
+			address: localStorage.address,
+			promoDescription: localStorage.promoDescription,
+			rules: localStorage.rules,
+			priceAndInfo: localStorage.priceAndInfo,
+			maxUsers: localStorage.maxUsers,
+			reservationStart: localStorage.reservationStart,
+			reservationEnd: localStorage.reservationEnd,
+			navigationEquipment: localStorage.navigationEquipment,
+			equipment: localStorage.equipment,
+			percentTakenIfCancelled: localStorage.percentTakenIfCancelled,
+			type: localStorage.type,
+			boatLength: localStorage.boatLength,
+			engineNumber: localStorage.engineNumber,
+			enginePower: localStorage.enginePower,
+			maxSpeed: localStorage.maxSpeed,
 		});
+
+		let newStart = boat.value.reservationStart.split("T");
+		let newStartSecondPart = newStart[1].split(".")[0];
+		var formattedReservationStart = newStartSecondPart + ", " + newStart[0];
+		let newEnd = boat.value.reservationEnd.split("T");
+		let newEndSecondPart = newEnd[1].split(".")[0];
+		var formattedReservationEnd = newEndSecondPart + ", " + newEnd[0];
+
+		// Za punjenje input-a na pocetku
+		var newBoat = boat;
 
 		// Za u <template>
 		return {
 			boat,
-			owner,
-			updateToggle,
 			newBoat,
+			formattedReservationStart,
+			formattedReservationEnd,
+			updateToggle,
 			uploadedImage,
 			canUpload,
 			selectedFile: null,
@@ -315,55 +290,40 @@ export default {
 			},
 			sendUpdatedDetails() {
 				if (
-					this.newBoat.newName == "" ||
-					this.newBoat.newPricePerDay == "" ||
+					this.newBoat.name == "" ||
+					this.newBoat.pricePerDay == "" ||
 					this.newBoat.type == "" ||
-					this.newBoat.length == "" ||
+					this.newBoat.boatLength == "" ||
 					this.newBoat.engineNumber == "" ||
 					this.newBoat.enginePower == "" ||
 					this.newBoat.maxSpeed == "" ||
-					this.newBoat.newAddress == "" ||
-					this.newBoat.newRules == "" ||
-					this.newBoat.newPriceAndInfo == "" ||
-					this.newBoat.newPromoDescription == "" ||
-					this.newBoat.newMaxUsers == "" ||
-					this.newBoat.newReservationStart == "" ||
-					this.newBoat.newReservationEnd == "" ||
-					this.newBoat.newNavigationEquipment == "" ||
-					this.newBoat.newEquipment == "" ||
-					this.newBoat.newPercentTakenIfCancelled == ""
+					this.newBoat.address == "" ||
+					this.newBoat.rules == "" ||
+					this.newBoat.priceAndInfo == "" ||
+					this.newBoat.promoDescription == "" ||
+					this.newBoat.maxUsers == "" ||
+					this.newBoat.reservationStart == "" ||
+					this.newBoat.reservationEnd == "" ||
+					this.newBoat.navigationEquipment == "" ||
+					this.newBoat.equipment == "" ||
+					this.newBoat.percentTakenIfCancelled == ""
 				) {
 					alert("Please fill out all inputs.");
 					return;
 				}
-				var sendingBoat = this.boat;
-				sendingBoat.name = this.newBoat.newName;
-				sendingBoat.pricePerDay = this.newBoat.newPricePerDay;
-				sendingBoat.type = this.newBoat.newType;
-				sendingBoat.length = this.newBoat.newLength;
-				sendingBoat.engineNumber = this.newBoat.newEngineNumber;
-				sendingBoat.enginePower = this.newBoat.newEnginePower;
-				sendingBoat.maxSpeed = this.newBoat.newMaxSpeed;
-				sendingBoat.address = this.newBoat.newAddress;
-				sendingBoat.promoDescription = this.newBoat.newPromoDescription;
-				sendingBoat.rules = this.newBoat.newRules;
-				sendingBoat.priceAndInfo = this.newBoat.newPriceAndInfo;
-				sendingBoat.maxUsers = this.newBoat.newMaxUsers;
-				sendingBoat.reservationStart = this.newBoat.newReservationStart;
-				sendingBoat.reservationEnd = this.newBoat.newReservationEnd;
-				sendingBoat.navigationEquipment =
-					this.newBoat.newNavigationEquipment;
-				sendingBoat.equipment = this.newBoat.newEquipment;
-				sendingBoat.percentTakenIfCancelled =
-					this.newBoat.newPercentTakenIfCancelled;
-
+				var sendingBoat = this.newBoat;
 				axios
 					.post("/api/boats/update/", sendingBoat)
 					.then(function (response) {
 						console.log(response);
 						console.log(response.data);
+						for (const key in response.data) {
+							if (!(key === "password")) {
+								localStorage.setItem(key, response.data[key]);
+							}
+						}
+						window.location.reload();
 					});
-				window.location.reload();
 			},
 			onFileChange(e) {
 				var files = e.target.files || e.dataTransfer.files;

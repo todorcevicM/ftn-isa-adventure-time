@@ -14,7 +14,7 @@
 				<p>Type</p>
 				<input type="text" v-model="newBoat.newType" />
 				<p>Length</p>
-				<input type="text" v-model="newBoat.newLength" />
+				<input type="text" v-model="newBoat.newBoatLength" />
 				<p>Engine Number</p>
 				<input type="text" v-model="newBoat.newEngineNumber" />
 				<p>Engine Power</p>
@@ -138,7 +138,7 @@ export default {
 					this.newBoat.newReservationEnd == "" ||
 					this.newBoat.newMaxUsers == "" ||
 					this.newBoat.newType == "" ||
-					this.newBoat.newLength == "" ||
+					this.newBoat.newBoatLength == "" ||
 					this.newBoat.newEngineNumber == "" ||
 					this.newBoat.newEnginePower == "" ||
 					this.newPercentTakenIfCancelled == "" ||

@@ -25,7 +25,7 @@ public class Boat {
 	private String name;
 
 	private String type;
-	private double length;
+	private double boatLength;
 	private int engineNumber;
 	private int enginePower;
 	private int maxSpeed;

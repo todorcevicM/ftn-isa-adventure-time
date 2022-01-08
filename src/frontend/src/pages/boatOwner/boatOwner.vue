@@ -368,8 +368,14 @@ export default {
 				});
 			},
 			viewBoat(id) {
-				// console.log(id);
-				window.location.href = "/boatEdit/" + id;
+				axios.get("/api/boats/get/" + id).then(function (response) {
+					for (const key in response.data) {
+						if (!(key === "password")) {
+							localStorage.setItem(key, response.data[key]);
+						}
+					}
+					window.location.href = "/boatEdit/" + id;
+				});
 			},
 			addNewBoat() {
 				console.log(localStorage.emailHash);
