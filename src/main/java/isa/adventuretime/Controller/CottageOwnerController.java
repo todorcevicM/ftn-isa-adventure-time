@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import isa.adventuretime.DTO.CottageNameRoomBookingDTO;
 import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Entity.CottageOwner;
+import isa.adventuretime.Entity.RegisteredUser;
 import isa.adventuretime.Entity.RoomBooking;
 import isa.adventuretime.Service.CottageOwnerService;
 import isa.adventuretime.Service.CottageService;
@@ -32,6 +33,7 @@ public class CottageOwnerController {
 
 	@Autowired
 	private CottageService cottageService;
+
 
 	@GetMapping("/get")
 	public ResponseEntity<ArrayList<CottageOwner>> getAll() {
@@ -82,5 +84,11 @@ public class CottageOwnerController {
 	@PostMapping(path = "/delete/{id}")
 	public ResponseEntity<Boolean> deleteCottageOwner(@PathVariable("id") Long id) {
 		return new ResponseEntity<Boolean>(cottageOwnerService.markDeleted(id), HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/acquireCustomer/{id}")
+	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id){
+
+		return null;
 	}
 }

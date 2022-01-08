@@ -16,9 +16,11 @@ import isa.adventuretime.DTO.BoatNameBoatBookingDTO;
 import isa.adventuretime.Entity.Boat;
 import isa.adventuretime.Entity.BoatBooking;
 import isa.adventuretime.Entity.BoatOwner;
+import isa.adventuretime.Entity.RegisteredUser;
 import isa.adventuretime.Service.BoatBookingService;
 import isa.adventuretime.Service.BoatOwnerService;
 import isa.adventuretime.Service.BoatService;
+import isa.adventuretime.Service.RegisteredUserService;
 
 @RestController
 @RequestMapping("/api/boatOwner")
@@ -32,6 +34,9 @@ public class BoatOwnerController {
 
 	@Autowired
 	private BoatService boatService;
+
+	@Autowired
+	private RegisteredUserService registeredUserService;
 
 	@GetMapping("/get")
 	public ResponseEntity<ArrayList<BoatOwner>> getAll() {
@@ -76,5 +81,11 @@ public class BoatOwnerController {
 		}
 
 		return new ResponseEntity<>(boatNameBoatBookingDTOs, HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/currentCustomers/{id}")
+	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id){
+
+		return new ResponseEntity<>(registeredUserService.getAllUsersOfBoatOwner(id), HttpStatus.OK);
 	}
 }

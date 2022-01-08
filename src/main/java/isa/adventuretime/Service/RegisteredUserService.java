@@ -71,4 +71,8 @@ public class RegisteredUserService {
 				|| boatBookingRepo.existsByRegisteredUserIdAndStartAfter(id, now_plus_3)
 				|| roomBookingRepo.existsByRegisteredUserIdAndStartAfter(id, now_plus_3);
 	}
+
+	public ArrayList<RegisteredUser> getAllUsersOfBoatOwner(Long boatOwnerId){
+		return registeredUserRepo.getAllUsersOfBoatOwner(boatOwnerId);
+	}
 }
