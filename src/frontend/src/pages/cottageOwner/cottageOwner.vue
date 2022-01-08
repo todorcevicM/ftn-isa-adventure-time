@@ -162,6 +162,28 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Spacer -->
+			<div style="height: 80px"></div>
+			<div
+				style="
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;">
+				<h3>Current Room Bookings</h3>
+				<button style="margin: 0">Sort</button>
+			</div>
+			<div class="table">
+				<div v-for="cc in currentCustomers" :key="cc">
+					<p>User : {{ cc.lastname }}, {{ cc.name }} </p>
+					<button class="entryApprove" @click="createNewBooking(cc.id)">
+						Create New Booking
+					</button>
+				</div>
+			</div>
+
+
+
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<div class="table">
@@ -272,10 +294,19 @@ export default {
 				cottages.value = response.data;
 			});
 
+		var currentCustomers = ref(null);
+		axios
+			.get("/api/cottageOwner/currentCustomers/" + localStorage["userId"])
+			.then(function (response) {
+				console.log(response.data);
+				currentCustomers.value = response.data;
+			});
+
 		var searchQuery = ref(null);
 		return {
 			user,
 			pastRoomBookings,
+			currentCustomers,
 			newUser,
 			updateToggle,
 			firstPassword,
@@ -416,6 +447,11 @@ export default {
 							);
 						}
 					});
+			},
+			createNewBooking(userId) {
+				localStorage.setItem("whichUser", userId);
+				localStorage.setItem("type", "COTTAGE_OWNER");
+				window.location.href = "/bookingCreate/";
 			},
 		};
 	},

@@ -23,4 +23,6 @@ public interface BoatRepo extends JpaRepository<Boat, Long> {
 
 	public ArrayList<Boat> getAllByNameContainsAndMaxUsersGreaterThanEqual(String name, int maxUsers);
 
+	public ArrayList<Boat> findByOwnerId(Long id);
+
 }

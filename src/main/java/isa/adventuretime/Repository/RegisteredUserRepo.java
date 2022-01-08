@@ -27,6 +27,6 @@ public interface RegisteredUserRepo extends JpaRepository<RegisteredUser, Long> 
 	public ArrayList<RegisteredUser> getAllUsersOfCottageOwner(Date currentDate, Long cottageOwnerId);
 
 	@Query(value =  "select * from registered_user where id in" +
-					"(select distinct registered_user_id from adventure_booking where ? between adventure_booking.start and adventure_booking.end and booked_instructor_id = 1)", nativeQuery = true)
+					"(select distinct registered_user_id from adventure_booking where ? between adventure_booking.start and adventure_booking.end and booked_instructor_id = ?)", nativeQuery = true)
 	public ArrayList<RegisteredUser> getAllUsersOfFishingInstructor(Date currentDate, Long fishingInstructorId);
 }

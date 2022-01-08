@@ -68,4 +68,8 @@ public class BoatController {
 		return new ResponseEntity<Boat>(boatService.save(boatToSave), HttpStatus.OK);
 	}
 
+	@GetMapping(path = "/getByOwner/{id}")
+	public ResponseEntity<ArrayList<Boat>> getBoatsByOwner(@PathVariable("id") Long id) {
+		return new ResponseEntity<ArrayList<Boat>>(boatService.findByOwnerId(id), HttpStatus.OK);
+	}
 }

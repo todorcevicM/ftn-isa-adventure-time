@@ -53,6 +53,7 @@ public class RoomBooking {
 		this.start = start;
 		this.end = end;
 		this.extraService = extraService;
+		this.maxUsers = maxUsers;
 		this.cottageId = cottageId;
 		this.quickBooking = false;
 		this.price = 0;

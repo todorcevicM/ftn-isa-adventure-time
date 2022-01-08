@@ -89,7 +89,7 @@ public class CottageOwnerController {
 		return new ResponseEntity<Boolean>(cottageOwnerService.markDeleted(id), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/acquireCustomer/{id}")
+	@GetMapping(path = "/currentCustomers/{id}")
 	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id){
 		return new ResponseEntity<>(registeredUserService.getAllUsersOfCottageOwner(id), HttpStatus.OK);
 	}

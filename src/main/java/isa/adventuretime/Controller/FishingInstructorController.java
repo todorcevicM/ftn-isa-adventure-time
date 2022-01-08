@@ -85,9 +85,17 @@ public class FishingInstructorController {
 		fishingInstructorService.markDeleted(id);
 	}
 
-	@GetMapping(path = "/acquireCustomer/{id}")
+	@GetMapping(path = "/currentCustomers/{id}")
 	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id){
-		return new ResponseEntity<>(registeredUserService.getAllUsersOfFishingInstructor(id), HttpStatus.OK);
+		ArrayList<RegisteredUser> registeredUsers = registeredUserService.getAllUsersOfFishingInstructor(id);
+
+
+		// System.out.println(registeredUsers.size());
+		// for (RegisteredUser registeredUser : registeredUsers) {
+		// 	System.out.println(registeredUser.getName());
+		// }
+
+		return new ResponseEntity<>(registeredUsers, HttpStatus.OK);
 	}
 
 }

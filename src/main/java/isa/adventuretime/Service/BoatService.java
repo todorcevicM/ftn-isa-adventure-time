@@ -58,4 +58,8 @@ public class BoatService {
 		}
 		return retBoats;
 	}
+
+	public ArrayList<Boat> findByOwnerId(Long id) {
+		return boatRepo.findByOwnerId(id);
+	}
 }

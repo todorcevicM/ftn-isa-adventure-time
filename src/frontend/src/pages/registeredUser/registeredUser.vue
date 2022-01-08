@@ -84,7 +84,6 @@
 					<p class="entryName">{{ pbb.start }}</p>
 					<p class="entryRequestText">{{ pbb.end }}</p>
 					<p>{{ pbb.boatBooking.extraService }}</p>
-					<p>Price : {{ pbb.boatBooking.price }}.00</p>
 					<button
 						class="entryApprove"
 						@click="sendRevision(pbb.boatBooking.id, 'BOAT')"
@@ -116,7 +115,6 @@
 					<p class="entryName">{{ pab.start }}</p>
 					<p class="entryRequestText">{{ pab.end }}</p>
 					<p>{{ pab.adventureBooking.extraService }}</p>
-					<p>Price : {{ pab.adventureBooking.price }}.00</p>
 					<button
 						class="entryApprove"
 						@click="
@@ -152,7 +150,6 @@
 					<p class="entryName">{{ prb.start }}</p>
 					<p class="entryRequestText">{{ prb.end }}</p>
 					<p>{{ prb.roomBooking.extraService }}</p>
-					<p>Price : {{ prb.roomBooking.price }}.00</p>
 					<button
 						class="entryApprove"
 						@click="sendRevision(prb.roomBooking.id, COTTAGE)"
@@ -185,7 +182,6 @@
 					<p class="entryName">{{ pbb.start }}</p>
 					<p class="entryRequestText">{{ pbb.end }}</p>
 					<p>{{ pbb.extraService }}</p>
-					<p>Price : {{ pbb.price }}.00</p>
 					<button class="entryDeny" @click="notImplemented()">
 						Cancel
 					</button>
@@ -207,7 +203,6 @@
 					<p class="entryName">{{ pab.start }}</p>
 					<p class="entryRequestText">{{ pab.end }}</p>
 					<p>{{ pab.extraService }}</p>
-					<p>Price : {{ pab.price }}.00</p>
 					<button class="entryDeny" @click="notImplemented()">
 						Cancel
 					</button>
@@ -229,7 +224,6 @@
 					<p class="entryName">{{ prb.start }}</p>
 					<p class="entryRequestText">{{ prb.end }}</p>
 					<p>{{ prb.extraService }}</p>
-					<p>Price : {{ prb.price }}.00</p>
 					<button class="entryDeny" @click="notImplemented()">
 						Cancel
 					</button>

@@ -177,6 +177,28 @@
 					</div>
 				</div>
 			</div>
+
+
+			<!-- Spacer -->
+			<div style="height: 80px"></div>
+			<div
+				style="
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;">
+				<h3>Current Adventure Bookings</h3>
+				<button style="margin: 0">Sort</button>
+			</div>
+			<div class="table">
+				<div v-for="cc in currentCustomers" :key="cc">
+					<p>User : {{ cc.lastname }}, {{ cc.name }} </p>
+					<button class="entryApprove" @click="createNewBooking(cc.id)">
+						Create New Booking
+					</button>
+				</div>
+			</div>
+
+
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<div class="table">
@@ -309,10 +331,21 @@ export default {
 				console.log(response.data);
 				pastAdventureBookings.value = response.data;
 			});
+
+		var currentCustomers = ref(null);
+		axios
+			.get("/api/fishingInstructor/currentCustomers/" + localStorage["userId"])
+			.then(function (response) {
+				console.log(response.data);
+				currentCustomers.value = response.data;
+			});
+
+
 		var searchQuery = ref(null);
 		return {
 			user,
 			pastAdventureBookings,
+			currentCustomers,
 			newUser,
 			updateToggle,
 			firstPassword,
@@ -472,6 +505,12 @@ export default {
 							);
 						}
 					});
+			},
+			createNewBooking(forUser) {
+				localStorage.setItem("instructorId", localStorage.userId);
+				localStorage.setItem("whichUser", forUser);
+				localStorage.setItem("type", "FISHING_INSTRUCTOR");
+				window.location.href = "/bookingCreate/";
 			},
 		};
 	},

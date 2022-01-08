@@ -70,6 +70,10 @@ module.exports = {
 			entry: "src/pages/registeredUserSearch/main.js",
 			title: "Search",
 		},
+		bookingCreate: {
+			entry: "src/pages/bookingCreate/main.js",
+			title: "Booking Create Page",
+		}
 	},
 	devServer: {
 		port: 3000,

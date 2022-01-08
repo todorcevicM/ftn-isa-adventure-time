@@ -156,6 +156,27 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Spacer -->
+			<div style="height: 80px"></div>
+			<div
+				style="
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;">
+				<h3>Current Boat Bookings</h3>
+				<button style="margin: 0">Sort</button>
+			</div>
+			<div class="table">
+				<div v-for="cc in currentCustomers" :key="cc">
+					<p>User : {{ cc.lastname }}, {{ cc.name }} </p>
+					<button class="entryApprove" @click="createNewBooking(cc.id)">
+						Create New Booking
+					</button>
+				</div>
+			</div>
+
+
 			<!-- Spacer -->
 			<div style="height: 80px"></div>
 			<div class="table">
@@ -254,10 +275,19 @@ export default {
 				console.log(response.data);
 				pastBoatBookings.value = response.data;
 			});
+		var currentCustomers = ref(null);
+		axios
+			.get("/api/boatOwner/currentCustomers/" + localStorage["userId"])
+			.then(function (response) {
+				console.log(response.data);
+				currentCustomers.value = response.data;
+			});
+
 		var searchQuery = ref(null);
 		return {
 			user,
 			pastBoatBookings,
+			currentCustomers,
 			newUser,
 			updateToggle,
 			firstPassword,
@@ -405,6 +435,11 @@ export default {
 							);
 						}
 					});
+			},
+			createNewBooking(userId) {
+				localStorage.setItem("whichUser", userId);
+				localStorage.setItem("type", "BOAT_OWNER");
+				window.location.href = "/bookingCreate/";
 			},
 		};
 	},

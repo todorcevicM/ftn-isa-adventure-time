@@ -79,5 +79,4 @@ public class CottageController {
 		newCottage.setHidden(false);
 		return new ResponseEntity<Cottage>(cottageService.save(newCottage), HttpStatus.OK);
 	}
-
 }

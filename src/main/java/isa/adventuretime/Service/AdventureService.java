@@ -61,4 +61,8 @@ public class AdventureService {
 		}
 		return retAdventures;
 	}
+
+	public ArrayList<Adventure> findByInstructorId(Long id) {
+		return adventureRepo.findByInstructorId(id);
+	}
 }
