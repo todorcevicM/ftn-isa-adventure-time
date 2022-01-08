@@ -67,9 +67,8 @@ public class AdventureController {
 
 	@PostMapping(path = "/update")
 	public ResponseEntity<Adventure> updateAdventure(RequestEntity<Adventure> adventure) {
-		System.out.println(adventure.getBody().toString());
-		System.out.println(adventure.getBody().getInstructorId());
-		return new ResponseEntity<Adventure>(adventureService.save(adventure.getBody()), HttpStatus.OK);
+		Adventure newAdventure = adventure.getBody();
+		newAdventure.setHidden(false);
+		return new ResponseEntity<Adventure>(adventureService.save(newAdventure), HttpStatus.OK);
 	}
-
 }

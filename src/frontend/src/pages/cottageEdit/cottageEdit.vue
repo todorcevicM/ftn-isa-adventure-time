@@ -57,7 +57,9 @@
 				<p class="smallText">Price per Day</p>
 				<p v-if="!updateToggle">${{ cottage.pricePerDay }}.00 / Day</p>
 				<input
-					type="text"
+					type="number"
+					min="0"
+					max="1000"
 					v-if="updateToggle"
 					v-model="newCottage.pricePerDay"
 				/>
@@ -248,6 +250,45 @@ export default {
 					return require("../../assets/images/cottage1.png");
 				}
 			},
+			addRoom() {
+				var numOfBeds = prompt("Enter number of beds: ");
+				if (
+					isNaN(numOfBeds.toString()) == true ||
+					numOfBeds <= 0 ||
+					numOfBeds >= 10
+				) {
+					alert("Please enter a correct number of beds.");
+					return;
+				}
+				var cottageId = localStorage.id;
+				axios
+					.post("/api/rooms/create/" + cottageId, numOfBeds, {
+						headers: {
+							"Content-Type": "application/json",
+						},
+					})
+					.then(function (response) {
+						console.log(response.data);
+						window.location.reload();
+					});
+			},
+			updateRoom(roomId) {
+				var numOfBeds = prompt("Enter new number of beds :");
+				if (
+					isNaN(numOfBeds.toString()) == true ||
+					numOfBeds <= 0 ||
+					numOfBeds >= 10
+				) {
+					alert("Please enter a correct number of beds.");
+					return;
+				}
+				axios.post("/api/rooms/update/" + roomId, numOfBeds, {
+					headers: {
+						"Content-Type": "application/json",
+					},
+				});
+				window.location.reload();
+			},
 			deleteRoom(roomId) {
 				axios
 					.post("/api/rooms/delete/" + roomId)
@@ -260,15 +301,6 @@ export default {
 							window.location.reload();
 						}
 					});
-			},
-			updateRoom(roomId) {
-				var newNumOfBeds = prompt("Enter new number of beds :");
-				axios.post("/api/rooms/update/" + roomId, newNumOfBeds, {
-					headers: {
-						"Content-Type": "application/json",
-					},
-				});
-				window.location.reload();
 			},
 			updateDetails() {
 				this.updateToggle = true;
@@ -297,24 +329,6 @@ export default {
 								localStorage.setItem(key, response.data[key]);
 							}
 						}
-						window.location.reload();
-					});
-			},
-			addRoom() {
-				var numOfBeds = prompt("Enter number of beds: ");
-				if (isNaN(numOfBeds.toString()) == true) {
-					alert("Please enter a correct number of beds.");
-					return;
-				}
-				var cottageId = localStorage.id;
-				axios
-					.post("/api/rooms/create/" + cottageId, numOfBeds, {
-						headers: {
-							"Content-Type": "application/json",
-						},
-					})
-					.then(function (response) {
-						console.log(response.data);
 						window.location.reload();
 					});
 			},

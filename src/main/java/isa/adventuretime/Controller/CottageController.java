@@ -75,7 +75,9 @@ public class CottageController {
 
 	@PostMapping(path = "/update")
 	public ResponseEntity<Cottage> updateCottage(RequestEntity<Cottage> cottage) {
-		return new ResponseEntity<Cottage>(cottageService.save(cottage.getBody()), HttpStatus.OK);
+		Cottage newCottage = cottage.getBody();
+		newCottage.setHidden(false);
+		return new ResponseEntity<Cottage>(cottageService.save(newCottage), HttpStatus.OK);
 	}
 
 }

@@ -1,41 +1,50 @@
 <template>
 	<div>
 		<div id="logo-container">
-			<div class="underlined">
-				<img src="../../assets/wheel.svg" />
-				<p>Adventure Time</p>
-			</div>
+			<a href="/" style="color: inherit">
+				<div class="underlined">
+					<img src="../../assets/wheel.svg" />
+					<p>Adventure Time</p>
+				</div>
+			</a>
 		</div>
 		<div class="mainFlex">
 			<div class="rightFlex">
-				<p>Name</p>
-				<input type="text" v-model="newCottage.newName" />
+				<p class="smallText">Name</p>
+				<input type="text" v-model="newCottage.name" />
 
-				<p>Address</p>
-				<input type="text" v-model="newCottage.newAddress" />
+				<p class="smallText">Price per Day</p>
+				<input
+					type="number"
+					min="0"
+					max="1000"
+					v-model="newCottage.pricePerDay"
+				/>
+				<p class="smallText">Address</p>
+				<input type="text" v-model="newCottage.address" />
 
-				<p>Longitude</p>
-				<input type="text" v-model="newCottage.newGeoLng" />
-				<p>Latitude</p>
-				<input type="text" v-model="newCottage.newGeoLat" />
+				<p class="smallText">Longitude</p>
+				<input type="range" v-model="newCottage.geoLng" />
+				<p class="smallText">Latitude</p>
+				<input type="range" v-model="newCottage.geoLat" />
 
-				<p>Promo</p>
-				<input type="text" v-model="newCottage.newPromoDescription" />
+				<p class="smallText">Promo</p>
+				<input type="text" v-model="newCottage.promoDescription" />
 
-				<p>Rules</p>
-				<input type="text" v-model="newCottage.newRules" />
+				<p class="smallText">Rules</p>
+				<input type="text" v-model="newCottage.rules" />
 
-				<p>Info</p>
-				<input type="text" v-model="newCottage.newPriceAndInfo" />
+				<p class="smallText">Info</p>
+				<input type="text" v-model="newCottage.priceAndInfo" />
 
-				<p>Rooms :</p>
+				<p class="smallText">Rooms</p>
 				<div class="roomsDiv">
 					<div
 						class="roomDiv"
 						v-for="(item, key) in roomsToAdd"
 						:key="item"
 					>
-						<p class="smallText">
+						<p>
 							Room {{ key + 1 }} : {{ item.numberOfBeds }} beds.
 						</p>
 						<button class="edit" @click="updateRoom(key)">
@@ -51,17 +60,21 @@
 					</div>
 				</div>
 
-				<p>Start</p>
-				<input type="text" v-model="newCottage.newReservationStart" />
+				<p class="smallText">Reservation Start</p>
+				<input type="date" v-model="newCottage.reservationStart" />
 
-				<p>End</p>
-				<input type="text" v-model="newCottage.newReservationEnd" />
+				<p class="smallText">Reservation End</p>
+				<input type="date" v-model="newCottage.reservationEnd" />
 
-				<p>Person limit</p>
-				<input type="text" v-model="newCottage.newMaxUsers" />
-
-				<p>Owner : {{ cottageOwnerName }}</p>
-
+				<p class="smallText">Person Limit</p>
+				<input
+					type="number"
+					min="1"
+					max="10"
+					v-model="newCottage.maxUsers"
+				/>
+				<!-- Spacer -->
+				<div style="margin-top: 15px"></div>
 				<button
 					@click="submit()"
 					style="background-color: rgb(108, 207, 108)"
@@ -79,34 +92,29 @@ import axios from "axios";
 export default {
 	setup() {
 		var emailHash = localStorage.emailHash;
-		var cottageOwnerName = ref(null);
 		var cottageOwnerId = ref(null);
-		axios
-			.get("/api/cottageOwner/getByEmail/" + emailHash)
-			.then(function (response) {
-				cottageOwnerName.value = response.data.name;
-				localStorage.setItem("cottageOwnerId", response.data.id);
-			});
+		var roomsToAdd = ref([]);
 
 		var newCottage = ref({
-			newName: "",
-			newAddress: "",
-			newGeoLng: "",
-			newGeoLat: "",
-			newPromoDescription: "",
-			newRules: "",
-			newPriceAndInfo: "",
-			newReservationStart: "",
-			newReservationEnd: "",
-			newMaxUsers: "",
-			newOwnerId: localStorage.cottageOwnerId,
+			// Ovo se prenosi
+			ownerId: localStorage.userId,
+			// Ovo se menja
+			name: "",
+			pricePerDay: "",
+			address: "",
+			geoLng: "",
+			geoLat: "",
+			promoDescription: "",
+			rules: "",
+			priceAndInfo: "",
+			reservationStart: "",
+			reservationEnd: "",
+			maxUsers: "",
 		});
-		var roomsToAdd = ref([]);
 
 		// Za u <template>
 		return {
 			emailHash,
-			cottageOwnerName,
 			cottageOwnerId,
 			newCottage,
 			roomsToAdd,
@@ -115,19 +123,39 @@ export default {
 				// POST za sobe sa tim id-em
 
 				if (
-					this.newCottage.newName == "" ||
-					this.newCottage.newAddress == "" ||
-					this.newCottage.newRules == "" ||
-					this.newCottage.newPriceAndInfo == "" ||
-					this.newCottage.newPromoDescription == "" ||
-					this.newCottage.newReservationStart == "" ||
-					this.newCottage.newReservationEnd == "" ||
-					this.newCottage.newMaxUsers == "" ||
-					this.newCottage.newPercentTakenIfCancelled == "" ||
-					this.newCottage.newGeoLng == "" ||
-					this.newCottage.newGeoLat == ""
+					this.newCottage.name == "" ||
+					this.newCottage.address == "" ||
+					this.newCottage.rules == "" ||
+					this.newCottage.priceAndInfo == "" ||
+					this.newCottage.promoDescription == "" ||
+					this.newCottage.reservationStart == "" ||
+					this.newCottage.reservationEnd == "" ||
+					this.newCottage.maxUsers == "" ||
+					this.newCottage.percentTakenIfCancelled == "" ||
+					this.newCottage.geoLng == "" ||
+					this.newCottage.geoLat == ""
 				) {
 					alert("Please fill out all inputs.");
+					return;
+				}
+				if (
+					isNaN(this.newCottage.geoLng) == true ||
+					isNaN(this.newCottage.geoLat) == true ||
+					isNaN(this.newCottage.pricePerDay) == true ||
+					isNaN(this.newCottage.maxUsers) == true ||
+					this.newCottage.pricePerDay < 1 ||
+					this.newCottage.pricePerDay > 1000 ||
+					this.newCottage.maxUsers < 1 ||
+					this.newCottage.maxUsers > 10
+				) {
+					alert("Please fill out numerical inputs correctly.");
+					return;
+				}
+				if (
+					new Date(this.newCottage.reservationStart).getTime() >=
+					new Date(this.newCottage.reservationEnd).getTime()
+				) {
+					alert("Please enter valid dates.");
 					return;
 				}
 				if (this.roomsToAdd.length == 0) {
@@ -135,29 +163,25 @@ export default {
 					return;
 				}
 
-				var sendingCottage = this.newCottage;
-				// var sendingCottage = this.newCottage.value;
-				sendingCottage.name = this.newCottage.newName;
-				sendingCottage.address = this.newCottage.newAddress;
-				sendingCottage.rules = this.newCottage.newRules;
-				sendingCottage.priceAndInfo = this.newCottage.newPriceAndInfo;
-				sendingCottage.promoDescription =
-					this.newCottage.newPromoDescription;
-				sendingCottage.reservationStart =
-					this.newCottage.newReservationStart;
-				sendingCottage.reservationEnd =
-					this.newCottage.newReservationEnd;
-				sendingCottage.maxUsers = this.newCottage.newMaxUsers;
-				sendingCottage.ownerId = this.newCottage.newOwnerId;
-				sendingCottage.geoLng = this.newCottage.newGeoLng;
-				sendingCottage.geoLat = this.newCottage.newGeoLat;
+				// var sendingCottage = this.newCottage;
+				// sendingCottage.name = this.newCottage.newName;
+				// sendingCottage.address = this.newCottage.newAddress;
+				// sendingCottage.rules = this.newCottage.newRules;
+				// sendingCottage.priceAndInfo = this.newCottage.newPriceAndInfo;
+				// sendingCottage.promoDescription =
+				// 	this.newCottage.newPromoDescription;
+				// sendingCottage.reservationStart =
+				// 	this.newCottage.newReservationStart;
+				// sendingCottage.reservationEnd =
+				// 	this.newCottage.newReservationEnd;
+				// sendingCottage.maxUsers = this.newCottage.newMaxUsers;
+				// sendingCottage.ownerId = this.newCottage.newOwnerId;
+				// sendingCottage.geoLng = this.newCottage.newGeoLng;
+				// sendingCottage.geoLat = this.newCottage.newGeoLat;
 
 				axios
-					.post("/api/cottages/update", sendingCottage)
+					.post("/api/cottages/update", this.newCottage)
 					.then(function (response1) {
-						console.log("Response 1 : ");
-						console.log(response1.data);
-						console.log(response1.data.id);
 						axios
 							.post(
 								"/api/rooms/createAll/" + response1.data.id,
@@ -166,25 +190,39 @@ export default {
 							.then(function (response2) {
 								console.log("Response 2 : ");
 								console.log(response2.data);
+								alert("Cottage is created!");
+								window.location.assign(
+									"/cottageOwner/" + localStorage.emailHash
+								);
 							});
 					});
-
-				alert("Cottage is created!");
-				window.location.assign(
-					"/cottageOwner/" + localStorage.emailHash
-				);
 			},
 			addRoom() {
 				var numOfBeds = prompt("Enter number of beds: ");
+				if (
+					isNaN(numOfBeds.toString()) == true ||
+					numOfBeds <= 0 ||
+					numOfBeds >= 10
+				) {
+					alert("Please enter a correct number of beds.");
+					return;
+				}
 				this.roomsToAdd.push({ numberOfBeds: numOfBeds });
-				console.log(this.roomsToAdd);
+			},
+			updateRoom(key) {
+				var numOfBeds = prompt("Enter new number of beds :");
+				if (
+					isNaN(numOfBeds.toString()) == true ||
+					numOfBeds <= 0 ||
+					numOfBeds >= 10
+				) {
+					alert("Please enter a correct number of beds.");
+					return;
+				}
+				this.roomsToAdd[key].numberOfBeds = numOfBeds;
 			},
 			deleteRoom(key) {
 				this.roomsToAdd.splice(key, 1);
-			},
-			updateRoom(key) {
-				var updatedValue = prompt("Enter number of rooms");
-				this.roomsToAdd[key].numberOfBeds = updatedValue;
 			},
 		};
 	},
@@ -193,9 +231,7 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
-
 body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -203,62 +239,53 @@ body {
 	font-family: Aleo;
 	margin: 0;
 }
-
 #logo-container {
 	margin-top: 8px;
 	text-align: center;
 }
-
 .underlined {
 	display: inline-block;
 	border-bottom: #ad6800 3px solid;
 	height: 43px;
 }
-
 .underlined img {
 	height: 40px;
 	margin-bottom: -6px;
 	margin-right: -7px;
 }
-
 .underlined p {
 	margin-left: 10px;
 	font-size: 40px;
 	letter-spacing: -1px;
 	display: inline;
 }
-
 .mainFlex {
 	margin: 50px 200px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 }
-
 .leftFlex {
 	display: flex;
 	flex-direction: column;
 }
-
 h4 {
 	margin: 0;
 	font-weight: 400;
-	font-size: 50px;
+	font-size: 42px;
 }
-
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
 }
-
 .leftFlex img {
-	width: 800px;
-	height: 450px;
+	width: 650px;
+	height: 360px;
 	border-radius: 15px;
 	object-fit: cover;
 }
-
 .rightFlex {
-	width: 350px;
+	height: min-content;
+	min-width: 320px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -267,21 +294,18 @@ h4 {
 	border-radius: 15px;
 	border: 2px solid #da9e46;
 }
-
 .rightFlex p {
 	margin: 4px 0;
-	font-size: 36px;
+	font-size: 24px;
 }
-
 .rightFlex .smallText {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
+	color: #9e6b1d;
 }
-
 button {
 	margin: 0 auto;
 	height: 40px;
-	width: 190px;
 	background-color: #da9e46;
 	border: none;
 	border-radius: 4px;
@@ -289,11 +313,27 @@ button {
 	font-size: 24px;
 	transition: 0.15s;
 }
-
 button:hover {
 	background-color: #9e6b1d;
 	color: white;
 	cursor: pointer;
+}
+input,
+select {
+	/* width: 260px; */
+	/* height: 32px; */
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 20px;
+	background-color: #f0f0f0;
+}
+input:focus,
+select:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
+}
+input:invalid {
+	border: 2px solid #b11919;
 }
 .addition {
 	background-color: rgb(108, 207, 108);
