@@ -61,7 +61,7 @@ public class BoatOwnerService {
 	public Boolean markDeleted(Long id) {
 		Date now = new Date();
 		ArrayList<Boat> boats = boatRepo.findAllByOwnerId(id);
-		boolean flag = false;
+		Boolean flag = false;
 
 		for (Boat boat : boats) {
 			if (boatBookingRepo.existsByBookedBoatIdAndStartAfter(boat.getId(), now)) {
