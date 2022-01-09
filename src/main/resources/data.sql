@@ -91,7 +91,7 @@ insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, 
             values (1, 1, "2023-01-05", "2023-01-06", 0, false, "", 6);
 --akcija
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (0, 1, "2023-01-05", "2023-01-06", 35, true, "None", 6);
+            values (0, 1, "2023-01-05", "2023-01-06", 35, true, "", 6);
 
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 

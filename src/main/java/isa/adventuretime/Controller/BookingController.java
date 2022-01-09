@@ -343,7 +343,6 @@ public class BookingController {
 				HttpStatus.OK);
 	}
 
-	// TODO: test this
 	@PostMapping(path = "/cancelBooking")
 	public Boolean cancleBooking(RequestEntity<String> bookingParam) {
 		String split[] = bookingParam.getBody().split(",");

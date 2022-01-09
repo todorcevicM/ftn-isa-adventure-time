@@ -88,13 +88,6 @@ public class FishingInstructorController {
 	@GetMapping(path = "/currentCustomers/{id}")
 	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id){
 		ArrayList<RegisteredUser> registeredUsers = registeredUserService.getAllUsersOfFishingInstructor(id);
-
-
-		// System.out.println(registeredUsers.size());
-		// for (RegisteredUser registeredUser : registeredUsers) {
-		// 	System.out.println(registeredUser.getName());
-		// }
-
 		return new ResponseEntity<>(registeredUsers, HttpStatus.OK);
 	}
 

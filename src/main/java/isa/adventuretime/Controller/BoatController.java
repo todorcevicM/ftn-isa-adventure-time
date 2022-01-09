@@ -16,7 +16,7 @@ import isa.adventuretime.Entity.Boat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
+@RestController 
 @RequestMapping(path = "/api/boats")
 public class BoatController {
 

@@ -19,7 +19,6 @@ public class SubscriptionController {
     //sub i unsub
     @PostMapping(path = "/subscribe")
     public Boolean subscribe(RequestEntity<String> subParam){
-        //ako nije vec sub
         System.out.println(subParam.getBody());
         String split[] = subParam.getBody().split(";");
         Long subber = Long.parseLong(split[0]);

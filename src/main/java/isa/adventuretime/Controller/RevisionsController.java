@@ -87,7 +87,6 @@ public class RevisionsController {
 		revision.setApproved(true);
 		revisionsService.save(revision);
 
-		// TODO: send email to user
 		switch (revision.getType()) {
 			case BOAT:
 				BoatBooking boatBooking = boatBookingService.getById(revision.getBookingId());
