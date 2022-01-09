@@ -182,7 +182,7 @@
 					<p class="entryName">{{ pbb.start }}</p>
 					<p class="entryRequestText">{{ pbb.end }}</p>
 					<p>{{ pbb.extraService }}</p>
-					<button class="entryDeny" @click="notImplemented()">
+					<button class="entryDeny" @click="cancelBooking(pbb.id, 'BOAT')">
 						Cancel
 					</button>
 				</div>
@@ -203,7 +203,7 @@
 					<p class="entryName">{{ pab.start }}</p>
 					<p class="entryRequestText">{{ pab.end }}</p>
 					<p>{{ pab.extraService }}</p>
-					<button class="entryDeny" @click="notImplemented()">
+					<button class="entryDeny" @click="cancelBooking(pab.id, 'ADVENTURE')">
 						Cancel
 					</button>
 				</div>
@@ -224,7 +224,7 @@
 					<p class="entryName">{{ prb.start }}</p>
 					<p class="entryRequestText">{{ prb.end }}</p>
 					<p>{{ prb.extraService }}</p>
-					<button class="entryDeny" @click="notImplemented()">
+					<button class="entryDeny" @click="cancelBooking(prb.id, 'COTTAGE')">
 						Cancel
 					</button>
 				</div>
@@ -911,6 +911,23 @@ export default {
 						console.log("Response : ");
 						console.log(response.data);
 						alert("You have been unsubscribed from this booking.");
+						window.location.reload();
+					});
+			},
+			cancelBooking(bookingId, type) {
+				axios
+					.post(
+						"/api/booking/cancelBooking",
+						{
+							bookingId: bookingId,
+							type: type,
+						},
+						{ headers: { "Content-Type": "application/json" } }
+					)
+					.then(function (response) {
+						console.log("Response : ");
+						console.log(response.data);
+						alert("Booking cancelled!");
 						window.location.reload();
 					});
 			},

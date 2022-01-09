@@ -80,8 +80,10 @@ public class BookingController {
         );
         int days = Integer.parseInt(params[3].split(":")[1]);
         int guests = Integer.parseInt(params[4].split(":")[1]);
-        Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", ""));
-        Long userId = Long.parseLong(params[6].split(":")[1].replace("\"", "").replace("}", ""));
+        Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
+        // Long userId = Long.parseLong(params[6].split(":")[1].replace("\"", "").replace("}", ""));
+        // TODO: ovde fali od userId sa fronta
+        Long userId = 1L;
 
         Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
@@ -130,8 +132,10 @@ public class BookingController {
         );
         int days = Integer.parseInt(params[3].split(":")[1]);
         int guests = Integer.parseInt(params[4].split(":")[1]);
-        Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", ""));
-        Long userId = Long.parseLong(params[6].split(":")[1].replace("\"", "").replace("}", ""));
+        Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
+        // Long userId = Long.parseLong(params[6].split(":")[1].replace("\"", "").replace("}", ""));
+        // TODO: ovde fali od userId sa fronta
+        Long userId = 1L;
 
         Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
@@ -175,8 +179,11 @@ public class BookingController {
         );
         int days = Integer.parseInt(params[3].split(":")[1]);
         int guests = Integer.parseInt(params[4].split(":")[1]);
-        Long instructorId = Long.parseLong(params[5].split(":")[1].replace("\"", ""));
-        Long userId = Long.parseLong(params[6].split(":")[1].replace("\"", "").replace("}", ""));
+        Long instructorId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
+        // Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
+        // Long userId = Long.parseLong(params[6].split(":")[1].replace("\"", "").replace("}", ""));
+        // TODO: ovde fali od userId sa fronta
+        Long userId = 1L;
 
         Date startDate = date.getTime();      
 		date.add(Calendar.DAY_OF_MONTH, days);
@@ -278,38 +285,35 @@ public class BookingController {
     //TODO: test this
     @PostMapping(path = "/cancelBooking")
     public Boolean cancleBooking(RequestEntity<String> bookingParam){
-    
-
-        System.out.println(bookingParam.getBody());
         String split[] = bookingParam.getBody().split(",");
         Long id = Long.parseLong(split[0].split("\"")[2].split(":")[1]);
-        String forType = split[1].split("\"")[2];
+        String forType = split[1].split("\"")[3];
         
         Calendar date = Calendar.getInstance();
         date.add(Calendar.DAY_OF_MONTH, 3);
         
         switch (forType) {
-            case "ADVENTRUE":
-                AdventureBooking ab = adventureBookingService.getById(id);    
-                if(ab != null && ab.getEnd().before(Calendar.getInstance().getTime())  && ab.getStart().before(date.getTime())){
+            case "ADVENTURE":
+                AdventureBooking ab = adventureBookingService.getById(id);
+                if (ab != null && ab.getStart().after(date.getTime())) {
                     adventureBookingService.delete(ab);
                     return true;
                 }
-                break;
+                return false;
             case "BOAT":
                 BoatBooking bb = boatBookingService.getById(id);    
-                if(bb != null && bb.getEnd().before(Calendar.getInstance().getTime())  && bb.getStart().before(date.getTime())){
+                if (bb != null && bb.getStart().after(date.getTime())) {
                     boatBookingService.delete(bb);
                     return true;
                 }
-                break;
+                return false;
             case "COTTAGE":
                 RoomBooking rb = roomBookingService.getById(id);
-                if(rb != null && rb.getEnd().before(Calendar.getInstance().getTime())  && rb.getStart().before(date.getTime())){
+                if (rb != null && rb.getStart().after(date.getTime())) {
                     roomBookingService.delete(rb);
                     return true;
                 }
-                break;
+                return false;
             default:
                 System.err.println("Something went wrong >>> " + forType);    
                 break;

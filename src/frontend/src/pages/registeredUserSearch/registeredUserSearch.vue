@@ -31,7 +31,7 @@
 				<input v-model="days" type="number" />
 			</div>
 			<div>
-				<input v-model="guest" type="number" />
+				<input v-model="guests" type="number" />
 			</div>
 			<div>
 				<button @click="search()">Search</button>
@@ -71,7 +71,7 @@ export default {
 		var date = ref(null);
 		var time = ref(null);
 		var days = ref(null);
-		var guest = ref(null);
+		var guests = ref(null);
 
 		var searchResults = ref(null);
 
@@ -82,10 +82,10 @@ export default {
 			date,
 			time,
 			days,
-			guest,
+			guests,
 			searchResults,
 			search() {
-				alert(this.searched);
+				// alert(this.searched);
 				var searchParam =
 					this.searched +
 					";" +
@@ -97,7 +97,7 @@ export default {
 					";" +
 					this.days +
 					";" +
-					this.guest;
+					this.guests;
 				axios
 					.post("/api/booking/search", searchParam, {
 						headers: { "Content-Type": "application/json" },
@@ -111,9 +111,18 @@ export default {
 			reserve(object) {
 				console.log(object);
 				// TODO: user id + extra service
-				let param = "user id umesto ovog string" + ";" + this.guest + ";" + "ovde ide extra service";
+				let userId = localStorage.userId;
+				let param = "user id umesto ovog string" + ";" + this.guests + ";" + "ovde ide extra service";
 				if (this.type == "Boat") {
-					axios.post("/api/booking/boat/" + param, object, {
+					axios.post("/api/booking/boat", {
+						boatId: object.id,
+						reservationStart: this.date,
+						time: this.time,
+						days: this.days,
+						guests: this.guests,
+						ownerId: object.ownerId,
+						userId: userId,					
+					}, {
 						headers: { "Content-Type": "application/json" },
 					});
 				}
