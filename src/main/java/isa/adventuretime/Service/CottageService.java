@@ -1,7 +1,6 @@
 package isa.adventuretime.Service;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,8 @@ public class CottageService {
 		return cottageRepo.getAllByOwnerId(id);
 	}
 
-	public ArrayList<CottageWithRoomDTO> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests, int grade){
+	public ArrayList<CottageWithRoomDTO> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests,
+			int grade) {
 		ArrayList<Cottage> potentialCottages = cottageRepo.getAllByNameContains(searched);
 		ArrayList<CottageWithRoomDTO> retCottagesWithRooms = new ArrayList<>();
 
@@ -63,11 +63,11 @@ public class CottageService {
 			}
 			ArrayList<Room> rooms = roomRepo.findAllByCottageIdAndNumberOfBedsGreaterThanEqual(cottage.getId(), guests);
 			for (Room room : rooms) {
-				if(roomBookingRepo.findBadBookings(room.getId(), startDate, endDate).size() == 0){
+				if (roomBookingRepo.findBadBookings(room.getId(), startDate, endDate).size() == 0) {
 					CottageWithRoomDTO cwr = new CottageWithRoomDTO(cottage, room);
 					retCottagesWithRooms.add(cwr);
 				}
-			}	
+			}
 		}
 		return retCottagesWithRooms;
 	}

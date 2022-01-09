@@ -1,11 +1,9 @@
 package isa.adventuretime.Service;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.system.SystemProperties;
 import org.springframework.stereotype.Service;
 
 import isa.adventuretime.Entity.Adventure;
@@ -46,17 +44,20 @@ public class AdventureService {
 	public void deleteById(Long id) {
 		adventureRepo.deleteById(id);
 	}
-	//TODO: test this
-	public ArrayList<Adventure> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests, int grade){
-		ArrayList<Adventure> adventures = adventureRepo.getAllByNameContainsAndMaxUsersGreaterThanEqual(searched, guests);
+
+	// TODO: test this
+	public ArrayList<Adventure> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests,
+			int grade) {
+		ArrayList<Adventure> adventures = adventureRepo.getAllByNameContainsAndMaxUsersGreaterThanEqual(searched,
+				guests);
 		ArrayList<Adventure> retAdventures = new ArrayList<>();
-		
+
 		for (Adventure adventure : adventures) {
 			FishingInstructor fi = fishingInstructorRepo.getById(adventure.getInstructorId());
 			if (startDate.before(fi.getStartWorkPeriod()) || endDate.after(fi.getEndWorkPeriod())) {
 				continue;
 			}
-			if (adventureBookingRepo.findBadBookings(adventure.getInstructorId(), startDate, endDate).size() == 0 ){
+			if (adventureBookingRepo.findBadBookings(adventure.getInstructorId(), startDate, endDate).size() == 0) {
 				retAdventures.add(adventure);
 			}
 		}

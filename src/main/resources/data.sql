@@ -52,29 +52,29 @@ insert into room(cottage_id, number_of_beds, hidden) values (3, 4, false);
 insert into room(cottage_id, number_of_beds, hidden) values (4, 6, false);
 insert into room(cottage_id, number_of_beds, hidden) values (5, 8, false);
 
-insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day, hidden) values ("Bow Fishing", "Wolfe Island, Ontario", 44.151642, -76.375484, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 100, false);
-insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day, hidden) values ("Isolated Fishing", "Bar Harbour, Maine", 44.374710, -68.191748, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 60, false);
-insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day, hidden) values ("Ice Fishing", "Arcadia, Alberta", 55.402453, -116.123231, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 85, false);
-insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day, hidden) values ("Net Fishing", "Bering Strait", 65.562156, -168.451294, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "Sample Price and Info", 90, "Sample Location", 2, 70, false);
+insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day, hidden) values ("Bow Fishing", "Wolfe Island, Ontario", 44.151642, -76.375484, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "zvucnik:30;bar:20", 90, "Sample Location", 2, 100, false);
+insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day, hidden) values ("Isolated Fishing", "Bar Harbour, Maine", 44.374710, -68.191748, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "zvucnik:30;bar:20", 90, "Sample Location", 2, 60, false);
+insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day, hidden) values ("Ice Fishing", "Arcadia, Alberta", 55.402453, -116.123231, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "zvucnik:30;bar:20", 90, "Sample Location", 2, 85, false);
+insert into adventure(name, address, geo_lng, geo_lat, promo_description, instructor_id, instructor_bio, equipment, rules, price_and_info, percent_taken_if_cancelled, location, max_users, price_per_day, hidden) values ("Net Fishing", "Bering Strait", 65.562156, -168.451294, "Sample Promo Description", 1, "Sample bio", "Sample Equipment", "Sample Rules", "zvucnik:30;bar:20", 90, "Sample Location", 2, 70, false);
 
 insert into subscription (for_entity, subbed_id, subber_id) values (0, 1, 1);
 insert into subscription (for_entity, subbed_id, subber_id) values (2, 1, 1);
 insert into subscription (for_entity, subbed_id, subber_id) values (4, 1, 1);  
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Nepotopivi 2", "Yamaha", "15", 1, 321, 321, "Sonar", "Jarkovci, Serbia", 45.043798, 20.027075, "VeryFastBoy", "Don't talk about Nepotopivi 1", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
+            values(1, "Nepotopivi 2", "Yamaha", "15", 1, 321, 321, "Sonar", "Jarkovci, Serbia", 45.043798, 20.027075, "VeryFastBoy", "Don't talk about Nepotopivi 1", 50, "2023-01-01", "2023-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Miss Melanoma", "Yamaha", "15", 1, 321, 321, "Sonar", "Bar Harbour, Maine", 44.374710, -68.191748, "VeryFastBoy", "Nije lose", 50, "2023-01-01", "2028-01-15", "Lorem", 7, false, "stap za pecanje");
+            values(1, "Miss Melanoma", "Yamaha", "15", 1, 321, 321, "Sonar", "Bar Harbour, Maine", 44.374710, -68.191748, "VeryFastBoy", "Nije lose", 50, "2023-01-01", "2028-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Brzi", "Yamaha", "15", 1, 321, 321, "Sonar", "Bay City State Park, Michigan", 43.666608, -83.901237, "VeryFastBoy", "Ipak nije tako brz", 50, "2023-01-01", "2028-01-15", "Lorem", 7, false, "stap za pecanje");
+            values(1, "Brzi", "Yamaha", "15", 1, 321, 321, "Sonar", "Bay City State Park, Michigan", 43.666608, -83.901237, "VeryFastBoy", "Ipak nije tako brz", 50, "2023-01-01", "2028-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Just A Splash", "Yamaha", "15", 1, 321, 321, "Sonar", "Claremont, Virginia", 37.231071, -76.954797, "VeryFastBoy", "Potopio nepotopivog1", 50, "2023-01-01", "2028-01-15", "Lorem", 7, false, "stap za pecanje");
+            values(1, "Just A Splash", "Yamaha", "15", 1, 321, 321, "Sonar", "Claremont, Virginia", 37.231071, -76.954797, "VeryFastBoy", "Potopio nepotopivog1", 50, "2023-01-01", "2028-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Peti Sveti", "Yamaha", "15", 1, 321, 321, "Sonar", "Key West, Florida", 24.549540, -81.780825, "Holie", "Ovaj jeste Sveti Peti", 50, "2023-01-01", "2028-01-15", "Lorem", 7, false, "stap za pecanje");
+            values(1, "Peti Sveti", "Yamaha", "15", 1, 321, 321, "Sonar", "Key West, Florida", 24.549540, -81.780825, "Holie", "Ovaj jeste Sveti Peti", 50, "2023-01-01", "2028-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
 
 
 --rezervacije u prvoj polovini januara, pravice problem u januaru
@@ -127,8 +127,8 @@ values (2, 2, true, "Very comfy!", 4.33333333, false, false, 1);
 insert into revision(type, booking_id, revised, revision, rating, approved, denied, main_entity_id) 
 values (4, 3, true, "The instructor was very funny.", 5, false, false, 1);
 
-insert into appeal(type, booking_id, appeal) values (0, 4, "please change the sink");
+insert into appeal(type, booking_id, appeal) values (0, 4, "There's a big hole in the floor...");
 
-insert into appeal(type, booking_id, appeal) values (2, 2, "please change the sink");
+insert into appeal(type, booking_id, appeal) values (2, 2, "Please change the sink.");
 
-insert into appeal(type, booking_id, appeal) values (4, 3, "please change the sink");
+insert into appeal(type, booking_id, appeal) values (4, 3, "All the equipment is old.");

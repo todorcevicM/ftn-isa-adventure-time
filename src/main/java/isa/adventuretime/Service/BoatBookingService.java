@@ -88,18 +88,18 @@ public class BoatBookingService {
 		return boatBookingRepo.findAllByBookedBoatIdAndEndBefore(id, date);
 	}
 
-	public BoatBooking save(BoatBooking boatBooking){
+	public BoatBooking save(BoatBooking boatBooking) {
 		return boatBookingRepo.save(boatBooking);
 	}
 
-	public void delete(BoatBooking boatBooking){
+	public void delete(BoatBooking boatBooking) {
 		boatBookingRepo.delete(boatBooking);
 	}
 
-	public ArrayList<BoatBooking> findAllByBookedBoatIdAndStartAfterAndQuickBooking(Long bookedBoatId, Boolean quickBooking){
-		System.out.println(bookedBoatId);
-		System.out.println(quickBooking);
-		System.out.println(Calendar.getInstance().getTime());
-		return boatBookingRepo.findAllByBookedBoatIdAndStartAfterAndQuickBooking(bookedBoatId, Calendar.getInstance().getTime(), quickBooking);
+	public ArrayList<BoatBooking> findAllByBookedBoatIdAndStartAfterAndQuickBookingAndRegisteredUserId(
+			Long bookedBoatId) {
+
+		return boatBookingRepo.findAllByBookedBoatIdAndStartAfterAndQuickBookingAndRegisteredUserId(bookedBoatId,
+				Calendar.getInstance().getTime(), true, 0L);
 	}
 }

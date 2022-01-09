@@ -27,11 +27,13 @@ public interface BoatBookingRepo extends JpaRepository<BoatBooking, Long> {
 
 	public ArrayList<BoatBooking> findAllByBookedBoatIdAndEndBefore(Long id, Date date);
 
-	//public Boolean existsByBookedBoatIdAndStartBetweenOrBookedBoatIdAndEndBetween(Long id, Date dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date dateEnd2);
-	@Query(value =  "select * from boat_booking where booked_boat_id = ? and id not in" +
-					"(select id from boat_booking where end < ? OR start > ? )", nativeQuery = true)
+	// public Boolean
+	// existsByBookedBoatIdAndStartBetweenOrBookedBoatIdAndEndBetween(Long id, Date
+	// dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date dateEnd2);
+	@Query(value = "select * from boat_booking where booked_boat_id = ? and id not in" +
+			"(select id from boat_booking where end < ? OR start > ? )", nativeQuery = true)
 	public ArrayList<BoatBooking> findBadBookings(Long id, Date start, Date end);
 
-
-	public ArrayList<BoatBooking> findAllByBookedBoatIdAndStartAfterAndQuickBooking(Long id, Date date, Boolean quickBooking);
+	public ArrayList<BoatBooking> findAllByBookedBoatIdAndStartAfterAndQuickBookingAndRegisteredUserId(Long id,
+			Date date, Boolean quickBooking, Long id2);
 }

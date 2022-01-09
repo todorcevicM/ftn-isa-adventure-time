@@ -14,6 +14,7 @@ import isa.adventuretime.Entity.Revision;
 import isa.adventuretime.Repository.AdventureBookingRepo;
 import isa.adventuretime.Repository.FishingInstructorRepo;
 import isa.adventuretime.Repository.RevisionRepo;
+import java.util.Calendar;
 
 @Service
 public class AdventureBookingService {
@@ -79,11 +80,17 @@ public class AdventureBookingService {
 		return adventureBookingRepo.existsByBookedInstructorIdAndEndAfter(id, date);
 	}
 
-	public AdventureBooking save(AdventureBooking adventureBooking){
+	public AdventureBooking save(AdventureBooking adventureBooking) {
 		return adventureBookingRepo.save(adventureBooking);
 	}
 
-	public void delete(AdventureBooking adventureBooking){
+	public void delete(AdventureBooking adventureBooking) {
 		adventureBookingRepo.delete(adventureBooking);
+	}
+
+	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndStartAfterAndQuickBookingAndRegisteredUserId(
+			Long id) {
+		return adventureBookingRepo.findAllByBookedAdventureIdAndStartAfterAndQuickBookingAndRegisteredUserId(id,
+				Calendar.getInstance().getTime(), true, 0L);
 	}
 }

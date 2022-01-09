@@ -31,9 +31,15 @@ public interface AdventureBookingRepo extends JpaRepository<AdventureBooking, Lo
 
 	public Boolean existsByBookedAdventureIdAndStartAfter(Long id, Date date);
 
-	//public Boolean existsByBookedInstructorIdAndStartBetweenOrBookedInstructorIdAndEndBetween(Long id, Date dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date dateEnd2);
-	@Query(value =  "select * from adventure_booking where booked_adventure_id = ? and id not in" +
-					"(select id from adventure_booking where end < ? OR start > ? )", nativeQuery = true)
+	// public Boolean
+	// existsByBookedInstructorIdAndStartBetweenOrBookedInstructorIdAndEndBetween(Long
+	// id, Date dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date
+	// dateEnd2);
+	@Query(value = "select * from adventure_booking where booked_adventure_id = ? and id not in" +
+			"(select id from adventure_booking where end < ? OR start > ? )", nativeQuery = true)
 	public ArrayList<AdventureBooking> findBadBookings(Long id, Date start, Date end);
+
+	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndStartAfterAndQuickBookingAndRegisteredUserId(
+			Long id, Date date, Boolean quickBooking, Long id2);
 
 }

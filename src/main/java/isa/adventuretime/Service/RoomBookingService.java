@@ -12,6 +12,7 @@ import isa.adventuretime.Entity.RoomBooking;
 import isa.adventuretime.Repository.RevisionRepo;
 import isa.adventuretime.Repository.RoomBookingRepo;
 import java.util.Date;
+import java.util.Calendar;
 
 @Service
 public class RoomBookingService {
@@ -21,7 +22,7 @@ public class RoomBookingService {
 	@Autowired
 	private RevisionRepo revisionRepo;
 
-	public  RoomBooking getById(Long id) {
+	public RoomBooking getById(Long id) {
 		return roomBookingRepo.getById(id);
 	}
 
@@ -66,11 +67,17 @@ public class RoomBookingService {
 		return roomBookingRepo.existsByIdAndEndAfter(id, date);
 	}
 
-	public RoomBooking save(RoomBooking roomBooking){
+	public RoomBooking save(RoomBooking roomBooking) {
 		return roomBookingRepo.save(roomBooking);
 	}
 
-	public void delete(RoomBooking roomBooking){
+	public void delete(RoomBooking roomBooking) {
 		roomBookingRepo.delete(roomBooking);
+	}
+
+	public ArrayList<RoomBooking> findAllByBookedRoomIdAndStartAfterAndQuickBookingAndRegisteredUserId(Long id) {
+		return roomBookingRepo.findAllByBookedRoomIdAndStartAfterAndQuickBookingAndRegisteredUserId(id,
+				Calendar.getInstance().getTime(),
+				true, 0L);
 	}
 }

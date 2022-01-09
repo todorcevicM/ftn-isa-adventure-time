@@ -127,7 +127,24 @@
 		<div class="lowerFlex">
 			<div class="table">
 				<h3>Revisions</h3>
-
+				<div class="tableEntryNEW" v-for="r in revisions" :key="r">
+					<div class="entryLeft">
+						<div class="entryLeftShort">{{ r.revision }}</div>
+						<div class="entryLeftLong">Test2</div>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryApprove"
+							@click="approveRevision(r.id)"
+						>
+							Approve
+						</button>
+						<button class="entryDeny" @click="denyRevision(r.id)">
+							Deny
+						</button>
+					</div>
+				</div>
+				<h1>TEST</h1>
 				<div class="tableEntry" v-for="r in revisions" :key="r">
 					<p class="entryRequestText">
 						{{ r.revision }}
@@ -1170,6 +1187,8 @@ button:hover {
 	border-bottom: solid 1px rgb(145, 145, 145);
 }
 
+/* TABLE OLD */
+
 .table {
 	margin-top: 20px;
 }
@@ -1198,6 +1217,49 @@ button:hover {
 	font-size: 20px;
 }
 
+/* TODO: TABLE NEW */
+
+.table {
+	margin-top: 20px;
+}
+
+.tableEntryNEW {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 55px;
+	border-bottom: solid 1px rgb(145, 145, 145);
+}
+
+.entryLeft {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin: auto 0;
+}
+
+.entryLeftShort {
+	width: 200px;
+}
+
+.entryLeftLong {
+	width: 700px;
+}
+
+.entryRight {
+	width: 240px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin: auto 0;
+}
+
+.entryRight button {
+	width: 110px;
+	margin: auto 0;
+	font-size: 20px;
+}
+
 .entryApprove {
 	background-color: rgb(108, 207, 108);
 }
@@ -1213,6 +1275,8 @@ button:hover {
 .entryDeny:hover {
 	background-color: rgb(119, 51, 51);
 }
+
+/* LEFT FLEX ELEMENTS */
 
 .percentage,
 .businessReports {
