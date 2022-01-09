@@ -91,7 +91,7 @@ public class BookingController {
 		String cottageName = cottageService.getById(cottageId).getName();
 
 		ArrayList<CottageWithRoomDTO> rooms = cottageService.getAllBySearchQuery(cottageName, startDate, endDate,
-				guests, 0);
+				guests);
 		if (rooms == null || rooms.isEmpty())
 			return false;
 
@@ -144,7 +144,7 @@ public class BookingController {
 
 		String boatName = boatService.getById(boatId).getName();
 
-		ArrayList<Boat> boats = boatService.getAllBySearchQuery(boatName, startDate, endDate, guests, 0);
+		ArrayList<Boat> boats = boatService.getAllBySearchQuery(boatName, startDate, endDate, guests);
 		BoatBooking boatBooking = new BoatBooking(
 				boats.get(0).getId(),
 				userId,
@@ -194,7 +194,7 @@ public class BookingController {
 
 		String adventureName = adventureService.getById(adventureId).getName();
 		ArrayList<Adventure> adventures = adventureService.getAllBySearchQuery(adventureName, startDate, endDate,
-				guests, 0);
+				guests);
 
 		AdventureBooking adventureBooking = new AdventureBooking(
 				adventures.get(0).getId(),
@@ -250,19 +250,19 @@ public class BookingController {
 		switch (type) {
 			case "Adventure":
 				ArrayList<Adventure> adventures = adventureService.getAllBySearchQuery(name, startDate, endDate,
-						Integer.parseInt(numberOfGuests), 0);
+						Integer.parseInt(numberOfGuests));
 				if (adventures == null || adventures.isEmpty())
 					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 				return new ResponseEntity<>(new ArrayList<Object>(adventures), HttpStatus.OK);
 			case "Boat":
 				ArrayList<Boat> boats = boatService.getAllBySearchQuery(name, startDate, endDate,
-						Integer.parseInt(numberOfGuests), 0);
+						Integer.parseInt(numberOfGuests));
 				if (boats == null || boats.isEmpty())
 					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 				return new ResponseEntity<>(new ArrayList<Object>(boats), HttpStatus.OK);
 			case "Cottage":
 				ArrayList<CottageWithRoomDTO> rooms = cottageService.getAllBySearchQuery(name, startDate, endDate,
-						Integer.parseInt(numberOfGuests), 0);
+						Integer.parseInt(numberOfGuests));
 				if (rooms == null || rooms.isEmpty())
 					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 				return new ResponseEntity<>(new ArrayList<Object>(rooms), HttpStatus.OK);

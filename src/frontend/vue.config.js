@@ -66,8 +66,8 @@ module.exports = {
 			entry: "src/pages/boatEdit/main.js",
 			title: "Boat Edit Page",
 		},
-		registeredUserSearch: {
-			entry: "src/pages/registeredUserSearch/main.js",
+		search: {
+			entry: "src/pages/search/main.js",
 			title: "Search",
 		},
 		bookingCreate: {

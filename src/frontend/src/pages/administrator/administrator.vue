@@ -127,75 +127,76 @@
 		<div class="lowerFlex">
 			<div class="table">
 				<h3>Revisions</h3>
-				<div class="tableEntryNEW" v-for="r in revisions" :key="r">
+				<div class="tableEntry" v-for="r in revisions" :key="r">
 					<div class="entryLeft">
-						<div class="entryLeftShort">{{ r.revision }}</div>
-						<div class="entryLeftLong">Test2</div>
+						<div class="entryLeftLong">{{ r.revision }}</div>
 					</div>
 					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button class="entryDeny" @click="denyRevision(r.id)">
+							Deny
+						</button>
 						<button
 							class="entryApprove"
 							@click="approveRevision(r.id)"
 						>
 							Approve
 						</button>
-						<button class="entryDeny" @click="denyRevision(r.id)">
-							Deny
-						</button>
 					</div>
-				</div>
-				<h1>TEST</h1>
-				<div class="tableEntry" v-for="r in revisions" :key="r">
-					<p class="entryRequestText">
-						{{ r.revision }}
-					</p>
-					<button class="entryApprove" @click="approveRevision(r.id)">
-						Approve
-					</button>
-					<button class="entryDeny" @click="denyRevision(r.id)">
-						Deny
-					</button>
 				</div>
 			</div>
 			<div class="table">
 				<h3>Appeals</h3>
-
 				<div class="tableEntry" v-for="a in appeals" :key="a">
-					<p class="entryRequestText">
-						{{ a.appeal }}
-					</p>
-					<button class="entryApprove" @click="answerAppeal(a.id)">
-						Answer
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftLong">
+							{{ a.appeal }}
+						</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button
+							class="entryApprove"
+							@click="answerAppeal(a.id)"
+						>
+							Answer
+						</button>
+					</div>
 				</div>
 			</div>
 			<div class="table">
 				<h3>Registration Requests</h3>
-
 				<div
 					class="tableEntry"
 					v-for="req in registrationRequests"
 					:key="req"
 				>
-					<p class="entryName">{{ req.name }}</p>
-					<p class="entryName">{{ req.userType }}</p>
-					<p class="entryRequestText">
-						{{ req.userRegistrationReason }}
-					</p>
-					<button
-						class="entryApprove"
-						@click="
-							approveRegistrationRequest(req.id, req.userType)
-						"
-					>
-						Approve
-					</button>
-					<button
-						class="entryDeny"
-						@click="denyRegistrationRequest(req.id, req.userType)"
-					>
-						Deny
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ req.name }}</p>
+						<p class="entryLeftShort">{{ req.userType }}</p>
+						<p class="entryLeftLong">
+							{{ req.userRegistrationReason }}
+						</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button
+							class="entryDeny"
+							@click="
+								denyRegistrationRequest(req.id, req.userType)
+							"
+						>
+							Deny
+						</button>
+						<button
+							class="entryApprove"
+							@click="
+								approveRegistrationRequest(req.id, req.userType)
+							"
+						>
+							Approve
+						</button>
+					</div>
 				</div>
 			</div>
 			<div class="table">
@@ -205,13 +206,18 @@
 					v-for="cottage in cottages"
 					:key="cottage"
 				>
-					<p class="entryName">{{ cottage.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteCottage(cottage.id)"
-					>
-						Delete
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ cottage.name }}</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button
+							class="entryDeny"
+							@click="deleteCottage(cottage.id)"
+						>
+							Delete
+						</button>
+					</div>
 				</div>
 			</div>
 			<div class="table">
@@ -221,13 +227,18 @@
 					v-for="cottageOwner in cottageOwners"
 					:key="cottageOwner"
 				>
-					<p class="entryName">{{ cottageOwner.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteCottageOwner(cottageOwner.id)"
-					>
-						Delete
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ cottageOwner.name }}</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button
+							class="entryDeny"
+							@click="deleteCottageOwner(cottageOwner.id)"
+						>
+							Delete
+						</button>
+					</div>
 				</div>
 			</div>
 			<div class="table">
@@ -237,13 +248,18 @@
 					v-for="adventure in adventures"
 					:key="adventure"
 				>
-					<p class="entryName">{{ adventure.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteAdventure(adventure.id)"
-					>
-						Delete
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ adventure.name }}</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button
+							class="entryDeny"
+							@click="deleteAdventure(adventure.id)"
+						>
+							Delete
+						</button>
+					</div>
 				</div>
 			</div>
 			<div class="table">
@@ -253,22 +269,36 @@
 					v-for="fishingInstructor in fishingInstructors"
 					:key="fishingInstructor"
 				>
-					<p class="entryName">{{ fishingInstructor.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteFishingInstructor(fishingInstructor.id)"
-					>
-						Delete
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">
+							{{ fishingInstructor.name }}
+						</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button
+							class="entryDeny"
+							@click="
+								deleteFishingInstructor(fishingInstructor.id)
+							"
+						>
+							Delete
+						</button>
+					</div>
 				</div>
 			</div>
 			<div class="table">
 				<h3>Boats</h3>
 				<div class="tableEntry" v-for="boat in boats" :key="boat">
-					<p class="entryName">{{ boat.name }}</p>
-					<button class="entryDeny" @click="deleteBoat(boat.id)">
-						Delete
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ boat.name }}</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button class="entryDeny" @click="deleteBoat(boat.id)">
+							Delete
+						</button>
+					</div>
 				</div>
 			</div>
 			<div class="table">
@@ -278,13 +308,18 @@
 					v-for="boatOwner in boatOwners"
 					:key="boatOwner"
 				>
-					<p class="entryName">{{ boatOwner.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteBoatOwner(boatOwner.id)"
-					>
-						Delete
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ boatOwner.name }}</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button
+							class="entryDeny"
+							@click="deleteBoatOwner(boatOwner.id)"
+						>
+							Delete
+						</button>
+					</div>
 				</div>
 			</div>
 			<div class="table">
@@ -294,13 +329,18 @@
 					v-for="registeredUser in registeredUsers"
 					:key="registeredUser"
 				>
-					<p class="entryName">{{ registeredUser.name }}</p>
-					<button
-						class="entryDeny"
-						@click="deleteRegisteredUser(registeredUser.id)"
-					>
-						Delete
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ registeredUser.name }}</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button
+							class="entryDeny"
+							@click="deleteRegisteredUser(registeredUser.id)"
+						>
+							Delete
+						</button>
+					</div>
 				</div>
 			</div>
 			<div class="table">
@@ -310,49 +350,62 @@
 					v-for="deletionRequest in deletionRequests"
 					:key="deletionRequest"
 				>
-					<p class="entryName">{{ deletionRequest.name }}</p>
-					<p class="entryName">{{ deletionRequest.lastname }}</p>
-					<p class="entryRequestText">
-						{{ deletionRequest.reason }}
-					</p>
-					<button
-						class="entryApprove"
-						@click="
-							deleteUser(
-								deletionRequest.requesterId,
-								deletionRequest.forType
-							)
-						"
-					>
-						Approve
-					</button>
-					<button
-						class="entryDeny"
-						@click="
-							denyDeletionRequest(
-								deletionRequest.requesterId,
-								deletionRequest.forType
-							)
-						"
-					>
-						Deny
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ deletionRequest.name }}</p>
+						<p class="entryLeftShort">
+							{{ deletionRequest.lastname }}
+						</p>
+						<p class="entryLeftLong">
+							{{ deletionRequest.reason }}
+						</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button
+							class="entryDeny"
+							@click="
+								denyDeletionRequest(
+									deletionRequest.requesterId,
+									deletionRequest.forType
+								)
+							"
+						>
+							Deny
+						</button>
+						<button
+							class="entryApprove"
+							@click="
+								deleteUser(
+									deletionRequest.requesterId,
+									deletionRequest.forType
+								)
+							"
+						>
+							Approve
+						</button>
+					</div>
 				</div>
 			</div>
 			<div v-if="isSuperAdmin == 1" class="table">
 				<h3>Administrator List</h3>
 				<div class="tableEntry" v-for="admin in admins" :key="admin">
-					<p class="entryName">{{ admin.name }}</p>
-					<button
-						v-if="admin.id != 1"
-						class="entryDeny"
-						@click="deleteUser(admin.id, 'ADMINISTRATOR')"
-					>
-						Delete
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ admin.name }}</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button
+							v-if="admin.id != 1"
+							class="entryDeny"
+							@click="deleteUser(admin.id, 'ADMINISTRATOR')"
+						>
+							Delete
+						</button>
+					</div>
 				</div>
 				<div style="text-align: center">
 					<button
+					class="entryApprove"
 						@click="addNewAdministratorToggleFunction()"
 						v-if="!addNewAdministratorToggle"
 					>
@@ -1183,47 +1236,13 @@ button:hover {
 	flex-direction: column;
 }
 
-.lowerFlex h3 {
-	border-bottom: solid 1px rgb(145, 145, 145);
-}
-
-/* TABLE OLD */
+/* TABLE */
 
 .table {
 	margin-top: 20px;
 }
 
 .tableEntry {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	height: 55px;
-	border-bottom: solid 1px rgb(145, 145, 145);
-}
-
-.tableEntry .entryName {
-	margin: auto 0;
-	width: 180px;
-}
-
-.tableEntry .entryRequestText {
-	width: 800px;
-	margin: auto 0;
-}
-
-.tableEntry button {
-	width: 110px;
-	margin: auto 0;
-	font-size: 20px;
-}
-
-/* TODO: TABLE NEW */
-
-.table {
-	margin-top: 20px;
-}
-
-.tableEntryNEW {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -1239,7 +1258,7 @@ button:hover {
 }
 
 .entryLeftShort {
-	width: 200px;
+	width: 180px;
 }
 
 .entryLeftLong {
@@ -1249,7 +1268,7 @@ button:hover {
 .entryRight {
 	width: 240px;
 	display: flex;
-	flex-direction: row;
+	flex-direction: row-reverse;
 	justify-content: space-between;
 	margin: auto 0;
 }
