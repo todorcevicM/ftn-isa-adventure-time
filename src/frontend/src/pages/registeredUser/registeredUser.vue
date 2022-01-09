@@ -925,10 +925,13 @@ export default {
 						{ headers: { "Content-Type": "application/json" } }
 					)
 					.then(function (response) {
-						console.log("Response : ");
-						console.log(response.data);
-						alert("Booking cancelled!");
-						window.location.reload();
+						if (response.data) {
+							alert("Booking cancelled!");
+							window.location.reload();
+						}
+						else {
+							alert("You cannot cancel this booking.");
+						}
 					});
 			},
 		};
