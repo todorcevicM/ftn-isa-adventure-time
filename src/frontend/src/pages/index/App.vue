@@ -616,12 +616,34 @@ export default {
 							});
 						break;
 					case 2:
-						// TODO:
-						window.location.href = "/adventure/" + id;
+						axios
+							.get("/api/adventures/get/" + id)
+							.then(function (response) {
+								for (const key in response.data) {
+									if (!(key === "password")) {
+										localStorage.setItem(
+											key,
+											response.data[key]
+										);
+									}
+								}
+								window.location.href = "/adventure/" + id;
+							});
 						break;
 					case 3:
-						// TODO:
-						window.location.href = "/boat/" + id;
+						axios
+							.get("/api/boats/get/" + id)
+							.then(function (response) {
+								for (const key in response.data) {
+									if (!(key === "password")) {
+										localStorage.setItem(
+											key,
+											response.data[key]
+										);
+									}
+								}
+								window.location.href = "/boat/" + id;
+							});
 						break;
 				}
 			},

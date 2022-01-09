@@ -243,7 +243,10 @@
 					<p class="entryRequestText">{{ pbb.promoDescription }}</p>
 					<p>{{ pbb.extraService }}</p>
 					<p>Price : {{ pbb.pricePerDay }}.00</p>
-					<button class="entryDeny" @click="unsubscribe(pbb.id, pbb.ownerId, 'BOAT')">
+					<button
+						class="entryDeny"
+						@click="unsubscribe(pbb.id, pbb.ownerId, 'BOAT')"
+					>
 						Cancel
 					</button>
 				</div>
@@ -261,7 +264,12 @@
 					<p class="entryRequestText">{{ pab.promoDescription }}</p>
 					<p>{{ pab.extraService }}</p>
 					<p>Price : {{ pab.pricePerDay }}.00</p>
-					<button class="entryDeny" @click="unsubscribe(pab.id, pab.instructorId,'ADVENTURE')">
+					<button
+						class="entryDeny"
+						@click="
+							unsubscribe(pab.id, pab.instructorId, 'ADVENTURE')
+						"
+					>
 						Cancel
 					</button>
 				</div>
@@ -279,7 +287,10 @@
 					<p class="entryRequestText">{{ prb.promoDescription }}</p>
 					<p>{{ prb.extraService }}</p>
 					<p>Price : {{ prb.pricePerDay }}.00</p>
-					<button class="entryDeny" @click="unsubscribe(prb.id, prb.ownerId, 'COTTAGE')">
+					<button
+						class="entryDeny"
+						@click="unsubscribe(prb.id, prb.ownerId, 'COTTAGE')"
+					>
 						Cancel
 					</button>
 				</div>
@@ -744,13 +755,49 @@ export default {
 			imageRedirect(type, id) {
 				switch (type) {
 					case 1:
-						window.location.href = "/cottage/" + id;
+						axios
+							.get("/api/cottages/get/" + id)
+							.then(function (response) {
+								for (const key in response.data) {
+									if (!(key === "password")) {
+										localStorage.setItem(
+											key,
+											response.data[key]
+										);
+									}
+								}
+								window.location.href = "/cottage/" + id;
+							});
 						break;
 					case 2:
-						window.location.href = "/adventure/" + id;
+						axios
+							.get("/api/adventures/get/" + id)
+							.then(function (response) {
+								for (const key in response.data) {
+									if (!(key === "password")) {
+										localStorage.setItem(
+											key,
+											response.data[key]
+										);
+									}
+								}
+								window.location.href = "/adventure/" + id;
+							});
 						break;
 					case 3:
-						window.location.href = "/boat/" + id;
+						axios
+							.get("/api/boats/get/" + id)
+							.then(function (response) {
+								for (const key in response.data) {
+									if (!(key === "password")) {
+										localStorage.setItem(
+											key,
+											response.data[key]
+										);
+									}
+								}
+								window.location.href = "/boat/" + id;
+							});
 						break;
 				}
 			},

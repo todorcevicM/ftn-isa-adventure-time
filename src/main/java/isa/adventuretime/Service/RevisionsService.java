@@ -10,28 +10,27 @@ import isa.adventuretime.Repository.RevisionRepo;
 
 @Service
 public class RevisionsService {
-    @Autowired 
-    private RevisionRepo revisionsRepository;
+	@Autowired
+	private RevisionRepo revisionsRepository;
 
-    public ArrayList<Revision> getAll() {
-        return revisionsRepository.findAll();
-    }
+	public ArrayList<Revision> getAll() {
+		return revisionsRepository.findAll();
+	}
 
-    public Revision getById(Long id) {
-        return revisionsRepository.findById(id).get();
-    }
+	public Revision getById(Long id) {
+		return revisionsRepository.findById(id).get();
+	}
 
-    public Revision save(Revision revision) {
-        return revisionsRepository.save(revision);
-    }
+	public Revision save(Revision revision) {
+		return revisionsRepository.save(revision);
+	}
 
-    public ArrayList<Revision> findAllByNotDeniedAndNotApproved() {
-        return revisionsRepository.findAllByDeniedAndApproved(false, false);
-    }
+	public ArrayList<Revision> findAllByNotDeniedAndNotApproved() {
+		return revisionsRepository.findAllByDeniedAndApproved(false, false);
+	}
 
-    public int getScore(int type, int mainEntityId){
-        return revisionsRepository.getScore(type, mainEntityId);
-    }
+	public float getScore(int type, Long mainEntityId) {
+		return revisionsRepository.getScore(type, mainEntityId);
+	}
 
-    
 }

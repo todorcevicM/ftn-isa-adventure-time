@@ -305,7 +305,8 @@ public class UserController {
 
 		ArrayList<BoatOwner> boatOwners = boatOwnerService.findAllByAuthenticatedAndDenied(false, false);
 		ArrayList<CottageOwner> cottageOwners = cottageOwnerService.findAllByAuthenticatedAndDenied(false, false);
-		ArrayList<FishingInstructor> fishingInstructors = fishingInstructorService.findAllByAuthenticatedAndDenied(false, false);
+		ArrayList<FishingInstructor> fishingInstructors = fishingInstructorService
+				.findAllByAuthenticatedAndDenied(false, false);
 
 		for (RequestForAdmin requestForAdmin : requestForAdmins)
 			switch (requestForAdmin.getForType()) {
@@ -314,7 +315,8 @@ public class UserController {
 						if (requestForAdmin.getRequesterId() == boatOwner.getId()
 								&& requestForAdmin.getForType().equals(HeadEntityEnum.BOAT_OWNER)) {
 							unauthenticatedUsers.add(
-									new UnauthenticatedUserDTO(boatOwner, requestForAdmin, HeadEntityEnum.BOAT_OWNER, boatOwner.getId()));
+									new UnauthenticatedUserDTO(boatOwner, requestForAdmin, HeadEntityEnum.BOAT_OWNER,
+											boatOwner.getId()));
 							boatOwners.remove(boatOwner);
 						}
 						break;
@@ -359,7 +361,7 @@ public class UserController {
 
 	@PostMapping(path = "/deleteUser/{id}")
 	public ResponseEntity<Boolean> deleteUser(@PathVariable("id") Long id, RequestEntity<String> userType)
-			throws AddressException, UnsupportedEncodingException {		
+			throws AddressException, UnsupportedEncodingException {
 
 		switch (userType.getBody()) {
 			case "\"ADMINISTRATOR\"":
@@ -506,31 +508,35 @@ public class UserController {
 
 	@PostMapping(path = "/approveRegistrationRequest/{id}")
 	public ResponseEntity<Boolean> approveCreationRequest(@PathVariable("id") Long id, RequestEntity<String> userType)
-	throws AddressException, UnsupportedEncodingException {	
+			throws AddressException, UnsupportedEncodingException {
 
-		switch (userType.getBody()) {		
-			case "\"BOAT_OWNER\"":
+		switch (userType.getBody()) {
+			case "\"Boat Owner\"":
 				BoatOwner boatOwner = boatOwnerService.getById(id);
 				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
 						"Your account has been created. \nThank you for using our services! \n\nSincerely, Adventure Time.");
-				requestForAdminService.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.BOAT_OWNER, id));
+				requestForAdminService
+						.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.BOAT_OWNER, id));
 				return new ResponseEntity<Boolean>(boatOwnerService.markAuthenticated(id), HttpStatus.OK);
 
-			case "\"COTTAGE_OWNER\"":
+			case "\"Cottage Owner\"":
 				CottageOwner cottageOwner = cottageOwnerService.getById(id);
 				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
 						"Your account has been created. \nThank you for using our services! \n\nSincerely, Adventure Time.");
-				requestForAdminService.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.COTTAGE_OWNER, id));
+				requestForAdminService
+						.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.COTTAGE_OWNER, id));
 				return new ResponseEntity<Boolean>(cottageOwnerService.markAuthenticated(id), HttpStatus.OK);
 
-			case "\"FISHING_INSTRUCTOR\"":
+			case "\"Fishing Instructor\"":
 				FishingInstructor fishingInstructor = fishingInstructorService.getById(id);
 				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
 						"Your account has been created. \nThank you for using our services! \n\nSincerely, Adventure Time.");
-				requestForAdminService.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.FISHING_INSTRUCTOR, id));
+				requestForAdminService.delete(
+						requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.FISHING_INSTRUCTOR, id));
 				return new ResponseEntity<Boolean>(fishingInstructorService.markAuthenticated(id), HttpStatus.OK);
 
 			default:
+				System.out.println("User type isn't recognised.");
 				return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 		}
 	}
@@ -538,37 +544,43 @@ public class UserController {
 	@PostMapping(path = "/denyRegistrationRequest/{id}")
 	public ResponseEntity<Boolean> denyCreationRequest(@PathVariable("id") Long id, RequestEntity<String> request)
 			throws AddressException, UnsupportedEncodingException {
-				
-			// {"type":"BOAT_OWNER","reason":"test"}
-			String splitArray[] = request.getBody().split(",");
-			String typeArray[] = splitArray[0].split(":");
-			String reasonArray[] = splitArray[1].split(":");
-			String type = typeArray[1].replaceAll("\"", "");
-			String reason = reasonArray[1].replaceAll("\"", "").replaceAll("}", "");
-			switch (type) {		
-				case "BOAT_OWNER":
-					BoatOwner boatOwner = boatOwnerService.getById(id);
-					mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
-							"Your account has been denied. \nThank you for using our services! \n\nSincerely, Adventure Time." + reason);
-					requestForAdminService.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.BOAT_OWNER, id));
-					return new ResponseEntity<Boolean>(boatOwnerService.markDenied(id), HttpStatus.OK);
-	
-				case "COTTAGE_OWNER":
-					CottageOwner cottageOwner = cottageOwnerService.getById(id);
-					mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
-							"Your account has been denied. \nThank you for using our services! \n\nSincerely, Adventure Time." + reason);
-					requestForAdminService.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.COTTAGE_OWNER, id));
-					return new ResponseEntity<Boolean>(cottageOwnerService.markDenied(id), HttpStatus.OK);
-	
-				case "FISHING_INSTRUCTOR":
-					FishingInstructor fishingInstructor = fishingInstructorService.getById(id);
-					mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
-							"Your account has been denied. \nThank you for using our services! \n\nSincerely, Adventure Time." + reason);
-					requestForAdminService.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.FISHING_INSTRUCTOR, id));
-					return new ResponseEntity<Boolean>(fishingInstructorService.markDenied(id), HttpStatus.OK);
 
-				default:
-					return new ResponseEntity<Boolean>(false, HttpStatus.OK);
-			}
+		// {"type":"BOAT_OWNER","reason":"test"}
+		String splitArray[] = request.getBody().split(",");
+		String typeArray[] = splitArray[0].split(":");
+		String reasonArray[] = splitArray[1].split(":");
+		String type = typeArray[1].replaceAll("\"", "");
+		String reason = reasonArray[1].replaceAll("\"", "").replaceAll("}", "");
+		switch (type) {
+			case "BOAT_OWNER":
+				BoatOwner boatOwner = boatOwnerService.getById(id);
+				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
+						"Your account has been denied. \nThank you for using our services! \n\nSincerely, Adventure Time."
+								+ reason);
+				requestForAdminService
+						.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.BOAT_OWNER, id));
+				return new ResponseEntity<Boolean>(boatOwnerService.markDenied(id), HttpStatus.OK);
+
+			case "COTTAGE_OWNER":
+				CottageOwner cottageOwner = cottageOwnerService.getById(id);
+				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
+						"Your account has been denied. \nThank you for using our services! \n\nSincerely, Adventure Time."
+								+ reason);
+				requestForAdminService
+						.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.COTTAGE_OWNER, id));
+				return new ResponseEntity<Boolean>(cottageOwnerService.markDenied(id), HttpStatus.OK);
+
+			case "FISHING_INSTRUCTOR":
+				FishingInstructor fishingInstructor = fishingInstructorService.getById(id);
+				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
+						"Your account has been denied. \nThank you for using our services! \n\nSincerely, Adventure Time."
+								+ reason);
+				requestForAdminService.delete(
+						requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.FISHING_INSTRUCTOR, id));
+				return new ResponseEntity<Boolean>(fishingInstructorService.markDenied(id), HttpStatus.OK);
+
+			default:
+				return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		}
 	}
 }

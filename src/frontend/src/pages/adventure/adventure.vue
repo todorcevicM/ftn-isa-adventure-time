@@ -69,28 +69,37 @@
 			</div>
 		</div>
 	</div>
-</template> 
+</template>
 
 <script>
 import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		var urlArray = window.location.href.split("/");
-		var id = urlArray[4];
-
-		var adventure = ref(null);
-		axios.get("/api/adventures/get/" + id).then(function (response) {
-			adventure.value = response.data;
-			localStorage["fishingInstructor"] = adventure.value.instructorId;
+		var adventure = ref({
+			// Ovo se prenosi
+			id: localStorage.id,
+			instructorId: localStorage.instructorId,
+			// Ovo se menja
+			name: localStorage.name,
+			pricePerDay: localStorage.pricePerDay,
+			address: localStorage.address,
+			// Mora jer GMapMap ne prima string
+			geoLat: parseFloat(localStorage.geoLat),
+			geoLng: parseFloat(localStorage.geoLng),
+			location: localStorage.location,
+			promoDescription: localStorage.promoDescription,
+			instructorBio: localStorage.instructorBio,
+			rules: localStorage.rules,
+			priceAndInfo: localStorage.priceAndInfo,
+			maxUsers: localStorage.maxUsers,
+			equipment: localStorage.equipment,
+			percentTakenIfCancelled: localStorage.percentTakenIfCancelled,
 		});
-
+		// Za instructor.name gore
 		var instructor = ref(null);
 		axios
-			.get(
-				"/api/fishingInstructor/get/" +
-					localStorage["fishingInstructor"]
-			)
+			.get("/api/fishingInstructor/get/" + adventure.value.instructorId)
 			.then(function (response) {
 				instructor.value = response.data;
 			});
@@ -112,6 +121,7 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
+
 body {
 	/* background-image: url("../../assets/adventure-time-background.jpg"); */
 	background-color: #e6e4df;
@@ -121,40 +131,48 @@ body {
 	font-family: Aleo;
 	margin: 0;
 }
+
 #logo-container {
 	margin-top: 8px;
 	text-align: center;
 }
+
 .underlined {
 	display: inline-block;
 	border-bottom: #ad6800 3px solid;
 	height: 43px;
 }
+
 .underlined img {
 	height: 40px;
 	margin-bottom: -6px;
 	margin-right: -7px;
 }
+
 .underlined p {
 	margin-left: 10px;
 	font-size: 40px;
 	letter-spacing: -1px;
 	display: inline;
 }
+
 .mainFlex {
 	margin: 50px 200px;
 	display: flex;
 	justify-content: space-around;
 }
+
 .leftFlex {
 	display: flex;
 	flex-direction: column;
 }
+
 h4 {
 	margin: 0;
 	font-weight: 400;
 	font-size: 42px;
 }
+
 .leftFlex p {
 	margin: 0;
 	font-size: 27px;
@@ -195,6 +213,7 @@ h4 {
 	font-size: 20px;
 	color: #9e6b1d;
 }
+
 button {
 	margin: 0 auto;
 	height: 40px;
@@ -206,6 +225,7 @@ button {
 	font-size: 24px;
 	transition: 0.15s;
 }
+
 button:hover {
 	background-color: #9e6b1d;
 	color: white;

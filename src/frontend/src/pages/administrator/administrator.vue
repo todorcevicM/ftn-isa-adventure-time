@@ -126,38 +126,32 @@
 		</div>
 		<div class="lowerFlex">
 			<div class="table">
-					<h3>Revisions</h3>
+				<h3>Revisions</h3>
 
-					<div
-						class="tableEntry"
-						v-for="r in revisions"
-						:key="r"
-					>
-						<p class="entryRequestText">
-							{{ r.revision }}
-						</p>
-						<button class="entryApprove" @click="approveRevision(r.id)">
-							Approve
-						</button>
-						<button class="entryDeny" @click="denyRevision(r.id)">Deny</button>
-					</div>
+				<div class="tableEntry" v-for="r in revisions" :key="r">
+					<p class="entryRequestText">
+						{{ r.revision }}
+					</p>
+					<button class="entryApprove" @click="approveRevision(r.id)">
+						Approve
+					</button>
+					<button class="entryDeny" @click="denyRevision(r.id)">
+						Deny
+					</button>
 				</div>
+			</div>
 			<div class="table">
-					<h3>Appeals</h3>
+				<h3>Appeals</h3>
 
-					<div
-						class="tableEntry"
-						v-for="a in appeals"
-						:key="a"
-					>
-						<p class="entryRequestText">
-							{{ a.appeal }}
-						</p>
-						<button class="entryApprove" @click="answerAppeal(a.id)">
-							Answer
-						</button>
-					</div>
+				<div class="tableEntry" v-for="a in appeals" :key="a">
+					<p class="entryRequestText">
+						{{ a.appeal }}
+					</p>
+					<button class="entryApprove" @click="answerAppeal(a.id)">
+						Answer
+					</button>
 				</div>
+			</div>
 			<div class="table">
 				<h3>Registration Requests</h3>
 
@@ -167,13 +161,24 @@
 					:key="req"
 				>
 					<p class="entryName">{{ req.name }}</p>
+					<p class="entryName">{{ req.userType }}</p>
 					<p class="entryRequestText">
 						{{ req.userRegistrationReason }}
 					</p>
-					<button class="entryApprove" @click="approveRegistrationRequest(req.id, req.userType)">
+					<button
+						class="entryApprove"
+						@click="
+							approveRegistrationRequest(req.id, req.userType)
+						"
+					>
 						Approve
 					</button>
-					<button class="entryDeny" @click="denyRegistrationRequest(req.id, req.userType)">Deny</button>
+					<button
+						class="entryDeny"
+						@click="denyRegistrationRequest(req.id, req.userType)"
+					>
+						Deny
+					</button>
 				</div>
 			</div>
 			<div class="table">
@@ -480,6 +485,19 @@ export default {
 		var registrationRequests = ref(null);
 		axios.get("/api/user/getUnauthenticated").then(function (response) {
 			registrationRequests.value = response.data;
+			registrationRequests.value.forEach((req) => {
+				switch (req.userType) {
+					case "FISHING_INSTRUCTOR":
+						req.userType = "Fishing Instructor";
+						break;
+					case "COTTAGE_OWNER":
+						req.userType = "Cottage Owner";
+						break;
+					case "BOAT_OWNER":
+						req.userType = "Boat Owner";
+						break;
+				}
+			});
 		});
 
 		var firstPassword = ref(null);
@@ -544,15 +562,15 @@ export default {
 			newAdminCountry = ref(null);
 
 		var revisions = ref(null);
-		axios.get("/api/revision/getAllNotDeniedNotApproved").then(function (response) {
-			revisions.value = response.data;
-		});
+		axios
+			.get("/api/revision/getAllNotDeniedNotApproved")
+			.then(function (response) {
+				revisions.value = response.data;
+			});
 		var appeals = ref(null);
 		axios.get("/api/appeal/getAll").then(function (response) {
 			appeals.value = response.data;
 		});
-	
-
 
 		return {
 			user,
@@ -887,7 +905,10 @@ export default {
 							);
 							window.location.reload();
 						} else {
-							alert("There's been an error while creating.");
+							alert(
+								"There's been an error while creating: " +
+									response.data
+							);
 						}
 					})
 					.catch(function (error) {
@@ -945,32 +966,31 @@ export default {
 				if (answer == null) {
 					alert("Answer can't be empty.");
 					return;
-				}	
+				}
 
-				axios.post("/api/appeal/answerAppeal/" + appeal_id, answer).then(function (
-					response
-				) {
-					if (response.data == true) {
-						alert("Appeal has been answered.");
-						window.location.reload();
-					} else {
-						alert("There's been an error while answering.");
-					}
-				});
+				axios
+					.post("/api/appeal/answerAppeal/" + appeal_id, answer)
+					.then(function (response) {
+						if (response.data == true) {
+							alert("Appeal has been answered.");
+							window.location.reload();
+						} else {
+							alert("There's been an error while answering.");
+						}
+					});
 			},
 			denyRevision(revision_id) {
-				axios.post("/api/revision/denyRevision/" + revision_id).then(
-					function (response) {
+				axios
+					.post("/api/revision/denyRevision/" + revision_id)
+					.then(function (response) {
 						if (response.data == true) {
 							alert("Revision has been denied.");
 							window.location.reload();
 						} else {
 							alert("There's been an error while denying.");
 						}
-					}
-				)
+					});
 			},
-
 		};
 	},
 };

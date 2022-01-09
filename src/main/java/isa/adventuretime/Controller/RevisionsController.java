@@ -39,120 +39,124 @@ import isa.adventuretime.Service.RoomBookingService;
 @RestController
 @RequestMapping(path = "/api/revision")
 public class RevisionsController {
-    @Autowired 
-    private RevisionsService revisionsService;
+	@Autowired
+	private RevisionsService revisionsService;
 
-    @Autowired
+	@Autowired
 	private MailService mailService;
 
-    @Autowired
-    private BoatBookingService boatBookingService;
+	@Autowired
+	private BoatBookingService boatBookingService;
 
-    @Autowired
-    private AdventureBookingService adventureBookingService;
+	@Autowired
+	private AdventureBookingService adventureBookingService;
 
-    @Autowired
-    private RoomBookingService roomBookingService;
+	@Autowired
+	private RoomBookingService roomBookingService;
 
-    @Autowired 
-    private BoatService boatService;
-    @Autowired
-    private AdventureService adventureService;
-    @Autowired
-    private CottageService cottageService;
+	@Autowired
+	private BoatService boatService;
+	@Autowired
+	private AdventureService adventureService;
+	@Autowired
+	private CottageService cottageService;
 
-    @Autowired 
-    private BoatOwnerService boatOwnerService;
-    @Autowired
-    private FishingInstructorService fishingInstructorService;
-    @Autowired
-    private CottageOwnerService cottageOwnerService;
+	@Autowired
+	private BoatOwnerService boatOwnerService;
+	@Autowired
+	private FishingInstructorService fishingInstructorService;
+	@Autowired
+	private CottageOwnerService cottageOwnerService;
 
-    @RequestMapping(value = "/getAll")
-    public ResponseEntity<ArrayList<Revision>> getAll() {
-        return new ResponseEntity<>(revisionsService.getAll(), HttpStatus.OK);
-    }
+	@RequestMapping(value = "/getAll")
+	public ResponseEntity<ArrayList<Revision>> getAll() {
+		return new ResponseEntity<>(revisionsService.getAll(), HttpStatus.OK);
+	}
 
-    @RequestMapping(value = "/getAllNotDeniedNotApproved")
-    public ResponseEntity<ArrayList<Revision>> getAllNotDeniedNotApproved() {
-        for (Revision r : revisionsService.findAllByNotDeniedAndNotApproved()) {
-            System.out.println(r.getId());
-        }
-        return new ResponseEntity<>(revisionsService.findAllByNotDeniedAndNotApproved(), HttpStatus.OK);
-    }
+	@RequestMapping(value = "/getAllNotDeniedNotApproved")
+	public ResponseEntity<ArrayList<Revision>> getAllNotDeniedNotApproved() {
+		for (Revision r : revisionsService.findAllByNotDeniedAndNotApproved()) {
+			System.out.println(r.getId());
+		}
+		return new ResponseEntity<>(revisionsService.findAllByNotDeniedAndNotApproved(), HttpStatus.OK);
+	}
 
-    @PostMapping(value = "/approveRevision/{id}")
-    public Boolean approveRevision(@PathVariable("id") Long id) throws AddressException, UnsupportedEncodingException {
-        Revision revision = revisionsService.getById(id);
-        revision.setApproved(true);
-        revisionsService.save(revision);
+	@PostMapping(value = "/approveRevision/{id}")
+	public Boolean approveRevision(@PathVariable("id") Long id) throws AddressException, UnsupportedEncodingException {
+		Revision revision = revisionsService.getById(id);
+		revision.setApproved(true);
+		revisionsService.save(revision);
 
-        // TODO: send email to user
-        switch (revision.getType()) {
-            case BOAT: 
-                BoatBooking boatBooking = boatBookingService.getById(revision.getBookingId());
-                Boat boat = boatService.getById(boatBooking.getBookedBoatId());
-                BoatOwner boatOwner = boatOwnerService.getById(boat.getOwnerId());                
-                
-                mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(), "A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
-                
-                break;
+		// TODO: send email to user
+		switch (revision.getType()) {
+			case BOAT:
+				BoatBooking boatBooking = boatBookingService.getById(revision.getBookingId());
+				Boat boat = boatService.getById(boatBooking.getBookedBoatId());
+				BoatOwner boatOwner = boatOwnerService.getById(boat.getOwnerId());
 
-            case COTTAGE: 
-                RoomBooking roomBooking = roomBookingService.getById(revision.getBookingId());
-                Cottage cottage = cottageService.getById(roomBooking.getCottageId());
-                CottageOwner cottageOwner = cottageOwnerService.getById(cottage.getOwnerId());
-                
-                mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(), "A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
-                break;
+				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
+						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
 
-            case ADVENTURE: 
-                AdventureBooking adventureBooking = adventureBookingService.getById(revision.getBookingId());
-                Adventure adventure = adventureService.getById(adventureBooking.getBookedAdventureId());
-                FishingInstructor fishingInstructor = fishingInstructorService.getById(adventure.getInstructorId());
+				break;
 
-                mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(), "A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
-                break;
-            
-            default: 
-                return false;
-        }
+			case COTTAGE:
+				RoomBooking roomBooking = roomBookingService.getById(revision.getBookingId());
+				Cottage cottage = cottageService.getById(roomBooking.getCottageId());
+				CottageOwner cottageOwner = cottageOwnerService.getById(cottage.getOwnerId());
 
-        return true;
-    }
+				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
+						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
+				break;
 
-    @PostMapping(value = "/denyRevision/{id}")
-    public Boolean denyRevision(@PathVariable("id") Long id) {
-        Revision revision = revisionsService.getById(id);
-        revision.setDenied(true);
-        revisionsService.save(revision);
+			case ADVENTURE:
+				AdventureBooking adventureBooking = adventureBookingService.getById(revision.getBookingId());
+				Adventure adventure = adventureService.getById(adventureBooking.getBookedAdventureId());
+				FishingInstructor fishingInstructor = fishingInstructorService.getById(adventure.getInstructorId());
 
-        return true;
-    }
+				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
+						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
+				break;
 
-    @PostMapping(value = "/sendRevision")
-    public Revision sendRevision(RequestEntity<Revision> revision) {
-        Revision newRevision = new Revision(revision.getBody());
-        System.out.println(newRevision.getRating());
-        System.out.println(newRevision.getRevision());
-        System.out.println(newRevision.getType());
-        System.out.println(newRevision.getBookingId());
+			default:
+				return false;
+		}
 
-        return revisionsService.save(newRevision);
-    }
+		return true;
+	}
 
-    @PostMapping(path = "/rating")
-    public float calculateRating(RequestEntity<String> scoreParam){
-        String parse[] = scoreParam.getBody().split(";");
-        int type = Integer.parseInt(parse[0]);
-        int mainEntityId = Integer.parseInt(parse[1]);
-        float rating =  0;
-        try{
-            rating = revisionsService.getScore(type, mainEntityId);
-        }catch(Exception exception){
-            return -1;
-        }
-        return rating;
-    }
+	@PostMapping(value = "/denyRevision/{id}")
+	public Boolean denyRevision(@PathVariable("id") Long id) {
+		Revision revision = revisionsService.getById(id);
+		revision.setDenied(true);
+		revisionsService.save(revision);
+
+		return true;
+	}
+
+	@PostMapping(value = "/sendRevision")
+	public Revision sendRevision(RequestEntity<Revision> revision) {
+		Revision newRevision = new Revision(revision.getBody());
+		System.out.println(newRevision.getRating());
+		System.out.println(newRevision.getRevision());
+		System.out.println(newRevision.getType());
+		System.out.println(newRevision.getBookingId());
+
+		return revisionsService.save(newRevision);
+	}
+
+	@PostMapping(path = "/rating")
+	public float calculateRating(RequestEntity<String> scoreParam) {
+		String parse[] = scoreParam.getBody().split(",");
+
+		int type = Integer.parseInt(parse[0].split(":")[1]);
+		Long mainEntityId = Long.parseLong(parse[1].split(":")[1].replace("}", ""));
+		float rating = 0;
+		try {
+			rating = revisionsService.getScore(type, mainEntityId);
+		} catch (Exception exception) {
+			return -1;
+		}
+		return rating;
+	}
 
 }

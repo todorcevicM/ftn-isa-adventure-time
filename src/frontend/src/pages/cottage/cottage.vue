@@ -41,7 +41,7 @@
 				<h4>{{ cottage.name }}</h4>
 				<div style="display: flex; justify-content: space-between">
 					<p>${{ cottage.pricePerDay }}.00 / Day</p>
-					<p>Rating: 5.00</p>
+					<p>Rating: {{ rating }}</p>
 				</div>
 				<!-- Spacer -->
 				<div
@@ -50,9 +50,6 @@
 				<!-- Spacer -->
 				<p class="smallText">Address</p>
 				<p>{{ cottage.address }}</p>
-				<!-- <p class="smallText">
-					({{ cottage.geoLng }}, {{ cottage.geoLat }})
-				</p> -->
 				<p class="smallText">Promo</p>
 				<p>{{ cottage.promoDescription }}</p>
 				<p class="smallText">Rules</p>
@@ -71,7 +68,6 @@
 				<p>{{ cottage.maxUsers }} People</p>
 				<p class="smallText">Owner</p>
 				<p>{{ owner.name }}</p>
-				<button @click="reserve()">Reserve</button>
 			</div>
 		</div>
 	</div>
@@ -101,8 +97,6 @@ export default {
 			reservationEnd: localStorage.reservationEnd,
 		});
 
-		console.log(cottage);
-
 		// Formatiranje datuma
 		let newStart = cottage.value.reservationStart.split("T");
 		let newStartSecondPart = newStart[1].split(".")[0];
@@ -111,23 +105,6 @@ export default {
 		let newEnd = cottage.value.reservationEnd.split("T");
 		let newEndSecondPart = newEnd[1].split(".")[0];
 		cottage.value.reservationEnd = newEndSecondPart + ", " + newEnd[0];
-
-		// axios.get("/api/cottages/get/" + id).then(function (response) {
-		// 	cottage.value = response.data;
-
-		// 	localStorage["cottageOwner"] = cottage.value.ownerId;
-		// 	// Mora localStorage da bi se izbegao limit scope-a .then()-a
-		// 	// Treba za GET dole
-
-		// 	// Formatiranje datuma
-		// 	let newStart = cottage.value.reservationStart.split("T");
-		// 	let newStartSecondPart = newStart[1].split(".")[0];
-		// 	cottage.value.reservationStart =
-		// 		newStartSecondPart + ", " + newStart[0];
-		// 	let newEnd = cottage.value.reservationEnd.split("T");
-		// 	let newEndSecondPart = newEnd[1].split(".")[0];
-		// 	cottage.value.reservationEnd = newEndSecondPart + ", " + newEnd[0];
-		// });
 
 		var rooms = ref(null);
 		axios
@@ -144,11 +121,32 @@ export default {
 				owner.value = response.data;
 			});
 
-		// Za u <template>
+		var rating = ref(null);
+		axios
+			.post(
+				"/api/revision/rating",
+				{
+					type: 2, // 0 je BOAT, 2 je COTTAGE, 4 je ADVENTURE
+					id: parseInt(cottage.value.id),
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			)
+			.then(function (response) {
+				rating.value = response.data.toFixed(2);
+				if (rating.value == -1.0) {
+					rating.value = "None";
+				}
+			});
+
 		return {
 			cottage,
 			owner,
 			rooms,
+			rating,
 			imageSource(id) {
 				try {
 					return require("../../assets/images/cottage" + id + ".png");
@@ -156,9 +154,6 @@ export default {
 					// TODO: return praznu sliku ili nesto tako
 					return require("../../assets/images/cottage1.png");
 				}
-			},
-			reserve() {
-				alert("Not implemented yet!");
 			},
 		};
 	},
