@@ -154,7 +154,7 @@ export default {
 		var actions = ref(null);
 		if (userId != null) {
 			actionsHide = false;
-			axios.get("/api/booking/cottageBookingDeal/" + )
+			axios.get("/api/booking/cottageBookingDeal/");
 		}
 
 		return {
