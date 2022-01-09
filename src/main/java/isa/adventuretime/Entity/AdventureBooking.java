@@ -25,9 +25,9 @@ public class AdventureBooking {
 	private Long bookedAdventureId;
 	private Long bookedInstructorId;
 	private Long registeredUserId;
-	private boolean quickBooking;
+	private Boolean quickBooking;
 	@Column(columnDefinition = "boolean default false")
-	private boolean reportMade;
+	private Boolean reportMade;
 
 	private Date start;
 	private Date end;

@@ -34,7 +34,7 @@ public class RoomBooking {
 	private Long cottageId;
 
 	@Column(columnDefinition = "boolean default false")
-	private boolean reportMade;
+	private Boolean reportMade;
 
 	public RoomBooking() {
 

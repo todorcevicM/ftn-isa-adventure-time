@@ -33,7 +33,7 @@ public class BoatBooking {
 	private int maxUsers; // if not default, is this needed?
 
 	@Column(columnDefinition = "boolean default false")
-	private boolean reportMade;
+	private Boolean reportMade;
 
 	public BoatBooking() {
 
