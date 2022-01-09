@@ -23,7 +23,7 @@ public class RoomBooking {
 	private Long id;
 	private Long bookedRoomId;
 	private Long registeredUserId;
-	private boolean quickBooking;
+	private Boolean quickBooking;
 
 	private Date start;
 	private Date end;
@@ -36,7 +36,7 @@ public class RoomBooking {
 
 	}
 
-	public RoomBooking(Long bookedRoomId, Long RegisteredUserId, boolean quickBooking, Date start, Date end, double price, String extraService, int maxUsers, Long cottageId) {
+	public RoomBooking(Long bookedRoomId, Long RegisteredUserId, Boolean quickBooking, Date start, Date end, double price, String extraService, int maxUsers, Long cottageId) {
 		this.bookedRoomId = bookedRoomId;
 		this.registeredUserId = RegisteredUserId;
 		this.quickBooking = quickBooking;

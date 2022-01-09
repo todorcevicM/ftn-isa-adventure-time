@@ -24,7 +24,7 @@ public class AdventureBooking {
 	private Long bookedAdventureId;
 	private Long bookedInstructorId;
 	private Long registeredUserId;
-	private boolean quickBooking;
+	private Boolean quickBooking;
 
 	private Date start;
 	private Date end;

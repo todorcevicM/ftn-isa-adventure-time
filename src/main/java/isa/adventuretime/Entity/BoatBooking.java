@@ -23,7 +23,7 @@ public class BoatBooking {
 	private Long id;
 	private Long bookedBoatId;
 	private Long registeredUserId;
-	private boolean quickBooking;
+	private Boolean quickBooking;
 
 	private Date start;
 	private Date end;

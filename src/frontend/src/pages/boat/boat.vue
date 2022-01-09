@@ -95,6 +95,23 @@
 				<p>{{ owner.name }}</p>
 				<button @click="reserve()">Reserve</button>
 			</div>
+			<div v-if="!actionsHide">
+				<h3>Boat Deals</h3>
+				<div class="tableEntry" v-for="bbd in boatBookingDeal" :key="bbd">
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ bbd.id }}</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="createBooking(bbd.id)"
+						>
+							Book
+						</button>
+					</div>
+				</div>	
+
+			</div>
 		</div>
 	</div>
 </template>
@@ -146,10 +163,22 @@ export default {
 			.then(function (response) {
 				owner.value = response.data;
 			});
+		var actionsHide = true;
+		var boatBookingDeal = ref(null);
+		if (localStorage.userId != null) {
+			actionsHide = false;
+			axios.get("/api/booking/boatBookingDeal/" + boat.value.id, localStorage.userId).then(function (response) {
+				console.log(response.data);
+				boatBookingDeal.value = response.data;
+			});
+		}
 
 		return {
 			boat,
 			owner,
+			actionsHide,
+			boatBookingDeal,
+			
 			imageSource(id) {
 				try {
 					return require("../../assets/images/boat" + id + ".png");
@@ -160,6 +189,20 @@ export default {
 			},
 			reserve() {
 				alert("Not implemented yet!");
+			},
+			createBooking(entityId) {
+				axios.post("/api/booking/quickBoatBooking", {
+					entityId: entityId,
+					userId: parseInt(localStorage.userId),
+				}).then(function (response) {
+					if (response.data) {
+						console.log(response.data);
+						alert("Booking created!");
+					}
+					else {
+						alert("Booking not created!");
+					}
+				});
 			},
 		};
 	},

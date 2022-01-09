@@ -16,6 +16,6 @@ public interface BoatOwnerRepo extends JpaRepository<BoatOwner, Long> {
 
 	public BoatOwner findByEmailHash(int code);
 
-	public ArrayList<BoatOwner> findAllByAuthenticatedAndDenied(boolean authenticated, boolean denied);
+	public ArrayList<BoatOwner> findAllByAuthenticatedAndDenied(Boolean authenticated, Boolean denied);
 
 }

@@ -73,8 +73,20 @@
 				
 			</div>
 			<div v-if="!actionsHide">
-				<p>a</p>		
-
+				<h3>Cottage Deals</h3>
+				<div class="tableEntry" v-for="cbd in cottageBookingDeal" :key="cbd">
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{  }}</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="createBooking(cbd.id)"
+						>
+							Book
+						</button>
+					</div>
+				</div>	
 			</div>
 		</div>
 	</div>
@@ -149,12 +161,14 @@ export default {
 				}
 			});
 
-		var userId = localStorage.userId;
 		var actionsHide = true;
-		var actions = ref(null);
-		if (userId != null) {
+		var cottageDeals = ref(null);
+		if (localStorage.userId != null) {
 			actionsHide = false;
-			axios.get("/api/booking/cottageBookingDeal/");
+			axios.get("/api/booking/cottageBookingDeal/" + cottage.value.id).then(function (response) {
+				console.log(response.data);
+				cottageDeals.value = response.data;
+			});
 		}
 
 		return {
@@ -162,9 +176,8 @@ export default {
 			owner,
 			rooms,
 			rating,
-			userId,
 			actionsHide,
-			actions,
+			cottageDeals,
 			imageSource(id) {
 				try {
 					return require("../../assets/images/cottage" + id + ".png");
@@ -172,6 +185,20 @@ export default {
 					// TODO: return praznu sliku ili nesto tako
 					return require("../../assets/images/cottage1.png");
 				}
+			},
+			createBooking(entityId) {
+				axios.post("/api/booking/quickCottageBooking", {
+					entityId: entityId,
+					userId: parseInt(localStorage.userId),
+				}).then(function (response) {
+					if (response.data) {
+						console.log(response.data);
+						alert("Booking created!");
+					}
+					else {
+						alert("Booking not created!");
+					}
+				});
 			},
 		};
 	},

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import isa.adventuretime.DTO.CottageWithRoomDTO;
@@ -61,6 +62,40 @@ public class BookingController {
 	MailService mailService;
 	@Autowired
 	RegisteredUserService registeredUserService;
+
+
+	@PostMapping(path = "/quickBoatBooking")
+	public Boolean quickBoatBooking(RequestEntity<String> params) {
+		String[] paramsArray = params.getBody().split(",");
+		Long boatBookingId = Long.parseLong(paramsArray[0].split(":")[1]);
+		Long userId = Long.parseLong(paramsArray[1].split(":")[1].replace("}", ""));
+		BoatBooking bb = boatBookingService.getById(boatBookingId);
+
+		bb.setRegisteredUserId(userId);
+		return boatBookingService.save(bb) != null;
+	}
+
+	@PostMapping(path = "/quickAdventureBooking")
+	public Boolean quickAdventureBooking(RequestEntity<String> params) {
+		String[] paramsArray = params.getBody().split(",");
+		Long adventureBookingId = Long.parseLong(paramsArray[0].split(":")[1]);
+		Long userId = Long.parseLong(paramsArray[1].split(":")[1].replace("}", ""));
+		AdventureBooking ab = adventureBookingService.getById(adventureBookingId);
+
+		ab.setRegisteredUserId(userId);
+		return adventureBookingService.save(ab) != null;
+	}
+
+	@PostMapping(path = "/quickCottageBooking")
+	public Boolean quickCottageBooking(RequestEntity<String> params) {
+		String[] paramsArray = params.getBody().split(",");
+		Long roomBookingId = Long.parseLong(paramsArray[0].split(":")[1]);
+		Long userId = Long.parseLong(paramsArray[1].split(":")[1].replace("}", ""));
+		RoomBooking rb = roomBookingService.getById(roomBookingId);
+
+		rb.setRegisteredUserId(userId);
+		return roomBookingService.save(rb) != null;
+	}
 
 	@PostMapping(path = "/room")
 	public Boolean bookRoom(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
@@ -129,7 +164,9 @@ public class BookingController {
 				Integer.parseInt(dateD.split("-")[1]) - 1,
 				Integer.parseInt(dateD.split("-")[2]),
 				Integer.parseInt(time.split(":")[0]),
-				Integer.parseInt(time.split(":")[1]), 0);
+				Integer.parseInt(time.split(":")[1]), 
+				0
+		);
 		int days = Integer.parseInt(params[3].split(":")[1]);
 		int guests = Integer.parseInt(params[4].split(":")[1]);
 		Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
@@ -308,29 +345,46 @@ public class BookingController {
 			case "ADVENTURE":
 				AdventureBooking ab = adventureBookingService.getById(id);
 				if (ab != null && ab.getStart().after(date.getTime())) {
-					adventureBookingService.delete(ab);
-					return true;
+					if (ab.getQuickBooking()) {
+						ab.setRegisteredUserId(0L);
+						adventureBookingService.save(ab);
+						return true;
+					} else {
+						adventureBookingService.delete(ab);
+						return true;
+					}
 				}
 				return false;
 			case "BOAT":
 				BoatBooking bb = boatBookingService.getById(id);
 				if (bb != null && bb.getStart().after(date.getTime())) {
-					boatBookingService.delete(bb);
-					return true;
+					if (bb.getQuickBooking()) {
+						bb.setRegisteredUserId(0L);
+						boatBookingService.save(bb);
+						return true;
+					} else {
+						boatBookingService.delete(bb);
+						return true;
+					}
 				}
 				return false;
 			case "COTTAGE":
 				RoomBooking rb = roomBookingService.getById(id);
 				if (rb != null && rb.getStart().after(date.getTime())) {
-					roomBookingService.delete(rb);
-					return true;
+					if (rb.getQuickBooking()) {
+						rb.setRegisteredUserId(0L);
+						roomBookingService.save(rb);
+						return true;
+					} else {
+						roomBookingService.delete(rb);
+						return true;
+					}
 				}
 				return false;
 			default:
 				System.err.println("Something went wrong >>> " + forType);
-				break;
+				return false;
 		}
-		return false;
 	}
 
 }
