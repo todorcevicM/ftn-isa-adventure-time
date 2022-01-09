@@ -11,10 +11,12 @@
 
 		<div>
 			<div>
+				<p>Name</p>
 				<input v-model="searched" />
 			</div>
 
 			<div>
+				<p>Select type of search</p>
 				<select v-model="type">
 					<option type>Cottage</option>
 					<option>Boat</option>
@@ -22,37 +24,37 @@
 				</select>
 			</div>
 			<div>
+				<p>Date</p>
 				<input v-model="date" type="date" />
 			</div>
 			<div>
+				<p>Time</p>
 				<input v-model="time" type="time" />
 			</div>
 			<div>
+				<p>How many days</p>
 				<input v-model="days" type="number" />
 			</div>
 			<div>
+				<p>How many guests</p>
 				<input v-model="guests" type="number" />
+			</div>
+			<div>
+				<p>*All fields must be filled</p>
 			</div>
 			<div>
 				<button @click="search()">Search</button>
 			</div>
 
 			<div class="table">
-				<div
-					class="tableEntry"
-					v-for="sr in searchResults"
-					:key="sr"
-				>
+				<div class="tableEntry" v-for="sr in searchResults" :key="sr">
 					<p class="entryName">{{ sr.name }}</p>
-					<p class="entryName">{{ sr.address }} </p>
+					<p class="entryName">{{ sr.address }}</p>
 					<p class="entryRequestText">{{ sr.reservationStart }}</p>
 					<p class="entryRequestText">{{ sr.reservationEnd }}</p>
 					<p>{{ sr.extraService }}</p>
 					<p>Price : {{ sr.pricePerDay }}.00</p>
-					<button
-						class="entryApprove"
-						@click="reserve(sr)"						
-					>
+					<button class="entryApprove" @click="reserve(sr)">
 						Reserve
 					</button>
 				</div>
@@ -74,7 +76,6 @@ export default {
 		var guests = ref(null);
 
 		var searchResults = ref(null);
-
 
 		return {
 			searched,
@@ -112,31 +113,37 @@ export default {
 				console.log(object);
 				// TODO: user id + extra service
 				let userId = localStorage.userId;
-				let param = "user id umesto ovog string" + ";" + this.guests + ";" + "ovde ide extra service";
+				let param =
+					"user id umesto ovog string" +
+					";" +
+					this.guests +
+					";" +
+					"ovde ide extra service";
 				if (this.type == "Boat") {
-					axios.post("/api/booking/boat", {
-						boatId: object.id,
-						reservationStart: this.date,
-						time: this.time,
-						days: this.days,
-						guests: this.guests,
-						ownerId: object.ownerId,
-						userId: userId,					
-					}, {
-						headers: { "Content-Type": "application/json" },
-					});
-				}
-				else if (this.type == "Cottage") {
+					axios.post(
+						"/api/booking/boat",
+						{
+							boatId: object.id,
+							reservationStart: this.date,
+							time: this.time,
+							days: this.days,
+							guests: this.guests,
+							ownerId: object.ownerId,
+							userId: userId,
+						},
+						{
+							headers: { "Content-Type": "application/json" },
+						}
+					);
+				} else if (this.type == "Cottage") {
 					axios.post("/api/booking/cottage/" + param, object, {
 						headers: { "Content-Type": "application/json" },
 					});
-				}
-				else if (this.type == "Adventure") { 
+				} else if (this.type == "Adventure") {
 					axios.post("/api/booking/adventure/" + param, object, {
 						headers: { "Content-Type": "application/json" },
 					});
-				}
-				else {
+				} else {
 					alert("Please select a type");
 				}
 			},

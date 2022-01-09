@@ -52,8 +52,8 @@ public class CottageService {
 		return cottageRepo.getAllByOwnerId(id);
 	}
 
-	public ArrayList<CottageWithRoomDTO> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests,
-			int grade) {
+	public ArrayList<CottageWithRoomDTO> getAllBySearchQuery(String searched, Date startDate, Date endDate,
+			int guests) {
 		ArrayList<Cottage> potentialCottages = cottageRepo.getAllByNameContains(searched);
 		ArrayList<CottageWithRoomDTO> retCottagesWithRooms = new ArrayList<>();
 
