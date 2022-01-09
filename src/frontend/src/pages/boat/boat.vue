@@ -99,7 +99,9 @@
 				<h3>Boat Deals</h3>
 				<div class="tableEntry" v-for="bbd in boatBookingDeal" :key="bbd">
 					<div class="entryLeft">
-						<p class="entryLeftShort">{{ bbd.id }}</p>
+						<p class="entryLeftShort">{{ bbd.start }}</p>
+						<p class="entryLeftShort">{{ bbd.end }}</p>
+						<p class="entryLeftShort">Popust : {{ (1 - bbd.price / boat.pricePerDay) * 100 }}%</p>
 					</div>
 					<div class="entryRight">
 						<button
@@ -170,6 +172,15 @@ export default {
 			axios.get("/api/booking/boatBookingDeal/" + boat.value.id, localStorage.userId).then(function (response) {
 				console.log(response.data);
 				boatBookingDeal.value = response.data;
+
+				boatBookingDeal.value.forEach((bookingDeal) => {					
+					let newStart = bookingDeal.start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					bookingDeal.start = newStartSecondPart + ", " + newStart[0];
+					let newEnd = bookingDeal.end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+				});
 			});
 		}
 

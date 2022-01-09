@@ -65,33 +65,45 @@ public class BookingController {
 
 
 	@PostMapping(path = "/quickBoatBooking")
-	public Boolean quickBoatBooking(RequestEntity<String> params) {
+	public Boolean quickBoatBooking(RequestEntity<String> params) throws AddressException, UnsupportedEncodingException {
 		String[] paramsArray = params.getBody().split(",");
 		Long boatBookingId = Long.parseLong(paramsArray[0].split(":")[1]);
 		Long userId = Long.parseLong(paramsArray[1].split(":")[1].replace("}", ""));
 		BoatBooking bb = boatBookingService.getById(boatBookingId);
+
+		String userName = registeredUserService.getById(userId).getName();
+		String userEmail = registeredUserService.getById(userId).getEmail();
+		mailService.SendMail(userEmail, userName, "Boat booking\n\n You have successfully booked a boat!");
 
 		bb.setRegisteredUserId(userId);
 		return boatBookingService.save(bb) != null;
 	}
 
 	@PostMapping(path = "/quickAdventureBooking")
-	public Boolean quickAdventureBooking(RequestEntity<String> params) {
+	public Boolean quickAdventureBooking(RequestEntity<String> params) throws AddressException, UnsupportedEncodingException {
 		String[] paramsArray = params.getBody().split(",");
 		Long adventureBookingId = Long.parseLong(paramsArray[0].split(":")[1]);
 		Long userId = Long.parseLong(paramsArray[1].split(":")[1].replace("}", ""));
 		AdventureBooking ab = adventureBookingService.getById(adventureBookingId);
+		
+		String userName = registeredUserService.getById(userId).getName();
+		String userEmail = registeredUserService.getById(userId).getEmail();
+		mailService.SendMail(userEmail, userName, "Adventure booking\n\n You have successfully booked an adventure!");
 
 		ab.setRegisteredUserId(userId);
 		return adventureBookingService.save(ab) != null;
 	}
 
 	@PostMapping(path = "/quickCottageBooking")
-	public Boolean quickCottageBooking(RequestEntity<String> params) {
+	public Boolean quickCottageBooking(RequestEntity<String> params) throws AddressException, UnsupportedEncodingException {
 		String[] paramsArray = params.getBody().split(",");
 		Long roomBookingId = Long.parseLong(paramsArray[0].split(":")[1]);
 		Long userId = Long.parseLong(paramsArray[1].split(":")[1].replace("}", ""));
 		RoomBooking rb = roomBookingService.getById(roomBookingId);
+
+		String userName = registeredUserService.getById(userId).getName();
+		String userEmail = registeredUserService.getById(userId).getEmail();
+		mailService.SendMail(userEmail, userName, "Cottage booking\n\n You have successfully booked a cottage!");
 
 		rb.setRegisteredUserId(userId);
 		return roomBookingService.save(rb) != null;

@@ -71,7 +71,11 @@
 				<h3>Adventure Deals</h3>
 				<div class="tableEntry" v-for="abd in adventureBookingDeal" :key="abd">
 					<div class="entryLeft">
-						<p class="entryLeftShort">{{ abd.bookedAdventureId }}</p>
+						<p>{{ abd.name }}</p>
+						<p class="entryLeftShort">{{ abd.start }}</p>
+						<p class="entryLeftShort">{{ abd.end }}</p>
+						<p class="entryLeftShort">Popust : {{ (1 - abd.price / adventure.pricePerDay) * 100 }}%</p>
+
 					</div>
 					<div class="entryRight">
 						<button
@@ -127,6 +131,15 @@ export default {
 			axios.get("/api/booking/adventureBookingDeal/" + adventure.value.id).then(function (response) {
 				console.log(response.data);
 				adventureDeals.value = response.data;
+
+				adventureDeals.value.forEach((bookingDeal) => {					
+					let newStart = bookingDeal.start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					bookingDeal.start = newStartSecondPart + ", " + newStart[0];
+					let newEnd = bookingDeal.end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+				});
 			});
 		}
 

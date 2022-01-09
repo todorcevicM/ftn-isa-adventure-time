@@ -76,7 +76,9 @@
 				<h3>Cottage Deals</h3>
 				<div class="tableEntry" v-for="cbd in cottageBookingDeal" :key="cbd">
 					<div class="entryLeft">
-						<p class="entryLeftShort">{{  }}</p>
+						<p class="entryLeftShort">{{ cbd.start }}</p>
+						<p class="entryLeftShort">{{ cbd.end }}</p>
+						<p class="entryLeftShort">Popust : {{ (1 - cbd.price / cottage.pricePerDay) * 100 }}%</p>
 					</div>
 					<div class="entryRight">
 						<button
@@ -168,6 +170,15 @@ export default {
 			axios.get("/api/booking/cottageBookingDeal/" + cottage.value.id).then(function (response) {
 				console.log(response.data);
 				cottageDeals.value = response.data;
+
+				cottageDeals.value.forEach((bookingDeal) => {					
+					let newStart = bookingDeal.start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					bookingDeal.start = newStartSecondPart + ", " + newStart[0];
+					let newEnd = bookingDeal.end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+				});
 			});
 		}
 
