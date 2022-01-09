@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
+@RestController
 @RequestMapping(path = "/api/image")
 public class ImageController {
 

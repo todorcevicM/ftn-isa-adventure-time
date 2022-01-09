@@ -2,6 +2,7 @@ package isa.adventuretime.Entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,6 +33,9 @@ public class RoomBooking {
 	private int maxUsers; // if not default, is this needed?
 	private Long cottageId;
 
+	@Column(columnDefinition = "boolean default false")
+	private boolean reportMade;
+
 	public RoomBooking() {
 
 	}
@@ -46,6 +50,7 @@ public class RoomBooking {
 		this.extraService = extraService;
 		this.maxUsers = maxUsers;
 		this.cottageId = cottageId;
+		this.reportMade = false;
 	}
 	public RoomBooking(Long bookedRoomId, Long RegisteredUserId, Date start, Date end, String extraService, int maxUsers, Long cottageId) {
 		this.bookedRoomId = bookedRoomId;
@@ -57,6 +62,7 @@ public class RoomBooking {
 		this.cottageId = cottageId;
 		this.quickBooking = false;
 		this.price = 0;
+		this.reportMade = false;
 	}
 
 	

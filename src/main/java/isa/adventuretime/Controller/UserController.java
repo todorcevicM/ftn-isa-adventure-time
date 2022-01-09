@@ -208,9 +208,6 @@ public class UserController {
 	public ResponseEntity<String> registerUser(RequestEntity<UnauthenticatedUserDTO> request)
 			throws AddressException, UnsupportedEncodingException {
 
-		// TODO: Posto su dodati deleted i userType u User klasi,
-		// sad moraju svi konstruktori da se menjaju
-
 		String new_user_email = request.getBody().getEmail();
 		String returnedString = "User has been successfully created!";
 

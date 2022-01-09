@@ -27,7 +27,7 @@ public class Adventure {
 	private Long instructorId;
 	private String instructorBio;
 
-	private String equipment; // ovo mozda prebaciti u termin avanture
+	private String equipment;
 
 	private String rules;
 	private String priceAndInfo;

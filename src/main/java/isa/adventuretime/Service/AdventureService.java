@@ -45,7 +45,6 @@ public class AdventureService {
 		adventureRepo.deleteById(id);
 	}
 
-	// TODO: test this
 	public ArrayList<Adventure> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests) {
 		ArrayList<Adventure> adventures = adventureRepo.getAllByNameContainsAndMaxUsersGreaterThanEqual(searched,
 				guests);
