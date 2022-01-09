@@ -112,7 +112,6 @@ export default {
 				console.log(object);
 				// TODO: user id + extra service
 				let userId = localStorage.userId;
-				let param = "user id umesto ovog string" + ";" + this.guests + ";" + "ovde ide extra service";
 				if (this.type == "Boat") {
 					axios.post("/api/booking/boat", {
 						boatId: object.id,
@@ -127,12 +126,28 @@ export default {
 					});
 				}
 				else if (this.type == "Cottage") {
-					axios.post("/api/booking/cottage/" + param, object, {
+					axios.post("/api/booking/cottage/", {
+						cottageId: object.id,
+						reservationStart: this.date,
+						time: this.time,
+						days: this.days,
+						guests: this.guests,
+						ownerId: object.ownerId,
+						userId: userId,
+					}, {
 						headers: { "Content-Type": "application/json" },
 					});
 				}
 				else if (this.type == "Adventure") { 
-					axios.post("/api/booking/adventure/" + param, object, {
+					axios.post("/api/booking/adventure/", {
+						adventureId: object.id,
+						reservationStart: this.date,
+						time: this.time,
+						days: this.days,
+						guests: this.guests,
+						ownerId: object.instructorId,
+						userId: userId,
+					}, {
 						headers: { "Content-Type": "application/json" },
 					});
 				}

@@ -70,69 +70,11 @@
 					<p class="smallText">Owner</p>
 					<p>{{ owner.name }}</p>
 				</div>
-				<div>
-					<p>kita</p>
-					<p>
+				
+			</div>
+			<div v-if="!actionsHide">
+				<p>a</p>		
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-						
-					</p>
-
-				</div>
 			</div>
 		</div>
 	</div>
@@ -207,11 +149,22 @@ export default {
 				}
 			});
 
+		var userId = localStorage.userId;
+		var actionsHide = true;
+		var actions = ref(null);
+		if (userId != null) {
+			actionsHide = false;
+			axios.get("/api/booking/cottageBookingDeal/" + )
+		}
+
 		return {
 			cottage,
 			owner,
 			rooms,
 			rating,
+			userId,
+			actionsHide,
+			actions,
 			imageSource(id) {
 				try {
 					return require("../../assets/images/cottage" + id + ".png");
