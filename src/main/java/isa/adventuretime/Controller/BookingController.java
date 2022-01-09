@@ -1,8 +1,11 @@
 package isa.adventuretime.Controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import javax.mail.internet.AddressException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,8 @@ import isa.adventuretime.Service.BoatBookingService;
 import isa.adventuretime.Service.BoatService;
 import isa.adventuretime.Service.CottageService;
 import isa.adventuretime.Service.FishingInstructorService;
+import isa.adventuretime.Service.MailService;
+import isa.adventuretime.Service.RegisteredUserService;
 import isa.adventuretime.Service.RoomBookingService;
 
 @RestController
@@ -53,8 +58,13 @@ public class BookingController {
     @Autowired
     FishingInstructorService fishingInstructorService;
 
+    @Autowired
+    MailService mailService;
+    @Autowired
+    RegisteredUserService registeredUserService;
+
     @PostMapping(path = "/room")
-    public Boolean bookRoom(RequestEntity<String> param){
+    public Boolean bookRoom(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException{
         System.out.println(param.getBody());
         String params[] = param.getBody().split(",");
         Long cottageId = Long.parseLong(params[0].split(":")[1]);
@@ -94,11 +104,17 @@ public class BookingController {
             guests,
             rooms.get(0).getCottage().getId()            
         );
+
+        String userName = registeredUserService.getById(userId).getName();
+        String userEmail = registeredUserService.getById(userId).getEmail();
+
+        mailService.SendMail(userEmail, userName, "Rezervacija sobe \n\n Vlasnik je uspesno rezervisao sobu u Vase ime u kući: " + cottageName + " u periodu od " + startDate + " do " + endDate + ".");
+
         return roomBookingService.save(roomBooking) != null;
     }
 
     @PostMapping(path = "/boat")
-    public Boolean bookBoat(RequestEntity<String> param){
+    public Boolean bookBoat(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException{
         System.out.println(param.getBody());
         String params[] = param.getBody().split(",");
         Long boatId = Long.parseLong(params[0].split(":")[1]);
@@ -133,13 +149,18 @@ public class BookingController {
             guests
         );  
 
+        String userName = registeredUserService.getById(userId).getName();
+        String userEmail = registeredUserService.getById(userId).getEmail();
+
+        mailService.SendMail(userEmail, userName, "Rezervacija broda \n\n Vlasnik je uspesno rezervisao brod u Vase ime u kući: " + boatName + " u periodu od " + startDate + " do " + endDate + ".");
+
         BoatBooking bb = boatBookingService.save(boatBooking);
         return bb != null;
     }
 
     @PostMapping(path = "/adventure")
-    public Boolean bookAdventure(RequestEntity<String> param) {
-        // {"entityId":1,"date":"1111-11-11","time":"11:11","days":11,"guest":1,"entityOwnerId":"1"}
+    public Boolean bookAdventure(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
+        System.out.println(param.getBody());
         String params[] = param.getBody().split(",");
         Long adventureId = Long.parseLong(params[0].split(":")[1]);
         String dateD = params[1].split(":")[1].replace("\"", "");
@@ -153,21 +174,32 @@ public class BookingController {
             Integer.parseInt(time.split(":")[1]), 0
         );
         int days = Integer.parseInt(params[3].split(":")[1]);
-        int guest = Integer.parseInt(params[4].split(":")[1]);
+        int guests = Integer.parseInt(params[4].split(":")[1]);
         Long instructorId = Long.parseLong(params[5].split(":")[1].replace("\"", ""));
         Long userId = Long.parseLong(params[6].split(":")[1].replace("\"", "").replace("}", ""));
 
+        Date startDate = date.getTime();      
+		date.add(Calendar.DAY_OF_MONTH, days);
+		Date endDate = date.getTime();
+
         FishingInstructor fishingInstructor = fishingInstructorService.getById(instructorId); 
+        String adventureName = adventureService.getById(adventureId).getName();
+        ArrayList<Adventure> adventures = adventureService.getAllBySearchQuery(adventureName, startDate, endDate, guests, 0);
 
         AdventureBooking adventureBooking = new AdventureBooking(
-            adventureId,
+            adventures.get(0).getId(),
             instructorId,
             userId,
-            fishingInstructor.getStartWorkPeriod(),
-            fishingInstructor.getEndWorkPeriod(),
+            startDate,
+            endDate,
             "extraService",
-            guest
+            guests
         );
+
+        String userName = registeredUserService.getById(userId).getName();
+        String userEmail = registeredUserService.getById(userId).getEmail();
+
+        mailService.SendMail(userEmail, userName, "Rezervacija avanture \n\n Instruktor je uspesno rezervisao avanturu u Vase ime u kući: " + adventureName + " u periodu od " + startDate + " do " + endDate + ".");
 
         AdventureBooking ab = adventureBookingService.save(adventureBooking);
         return ab != null;

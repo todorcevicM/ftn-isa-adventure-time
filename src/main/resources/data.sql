@@ -19,11 +19,11 @@ insert into cottage_owner (name, lastname, email, password, address, city, count
 insert into cottage_owner (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Ted", "Osbourne", "random17@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, -872114982);
 
 
-insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Zhon", "China", "random8@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 931486598, "2023-01-01", "2023-01-15" );
-insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Topher", "Craft", "random9@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -865464761, "2023-01-01", "2023-01-15" );
-insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Rickie", "Croft", "random10@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -1178357357, "2023-01-01", "2023-01-15" );
+insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Zhon", "China", "random8@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 931486598, "2023-01-01", "2028-01-15" );
+insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Topher", "Craft", "random9@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -865464761, "2023-01-01", "2028-01-15" );
+insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Rickie", "Croft", "random10@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -1178357357, "2023-01-01", "2028-01-15" );
 --neodobren
-insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Wendell", "Wade", "random18@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, 1625900955, "2023-01-01", "2023-01-15" );
+insert into fishing_instructor (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash, start_work_period, end_work_period) values ("Wendell", "Wade", "random18@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", FALSE, 1625900955, "2023-01-01", "2028-01-15" );
 
 insert into request_for_admin(for_type, user_registration_reason, requester_id) values (1, "Description of a registration request 1.", 4);
 insert into request_for_admin(for_type, user_registration_reason, requester_id) values (3, "Description of a registration request 2.", 4);
@@ -39,10 +39,10 @@ insert into registered_user (name, lastname, email, password, address, city, cou
 insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Isabel", "Poole", "random15@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -1573179560);
 
 insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Old Pine Cabin", "Montauk, New York", 41.049690, -71.909219, "Sample Promo Description", "Sample Rules", 130.00, "Sample Price and Info", "2020-01-01", "2026-01-01", 4, 1, false);
-insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Wayward Cottage", "Burlington, Vermont", 44.415146, -73.254865, "Sample Promo Description", "Sample Rules", 185.00, "Sample Price and Info", "2020-01-01", "2023-01-01", 3, 1, false);
+insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Wayward Cottage", "Burlington, Vermont", 44.415146, -73.254865, "Sample Promo Description", "Sample Rules", 185.00, "Sample Price and Info", "2020-01-01", "2028-01-01", 3, 1, false);
 insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Old Fishing Place", "Diamond Lake, Oregon", 43.163765, -122.167166, "Sample Promo Description", "Sample Rules", 90.00, "Sample Price and Info", "2020-01-01", "2023-01-01", 5, 1, false);
-insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Catfish Lounge", "Copper Harbour, Michigan", 47.473378, -87.902598, "Sample Promo Description", "Sample Rules", 150.00, "Sample Price and Info", "2020-01-01", "2023-01-01", 2, 1, false);
-insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Lumberjack's Getaway", "Deer Lake, Newfoundland", 49.139093, -57.552313, "Sample Promo Description", "Sample Rules", 150.00, "Sample Price and Info", "2020-01-01", "2023-01-01", 4, 1, false);
+insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Catfish Lounge", "Copper Harbour, Michigan", 47.473378, -87.902598, "Sample Promo Description", "Sample Rules", 150.00, "Sample Price and Info", "2020-01-01", "2028-01-01", 2, 1, false);
+insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Lumberjack's Getaway", "Deer Lake, Newfoundland", 49.139093, -57.552313, "Sample Promo Description", "Sample Rules", 150.00, "Sample Price and Info", "2020-01-01", "2028-01-01", 4, 1, false);
 
 insert into room(cottage_id, number_of_beds, hidden) values (1, 2, false);
 insert into room(cottage_id, number_of_beds, hidden) values (1, 4, false);
@@ -65,16 +65,16 @@ insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power,
             values(1, "Nepotopivi 2", "Yamaha", "15", 1, 321, 321, "Sonar", "Jarkovci, Serbia", 45.043798, 20.027075, "VeryFastBoy", "Don't talk about Nepotopivi 1", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Miss Melanoma", "Yamaha", "15", 1, 321, 321, "Sonar", "Bar Harbour, Maine", 44.374710, -68.191748, "VeryFastBoy", "Nije lose", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
+            values(1, "Miss Melanoma", "Yamaha", "15", 1, 321, 321, "Sonar", "Bar Harbour, Maine", 44.374710, -68.191748, "VeryFastBoy", "Nije lose", 50, "2023-01-01", "2028-01-15", "Lorem", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Brzi", "Yamaha", "15", 1, 321, 321, "Sonar", "Bay City State Park, Michigan", 43.666608, -83.901237, "VeryFastBoy", "Ipak nije tako brz", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
+            values(1, "Brzi", "Yamaha", "15", 1, 321, 321, "Sonar", "Bay City State Park, Michigan", 43.666608, -83.901237, "VeryFastBoy", "Ipak nije tako brz", 50, "2023-01-01", "2028-01-15", "Lorem", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Just A Splash", "Yamaha", "15", 1, 321, 321, "Sonar", "Claremont, Virginia", 37.231071, -76.954797, "VeryFastBoy", "Potopio nepotopivog1", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
+            values(1, "Just A Splash", "Yamaha", "15", 1, 321, 321, "Sonar", "Claremont, Virginia", 37.231071, -76.954797, "VeryFastBoy", "Potopio nepotopivog1", 50, "2023-01-01", "2028-01-15", "Lorem", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Peti Sveti", "Yamaha", "15", 1, 321, 321, "Sonar", "Key West, Florida", 24.549540, -81.780825, "Holie", "Ovaj jeste Sveti Peti", 50, "2023-01-01", "2023-01-15", "Lorem", 7, false, "stap za pecanje");
+            values(1, "Peti Sveti", "Yamaha", "15", 1, 321, 321, "Sonar", "Key West, Florida", 24.549540, -81.780825, "Holie", "Ovaj jeste Sveti Peti", 50, "2023-01-01", "2028-01-15", "Lorem", 7, false, "stap za pecanje");
 
 
 --rezervacije u prvoj polovini januara, pravice problem u januaru
@@ -82,7 +82,7 @@ insert into room_booking (booked_room_id, start, end, registered_user_id, quick_
 			values (1, "2020-01-01", "2023-01-05", 1, false, 0, 2, "", 1);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "2023-01-01", "2023-01-02", 0, false, "", 6);
+            values (1, 1, "2020-01-01", "2023-01-02", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
             values (1, 1, "2023-01-03", "2023-01-04", 0, false, "", 6);

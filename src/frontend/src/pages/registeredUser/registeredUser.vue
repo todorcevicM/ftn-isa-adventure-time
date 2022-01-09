@@ -218,7 +218,7 @@
 			<div class="table">
 				<div
 					class="tableEntry"
-					v-for="prb in futureAdventureBookings"
+					v-for="prb in futureRoomBookings"
 					:key="prb"
 				>
 					<p class="entryName">{{ prb.start }}</p>

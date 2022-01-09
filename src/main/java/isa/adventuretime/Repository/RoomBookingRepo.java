@@ -15,6 +15,9 @@ public interface RoomBookingRepo extends JpaRepository<RoomBooking, Long> {
 
 	public ArrayList<RoomBooking> findAllByRegisteredUserId(Long id);
 
+	public ArrayList<RoomBooking> findAllByRegisteredUserIdAndStartAfter(Long id, Date date);
+
+
 	public ArrayList<RoomBooking> findAllByRegisteredUserIdAndEndBefore(Long id, Date date);
 
 	public ArrayList<RoomBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date date);

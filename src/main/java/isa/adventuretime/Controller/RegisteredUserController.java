@@ -97,8 +97,11 @@ public class RegisteredUserController {
 
 	@GetMapping(path = "/futureRoomBookings/{id}")
 	public ResponseEntity<ArrayList<RoomBooking>> getFutureRoomBookings(@PathVariable("id") Long id) throws Exception {
+		ArrayList<RoomBooking> roomBookings = roomBookingService.findAllByRegisteredUserIdAndEndAfter(id,
+				new java.util.Date());
+
 		return new ResponseEntity<ArrayList<RoomBooking>>(
-				roomBookingService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date()), HttpStatus.OK);
+				roomBookings, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/subBoat/{id}")
