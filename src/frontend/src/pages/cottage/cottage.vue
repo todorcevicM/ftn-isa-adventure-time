@@ -38,36 +38,101 @@
 				</div>
 			</div>
 			<div class="rightFlex">
-				<h4>{{ cottage.name }}</h4>
-				<div style="display: flex; justify-content: space-between">
-					<p>${{ cottage.pricePerDay }}.00 / Day</p>
-					<p>Rating: {{ rating }}</p>
+				<div>
+					<h4>{{ cottage.name }}</h4>
+					<div style="display: flex; justify-content: space-between">
+						<p>${{ cottage.pricePerDay }}.00 / Day</p>
+						<p>Rating: {{ rating }}</p>
+					</div>
+					<!-- Spacer -->
+					<div
+						style="border-bottom: solid #da9e46 1px; margin: 10px 0px"
+					></div>
+					<!-- Spacer -->
+					<p class="smallText">Address</p>
+					<p>{{ cottage.address }}</p>
+					<p class="smallText">Promo</p>
+					<p>{{ cottage.promoDescription }}</p>
+					<p class="smallText">Rules</p>
+					<p>{{ cottage.rules }}</p>
+					<p class="smallText">Info</p>
+					<p>{{ cottage.priceAndInfo }}</p>
+					<p class="smallText">Rooms</p>
+					<p v-for="(item, key) in rooms" :key="item">
+						Room {{ key + 1 }} : {{ item.numberOfBeds }} beds.
+					</p>
+					<p class="smallText">Reservation Start</p>
+					<p>{{ cottage.reservationStart }}</p>
+					<p class="smallText">Reservation End</p>
+					<p>{{ cottage.reservationEnd }}</p>
+					<p class="smallText">Person Limit</p>
+					<p>{{ cottage.maxUsers }} People</p>
+					<p class="smallText">Owner</p>
+					<p>{{ owner.name }}</p>
 				</div>
-				<!-- Spacer -->
-				<div
-					style="border-bottom: solid #da9e46 1px; margin: 10px 0px"
-				></div>
-				<!-- Spacer -->
-				<p class="smallText">Address</p>
-				<p>{{ cottage.address }}</p>
-				<p class="smallText">Promo</p>
-				<p>{{ cottage.promoDescription }}</p>
-				<p class="smallText">Rules</p>
-				<p>{{ cottage.rules }}</p>
-				<p class="smallText">Info</p>
-				<p>{{ cottage.priceAndInfo }}</p>
-				<p class="smallText">Rooms</p>
-				<p v-for="(item, key) in rooms" :key="item">
-					Room {{ key + 1 }} : {{ item.numberOfBeds }} beds.
-				</p>
-				<p class="smallText">Reservation Start</p>
-				<p>{{ cottage.reservationStart }}</p>
-				<p class="smallText">Reservation End</p>
-				<p>{{ cottage.reservationEnd }}</p>
-				<p class="smallText">Person Limit</p>
-				<p>{{ cottage.maxUsers }} People</p>
-				<p class="smallText">Owner</p>
-				<p>{{ owner.name }}</p>
+				<div>
+					<p>kita</p>
+					<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+						
+					</p>
+
+				</div>
 			</div>
 		</div>
 	</div>
