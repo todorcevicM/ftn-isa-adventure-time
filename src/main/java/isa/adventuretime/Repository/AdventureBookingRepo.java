@@ -42,4 +42,7 @@ public interface AdventureBookingRepo extends JpaRepository<AdventureBooking, Lo
 	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndStartAfterAndQuickBookingAndRegisteredUserId(
 			Long id, Date date, Boolean quickBooking, Long id2);
 
+	@Query(value = "update adventure_booking set report_made = true where id = ?", nativeQuery = true)
+	public void setReportFlagToTrue(Long id);
+
 }

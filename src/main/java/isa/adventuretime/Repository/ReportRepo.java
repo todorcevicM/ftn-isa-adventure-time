@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import isa.adventuretime.Entity.Report;
 
 @Repository
-public interface ReportRepo extends JpaRepository<Report, Long>{
-    
+public interface ReportRepo extends JpaRepository<Report, Long> {
+
 }

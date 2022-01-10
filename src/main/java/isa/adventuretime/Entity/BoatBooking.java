@@ -39,7 +39,8 @@ public class BoatBooking {
 
 	}
 
-	public BoatBooking(Long bookedBoatId, Long registeredUserId, Date start, Date end, String extraService, int maxUsers) {
+	public BoatBooking(Long bookedBoatId, Long registeredUserId, Date start, Date end, String extraService,
+			int maxUsers) {
 		this.bookedBoatId = bookedBoatId;
 		this.registeredUserId = registeredUserId;
 		this.start = start;
@@ -50,7 +51,5 @@ public class BoatBooking {
 		this.price = 0;
 		this.reportMade = false;
 	}
-
-
 
 }

@@ -41,7 +41,7 @@
 				<h4>{{ boat.name }}</h4>
 				<div style="display: flex; justify-content: space-between">
 					<p>${{ boat.pricePerDay }}.00 / Day</p>
-					<p>Rating: 5.00</p>
+					<p>Rating: {{ rating }}</p>
 				</div>
 				<!-- Spacer -->
 				<div
@@ -93,15 +93,21 @@
 				<p>{{ boat.percentTakenIfCancelled }}%</p>
 				<p class="smallText">Owner</p>
 				<p>{{ owner.name }}</p>
-				<button @click="reserve()">Reserve</button>
 			</div>
 			<div v-if="!actionsHide">
 				<h3>Boat Deals</h3>
-				<div class="tableEntry" v-for="bbd in boatBookingDeal" :key="bbd">
+				<div
+					class="tableEntry"
+					v-for="bbd in boatBookingDeal"
+					:key="bbd"
+				>
 					<div class="entryLeft">
 						<p class="entryLeftShort">{{ bbd.start }}</p>
 						<p class="entryLeftShort">{{ bbd.end }}</p>
-						<p class="entryLeftShort">Popust : {{ (1 - bbd.price / boat.pricePerDay) * 100 }}%</p>
+						<p class="entryLeftShort">
+							Popust :
+							{{ (1 - bbd.price / boat.pricePerDay) * 100 }}%
+						</p>
 					</div>
 					<div class="entryRight">
 						<button
@@ -111,8 +117,11 @@
 							Book
 						</button>
 					</div>
-				</div>	
+				</div>
 
+				<button class="entryApporve" @click="subscribe()">
+					Subscribe
+				</button>
 			</div>
 		</div>
 	</div>
@@ -165,31 +174,60 @@ export default {
 			.then(function (response) {
 				owner.value = response.data;
 			});
+
+		var rating = ref(null);
+		axios
+			.post(
+				"/api/revision/rating",
+				{
+					type: 0, // 0 je BOAT, 2 je COTTAGE, 4 je ADVENTURE
+					id: parseInt(boat.value.id),
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			)
+			.then(function (response) {
+				rating.value = response.data.toFixed(2);
+				if (rating.value == -1.0) {
+					rating.value = "None";
+				}
+			});
+
 		var actionsHide = true;
 		var boatBookingDeal = ref(null);
 		if (localStorage.userId != null) {
 			actionsHide = false;
-			axios.get("/api/booking/boatBookingDeal/" + boat.value.id, localStorage.userId).then(function (response) {
-				console.log(response.data);
-				boatBookingDeal.value = response.data;
+			axios
+				.get(
+					"/api/booking/boatBookingDeal/" + boat.value.id,
+					localStorage.userId
+				)
+				.then(function (response) {
+					console.log(response.data);
+					boatBookingDeal.value = response.data;
 
-				boatBookingDeal.value.forEach((bookingDeal) => {					
-					let newStart = bookingDeal.start.split("T");
-					let newStartSecondPart = newStart[1].split(".")[0];
-					bookingDeal.start = newStartSecondPart + ", " + newStart[0];
-					let newEnd = bookingDeal.end.split("T");
-					let newEndSecondPart = newEnd[1].split(".")[0];
-					bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+					boatBookingDeal.value.forEach((bookingDeal) => {
+						let newStart = bookingDeal.start.split("T");
+						let newStartSecondPart = newStart[1].split(".")[0];
+						bookingDeal.start =
+							newStartSecondPart + ", " + newStart[0];
+						let newEnd = bookingDeal.end.split("T");
+						let newEndSecondPart = newEnd[1].split(".")[0];
+						bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+					});
 				});
-			});
 		}
 
 		return {
 			boat,
 			owner,
+			rating,
 			actionsHide,
 			boatBookingDeal,
-			
+
 			imageSource(id) {
 				try {
 					return require("../../assets/images/boat" + id + ".png");
@@ -198,22 +236,36 @@ export default {
 					return require("../../assets/images/boat1.png");
 				}
 			},
-			reserve() {
-				alert("Not implemented yet!");
-			},
 			createBooking(entityId) {
-				axios.post("/api/booking/quickBoatBooking", {
-					entityId: entityId,
-					userId: parseInt(localStorage.userId),
-				}).then(function (response) {
-					if (response.data) {
-						console.log(response.data);
-						alert("Booking created!");
-					}
-					else {
-						alert("Booking not created!");
-					}
-				});
+				axios
+					.post("/api/booking/quickBoatBooking", {
+						entityId: entityId,
+						userId: parseInt(localStorage.userId),
+					})
+					.then(function (response) {
+						if (response.data) {
+							console.log(response.data);
+							alert("Booking created!");
+						} else {
+							alert("Booking not created!");
+						}
+					});
+			},
+			subscribe() {
+				axios
+					.post("/api/subscription/subscribe", {
+						userId: parseInt(localStorage.userId),
+						boatId: parseInt(localStorage.id),
+						type: "BOAT",
+					})
+					.then(function (response) {
+						if (response.data) {
+							console.log(response.data);
+							alert("Subscribed!");
+						} else {
+							alert("Subscription failed!");
+						}
+					});
 			},
 		};
 	},

@@ -130,7 +130,11 @@
 				</div>
 				<div class="tableEntry" v-for="r in revisions" :key="r">
 					<div class="entryLeft">
+						<div class="entryLeftShort">{{ r.type }}</div>
 						<div class="entryLeftLong">{{ r.revision }}</div>
+						<div class="entryLeftShort">
+							{{ r.rating.toFixed(2) }}
+						</div>
 					</div>
 					<div class="entryRight">
 						<!-- Mora obrnuti redosled -->

@@ -38,7 +38,7 @@ public class Revision {
 		this.bookingId = bookingId;
 		this.revision = revision;
 		this.rating = rating;
-		this.mainEntityId = mainEntityId; 
+		this.mainEntityId = mainEntityId;
 		this.revised = true;
 		this.approved = false;
 	}

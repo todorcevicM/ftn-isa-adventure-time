@@ -38,7 +38,7 @@
 				<h4>{{ adventure.name }}</h4>
 				<div style="display: flex; justify-content: space-between">
 					<p>${{ adventure.pricePerDay }}.00 / Day</p>
-					<p>Rating: 5.00</p>
+					<p>Rating: {{ rating }}</p>
 				</div>
 				<!-- Spacer -->
 				<div
@@ -69,13 +69,19 @@
 			</div>
 			<div v-if="!actionsHide">
 				<h3>Adventure Deals</h3>
-				<div class="tableEntry" v-for="abd in adventureBookingDeal" :key="abd">
+				<div
+					class="tableEntry"
+					v-for="abd in adventureBookingDeal"
+					:key="abd"
+				>
 					<div class="entryLeft">
 						<p>{{ abd.name }}</p>
 						<p class="entryLeftShort">{{ abd.start }}</p>
 						<p class="entryLeftShort">{{ abd.end }}</p>
-						<p class="entryLeftShort">Popust : {{ (1 - abd.price / adventure.pricePerDay) * 100 }}%</p>
-
+						<p class="entryLeftShort">
+							Popust :
+							{{ (1 - abd.price / adventure.pricePerDay) * 100 }}%
+						</p>
 					</div>
 					<div class="entryRight">
 						<button
@@ -85,7 +91,7 @@
 							Book
 						</button>
 					</div>
-				</div>	
+				</div>
 			</div>
 		</div>
 	</div>
@@ -124,28 +130,53 @@ export default {
 				instructor.value = response.data;
 			});
 
+		var rating = ref(null);
+		axios
+			.post(
+				"/api/revision/rating",
+				{
+					type: 4, // 0 je BOAT, 2 je COTTAGE, 4 je ADVENTURE
+					id: parseInt(adventure.value.id),
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			)
+			.then(function (response) {
+				rating.value = response.data.toFixed(2);
+				if (rating.value == -1.0) {
+					rating.value = "None";
+				}
+			});
+
 		var actionsHide = true;
 		var adventureDeals = ref(null);
 		if (localStorage.userId != null) {
 			actionsHide = false;
-			axios.get("/api/booking/adventureBookingDeal/" + adventure.value.id).then(function (response) {
-				console.log(response.data);
-				adventureDeals.value = response.data;
+			axios
+				.get("/api/booking/adventureBookingDeal/" + adventure.value.id)
+				.then(function (response) {
+					console.log(response.data);
+					adventureDeals.value = response.data;
 
-				adventureDeals.value.forEach((bookingDeal) => {					
-					let newStart = bookingDeal.start.split("T");
-					let newStartSecondPart = newStart[1].split(".")[0];
-					bookingDeal.start = newStartSecondPart + ", " + newStart[0];
-					let newEnd = bookingDeal.end.split("T");
-					let newEndSecondPart = newEnd[1].split(".")[0];
-					bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+					adventureDeals.value.forEach((bookingDeal) => {
+						let newStart = bookingDeal.start.split("T");
+						let newStartSecondPart = newStart[1].split(".")[0];
+						bookingDeal.start =
+							newStartSecondPart + ", " + newStart[0];
+						let newEnd = bookingDeal.end.split("T");
+						let newEndSecondPart = newEnd[1].split(".")[0];
+						bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+					});
 				});
-			});
 		}
 
 		return {
 			adventure,
 			instructor,
+			rating,
 			actionsHide,
 			adventureDeals,
 			imageSource(id) {
@@ -155,18 +186,19 @@ export default {
 				alert("Not implemented yet!");
 			},
 			createBooking(entityId) {
-				axios.post("/api/booking/quickAdventureBooking", {
-					entityId: entityId,
-					userId: parseInt(localStorage.userId),
-				}).then(function (response) {
-					if (response.data) {
-						console.log(response.data);
-						alert("Booking created!");
-					}
-					else {
-						alert("Booking not created!");
-					}
-				});
+				axios
+					.post("/api/booking/quickAdventureBooking", {
+						entityId: entityId,
+						userId: parseInt(localStorage.userId),
+					})
+					.then(function (response) {
+						if (response.data) {
+							console.log(response.data);
+							alert("Booking created!");
+						} else {
+							alert("Booking not created!");
+						}
+					});
 			},
 		};
 	},

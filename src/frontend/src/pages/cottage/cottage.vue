@@ -46,7 +46,10 @@
 					</div>
 					<!-- Spacer -->
 					<div
-						style="border-bottom: solid #da9e46 1px; margin: 10px 0px"
+						style="
+							border-bottom: solid #da9e46 1px;
+							margin: 10px 0px;
+						"
 					></div>
 					<!-- Spacer -->
 					<p class="smallText">Address</p>
@@ -70,15 +73,21 @@
 					<p class="smallText">Owner</p>
 					<p>{{ owner.name }}</p>
 				</div>
-				
 			</div>
 			<div v-if="!actionsHide">
 				<h3>Cottage Deals</h3>
-				<div class="tableEntry" v-for="cbd in cottageBookingDeal" :key="cbd">
+				<div
+					class="tableEntry"
+					v-for="cbd in cottageBookingDeal"
+					:key="cbd"
+				>
 					<div class="entryLeft">
 						<p class="entryLeftShort">{{ cbd.start }}</p>
 						<p class="entryLeftShort">{{ cbd.end }}</p>
-						<p class="entryLeftShort">Popust : {{ (1 - cbd.price / cottage.pricePerDay) * 100 }}%</p>
+						<p class="entryLeftShort">
+							Popust :
+							{{ (1 - cbd.price / cottage.pricePerDay) * 100 }}%
+						</p>
 					</div>
 					<div class="entryRight">
 						<button
@@ -88,7 +97,7 @@
 							Book
 						</button>
 					</div>
-				</div>	
+				</div>
 			</div>
 		</div>
 	</div>
@@ -167,19 +176,22 @@ export default {
 		var cottageDeals = ref(null);
 		if (localStorage.userId != null) {
 			actionsHide = false;
-			axios.get("/api/booking/cottageBookingDeal/" + cottage.value.id).then(function (response) {
-				console.log(response.data);
-				cottageDeals.value = response.data;
+			axios
+				.get("/api/booking/cottageBookingDeal/" + cottage.value.id)
+				.then(function (response) {
+					console.log(response.data);
+					cottageDeals.value = response.data;
 
-				cottageDeals.value.forEach((bookingDeal) => {					
-					let newStart = bookingDeal.start.split("T");
-					let newStartSecondPart = newStart[1].split(".")[0];
-					bookingDeal.start = newStartSecondPart + ", " + newStart[0];
-					let newEnd = bookingDeal.end.split("T");
-					let newEndSecondPart = newEnd[1].split(".")[0];
-					bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+					cottageDeals.value.forEach((bookingDeal) => {
+						let newStart = bookingDeal.start.split("T");
+						let newStartSecondPart = newStart[1].split(".")[0];
+						bookingDeal.start =
+							newStartSecondPart + ", " + newStart[0];
+						let newEnd = bookingDeal.end.split("T");
+						let newEndSecondPart = newEnd[1].split(".")[0];
+						bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+					});
 				});
-			});
 		}
 
 		return {
@@ -198,18 +210,19 @@ export default {
 				}
 			},
 			createBooking(entityId) {
-				axios.post("/api/booking/quickCottageBooking", {
-					entityId: entityId,
-					userId: parseInt(localStorage.userId),
-				}).then(function (response) {
-					if (response.data) {
-						console.log(response.data);
-						alert("Booking created!");
-					}
-					else {
-						alert("Booking not created!");
-					}
-				});
+				axios
+					.post("/api/booking/quickCottageBooking", {
+						entityId: entityId,
+						userId: parseInt(localStorage.userId),
+					})
+					.then(function (response) {
+						if (response.data) {
+							console.log(response.data);
+							alert("Booking created!");
+						} else {
+							alert("Booking not created!");
+						}
+					});
 			},
 		};
 	},

@@ -94,6 +94,52 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
+			<!-- Sending Reports -->
+			<div class="passwordChange" v-if="reportToggle == true">
+				<div
+					style="
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+					"
+				>
+					<p v-if="reportToggle == true">User didn't show up?</p>
+					<input
+						v-model="cb1"
+						v-if="reportToggle == true"
+						type="checkbox"
+					/>
+				</div>
+				<div
+					style="
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+					"
+				>
+					<p v-if="reportToggle == true">Is this a bad report?</p>
+					<input
+						v-model="cb2"
+						v-if="reportToggle == true"
+						type="checkbox"
+					/>
+				</div>
+				<p>Report Text</p>
+				<input
+					v-model="reportText"
+					v-if="reportToggle == true"
+					type="text"
+				/>
+				<button
+					v-if="reportToggle == true"
+					class="entryApprove"
+					@click="sendReport(reportUserId)"
+					style="width: 170px"
+				>
+					Send Report
+				</button>
+			</div>
+			<!-- Tables -->
 			<div class="table">
 				<div class="header">
 					<h3>Past Boat Bookings</h3>
@@ -133,35 +179,21 @@
 								View User
 							</button>
 							<button
-								v-if="!booking.boatBooking.reportMade"
+								v-if="
+									!booking.boatBooking.reportMade &&
+									reportToggle == false
+								"
 								class="entryApprove"
 								@click="
 									makeReport(
-										booking.boatBooking.registeredUserId
+										booking.boatBooking.registeredUserId,
+										booking.boatBooking.id
 									)
 								"
 								style="width: 140px"
 							>
 								Make Report
 							</button>
-							<input
-								v-if="!booking.boatBooking.reportMade"
-								type="checkbox"
-								id="userDidntShowUp"
-								value="Bike"
-							/>
-							<p v-if="!booking.boatBooking.reportMade">
-								User Didn't show up
-							</p>
-							<input
-								v-if="!booking.boatBooking.reportMade"
-								type="checkbox"
-								id="badReport"
-								value="Bike"
-							/>
-							<p v-if="!booking.boatBooking.reportMade">
-								Is this a bad report?
-							</p>
 						</div>
 					</div>
 				</div>
@@ -299,6 +331,12 @@ export default {
 			});
 
 		var searchQuery = ref(null);
+		var reportToggle = ref(false);
+		var reportUserId = ref(null);
+		var reportBookingId = ref(null);
+		var reportText = ref(null);
+		var cb1 = ref(false);
+		var cb2 = ref(false);
 		return {
 			user,
 			pastBoatBookings,
@@ -311,6 +349,12 @@ export default {
 			passwordChangeToggle,
 			boats,
 			searchQuery,
+			reportToggle,
+			reportUserId,
+			reportBookingId,
+			reportText,
+			cb1,
+			cb2,
 			notImplemented() {
 				alert("Not implemented yet!");
 			},
@@ -456,14 +500,29 @@ export default {
 				localStorage.setItem("type", "BOAT_OWNER");
 				window.location.href = "/bookingCreate/";
 			},
-			makeReport(id) {
-				// TODO: dobavi iz čekboksa, i userid
-				axios.post(
-					"/api/report/makeReport/",
-					{ type: "BOAT_OWNER" },
-					{ headers: { "Content-Type": "application/json" } }
-				);
-				console.log(id);
+			makeReport(id, bookingId) {
+				reportBookingId = bookingId;
+				reportToggle.value = true;
+				reportUserId.value = id;
+			},
+			sendReport(reportUserId) {
+				axios
+					.post(
+						"/api/report/makeReport/",
+						{
+							userId: reportUserId,
+							type: "BOAT",
+							text: reportText.value,
+							bookingId: reportBookingId,
+							cb1: cb1.value,
+							cb2: cb2.value,
+						},
+						{ headers: { "Content-Type": "application/json" } }
+					)
+					.then(function (/* response */) {
+						// console.log(response.data);
+						window.location.reload();
+					});
 			},
 		};
 	},

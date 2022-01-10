@@ -44,4 +44,6 @@ public interface RoomBookingRepo extends JpaRepository<RoomBooking, Long> {
 			Date now,
 			Boolean quickBooking, Long id2);
 
+	@Query(value = "update room_booking set report_made = true where id = ?", nativeQuery = true)
+	public void setReportFlagToTrue(Long id);
 }

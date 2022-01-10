@@ -79,6 +79,9 @@
 					:key="pbb"
 				>
 					<div class="entryLeft">
+						<p class="entryLeftShort">
+							{{ pbb.boatBooking.bookedBoatId }}
+						</p>
 						<p class="entryLeftShort">{{ pbb.start }}</p>
 						<p class="entryLeftShort">{{ pbb.end }}</p>
 						<p class="entryLeftShort">
@@ -276,52 +279,58 @@
 					</div>
 				</div>
 			</div>
-			<!-- sub adventure -->
-			<div class="tableHeader">
-				<h3>Subscribed Adventures</h3>
-				<button style="margin: 0" @click="notImplemented()">
-					Sort
-				</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Subscribed Adventures</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div class="tableEntry" v-for="pab in subAdventure" :key="pab">
-					<p class="entryLeftShort">{{ pab.name }}</p>
-					<p class="entryLeftLong">{{ pab.promoDescription }}</p>
-					<p class="entryLeftShort">{{ pab.extraService }}</p>
-					<p class="entryLeftShort">
-						Price : {{ pab.pricePerDay }}.00
-					</p>
-					<button
-						class="entryDeny"
-						@click="
-							unsubscribe(pab.id, pab.instructorId, 'ADVENTURE')
-						"
-					>
-						Cancel
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ pab.name }}</p>
+						<p class="entryLeftLong">{{ pab.promoDescription }}</p>
+						<p class="entryLeftShort">{{ pab.extraService }}</p>
+						<p class="entryLeftShort">
+							Price : {{ pab.pricePerDay }}.00
+						</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="
+								unsubscribe(
+									pab.id,
+									pab.instructorId,
+									'ADVENTURE'
+								)
+							"
+						>
+							Cancel
+						</button>
+					</div>
 				</div>
 			</div>
-			<!-- sub cottage -->
-			<div class="tableHeader">
-				<h3>Subscribed Cottages</h3>
-				<button style="margin: 0" @click="notImplemented()">
-					Sort
-				</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Subscribed Cottages</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div class="tableEntry" v-for="prb in subCottage" :key="prb">
-					<p class="entryLeftShort">{{ prb.name }}</p>
-					<p class="entryLeftLong">{{ prb.promoDescription }}</p>
-					<p class="entryLeftShort">{{ prb.extraService }}</p>
-					<p class="entryLeftShort">
-						Price : {{ prb.pricePerDay }}.00
-					</p>
-					<button
-						class="entryDeny"
-						@click="unsubscribe(prb.id, prb.ownerId, 'COTTAGE')"
-					>
-						Cancel
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ prb.name }}</p>
+						<p class="entryLeftLong">{{ prb.promoDescription }}</p>
+						<p class="entryLeftShort">{{ prb.extraService }}</p>
+						<p class="entryLeftShort">
+							Price : {{ prb.pricePerDay }}.00
+						</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="unsubscribe(prb.id, prb.ownerId, 'COTTAGE')"
+						>
+							Cancel
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -1329,7 +1338,7 @@ h1 {
 	margin-top: 10px;
 }
 .lowestFlex {
-	margin: 0px 200px;
+	margin: 0px 200px 100px;
 	display: flex;
 	flex-direction: column;
 }
