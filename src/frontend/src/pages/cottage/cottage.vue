@@ -73,8 +73,22 @@
 				
 			</div>
 			<div v-if="!actionsHide">
-				<p>a</p>		
-
+				<h3>Cottage Deals</h3>
+				<div class="tableEntry" v-for="cbd in cottageBookingDeal" :key="cbd">
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ cbd.start }}</p>
+						<p class="entryLeftShort">{{ cbd.end }}</p>
+						<p class="entryLeftShort">Popust : {{ (1 - cbd.price / cottage.pricePerDay) * 100 }}%</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="createBooking(cbd.id)"
+						>
+							Book
+						</button>
+					</div>
+				</div>	
 			</div>
 		</div>
 	</div>
@@ -149,12 +163,23 @@ export default {
 				}
 			});
 
-		var userId = localStorage.userId;
 		var actionsHide = true;
-		var actions = ref(null);
-		if (userId != null) {
+		var cottageDeals = ref(null);
+		if (localStorage.userId != null) {
 			actionsHide = false;
-			axios.get("/api/booking/cottageBookingDeal/");
+			axios.get("/api/booking/cottageBookingDeal/" + cottage.value.id).then(function (response) {
+				console.log(response.data);
+				cottageDeals.value = response.data;
+
+				cottageDeals.value.forEach((bookingDeal) => {					
+					let newStart = bookingDeal.start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					bookingDeal.start = newStartSecondPart + ", " + newStart[0];
+					let newEnd = bookingDeal.end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+				});
+			});
 		}
 
 		return {
@@ -162,9 +187,8 @@ export default {
 			owner,
 			rooms,
 			rating,
-			userId,
 			actionsHide,
-			actions,
+			cottageDeals,
 			imageSource(id) {
 				try {
 					return require("../../assets/images/cottage" + id + ".png");
@@ -172,6 +196,20 @@ export default {
 					// TODO: return praznu sliku ili nesto tako
 					return require("../../assets/images/cottage1.png");
 				}
+			},
+			createBooking(entityId) {
+				axios.post("/api/booking/quickCottageBooking", {
+					entityId: entityId,
+					userId: parseInt(localStorage.userId),
+				}).then(function (response) {
+					if (response.data) {
+						console.log(response.data);
+						alert("Booking created!");
+					}
+					else {
+						alert("Booking not created!");
+					}
+				});
 			},
 		};
 	},

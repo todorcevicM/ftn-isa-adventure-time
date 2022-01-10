@@ -95,6 +95,25 @@
 				<p>{{ owner.name }}</p>
 				<button @click="reserve()">Reserve</button>
 			</div>
+			<div v-if="!actionsHide">
+				<h3>Boat Deals</h3>
+				<div class="tableEntry" v-for="bbd in boatBookingDeal" :key="bbd">
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ bbd.start }}</p>
+						<p class="entryLeftShort">{{ bbd.end }}</p>
+						<p class="entryLeftShort">Popust : {{ (1 - bbd.price / boat.pricePerDay) * 100 }}%</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="createBooking(bbd.id)"
+						>
+							Book
+						</button>
+					</div>
+				</div>	
+
+			</div>
 		</div>
 	</div>
 </template>
@@ -146,10 +165,31 @@ export default {
 			.then(function (response) {
 				owner.value = response.data;
 			});
+		var actionsHide = true;
+		var boatBookingDeal = ref(null);
+		if (localStorage.userId != null) {
+			actionsHide = false;
+			axios.get("/api/booking/boatBookingDeal/" + boat.value.id, localStorage.userId).then(function (response) {
+				console.log(response.data);
+				boatBookingDeal.value = response.data;
+
+				boatBookingDeal.value.forEach((bookingDeal) => {					
+					let newStart = bookingDeal.start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					bookingDeal.start = newStartSecondPart + ", " + newStart[0];
+					let newEnd = bookingDeal.end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+				});
+			});
+		}
 
 		return {
 			boat,
 			owner,
+			actionsHide,
+			boatBookingDeal,
+			
 			imageSource(id) {
 				try {
 					return require("../../assets/images/boat" + id + ".png");
@@ -160,6 +200,20 @@ export default {
 			},
 			reserve() {
 				alert("Not implemented yet!");
+			},
+			createBooking(entityId) {
+				axios.post("/api/booking/quickBoatBooking", {
+					entityId: entityId,
+					userId: parseInt(localStorage.userId),
+				}).then(function (response) {
+					if (response.data) {
+						console.log(response.data);
+						alert("Booking created!");
+					}
+					else {
+						alert("Booking not created!");
+					}
+				});
 			},
 		};
 	},

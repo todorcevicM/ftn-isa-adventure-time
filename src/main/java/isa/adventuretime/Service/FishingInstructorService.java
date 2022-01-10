@@ -59,7 +59,7 @@ public class FishingInstructorService {
 	public Boolean markDeleted(Long id) {
 		Date now = new Date();
 		ArrayList<Adventure> adventures = adventureRepo.findAllByInstructorId(id);
-		boolean flag = false;
+		Boolean flag = false;
 
 		for (Adventure adventure : adventures) {
 			if (adventureBookingRepo.existsByBookedAdventureIdAndStartAfter(adventure.getId(), now)) {

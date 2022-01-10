@@ -63,7 +63,7 @@ public class CottageOwnerService {
 	public Boolean markDeleted(Long id) {
 		Date now = new Date();
 		ArrayList<Cottage> cottages = cottageRepo.findAllByOwnerId(id);
-		boolean flag = false;
+		Boolean flag = false;
 
 		for (Cottage cottage : cottages) {
 			ArrayList<Room> rooms = roomRepo.findAllByCottageId(cottage.getId());

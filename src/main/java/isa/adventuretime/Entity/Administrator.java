@@ -12,7 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 // Ovaj property je dodat jer bez njega Spring baca ogromnu gresku,
-// ovo je radjeno i na web-u.
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Administrator extends User {
 	@Id

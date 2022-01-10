@@ -67,6 +67,26 @@
 				<p>{{ adventure.instructorBio }}</p>
 				<button @click="reserve()">Reserve</button>
 			</div>
+			<div v-if="!actionsHide">
+				<h3>Adventure Deals</h3>
+				<div class="tableEntry" v-for="abd in adventureBookingDeal" :key="abd">
+					<div class="entryLeft">
+						<p>{{ abd.name }}</p>
+						<p class="entryLeftShort">{{ abd.start }}</p>
+						<p class="entryLeftShort">{{ abd.end }}</p>
+						<p class="entryLeftShort">Popust : {{ (1 - abd.price / adventure.pricePerDay) * 100 }}%</p>
+
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="createBooking(abd.id)"
+						>
+							Book
+						</button>
+					</div>
+				</div>	
+			</div>
 		</div>
 	</div>
 </template>
@@ -104,15 +124,49 @@ export default {
 				instructor.value = response.data;
 			});
 
-		// Za u <template>
+		var actionsHide = true;
+		var adventureDeals = ref(null);
+		if (localStorage.userId != null) {
+			actionsHide = false;
+			axios.get("/api/booking/adventureBookingDeal/" + adventure.value.id).then(function (response) {
+				console.log(response.data);
+				adventureDeals.value = response.data;
+
+				adventureDeals.value.forEach((bookingDeal) => {					
+					let newStart = bookingDeal.start.split("T");
+					let newStartSecondPart = newStart[1].split(".")[0];
+					bookingDeal.start = newStartSecondPart + ", " + newStart[0];
+					let newEnd = bookingDeal.end.split("T");
+					let newEndSecondPart = newEnd[1].split(".")[0];
+					bookingDeal.end = newEndSecondPart + ", " + newEnd[0];
+				});
+			});
+		}
+
 		return {
 			adventure,
 			instructor,
+			actionsHide,
+			adventureDeals,
 			imageSource(id) {
 				return require("../../assets/images/adventure" + id + ".png");
 			},
 			reserve() {
 				alert("Not implemented yet!");
+			},
+			createBooking(entityId) {
+				axios.post("/api/booking/quickAdventureBooking", {
+					entityId: entityId,
+					userId: parseInt(localStorage.userId),
+				}).then(function (response) {
+					if (response.data) {
+						console.log(response.data);
+						alert("Booking created!");
+					}
+					else {
+						alert("Booking not created!");
+					}
+				});
 			},
 		};
 	},

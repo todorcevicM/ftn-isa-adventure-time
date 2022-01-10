@@ -43,7 +43,6 @@ public class BoatService {
 		return boatRepo.save(boat);
 	}
 
-	// TODO: test this
 	public ArrayList<Boat> getAllBySearchQuery(String searched, Date startDate, Date endDate, int guests) {
 		ArrayList<Boat> potentialBoats = boatRepo.getAllByNameContainsAndMaxUsersGreaterThanEqual(searched, guests);
 		ArrayList<Boat> retBoats = new ArrayList<>();

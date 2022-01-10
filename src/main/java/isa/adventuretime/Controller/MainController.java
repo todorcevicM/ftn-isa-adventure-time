@@ -19,7 +19,7 @@ import isa.adventuretime.Service.RegisteredUserService;
 import isa.adventuretime.Service.BusinessConstantsService;
 import isa.adventuretime.Entity.BusinessConstants;
 
-@RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
+@RestController
 @RequestMapping(path = "/api")
 public class MainController {
 

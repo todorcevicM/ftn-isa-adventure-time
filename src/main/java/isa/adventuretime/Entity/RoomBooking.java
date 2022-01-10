@@ -2,6 +2,7 @@ package isa.adventuretime.Entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +24,7 @@ public class RoomBooking {
 	private Long id;
 	private Long bookedRoomId;
 	private Long registeredUserId;
-	private boolean quickBooking;
+	private Boolean quickBooking;
 
 	private Date start;
 	private Date end;
@@ -32,11 +33,14 @@ public class RoomBooking {
 	private int maxUsers; // if not default, is this needed?
 	private Long cottageId;
 
+	@Column(columnDefinition = "boolean default false")
+	private Boolean reportMade;
+
 	public RoomBooking() {
 
 	}
 
-	public RoomBooking(Long bookedRoomId, Long RegisteredUserId, boolean quickBooking, Date start, Date end, double price, String extraService, int maxUsers, Long cottageId) {
+	public RoomBooking(Long bookedRoomId, Long RegisteredUserId, Boolean quickBooking, Date start, Date end, double price, String extraService, int maxUsers, Long cottageId) {
 		this.bookedRoomId = bookedRoomId;
 		this.registeredUserId = RegisteredUserId;
 		this.quickBooking = quickBooking;
@@ -46,6 +50,7 @@ public class RoomBooking {
 		this.extraService = extraService;
 		this.maxUsers = maxUsers;
 		this.cottageId = cottageId;
+		this.reportMade = false;
 	}
 	public RoomBooking(Long bookedRoomId, Long RegisteredUserId, Date start, Date end, String extraService, int maxUsers, Long cottageId) {
 		this.bookedRoomId = bookedRoomId;
@@ -57,6 +62,7 @@ public class RoomBooking {
 		this.cottageId = cottageId;
 		this.quickBooking = false;
 		this.price = 0;
+		this.reportMade = false;
 	}
 
 	

@@ -20,7 +20,7 @@ import java.util.Date;
 
 import isa.adventuretime.Service.AdventureBookingService;
 
-@RestController // Ili @Controller sa @ResponseBody, ne sme samo @Controller
+@RestController
 @RequestMapping(path = "/api/adventures")
 public class AdventureController {
 
