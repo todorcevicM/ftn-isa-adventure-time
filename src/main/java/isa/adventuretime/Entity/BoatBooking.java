@@ -51,6 +51,17 @@ public class BoatBooking {
 		this.reportMade = false;
 	}
 
+	public BoatBooking(Long bookedBoatId, Date start, Date end, double price) {
+		this.bookedBoatId = bookedBoatId;
+		this.start = start;
+		this.end = end;
+		this.registeredUserId = 0L;
+		this.quickBooking = true;
+		this.price = price;
+		this.reportMade = false;
+		// TODO: 
+		this.extraService = "";
+	}
 
 
 }

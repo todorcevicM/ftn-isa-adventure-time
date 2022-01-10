@@ -36,6 +36,26 @@
 					class="itemImage"
 					:src="addedImageSource(boat.id)"
 				/>
+
+				<div>
+					<p>Create an action</p>
+					<p class="smallText">Action Start</p>
+					<input
+						type="date"
+						v-model="action.start"
+					/>
+					<p class="smallText">Action End</p>
+					<input
+						type="date"
+						v-model="action.end"
+					/>
+					<p class="smallText">Action Price</p>
+					<input
+						type="number"
+						v-model="action.price"/>
+					<button @click="createAction()">Create</button>
+
+				</div>
 			</div>
 			<div class="rightFlex">
 				<p class="smallText">Name</p>
@@ -282,6 +302,12 @@ export default {
 		// Za punjenje input-a na pocetku
 		var newBoat = boat;
 
+		var action = ref({
+			start: "",
+			end: "",
+			price: "",
+		});
+
 		// Za u <template>
 		return {
 			boat,
@@ -292,6 +318,7 @@ export default {
 			uploadedImage,
 			canUpload,
 			selectedFile: null,
+			action,
 			imageSource(id) {
 				try {
 					return require("../../assets/images/boat" + id + ".png");
@@ -389,6 +416,17 @@ export default {
 				} catch (err) {
 					return require("../../assets/images/boat1.png");
 				}
+			},
+			createAction() {
+				axios.post("/api/booking/createAction", {
+					boat: this.boat.id,
+					start: this.action.start,
+					end: this.action.end,
+					price: this.action.price,
+					type: "BOAT",
+				}).then(function (response) {
+					console.log(response.data);
+				});
 			},
 		};
 	},

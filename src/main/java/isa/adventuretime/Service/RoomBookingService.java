@@ -80,4 +80,9 @@ public class RoomBookingService {
 				Calendar.getInstance().getTime(),
 				true, 0L);
 	}
+
+	public ArrayList<RoomBooking> findAllByCottageIdAndStartAfterAndQuickBookingAndRegisteredUserId(Long cottageId) {
+		return roomBookingRepo.findAllByCottageIdAndStartAfterAndQuickBookingAndRegisteredUserId(cottageId,
+				Calendar.getInstance().getTime(), true, 0L);
+	}
 }

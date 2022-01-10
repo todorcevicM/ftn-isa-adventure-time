@@ -168,14 +168,14 @@ export default {
 			});
 
 		var actionsHide = true;
-		var cottageDeals = ref(null);
+		var cottageBookingDeal = ref(null);
 		if (localStorage.userId != null) {
 			actionsHide = false;
 			axios.get("/api/booking/cottageBookingDeal/" + cottage.value.id).then(function (response) {
 				console.log(response.data);
-				cottageDeals.value = response.data;
+				cottageBookingDeal.value = response.data;
 
-				cottageDeals.value.forEach((bookingDeal) => {					
+				cottageBookingDeal.value.forEach((bookingDeal) => {					
 					let newStart = bookingDeal.start.split("T");
 					let newStartSecondPart = newStart[1].split(".")[0];
 					bookingDeal.start = newStartSecondPart + ", " + newStart[0];
@@ -192,7 +192,7 @@ export default {
 			rooms,
 			rating,
 			actionsHide,
-			cottageDeals,
+			cottageBookingDeal,
 			imageSource(id) {
 				try {
 					return require("../../assets/images/cottage" + id + ".png");

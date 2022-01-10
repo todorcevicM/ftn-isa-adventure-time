@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.mail.internet.AddressException;
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import isa.adventuretime.DTO.CottageWithRoomDTO;
 import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Entity.AdventureBooking;
@@ -34,6 +36,7 @@ import isa.adventuretime.Service.FishingInstructorService;
 import isa.adventuretime.Service.MailService;
 import isa.adventuretime.Service.RegisteredUserService;
 import isa.adventuretime.Service.RoomBookingService;
+import isa.adventuretime.Service.RoomService;
 
 @RestController
 @RequestMapping("/api/booking")
@@ -62,6 +65,8 @@ public class BookingController {
 	MailService mailService;
 	@Autowired
 	RegisteredUserService registeredUserService;
+	@Autowired
+	RoomService roomService;
 
 
 	@PostMapping(path = "/quickBoatBooking")
@@ -330,10 +335,14 @@ public class BookingController {
 	}
 
 	@GetMapping(path = "/cottageBookingDeal/{id}")
-	public ResponseEntity<ArrayList<RoomBooking>> cottageBookingDeal(@PathVariable("id") Long id) {
-		return new ResponseEntity<>(
-				roomBookingService.findAllByBookedRoomIdAndStartAfterAndQuickBookingAndRegisteredUserId(id),
-				HttpStatus.OK);
+	public ResponseEntity<ArrayList<RoomBooking>> cottageBookingDeal(@PathVariable("id") Long cottageId) {
+		ArrayList<RoomBooking> roomBookings = roomBookingService.findAllByCottageIdAndStartAfterAndQuickBookingAndRegisteredUserId(cottageId);
+
+		for (RoomBooking roomBooking : roomBookings) {
+			System.out.println(roomBooking.getId());
+		}
+
+		return new ResponseEntity<>(roomBookings, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/adventureBookingDeal/{id}")
@@ -396,6 +405,73 @@ public class BookingController {
 				System.err.println("Something went wrong >>> " + forType);
 				return false;
 		}
+	}
+
+	@PostMapping(path = "/createAction")
+	public Boolean createAction(RequestEntity<String> params) {
+		String split[] = params.getBody().split(",");
+		Long entityId = Long.parseLong(split[0].split(":")[1].replace("\"", ""));
+		
+		String dateStartString = split[1].split(":")[1].replace("\"", "");
+		String dateEndString = split[2].split(":")[1].replace("\"", "");
+
+		Date startDate = parseDate(dateStartString);
+		Date endDate = parseDate(dateEndString);
+
+		double price = Double.parseDouble(split[3].split(":")[1].replace("\"", ""));
+
+		String forType = split[4].split(":")[1].replace("\"", "").replace("}", "");
+
+		switch (forType) {
+			case "ADVENTURE":
+				AdventureBooking ab = new AdventureBooking(
+					entityId,
+					startDate,
+					endDate,
+					price,
+					adventureService.getById(entityId).getInstructorId()
+				);
+				return adventureBookingService.save(ab) != null;
+			case "BOAT":
+				BoatBooking bb = new BoatBooking(
+					entityId,
+					startDate,
+					endDate,
+					price
+				);
+				return boatBookingService.save(bb) != null;
+			case "COTTAGE":
+				ArrayList<Room> rooms = roomService.findAllByCottageId(entityId);
+				boolean flag = false;
+				for (Room room : rooms) {
+					RoomBooking rb = new RoomBooking(
+						room.getId(),
+						startDate,
+						endDate,
+						price, 
+						entityId
+					);
+					flag = roomBookingService.save(rb) != null;
+				}
+				
+				return flag;
+			default:
+				System.err.println("Something went wrong >>> " + forType);
+				return false;
+		}
+	}
+
+	Date parseDate(String dateString) {
+		Calendar date = Calendar.getInstance();
+		date.set(
+			Integer.parseInt(dateString.split("-")[0]),
+			Integer.parseInt(dateString.split("-")[1]) - 1,
+			Integer.parseInt(dateString.split("-")[2]),
+			0,
+			0,
+			0
+		);
+		return date.getTime();
 	}
 
 }
