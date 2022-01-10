@@ -86,6 +86,10 @@
 						</button>
 					</div>
 				</div>	
+
+				<button class="entryApporve" @click="subscribe()">
+					Subscribe
+				</button>
 			</div>
 		</div>
 	</div>
@@ -162,11 +166,28 @@ export default {
 					if (response.data) {
 						console.log(response.data);
 						alert("Booking created!");
+						window.location.reload();
 					}
 					else {
 						alert("Booking not created!");
 					}
 				});
+			},
+			subscribe() {
+				axios
+					.post("/api/subscription/subscribe", {
+						userId: parseInt(localStorage.userId),
+						boatId: parseInt(localStorage.id),
+						type: "ADVENTURE",
+					})
+					.then(function (response) {
+						if (response.data) {
+							console.log(response.data);
+							alert("Subscribed!");
+						} else {
+							alert("Subscription failed!");
+						}
+					});
 			},
 		};
 	},

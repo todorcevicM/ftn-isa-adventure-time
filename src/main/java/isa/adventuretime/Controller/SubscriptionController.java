@@ -19,12 +19,12 @@ public class SubscriptionController {
     //sub i unsub
     @PostMapping(path = "/subscribe")
     public Boolean subscribe(RequestEntity<String> subParam){
-        System.out.println(subParam.getBody());
-        String split[] = subParam.getBody().split(";");
-        Long subber = Long.parseLong(split[0]);
-        Long subbed = Long.parseLong(split[1]);
+        String split[] = subParam.getBody().split(",");
+        Long subber = Long.parseLong(split[0].split(":")[1]);
+        Long subbed = Long.parseLong(split[1].split(":")[1]);
+        String type = split[2].split(":")[1].replace("}", "").replace("\"", "");
         HeadEntityEnum forType = HeadEntityEnum.ADVENTURE;
-        switch (split[2]) {
+        switch (type) {
             case "ADVENTURE":
                 forType = HeadEntityEnum.ADVENTURE;
                 break;
