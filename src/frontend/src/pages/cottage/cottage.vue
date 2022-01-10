@@ -98,6 +98,9 @@
 						</button>
 					</div>
 				</div>
+				<button class="entryApporve" @click="subscribe()">
+					Subscribe
+				</button>
 			</div>
 		</div>
 	</div>
@@ -173,16 +176,16 @@ export default {
 			});
 
 		var actionsHide = true;
-		var cottageDeals = ref(null);
+		var cottageBookingDeal = ref(null);
 		if (localStorage.userId != null) {
 			actionsHide = false;
 			axios
 				.get("/api/booking/cottageBookingDeal/" + cottage.value.id)
 				.then(function (response) {
 					console.log(response.data);
-					cottageDeals.value = response.data;
+					cottageBookingDeal.value = response.data;
 
-					cottageDeals.value.forEach((bookingDeal) => {
+					cottageBookingDeal.value.forEach((bookingDeal) => {
 						let newStart = bookingDeal.start.split("T");
 						let newStartSecondPart = newStart[1].split(".")[0];
 						bookingDeal.start =
@@ -200,7 +203,7 @@ export default {
 			rooms,
 			rating,
 			actionsHide,
-			cottageDeals,
+			cottageBookingDeal,
 			imageSource(id) {
 				try {
 					return require("../../assets/images/cottage" + id + ".png");
@@ -219,8 +222,25 @@ export default {
 						if (response.data) {
 							console.log(response.data);
 							alert("Booking created!");
+							window.location.reload();
 						} else {
 							alert("Booking not created!");
+						}
+					});
+			},
+			subscribe() {
+				axios
+					.post("/api/subscription/subscribe", {
+						userId: parseInt(localStorage.userId),
+						boatId: parseInt(localStorage.id),
+						type: "COTTAGE",
+					})
+					.then(function (response) {
+						if (response.data) {
+							console.log(response.data);
+							alert("Subscribed!");
+						} else {
+							alert("Subscription failed!");
 						}
 					});
 			},

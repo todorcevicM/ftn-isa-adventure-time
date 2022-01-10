@@ -51,4 +51,17 @@ public class AdventureBooking {
 		this.price = 0;
 		this.reportMade = false;
 	}
+
+	public AdventureBooking(Long bookedAdventureId, Date start, Date end, double price, Long instructorId) {
+		this.bookedAdventureId = bookedAdventureId;
+		this.start = start;
+		this.end = end;
+		this.registeredUserId = 0L;
+		this.quickBooking = true;
+		this.price = price;
+		this.reportMade = false;
+		// TODO: 
+		this.extraService = "";
+		this.bookedInstructorId = instructorId;
+	}
 }
