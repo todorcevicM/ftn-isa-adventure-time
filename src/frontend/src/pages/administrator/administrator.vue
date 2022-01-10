@@ -43,7 +43,7 @@
 				<p style="font-size: 18px">{{ user.email }}</p>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<div class="percentage">
+				<div class="leftFlexEntry">
 					<p style="margin-right: 12px">
 						Percentage taken on reservation:
 					</p>
@@ -70,11 +70,9 @@
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<div class="businessReports">
+				<div class="leftFlexEntry">
 					<p>Business Reports</p>
-					<button @click="notImplemented()" style="width: 200px">
-						Show Reports
-					</button>
+					<button @click="notImplemented()">Show</button>
 				</div>
 			</div>
 			<div class="rightFlex">
@@ -126,7 +124,10 @@
 		</div>
 		<div class="lowerFlex">
 			<div class="table">
-				<h3>Revisions</h3>
+				<div class="header">
+					<h3>Revisions</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div class="tableEntry" v-for="r in revisions" :key="r">
 					<div class="entryLeft">
 						<div class="entryLeftLong">{{ r.revision }}</div>
@@ -146,7 +147,10 @@
 				</div>
 			</div>
 			<div class="table">
-				<h3>Appeals</h3>
+				<div class="header">
+					<h3>Appeals</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div class="tableEntry" v-for="a in appeals" :key="a">
 					<div class="entryLeft">
 						<p class="entryLeftLong">
@@ -165,7 +169,10 @@
 				</div>
 			</div>
 			<div class="table">
-				<h3>Registration Requests</h3>
+				<div class="header">
+					<h3>Registration Requests</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="req in registrationRequests"
@@ -200,7 +207,10 @@
 				</div>
 			</div>
 			<div class="table">
-				<h3>Cottages</h3>
+				<div class="header">
+					<h3>Cottages</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="cottage in cottages"
@@ -208,6 +218,7 @@
 				>
 					<div class="entryLeft">
 						<p class="entryLeftShort">{{ cottage.name }}</p>
+						<p class="entryLeftLong">{{ cottage.address }}</p>
 					</div>
 					<div class="entryRight">
 						<!-- Mora obrnuti redosled -->
@@ -221,7 +232,10 @@
 				</div>
 			</div>
 			<div class="table">
-				<h3>Cottage Owners</h3>
+				<div class="header">
+					<h3>Cottage Owners</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="cottageOwner in cottageOwners"
@@ -229,6 +243,12 @@
 				>
 					<div class="entryLeft">
 						<p class="entryLeftShort">{{ cottageOwner.name }}</p>
+						<p class="entryLeftShort">
+							{{ cottageOwner.lastname }}
+						</p>
+						<p class="entryLeftShort">
+							{{ cottageOwner.email }}
+						</p>
 					</div>
 					<div class="entryRight">
 						<!-- Mora obrnuti redosled -->
@@ -242,7 +262,10 @@
 				</div>
 			</div>
 			<div class="table">
-				<h3>Adventures</h3>
+				<div class="header">
+					<h3>Adventures</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="adventure in adventures"
@@ -250,6 +273,7 @@
 				>
 					<div class="entryLeft">
 						<p class="entryLeftShort">{{ adventure.name }}</p>
+						<p class="entryLeftLong">{{ adventure.address }}</p>
 					</div>
 					<div class="entryRight">
 						<!-- Mora obrnuti redosled -->
@@ -263,7 +287,10 @@
 				</div>
 			</div>
 			<div class="table">
-				<h3>Fishing Instructors</h3>
+				<div class="header">
+					<h3>Fishing Instructors</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="fishingInstructor in fishingInstructors"
@@ -272,6 +299,12 @@
 					<div class="entryLeft">
 						<p class="entryLeftShort">
 							{{ fishingInstructor.name }}
+						</p>
+						<p class="entryLeftShort">
+							{{ fishingInstructor.lastname }}
+						</p>
+						<p class="entryLeftShort">
+							{{ fishingInstructor.email }}
 						</p>
 					</div>
 					<div class="entryRight">
@@ -288,10 +321,14 @@
 				</div>
 			</div>
 			<div class="table">
-				<h3>Boats</h3>
+				<div class="header">
+					<h3>Boats</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div class="tableEntry" v-for="boat in boats" :key="boat">
 					<div class="entryLeft">
 						<p class="entryLeftShort">{{ boat.name }}</p>
+						<p class="entryLeftLong">{{ boat.address }}</p>
 					</div>
 					<div class="entryRight">
 						<!-- Mora obrnuti redosled -->
@@ -302,7 +339,10 @@
 				</div>
 			</div>
 			<div class="table">
-				<h3>Boat Owners</h3>
+				<div class="header">
+					<h3>Boat Owners</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="boatOwner in boatOwners"
@@ -310,6 +350,8 @@
 				>
 					<div class="entryLeft">
 						<p class="entryLeftShort">{{ boatOwner.name }}</p>
+						<p class="entryLeftShort">{{ boatOwner.lastname }}</p>
+						<p class="entryLeftShort">{{ boatOwner.email }}</p>
 					</div>
 					<div class="entryRight">
 						<!-- Mora obrnuti redosled -->
@@ -323,7 +365,10 @@
 				</div>
 			</div>
 			<div class="table">
-				<h3>Registered Users</h3>
+				<div class="header">
+					<h3>Registered Users</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="registeredUser in registeredUsers"
@@ -331,6 +376,10 @@
 				>
 					<div class="entryLeft">
 						<p class="entryLeftShort">{{ registeredUser.name }}</p>
+						<p class="entryLeftShort">
+							{{ registeredUser.lastname }}
+						</p>
+						<p class="entryLeftShort">{{ registeredUser.email }}</p>
 					</div>
 					<div class="entryRight">
 						<!-- Mora obrnuti redosled -->
@@ -344,7 +393,10 @@
 				</div>
 			</div>
 			<div class="table">
-				<h3>Deletion Requests</h3>
+				<div class="header">
+					<h3>Deletion Requests</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="deletionRequest in deletionRequests"
@@ -387,10 +439,15 @@
 				</div>
 			</div>
 			<div v-if="isSuperAdmin == 1" class="table">
-				<h3>Administrator List</h3>
+				<div class="header">
+					<h3>Administrators</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div class="tableEntry" v-for="admin in admins" :key="admin">
 					<div class="entryLeft">
 						<p class="entryLeftShort">{{ admin.name }}</p>
+						<p class="entryLeftShort">{{ admin.lastname }}</p>
+						<p class="entryLeftShort">{{ admin.email }}</p>
 					</div>
 					<div class="entryRight">
 						<!-- Mora obrnuti redosled -->
@@ -405,7 +462,7 @@
 				</div>
 				<div style="text-align: center">
 					<button
-					class="entryApprove"
+						class="entryApprove"
 						@click="addNewAdministratorToggleFunction()"
 						v-if="!addNewAdministratorToggle"
 					>
@@ -685,13 +742,6 @@ export default {
 			},
 			updateDetails() {
 				this.updateToggle = true;
-			},
-			approve() {
-				alert("Not implemented yet!");
-			},
-			deny() {
-				alert("Not implemented yet!");
-				// TODO: Tacka 3.25, mora da se otvori dijalog gde admin upisuje razlog za deny.
 			},
 			sendUpdatedDetails() {
 				if (
@@ -1067,10 +1117,8 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -1113,6 +1161,10 @@ body {
 	flex-direction: column;
 }
 
+.rightFlex {
+	height: min-content;
+}
+
 h4 {
 	margin: 0;
 	font-weight: 400;
@@ -1135,6 +1187,26 @@ h3 {
 	height: 450px;
 	border-radius: 15px;
 	object-fit: cover;
+}
+
+/* LEFT FLEX ELEMENTS */
+
+.leftFlexEntry {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.leftFlexEntry input {
+	width: 40px;
+	margin: 0 10px;
+	text-align: center;
+	font-size: 22px;
+}
+
+.leftFlexEntry button {
+	margin: 0 0 0 30px;
+	width: 110px;
 }
 
 .rightFlex,
@@ -1172,10 +1244,7 @@ h3 {
 	color: #9e6b1d;
 }
 
-.rightFlex input,
-.firstLogin input,
-.passwordChange input,
-.percentage input {
+input {
 	height: 24px;
 	border-radius: 5px;
 	border: 1px solid rgb(122, 122, 122);
@@ -1183,10 +1252,7 @@ h3 {
 	background-color: #f0f0f0;
 }
 
-.rightFlex input:focus,
-.firstLogin input:focus,
-.passwordChange input:focus,
-.percentage input:focus {
+input:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
 }
@@ -1242,12 +1308,30 @@ button:hover {
 	margin-top: 20px;
 }
 
+.header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.header button {
+	margin: auto 0;
+	width: 110px;
+}
+
 .tableEntry {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	height: 55px;
 	border-bottom: solid 1px rgb(145, 145, 145);
+}
+
+.tableSubEntry {
+	margin: 0;
+	margin-top: 10px;
+	color: #9e6b1d;
+	font-size: 26px;
 }
 
 .entryLeft {
@@ -1262,11 +1346,11 @@ button:hover {
 }
 
 .entryLeftLong {
-	width: 700px;
+	width: 650px;
 }
 
 .entryRight {
-	width: 240px;
+	min-width: 260px;
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: space-between;
@@ -1293,28 +1377,5 @@ button:hover {
 
 .entryDeny:hover {
 	background-color: rgb(119, 51, 51);
-}
-
-/* LEFT FLEX ELEMENTS */
-
-.percentage,
-.businessReports {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-
-.percentage input,
-.businessReports input {
-	width: 40px;
-	margin: 0 10px;
-	text-align: center;
-	font-size: 22px;
-}
-
-.percentage button,
-.businessReports button {
-	margin: 0 0 0 30px;
-	width: 110px;
 }
 </style>

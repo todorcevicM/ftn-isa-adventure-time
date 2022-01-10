@@ -68,187 +68,212 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
-			<!-- past boat booking -->
-			<div class="tableHeader">
-				<h3>Past Boat Bookings</h3>
-				<button style="margin: 0" @click="notImplemented()">
-					Sort
-				</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Past Boat Bookings</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="pbb in pastBoatBookingsDTO"
 					:key="pbb"
 				>
-					<p class="entryName">{{ pbb.start }}</p>
-					<p class="entryRequestText">{{ pbb.end }}</p>
-					<p>{{ pbb.boatBooking.extraService }}</p>
-					<button
-						class="entryApprove"
-						@click="sendRevision(pbb.boatBooking.id, 'BOAT')"
-						v-if="!pbb.revision.revised"
-					>
-						Revise
-					</button>
-					<button
-						class="entryApprove"
-						@click="sendAppeal(pbb.boatBooking.id, 'BOAT')"
-					>
-						Appeal
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ pbb.start }}</p>
+						<p class="entryLeftShort">{{ pbb.end }}</p>
+						<p class="entryLeftShort">
+							{{ pbb.boatBooking.extraService }}
+						</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="sendAppeal(pbb.boatBooking.id, 'BOAT')"
+						>
+							Appeal
+						</button>
+						<button
+							class="entryApprove"
+							@click="sendRevision(pbb.boatBooking.id, 'BOAT')"
+							v-if="!pbb.revision.revised"
+						>
+							Revise
+						</button>
+					</div>
 				</div>
 			</div>
-			<!-- past adventure booking -->
-			<div class="tableHeader">
-				<h3>Past Adventure Bookings</h3>
-				<button style="margin: 0" @click="notImplemented()">
-					Sort
-				</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Past Adventure Bookings</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="pab in pastAdventureBookingsDTO"
 					:key="pab"
 				>
-					<p class="entryName">{{ pab.start }}</p>
-					<p class="entryRequestText">{{ pab.end }}</p>
-					<p>{{ pab.adventureBooking.extraService }}</p>
-					<button
-						class="entryApprove"
-						@click="
-							sendRevision(pab.adventureBooking.id, 'ADVENTURE')
-						"
-						v-if="!pab.revision.revised"
-					>
-						Revise
-					</button>
-					<button
-						class="entryApprove"
-						@click="
-							sendAppeal(pab.adventureBooking.id, 'ADVENTURE')
-						"
-					>
-						Appeal
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ pab.start }}</p>
+						<p class="entryLeftShort">{{ pab.end }}</p>
+						<p class="entryLeftShort">
+							{{ pab.adventureBooking.extraService }}
+						</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="
+								sendAppeal(pab.adventureBooking.id, 'ADVENTURE')
+							"
+						>
+							Appeal
+						</button>
+						<button
+							class="entryApprove"
+							@click="
+								sendRevision(
+									pab.adventureBooking.id,
+									'ADVENTURE'
+								)
+							"
+							v-if="!pab.revision.revised"
+						>
+							Revise
+						</button>
+					</div>
 				</div>
 			</div>
-			<!-- past room booking -->
-			<div class="tableHeader">
-				<h3>Past Room Bookings</h3>
-				<button style="margin: 0" @click="notImplemented()">
-					Sort
-				</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Past Room Bookings</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="prb in pastRoomBookingsDTO"
 					:key="prb"
 				>
-					<p class="entryName">{{ prb.start }}</p>
-					<p class="entryRequestText">{{ prb.end }}</p>
-					<p>{{ prb.roomBooking.extraService }}</p>
-					<button
-						class="entryApprove"
-						@click="sendRevision(prb.roomBooking.id, COTTAGE)"
-						v-if="!prb.revision.revised"
-					>
-						Revise
-					</button>
-					<button
-						class="entryApprove"
-						@click="sendAppeal(prb.roomBooking.id, COTTAGE)"
-					>
-						Appeal
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ prb.start }}</p>
+						<p class="entryLeftShort">{{ prb.end }}</p>
+						<p class="entryLeftShort">
+							{{ prb.roomBooking.extraService }}
+						</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="sendAppeal(prb.roomBooking.id, COTTAGE)"
+						>
+							Appeal
+						</button>
+						<button
+							class="entryApprove"
+							@click="sendRevision(prb.roomBooking.id, COTTAGE)"
+							v-if="!prb.revision.revised"
+						>
+							Revise
+						</button>
+					</div>
 				</div>
 			</div>
-
-			<!-- future boat booking -->
-			<div class="tableHeader">
-				<h3>Future Boat Bookings</h3>
-				<button style="margin: 0" @click="notImplemented()">
-					Sort
-				</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Future Boat Bookings</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="pbb in futureBoatBookings"
 					:key="pbb"
 				>
-					<p class="entryName">{{ pbb.start }}</p>
-					<p class="entryRequestText">{{ pbb.end }}</p>
-					<p>{{ pbb.extraService }}</p>
-					<button class="entryDeny" @click="cancelBooking(pbb.id, 'BOAT')">
-						Cancel
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ pbb.start }}</p>
+						<p class="entryLeftShort">{{ pbb.end }}</p>
+						<p class="entryLeftShort">{{ pbb.extraService }}</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="cancelBooking(pbb.id, 'BOAT')"
+						>
+							Cancel
+						</button>
+					</div>
 				</div>
 			</div>
-			<!-- future adventure booking -->
-			<div class="tableHeader">
-				<h3>Future Adventure Bookings</h3>
-				<button style="margin: 0" @click="notImplemented()">
-					Sort
-				</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Future Adventure Bookings</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="pab in futureAdventureBookings"
 					:key="pab"
 				>
-					<p class="entryName">{{ pab.start }}</p>
-					<p class="entryRequestText">{{ pab.end }}</p>
-					<p>{{ pab.extraService }}</p>
-					<button class="entryDeny" @click="cancelBooking(pab.id, 'ADVENTURE')">
-						Cancel
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ pab.start }}</p>
+						<p class="entryLeftShort">{{ pab.end }}</p>
+						<p class="entryLeftShort">{{ pab.extraService }}</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="cancelBooking(pab.id, 'ADVENTURE')"
+						>
+							Cancel
+						</button>
+					</div>
 				</div>
 			</div>
-			<!-- future room booking -->
-			<div class="tableHeader">
-				<h3>Future Room Bookings</h3>
-				<button style="margin: 0" @click="notImplemented()">
-					Sort
-				</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Future Room Bookings</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="prb in futureRoomBookings"
 					:key="prb"
 				>
-					<p class="entryName">{{ prb.start }}</p>
-					<p class="entryRequestText">{{ prb.end }}</p>
-					<p>{{ prb.extraService }}</p>
-					<button class="entryDeny" @click="cancelBooking(prb.id, 'COTTAGE')">
-						Cancel
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ prb.start }}</p>
+						<p class="entryLeftShort">{{ prb.end }}</p>
+						<p class="entryLeftShort">{{ prb.extraService }}</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="cancelBooking(prb.id, 'COTTAGE')"
+						>
+							Cancel
+						</button>
+					</div>
 				</div>
 			</div>
-
-			<!-- sub boat -->
-			<div class="tableHeader">
-				<h3>Subscribed Boats</h3>
-				<button style="margin: 0" @click="notImplemented()">
-					Sort
-				</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Subscribed Boats</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div class="tableEntry" v-for="pbb in subBoat" :key="pbb">
-					<p class="entryName">{{ pbb.name }}</p>
-					<p class="entryRequestText">{{ pbb.promoDescription }}</p>
-					<p>{{ pbb.extraService }}</p>
-					<p>Price : {{ pbb.pricePerDay }}.00</p>
-					<button
-						class="entryDeny"
-						@click="unsubscribe(pbb.id, pbb.ownerId, 'BOAT')"
-					>
-						Cancel
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ pbb.name }}</p>
+						<p class="entryLeftLong">{{ pbb.promoDescription }}</p>
+						<p class="entryLeftShort">{{ pbb.extraService }}</p>
+						<p class="entryLeftShort">
+							Price : {{ pbb.pricePerDay }}.00
+						</p>
+					</div>
+					<div class="entryRight">
+						<button
+							class="entryDeny"
+							@click="unsubscribe(pbb.id, pbb.ownerId, 'BOAT')"
+						>
+							Cancel
+						</button>
+					</div>
 				</div>
 			</div>
 			<!-- sub adventure -->
@@ -260,10 +285,12 @@
 			</div>
 			<div class="table">
 				<div class="tableEntry" v-for="pab in subAdventure" :key="pab">
-					<p class="entryName">{{ pab.name }}</p>
-					<p class="entryRequestText">{{ pab.promoDescription }}</p>
-					<p>{{ pab.extraService }}</p>
-					<p>Price : {{ pab.pricePerDay }}.00</p>
+					<p class="entryLeftShort">{{ pab.name }}</p>
+					<p class="entryLeftLong">{{ pab.promoDescription }}</p>
+					<p class="entryLeftShort">{{ pab.extraService }}</p>
+					<p class="entryLeftShort">
+						Price : {{ pab.pricePerDay }}.00
+					</p>
 					<button
 						class="entryDeny"
 						@click="
@@ -283,10 +310,12 @@
 			</div>
 			<div class="table">
 				<div class="tableEntry" v-for="prb in subCottage" :key="prb">
-					<p class="entryName">{{ prb.name }}</p>
-					<p class="entryRequestText">{{ prb.promoDescription }}</p>
-					<p>{{ prb.extraService }}</p>
-					<p>Price : {{ prb.pricePerDay }}.00</p>
+					<p class="entryLeftShort">{{ prb.name }}</p>
+					<p class="entryLeftLong">{{ prb.promoDescription }}</p>
+					<p class="entryLeftShort">{{ prb.extraService }}</p>
+					<p class="entryLeftShort">
+						Price : {{ prb.pricePerDay }}.00
+					</p>
 					<button
 						class="entryDeny"
 						@click="unsubscribe(prb.id, prb.ownerId, 'COTTAGE')"
@@ -447,7 +476,6 @@ export default {
 			newTelephoneNumber: localStorage.telephoneNumber,
 		});
 		var updateToggle = ref(null);
-
 		var firstPassword = ref(null);
 		var repeatPassword = ref(null);
 		var matching = ref(null);
@@ -928,8 +956,7 @@ export default {
 						if (response.data) {
 							alert("Booking cancelled!");
 							window.location.reload();
-						}
-						else {
+						} else {
 							alert("You cannot cancel this booking.");
 						}
 					});
@@ -941,9 +968,7 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
-
 body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -974,6 +999,237 @@ body {
 	letter-spacing: -1px;
 	display: inline;
 }
+.mainFlex {
+	margin: 50px 200px 0px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.leftFlex {
+	display: flex;
+	flex-direction: column;
+}
+
+.rightFlex {
+	height: min-content;
+}
+
+h4 {
+	margin: 0;
+	font-weight: 400;
+	font-size: 50px;
+}
+
+h3 {
+	margin: 0;
+	font-weight: 400;
+	font-size: 35px;
+}
+
+.leftFlex p {
+	margin: 0;
+	font-size: 27px;
+}
+
+.leftFlex img {
+	width: 800px;
+	height: 450px;
+	border-radius: 15px;
+	object-fit: cover;
+}
+
+/* LEFT FLEX ELEMENTS */
+
+.leftFlexEntry {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.leftFlexEntry input {
+	width: 40px;
+	margin: 0 10px;
+	text-align: center;
+	font-size: 22px;
+}
+
+.leftFlexEntry button {
+	margin: 0 0 0 30px;
+	width: 110px;
+}
+
+.rightFlex,
+.firstLogin,
+.passwordChange {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background-color: rgb(241, 241, 241);
+	padding: 20px;
+	border-radius: 15px;
+	border: 2px solid #da9e46;
+}
+
+.firstLogin {
+	margin: 20px 40em;
+}
+
+.passwordChange {
+	margin: 20px 28em;
+}
+
+.rightFlex p,
+.firstLogin p,
+.passwordChange p {
+	margin: 4px 0;
+	font-size: 25px;
+	text-align: left;
+}
+
+.rightFlex .smallText,
+.leftFlex .smallText {
+	margin: 0;
+	font-size: 20px;
+	color: #9e6b1d;
+}
+
+input {
+	height: 24px;
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 18px;
+	background-color: #f0f0f0;
+}
+
+input:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
+}
+
+.firstLogin button,
+.passwordChange button {
+	margin-top: 10px;
+	width: 170px;
+}
+
+.firstLogin .spacer,
+.passwordChange .spacer {
+	height: 30px;
+	text-align: center;
+}
+
+.firstLogin .spacer p,
+.passwordChange .spacer p {
+	font-size: 16px;
+	color: gray;
+	margin: 0;
+	margin-top: 6px;
+}
+
+button {
+	margin: 0 auto;
+	height: 40px;
+	width: 290px;
+	background-color: #da9e46;
+	border: none;
+	border-radius: 4px;
+	font-family: Aleo;
+	font-size: 24px;
+	transition: 0.15s;
+	margin-top: 20px;
+}
+
+button:hover {
+	background-color: #9e6b1d;
+	color: white;
+	cursor: pointer;
+}
+
+.lowerFlex {
+	margin: 0px 200px 100px;
+	display: flex;
+	flex-direction: column;
+}
+
+/* TABLE */
+
+.table {
+	margin-top: 20px;
+}
+
+.header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.header button {
+	margin: auto 0;
+	width: 110px;
+}
+
+.tableEntry {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 55px;
+	border-bottom: solid 1px rgb(145, 145, 145);
+}
+
+.tableSubEntry {
+	margin: 0;
+	margin-top: 10px;
+	color: #9e6b1d;
+	font-size: 26px;
+}
+
+.entryLeft {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin: auto 0;
+}
+
+.entryLeftShort {
+	width: 180px;
+}
+
+.entryLeftLong {
+	width: 650px;
+}
+
+.entryRight {
+	min-width: 260px;
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+	margin: auto 0;
+}
+
+.entryRight button {
+	width: 110px;
+	margin: auto 0;
+	font-size: 20px;
+}
+
+.entryApprove {
+	background-color: rgb(108, 207, 108);
+}
+
+.entryApprove:hover {
+	background-color: rgb(49, 121, 49);
+}
+
+.entryDeny {
+	background-color: rgb(194, 109, 109);
+}
+
+.entryDeny:hover {
+	background-color: rgb(119, 51, 51);
+}
+
+/* Sa Home Page-a */
+
 a {
 	color: #ad6800;
 	text-decoration: none;
@@ -1072,217 +1328,9 @@ h1 {
 	border-bottom: #ad6800 3px solid;
 	margin-top: 10px;
 }
-.mainFlex {
-	margin: 50px 200px 0px;
-	display: flex;
-	justify-content: space-between;
-}
-
-.leftFlex {
-	display: flex;
-	flex-direction: column;
-}
-
-h4 {
-	margin: 0;
-	font-weight: 400;
-	font-size: 50px;
-}
-
-h3 {
-	margin: 0;
-	font-weight: 400;
-	font-size: 35px;
-}
-
-.leftFlex p {
-	margin: 0;
-	font-size: 27px;
-}
-
-.leftFlex img {
-	width: 800px;
-	height: 450px;
-	border-radius: 15px;
-	object-fit: cover;
-}
-
-.rightFlex {
-	height: 310px;
-}
-
-.rightFlex,
-.firstLogin,
-.passwordChange {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	background-color: rgb(241, 241, 241);
-	padding: 20px;
-	border-radius: 15px;
-	border: 2px solid #da9e46;
-}
-
-.firstLogin {
-	margin: 20px 40em;
-}
-
-.passwordChange {
-	margin: 20px 28em;
-}
-
-.rightFlex p,
-.firstLogin p,
-.passwordChange p {
-	margin: 4px 0;
-	font-size: 25px;
-}
-
-.rightFlex .smallText,
-.leftFlex .smallText {
-	margin: 0;
-	font-size: 20px;
-	color: #9e6b1d;
-}
-
-.rightFlex input,
-.firstLogin input,
-.passwordChange input,
-.percentage input {
-	height: 24px;
-	border-radius: 5px;
-	border: 1px solid rgb(122, 122, 122);
-	font-size: 18px;
-	background-color: #f0f0f0;
-}
-
-.rightFlex input:focus,
-.firstLogin input:focus,
-.passwordChange input:focus,
-.percentage input:focus {
-	outline: none !important;
-	border: 1px solid #ad6800;
-}
-
-.firstLogin button,
-.passwordChange button {
-	margin-top: 10px;
-	width: 170px;
-}
-
-.firstLogin .spacer,
-.passwordChange .spacer {
-	height: 30px;
-	text-align: center;
-}
-
-.firstLogin .spacer p,
-.passwordChange .spacer p {
-	font-size: 16px;
-	color: gray;
-	margin: 0;
-	margin-top: 6px;
-}
-
-button {
-	margin: 0 auto;
-	height: 40px;
-	width: 290px;
-	background-color: #da9e46;
-	border: none;
-	border-radius: 4px;
-	font-family: Aleo;
-	font-size: 24px;
-	transition: 0.15s;
-	margin-top: 20px;
-}
-
-button:hover {
-	background-color: #9e6b1d;
-	color: white;
-	cursor: pointer;
-}
-
-.lowerFlex {
-	margin: 0px 200px;
-	display: flex;
-	flex-direction: column;
-}
-
 .lowestFlex {
 	margin: 0px 200px;
 	display: flex;
 	flex-direction: column;
-}
-
-.table {
-	margin-top: 20px;
-}
-
-.tableEntry {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	height: 55px;
-	border-bottom: solid 1px rgb(145, 145, 145);
-}
-
-.tableEntry .entryName {
-	margin: auto 0;
-	width: 180px;
-}
-
-.tableEntry .entryRequestText {
-	width: 800px;
-	margin: auto 0;
-}
-
-.tableEntry button {
-	width: 110px;
-	margin: auto 0;
-	font-size: 20px;
-}
-
-.entryApprove {
-	background-color: rgb(108, 207, 108);
-}
-
-.entryApprove:hover {
-	background-color: rgb(49, 121, 49);
-}
-
-.entryDeny {
-	background-color: rgb(194, 109, 109);
-}
-
-.entryDeny:hover {
-	background-color: rgb(119, 51, 51);
-}
-
-.percentage,
-.businessReports {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-
-.percentage input,
-.businessReports input {
-	width: 40px;
-	margin: 0 10px;
-	text-align: center;
-	font-size: 22px;
-}
-
-.percentage button,
-.businessReports button {
-	margin: 0 0 0 30px;
-	width: 110px;
-}
-.tableHeader {
-	margin-top: 30px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
 }
 </style>

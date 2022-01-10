@@ -15,51 +15,36 @@
 				<p style="font-size: 18px">{{ user.email }}</p>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<!-- TODO: ovaj class -->
-				<div class="percentage">
+				<div class="leftFlexEntry">
 					<p>Business Reports</p>
-					<button @click="notImplemented()" style="width: 200px">
-						Show
-					</button>
+					<button @click="notImplemented()">Show</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<!-- TODO: ovaj class -->
-				<div class="percentage">
+				<div class="leftFlexEntry">
 					<p>New Report</p>
-					<button @click="notImplemented()" style="width: 200px">
-						Fill
-					</button>
+					<button @click="notImplemented()">Fill</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<!-- TODO: ovaj class -->
-				<div class="percentage">
+				<div class="leftFlexEntry">
 					<p>Quick Reservation</p>
-					<button @click="notImplemented()" style="width: 200px">
-						Create
-					</button>
+					<button @click="notImplemented()">Create</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<!-- TODO: ovaj class -->
-				<div class="percentage">
+				<div class="leftFlexEntry">
 					<p>New Reservation</p>
-					<button @click="notImplemented()" style="width: 200px">
-						Create
-					</button>
+					<button @click="notImplemented()">Create</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<!-- TODO: ovaj class -->
-				<div class="percentage">
+				<div class="leftFlexEntry">
 					<p>Occupancy Calendar</p>
-					<button @click="notImplemented()" style="width: 200px">
-						Show
-					</button>
+					<button @click="notImplemented()">Show</button>
 				</div>
 				<!-- Spacer -->
-				<div style="height: 40px"></div>
+				<div style="height: 20px"></div>
 			</div>
 			<div class="rightFlex">
 				<p class="smallText">Address</p>
@@ -99,7 +84,6 @@
 				<p class="smallText">Start Work Time</p>
 				<p v-if="!updateToggle">
 					{{ formattedDateStart }}
-					<!-- {{ user.startWorkPeriod }} -->
 				</p>
 				<input
 					type="text"
@@ -130,98 +114,114 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
-			<div class="search" style="text-align: center">
-				<img
-					src="../../assets/wheel.svg"
-					style="width: 48px; margin-top: 18px"
-				/>
-				<input
-					type="text"
-					placeholder="Search..."
-					v-model="searchQuery"
-				/>
-				<div v-if="searchQuery" class="searchResult">
-					<p>No results found...</p>
-				</div>
-			</div>
-			<div
-				style="
-					display: flex;
-					flex-direction: row;
-					justify-content: space-between;
-				"
-			>
-				<h3>Past Adventure Bookings</h3>
-				<button style="margin: 0">Sort</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Past Adventure Bookings</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div v-for="pab in pastAdventureBookings" :key="pab">
-					<p class="entryName" style="font-size: 26px; margin: 0">
+					<p class="tableSubEntry">
 						{{ pab.adventureName }}
 					</p>
 					<div
 						class="tableEntry"
-						v-for="booking in pab.adventureBookings"
+						v-for="booking in pab.userNameAdventureBookingDTO"
 						:key="booking"
 					>
-						<p>User ID: {{ booking.registeredUserId }}</p>
-						<p>{{ booking.extraService }}</p>
-						<p>Price : {{ booking.price }}.00</p>
-
-						<button
-							class="entryApprove"
-							@click="viewUser(booking.registeredUserId)"
-						>
-							View User
-						</button>
+						<div class="entryLeft">
+							<p class="entryLeftShort">
+								User :
+								{{ booking.userName }}
+							</p>
+							<p class="entryLeftShort">
+								{{ booking.adventureBooking.extraService }}
+							</p>
+							<p class="entryLeftShort">
+								Price : {{ booking.adventureBooking.price }}.00
+							</p>
+						</div>
+						<div class="entryRight">
+							<!-- Mora obrnuti redosled -->
+							<button
+								class="entryApprove"
+								@click="
+									viewUser(
+										booking.adventureBooking
+											.registeredUserId
+									)
+								"
+							>
+								View User
+							</button>
+							<button
+								class="entryApprove"
+								@click="
+									makeReport(
+										booking.adventureBooking
+											.registeredUserId
+									)
+								"
+								style="width: 140px"
+							>
+								Make Report
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
-
-
-			<!-- Spacer -->
-			<div style="height: 80px"></div>
-			<div
-				style="
-					display: flex;
-					flex-direction: row;
-					justify-content: space-between;">
-				<h3>Current Adventure Bookings</h3>
-				<button style="margin: 0">Sort</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Current Adventure Bookings</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div v-for="cc in currentCustomers" :key="cc">
-					<p>User : {{ cc.lastname }}, {{ cc.name }} </p>
-					<button class="entryApprove" @click="createNewBooking(cc.id)">
-						Create New Booking
-					</button>
+					<div class="tableEntry">
+						<div class="entryLeft">
+							<p class="entryLeftLong">
+								{{ cc.name }} {{ cc.lastname }}
+							</p>
+						</div>
+						<div class="entryRight">
+							<button
+								class="entryApprove"
+								@click="createNewBooking(cc.id)"
+								style="width: 260px"
+							>
+								Create New Booking
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
-
-
-			<!-- Spacer -->
-			<div style="height: 80px"></div>
 			<div class="table">
-				<h3>Adventures</h3>
+				<div class="header">
+					<h3>Adventures</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div
 					class="tableEntry"
 					v-for="adventure in adventures"
 					:key="adventure"
 				>
-					<p class="entryName">{{ adventure.name }}</p>
-					<!-- TODO: class ovog dugmeta djota -->
-					<button
-						class="entryApprove"
-						@click="viewAdventure(adventure.id)"
-					>
-						View
-					</button>
-					<button
-						class="entryDeny"
-						@click="deleteAdventure(adventure.id)"
-					>
-						Delete
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ adventure.name }}</p>
+						<p class="entryLeftLong">{{ adventure.address }}</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button
+							class="entryDeny"
+							@click="deleteAdventure(adventure.id)"
+						>
+							Delete
+						</button>
+						<button
+							class="entryApprove"
+							@click="viewAdventure(adventure.id)"
+						>
+							View
+						</button>
+					</div>
 				</div>
 				<div style="display: flex">
 					<button class="entryApprove" @click="addNewAdventure()">
@@ -334,12 +334,14 @@ export default {
 
 		var currentCustomers = ref(null);
 		axios
-			.get("/api/fishingInstructor/currentCustomers/" + localStorage["userId"])
+			.get(
+				"/api/fishingInstructor/currentCustomers/" +
+					localStorage["userId"]
+			)
 			.then(function (response) {
 				console.log(response.data);
 				currentCustomers.value = response.data;
 			});
-
 
 		var searchQuery = ref(null);
 		return {
@@ -518,10 +520,8 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 body {
-	/* background-image: url("../../assets/adventure-time-background.jpg"); */
 	background-color: #e6e4df;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -564,6 +564,10 @@ body {
 	flex-direction: column;
 }
 
+.rightFlex {
+	height: min-content;
+}
+
 h4 {
 	margin: 0;
 	font-weight: 400;
@@ -588,8 +592,24 @@ h3 {
 	object-fit: cover;
 }
 
-.rightFlex {
-	height: 440px;
+/* LEFT FLEX ELEMENTS */
+
+.leftFlexEntry {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.leftFlexEntry input {
+	width: 40px;
+	margin: 0 10px;
+	text-align: center;
+	font-size: 22px;
+}
+
+.leftFlexEntry button {
+	margin: 0 0 0 30px;
+	width: 110px;
 }
 
 .rightFlex,
@@ -617,6 +637,7 @@ h3 {
 .passwordChange p {
 	margin: 4px 0;
 	font-size: 25px;
+	text-align: left;
 }
 
 .rightFlex .smallText,
@@ -626,10 +647,7 @@ h3 {
 	color: #9e6b1d;
 }
 
-.rightFlex input,
-.firstLogin input,
-.passwordChange input,
-.percentage input {
+input {
 	height: 24px;
 	border-radius: 5px;
 	border: 1px solid rgb(122, 122, 122);
@@ -637,10 +655,7 @@ h3 {
 	background-color: #f0f0f0;
 }
 
-.rightFlex input:focus,
-.firstLogin input:focus,
-.passwordChange input:focus,
-.percentage input:focus {
+input:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
 }
@@ -685,17 +700,26 @@ button:hover {
 }
 
 .lowerFlex {
-	margin: 0px 200px;
+	margin: 0px 200px 100px;
 	display: flex;
 	flex-direction: column;
 }
 
-.lowerFlex h3 {
-	border-bottom: solid 1px rgb(145, 145, 145);
-}
+/* TABLE */
 
 .table {
 	margin-top: 20px;
+}
+
+.header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.header button {
+	margin: auto 0;
+	width: 110px;
 }
 
 .tableEntry {
@@ -706,17 +730,37 @@ button:hover {
 	border-bottom: solid 1px rgb(145, 145, 145);
 }
 
-.tableEntry .entryName {
+.tableSubEntry {
+	margin: 0;
+	margin-top: 10px;
+	color: #9e6b1d;
+	font-size: 26px;
+}
+
+.entryLeft {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 	margin: auto 0;
+}
+
+.entryLeftShort {
 	width: 180px;
 }
 
-.tableEntry .entryRequestText {
-	width: 800px;
+.entryLeftLong {
+	width: 650px;
+}
+
+.entryRight {
+	min-width: 260px;
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
 	margin: auto 0;
 }
 
-.tableEntry button {
+.entryRight button {
 	width: 110px;
 	margin: auto 0;
 	font-size: 20px;
@@ -736,66 +780,5 @@ button:hover {
 
 .entryDeny:hover {
 	background-color: rgb(119, 51, 51);
-}
-
-.percentage,
-.businessReports {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-
-.percentage input,
-.businessReports input {
-	width: 40px;
-	margin: 0 10px;
-	text-align: center;
-	font-size: 22px;
-}
-
-.percentage button,
-.businessReports button {
-	margin: 0 0 0 30px;
-	width: 110px;
-}
-
-.search {
-	text-align: center;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-}
-.search input {
-	border-radius: 5px;
-	margin-top: 10px;
-}
-.searchResult {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 370px;
-	height: 470px;
-	margin-top: 20px;
-	border-radius: 15px;
-	background-color: rgb(230, 230, 230);
-}
-.searchResult p {
-	text-align: center;
-	color: rgb(71, 71, 71);
-	font-size: 35px;
-}
-input,
-select {
-	width: 260px;
-	height: 32px;
-	border-radius: 5px;
-	border: 1px solid rgb(122, 122, 122);
-	font-size: 20px;
-	background-color: #f0f0f0;
-}
-input:focus,
-select:focus {
-	outline: none !important;
-	border: 1px solid #ad6800;
 }
 </style>

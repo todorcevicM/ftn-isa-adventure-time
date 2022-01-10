@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isa.adventuretime.DTO.AdventureNameAdventureBookingDTO;
+import isa.adventuretime.DTO.UserNameAdventureBookingDTO;
 import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Entity.AdventureBooking;
 import isa.adventuretime.Entity.FishingInstructor;
@@ -68,12 +69,18 @@ public class FishingInstructorController {
 
 		for (Adventure adventure : adventures) {
 			ArrayList<AdventureBooking> adventureBookings = new ArrayList<>();
+			ArrayList<UserNameAdventureBookingDTO> userNameAdventureBookingDTOs = new ArrayList<>();
 			adventureBookings.addAll(adventureBookingService.findAllByBookedAdventureIdAndEndBefore(adventure.getId(),
 					date));
 
+			for (AdventureBooking adventureBooking : adventureBookings) {
+				String userName = registeredUserService.getById(adventureBooking.getRegisteredUserId()).getName();
+				userNameAdventureBookingDTOs.add(new UserNameAdventureBookingDTO(userName, adventureBooking));
+			}
+
 			if (adventureBookings.size() > 0) {
 				adventureNameAdventureBookingDTOs
-						.add(new AdventureNameAdventureBookingDTO(adventure.getName(), adventureBookings));
+						.add(new AdventureNameAdventureBookingDTO(adventure.getName(), userNameAdventureBookingDTOs));
 			}
 		}
 
@@ -86,13 +93,12 @@ public class FishingInstructorController {
 	}
 
 	@GetMapping(path = "/currentCustomers/{id}")
-	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id){
+	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id) {
 		ArrayList<RegisteredUser> registeredUsers = registeredUserService.getAllUsersOfFishingInstructor(id);
-
 
 		// System.out.println(registeredUsers.size());
 		// for (RegisteredUser registeredUser : registeredUsers) {
-		// 	System.out.println(registeredUser.getName());
+		// System.out.println(registeredUser.getName());
 		// }
 
 		return new ResponseEntity<>(registeredUsers, HttpStatus.OK);

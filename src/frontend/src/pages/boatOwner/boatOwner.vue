@@ -15,51 +15,36 @@
 				<p style="font-size: 18px">{{ user.email }}</p>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<!-- TODO: ovaj class -->
-				<div class="percentage">
+				<div class="leftFlexEntry">
 					<p>Business Reports</p>
-					<button @click="notImplemented()" style="width: 200px">
-						Show
-					</button>
+					<button @click="notImplemented()">Show</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<!-- TODO: ovaj class -->
-				<div class="percentage">
+				<div class="leftFlexEntry">
 					<p>New Report</p>
-					<button @click="notImplemented()" style="width: 200px">
-						Fill
-					</button>
+					<button @click="notImplemented()">Fill</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<!-- TODO: ovaj class -->
-				<div class="percentage">
+				<div class="leftFlexEntry">
 					<p>Quick Reservation</p>
-					<button @click="notImplemented()" style="width: 200px">
-						Create
-					</button>
+					<button @click="notImplemented()">Create</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<!-- TODO: ovaj class -->
-				<div class="percentage">
+				<div class="leftFlexEntry">
 					<p>New Reservation</p>
-					<button @click="notImplemented()" style="width: 200px">
-						Create
-					</button>
+					<button @click="notImplemented()">Create</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
-				<!-- TODO: ovaj class -->
-				<div class="percentage">
+				<div class="leftFlexEntry">
 					<p>Occupancy Calendar</p>
-					<button @click="notImplemented()" style="width: 200px">
-						Show
-					</button>
+					<button @click="notImplemented()">Show</button>
 				</div>
 				<!-- Spacer -->
-				<div style="height: 40px"></div>
+				<div style="height: 20px"></div>
 			</div>
 			<div class="rightFlex">
 				<p class="smallText">Address</p>
@@ -109,87 +94,121 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
-			<div class="search" style="text-align: center">
-				<img
-					src="../../assets/wheel.svg"
-					style="width: 48px; margin-top: 18px"
-				/>
-				<input
-					type="text"
-					placeholder="Search..."
-					v-model="searchQuery"
-				/>
-				<div v-if="searchQuery" class="searchResult">
-					<p>No results found...</p>
-				</div>
-			</div>
-			<div
-				style="
-					display: flex;
-					flex-direction: row;
-					justify-content: space-between;
-				"
-			>
-				<h3>Past Boat Bookings</h3>
-				<button style="margin: 0">Sort</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Past Boat Bookings</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div v-for="pbb in pastBoatBookings" :key="pbb">
-					<p class="entryName" style="font-size: 26px; margin: 0">
+					<p class="tableSubEntry">
 						{{ pbb.boatName }}
 					</p>
 					<div
 						class="tableEntry"
-						v-for="booking in pbb.boatBookings"
+						v-for="booking in pbb.userNameBoatBookingDTO"
 						:key="booking"
 					>
-						<p>User ID: {{ booking.registeredUserId }}</p>
-						<p>{{ booking.extraService }}</p>
-						<p>Price : {{ booking.price }}.00</p>
-
-						<button
-							class="entryApprove"
-							@click="viewUser(booking.registeredUserId)"
-						>
-							View User
-						</button>
+						<div class="entryLeft">
+							<p class="entryLeftShort">
+								User :
+								{{ booking.userName }}
+							</p>
+							<p class="entryLeftShort">
+								{{ booking.boatBooking.extraService }}
+							</p>
+							<p class="entryLeftShort">
+								Price : {{ booking.boatBooking.price }}.00
+							</p>
+						</div>
+						<div class="entryRight">
+							<!-- Mora obrnuti redosled -->
+							<button
+								class="entryApprove"
+								@click="
+									viewUser(
+										booking.boatBooking.registeredUserId
+									)
+								"
+							>
+								View User
+							</button>
+							<button
+								v-if="!booking.boatBooking.reportMade"
+								class="entryApprove"
+								@click="
+									makeReport(
+										booking.boatBooking.registeredUserId
+									)
+								"
+								style="width: 140px"
+							>
+								Make Report
+							</button>
+							<input
+								v-if="!booking.boatBooking.reportMade"
+								type="checkbox"
+								id="userDidntShowUp"
+								value="Bike"
+							/>
+							<p v-if="!booking.boatBooking.reportMade">
+								User Didn't show up
+							</p>
+							<input
+								v-if="!booking.boatBooking.reportMade"
+								type="checkbox"
+								id="badReport"
+								value="Bike"
+							/>
+							<p v-if="!booking.boatBooking.reportMade">
+								Is this a bad report?
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
-
-			<!-- Spacer -->
-			<div style="height: 80px"></div>
-			<div
-				style="
-					display: flex;
-					flex-direction: row;
-					justify-content: space-between;">
-				<h3>Current Boat Bookings</h3>
-				<button style="margin: 0">Sort</button>
-			</div>
 			<div class="table">
+				<div class="header">
+					<h3>Current Boat Bookings</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div v-for="cc in currentCustomers" :key="cc">
-					<p>User : {{ cc.lastname }}, {{ cc.name }} </p>
-					<button class="entryApprove" @click="createNewBooking(cc.id)">
-						Create New Booking
-					</button>
+					<div class="tableEntry">
+						<div class="entryLeft">
+							<p class="entryLeftLong">
+								{{ cc.name }} {{ cc.lastname }}
+							</p>
+						</div>
+						<div class="entryRight">
+							<button
+								class="entryApprove"
+								@click="createNewBooking(cc.id)"
+								style="width: 260px"
+							>
+								Create New Booking
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
-
-
-			<!-- Spacer -->
-			<div style="height: 80px"></div>
 			<div class="table">
-				<h3>Boats</h3>
+				<div class="header">
+					<h3>Boats</h3>
+					<button @click="notImplemented()">Sort</button>
+				</div>
 				<div class="tableEntry" v-for="boat in boats" :key="boat">
-					<p class="entryName">{{ boat.name }}</p>
-					<!-- TODO: class ovog dugmeta djota -->
-					<button class="entryApprove" @click="viewBoat(boat.id)">
-						View
-					</button>
-					<button class="entryDeny" @click="deleteBoat(boat.id)">
-						Delete
-					</button>
+					<div class="entryLeft">
+						<p class="entryLeftShort">{{ boat.name }}</p>
+						<p class="entryLeftLong">{{ boat.address }}</p>
+					</div>
+					<div class="entryRight">
+						<!-- Mora obrnuti redosled -->
+						<button class="entryDeny" @click="deleteBoat(boat.id)">
+							Delete
+						</button>
+						<button class="entryApprove" @click="viewBoat(boat.id)">
+							View
+						</button>
+					</div>
 				</div>
 				<div style="display: flex">
 					<button class="entryApprove" @click="addNewBoat()">
@@ -248,7 +267,6 @@ export default {
 		axios
 			.get("/api/boatOwner/getByEmail/" + localStorage["emailHash"])
 			.then(function (response) {
-				console.log(response.data);
 				user.value = response.data;
 			});
 		var newUser = ref({
@@ -264,7 +282,6 @@ export default {
 		var passwordChangeToggle = ref(null);
 		var boats = ref(null);
 		axios.get("/api/boats/get").then(function (response) {
-			console.log(response.data);
 			boats.value = response.data;
 		});
 
@@ -272,14 +289,12 @@ export default {
 		axios
 			.get("/api/boatOwner/pastBoatBookings/" + localStorage["userId"])
 			.then(function (response) {
-				console.log(response.data);
 				pastBoatBookings.value = response.data;
 			});
 		var currentCustomers = ref(null);
 		axios
 			.get("/api/boatOwner/currentCustomers/" + localStorage["userId"])
 			.then(function (response) {
-				console.log(response.data);
 				currentCustomers.value = response.data;
 			});
 
@@ -441,13 +456,22 @@ export default {
 				localStorage.setItem("type", "BOAT_OWNER");
 				window.location.href = "/bookingCreate/";
 			},
+			makeReport(id) {
+				// TODO: dobavi iz čekboksa, i userid
+				axios.post(
+					"/api/report/makeReport/",
+					{ type: "BOAT_OWNER" },
+					{ headers: { "Content-Type": "application/json" } }
+				);
+				console.log(id);
+			},
 		};
 	},
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 body {
 	background-color: #e6e4df;
 	background-size: 100%;
@@ -479,7 +503,6 @@ body {
 	letter-spacing: -1px;
 	display: inline;
 }
-
 .mainFlex {
 	margin: 50px 200px 0px;
 	display: flex;
@@ -489,6 +512,10 @@ body {
 .leftFlex {
 	display: flex;
 	flex-direction: column;
+}
+
+.rightFlex {
+	height: min-content;
 }
 
 h4 {
@@ -515,8 +542,24 @@ h3 {
 	object-fit: cover;
 }
 
-.rightFlex {
-	height: 310px;
+/* LEFT FLEX ELEMENTS */
+
+.leftFlexEntry {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.leftFlexEntry input {
+	width: 40px;
+	margin: 0 10px;
+	text-align: center;
+	font-size: 22px;
+}
+
+.leftFlexEntry button {
+	margin: 0 0 0 30px;
+	width: 110px;
 }
 
 .rightFlex,
@@ -544,6 +587,7 @@ h3 {
 .passwordChange p {
 	margin: 4px 0;
 	font-size: 25px;
+	text-align: left;
 }
 
 .rightFlex .smallText,
@@ -553,10 +597,7 @@ h3 {
 	color: #9e6b1d;
 }
 
-.rightFlex input,
-.firstLogin input,
-.passwordChange input,
-.percentage input {
+input {
 	height: 24px;
 	border-radius: 5px;
 	border: 1px solid rgb(122, 122, 122);
@@ -564,10 +605,7 @@ h3 {
 	background-color: #f0f0f0;
 }
 
-.rightFlex input:focus,
-.firstLogin input:focus,
-.passwordChange input:focus,
-.percentage input:focus {
+input:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
 }
@@ -612,17 +650,26 @@ button:hover {
 }
 
 .lowerFlex {
-	margin: 0px 200px;
+	margin: 0px 200px 100px;
 	display: flex;
 	flex-direction: column;
 }
 
-.lowerFlex h3 {
-	border-bottom: solid 1px rgb(145, 145, 145);
-}
+/* TABLE */
 
 .table {
 	margin-top: 20px;
+}
+
+.header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.header button {
+	margin: auto 0;
+	width: 110px;
 }
 
 .tableEntry {
@@ -633,17 +680,37 @@ button:hover {
 	border-bottom: solid 1px rgb(145, 145, 145);
 }
 
-.tableEntry .entryName {
+.tableSubEntry {
+	margin: 0;
+	margin-top: 10px;
+	color: #9e6b1d;
+	font-size: 26px;
+}
+
+.entryLeft {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 	margin: auto 0;
+}
+
+.entryLeftShort {
 	width: 180px;
 }
 
-.tableEntry .entryRequestText {
-	width: 800px;
+.entryLeftLong {
+	width: 650px;
+}
+
+.entryRight {
+	min-width: 260px;
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
 	margin: auto 0;
 }
 
-.tableEntry button {
+.entryRight button {
 	width: 110px;
 	margin: auto 0;
 	font-size: 20px;
@@ -663,66 +730,5 @@ button:hover {
 
 .entryDeny:hover {
 	background-color: rgb(119, 51, 51);
-}
-
-.percentage,
-.businessReports {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-
-.percentage input,
-.businessReports input {
-	width: 40px;
-	margin: 0 10px;
-	text-align: center;
-	font-size: 22px;
-}
-
-.percentage button,
-.businessReports button {
-	margin: 0 0 0 30px;
-	width: 110px;
-}
-
-.search {
-	text-align: center;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-}
-.search input {
-	border-radius: 5px;
-	margin-top: 10px;
-}
-.searchResult {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 370px;
-	height: 470px;
-	margin-top: 20px;
-	border-radius: 15px;
-	background-color: rgb(230, 230, 230);
-}
-.searchResult p {
-	text-align: center;
-	color: rgb(71, 71, 71);
-	font-size: 35px;
-}
-input,
-select {
-	width: 260px;
-	height: 32px;
-	border-radius: 5px;
-	border: 1px solid rgb(122, 122, 122);
-	font-size: 20px;
-	background-color: #f0f0f0;
-}
-input:focus,
-select:focus {
-	outline: none !important;
-	border: 1px solid #ad6800;
 }
 </style>

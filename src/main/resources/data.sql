@@ -65,13 +65,13 @@ insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power,
             values(1, "Nepotopivi 2", "Yamaha", "15", 1, 321, 321, "Sonar", "Jarkovci, Serbia", 45.043798, 20.027075, "VeryFastBoy", "Don't talk about Nepotopivi 1", 50, "2023-01-01", "2023-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Miss Melanoma", "Yamaha", "15", 1, 321, 321, "Sonar", "Bar Harbour, Maine", 44.374710, -68.191748, "VeryFastBoy", "Nije lose", 50, "2023-01-01", "2028-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
+            values(1, "Margo", "Yamaha", "15", 1, 321, 321, "Sonar", "Bar Harbour, Maine", 44.374710, -68.191748, "VeryFastBoy", "Nije lose", 50, "2023-01-01", "2028-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Brzi", "Yamaha", "15", 1, 321, 321, "Sonar", "Bay City State Park, Michigan", 43.666608, -83.901237, "VeryFastBoy", "Ipak nije tako brz", 50, "2023-01-01", "2028-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
+            values(1, "Bay City Jewel", "Yamaha", "15", 1, 321, 321, "Sonar", "Bay City State Park, Michigan", 43.666608, -83.901237, "VeryFastBoy", "Ipak nije tako brz", 50, "2023-01-01", "2028-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
-            values(1, "Just A Splash", "Yamaha", "15", 1, 321, 321, "Sonar", "Claremont, Virginia", 37.231071, -76.954797, "VeryFastBoy", "Potopio nepotopivog1", 50, "2023-01-01", "2028-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
+            values(1, "Just a Splash", "Yamaha", "15", 1, 321, 321, "Sonar", "Claremont, Virginia", 37.231071, -76.954797, "VeryFastBoy", "Potopio nepotopivog1", 50, "2023-01-01", "2028-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
             values(1, "Peti Sveti", "Yamaha", "15", 1, 321, 321, "Sonar", "Key West, Florida", 24.549540, -81.780825, "Holie", "Ovaj jeste Sveti Peti", 50, "2023-01-01", "2028-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
@@ -85,10 +85,10 @@ insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, 
             values (1, 1, "2020-01-01", "2023-01-02", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "2023-01-03", "2023-01-04", 0, false, "", 6);
+            values (2, 1, "2023-01-03", "2023-01-04", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "2023-01-05", "2023-01-06", 0, false, "", 6);
+            values (3, 3, "2023-01-05", "2023-01-06", 0, false, "", 6);
 --akcija
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
             values (0, 1, "2023-01-05", "2023-01-06", 0, true, "None", 6);
@@ -107,10 +107,10 @@ insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, 
             values (1, 1, "1990-01-01", "1990-01-02", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "1990-01-03", "1990-01-04", 0, false, "", 6);
+            values (2, 1, "1990-01-03", "1990-01-04", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
-            values (1, 1, "1990-01-05", "1990-01-06", 0, false, "", 6);
+            values (3, 3, "1990-01-05", "1990-01-06", 0, false, "", 6);
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
 			values(1, "1990-01-01", "1990-02-01", 2, 0, false, 1, "", 1);

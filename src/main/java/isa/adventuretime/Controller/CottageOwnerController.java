@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isa.adventuretime.DTO.CottageNameRoomBookingDTO;
+import isa.adventuretime.DTO.UserNameRoomBookingDTO;
 import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Entity.CottageOwner;
 import isa.adventuretime.Entity.RegisteredUser;
@@ -68,11 +69,17 @@ public class CottageOwnerController {
 
 		for (Cottage cottage : cottages) {
 			ArrayList<RoomBooking> roomBookings = new ArrayList<>();
+			ArrayList<UserNameRoomBookingDTO> userNameRoomBookingsDTO = new ArrayList<>();
 			roomBookings
 					.addAll(roomBookingService.findAllByCottageIdAndEndBefore(cottage.getId(), date));
 
+			for (RoomBooking roomBooking : roomBookings) {
+				String userName = registeredUserService.getById(roomBooking.getRegisteredUserId()).getName();
+				userNameRoomBookingsDTO.add(new UserNameRoomBookingDTO(userName, roomBooking));
+			}
+
 			if (roomBookings.size() > 0) {
-				cottagesDTO.add(new CottageNameRoomBookingDTO(cottage.getName(), roomBookings));
+				cottagesDTO.add(new CottageNameRoomBookingDTO(cottage.getName(), userNameRoomBookingsDTO));
 			}
 		}
 
@@ -90,7 +97,7 @@ public class CottageOwnerController {
 	}
 
 	@GetMapping(path = "/currentCustomers/{id}")
-	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id){
+	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id) {
 		return new ResponseEntity<>(registeredUserService.getAllUsersOfCottageOwner(id), HttpStatus.OK);
 	}
 }

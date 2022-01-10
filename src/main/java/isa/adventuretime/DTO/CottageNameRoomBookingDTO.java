@@ -2,7 +2,6 @@ package isa.adventuretime.DTO;
 
 import java.util.ArrayList;
 
-import isa.adventuretime.Entity.RoomBooking;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,14 +9,14 @@ import lombok.Setter;
 @Setter
 public class CottageNameRoomBookingDTO {
 	private String cottageName;
-	private ArrayList<RoomBooking> roomBookings;
+	private ArrayList<UserNameRoomBookingDTO> userNameRoomBookingDTO;
 
 	public CottageNameRoomBookingDTO() {
 
 	}
 
-	public CottageNameRoomBookingDTO(String cottageName, ArrayList<RoomBooking> roomBookings) {
+	public CottageNameRoomBookingDTO(String cottageName, ArrayList<UserNameRoomBookingDTO> userNameRoomBookingDTO) {
 		this.cottageName = cottageName;
-		this.roomBookings = roomBookings;
+		this.userNameRoomBookingDTO = userNameRoomBookingDTO;
 	}
 }
