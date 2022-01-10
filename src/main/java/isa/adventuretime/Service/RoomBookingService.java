@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import isa.adventuretime.DTO.PastRoomBookingRevisionDTO;
+import isa.adventuretime.DTO.*;
 import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.Revision;
 import isa.adventuretime.Entity.RoomBooking;
 import isa.adventuretime.Repository.RevisionRepo;
 import isa.adventuretime.Repository.RoomBookingRepo;
+import isa.adventuretime.Repository.CottageRepo;
 import java.util.Date;
 import java.util.Calendar;
 
@@ -21,6 +22,9 @@ public class RoomBookingService {
 
 	@Autowired
 	private RevisionRepo revisionRepo;
+
+	@Autowired
+	private CottageRepo cottageRepo;
 
 	public RoomBooking getById(Long id) {
 		return roomBookingRepo.getById(id);
@@ -40,7 +44,14 @@ public class RoomBookingService {
 			if (revision == null) {
 				revision = new Revision(HeadEntityEnum.COTTAGE, booking.getId(), booking.getCottageId());
 			}
-			pastBooking = new PastRoomBookingRevisionDTO(booking, revision);
+			String cottageName = cottageRepo.getById(booking.getCottageId()).getName();
+			UserNameRoomBookingDTO userNameRoomBookingDTO = new UserNameRoomBookingDTO("", booking);
+			ArrayList<UserNameRoomBookingDTO> UserNameRoomBookingDTOs = new ArrayList<>();
+			UserNameRoomBookingDTOs.add(userNameRoomBookingDTO);
+			CottageNameRoomBookingDTO cottageNameRoomBookingDTO = new CottageNameRoomBookingDTO(cottageName,
+					UserNameRoomBookingDTOs);
+
+			pastBooking = new PastRoomBookingRevisionDTO(cottageNameRoomBookingDTO, revision);
 			pastBookings.add(pastBooking);
 		}
 

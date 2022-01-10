@@ -7,7 +7,9 @@ import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import isa.adventuretime.DTO.BoatNameBoatBookingDTO;
 import isa.adventuretime.DTO.PastBoatBookingRevisionDTO;
+import isa.adventuretime.DTO.UserNameBoatBookingDTO;
 import isa.adventuretime.Entity.Boat;
 import isa.adventuretime.Entity.BoatBooking;
 import isa.adventuretime.Entity.HeadEntityEnum;
@@ -61,7 +63,13 @@ public class BoatBookingService {
 			if (revision == null) {
 				revision = new Revision(HeadEntityEnum.BOAT, booking.getId(), booking.getBookedBoatId());
 			}
-			pastBooking = new PastBoatBookingRevisionDTO(booking, revision);
+			String boatName = boatRepo.findById(booking.getBookedBoatId()).get().getName();
+			UserNameBoatBookingDTO userNameBoatBookingDTO = new UserNameBoatBookingDTO("", booking);
+			ArrayList<UserNameBoatBookingDTO> userNameBoatBookingDTOs = new ArrayList<>();
+			userNameBoatBookingDTOs.add(userNameBoatBookingDTO);
+			BoatNameBoatBookingDTO boatNameBoatBookingDTO = new BoatNameBoatBookingDTO(boatName,
+					userNameBoatBookingDTOs);
+			pastBooking = new PastBoatBookingRevisionDTO(boatNameBoatBookingDTO, revision);
 			pastBookings.add(pastBooking);
 		}
 

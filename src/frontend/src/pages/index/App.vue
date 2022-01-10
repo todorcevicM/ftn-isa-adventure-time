@@ -176,16 +176,11 @@
 			<div class="search" style="text-align: center">
 				<img
 					src="../../assets/wheel.svg"
-					style="width: 48px; margin-top: 18px"
+					style="width: 48px; margin-top: 18px; margin-bottom: 20px"
 				/>
-				<input
-					type="text"
-					placeholder="Search..."
-					v-model="searchQuery"
-				/>
-				<div v-if="searchQuery" class="searchResult">
-					<p>No results found...</p>
-				</div>
+				<button class="actionButton" @click="searchRedirect()">
+					Search
+				</button>
 			</div>
 			<div class="largeCategory">
 				<h1>Browse Cottages</h1>
@@ -203,7 +198,6 @@
 							:src="imageSource(1, i)"
 						/>
 						<h4>{{ cottages[i - 1].name }}</h4>
-						<h6>Rating: 5.00</h6>
 						<h6>${{ cottages[i - 1].pricePerDay }}/day</h6>
 						<h6>{{ cottages[i - 1].address }}</h6>
 					</div>
@@ -227,7 +221,6 @@
 							:src="imageSource(2, i)"
 						/>
 						<h4>{{ adventures[i - 1].name }}</h4>
-						<h6>Rating: 5.00</h6>
 						<h6>${{ adventures[i - 1].pricePerDay }}/day</h6>
 						<h6>{{ adventures[i - 1].address }}</h6>
 					</div>
@@ -249,7 +242,6 @@
 							:src="imageSource(3, i)"
 						/>
 						<h4>{{ boats[i - 1].name }}</h4>
-						<h6>Rating: 5.00</h6>
 						<h6>${{ boats[i - 1].pricePerDay }}/day</h6>
 						<h6>{{ boats[i - 1].address }}</h6>
 					</div>
@@ -597,6 +589,9 @@ export default {
 			showAllBoats() {
 				this.showAllBoatsToggle = false;
 				this.boatNumToDisplay = true;
+			},
+			searchRedirect() {
+				window.location.assign("/search");
 			},
 			imageRedirect(type, id) {
 				switch (type) {

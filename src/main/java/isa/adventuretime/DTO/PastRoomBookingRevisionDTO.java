@@ -1,7 +1,6 @@
 package isa.adventuretime.DTO;
 
 import isa.adventuretime.Entity.Revision;
-import isa.adventuretime.Entity.RoomBooking;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,15 +8,15 @@ import lombok.Setter;
 @Setter
 public class PastRoomBookingRevisionDTO {
 
-	private RoomBooking roomBooking;
+	private CottageNameRoomBookingDTO cottageNameRoomBookingDTO;
 	private Revision revision;
 
 	public PastRoomBookingRevisionDTO() {
 
 	}
 
-	public PastRoomBookingRevisionDTO(RoomBooking roomBooking, Revision revision) {
-		this.roomBooking = roomBooking;
+	public PastRoomBookingRevisionDTO(CottageNameRoomBookingDTO cottageNameRoomBookingDTO, Revision revision) {
+		this.cottageNameRoomBookingDTO = cottageNameRoomBookingDTO;
 		this.revision = revision;
 	}
 

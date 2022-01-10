@@ -80,24 +80,46 @@
 				>
 					<div class="entryLeft">
 						<p class="entryLeftShort">
-							{{ pbb.boatBooking.bookedBoatId }}
+							{{ pbb.boatNameBoatBookingDTO.boatName }}
 						</p>
-						<p class="entryLeftShort">{{ pbb.start }}</p>
-						<p class="entryLeftShort">{{ pbb.end }}</p>
 						<p class="entryLeftShort">
-							{{ pbb.boatBooking.extraService }}
+							{{ pbb.start }}
+						</p>
+						<p class="entryLeftShort">
+							{{ pbb.end }}
+						</p>
+						<p class="entryLeftShort">
+							{{
+								pbb.boatNameBoatBookingDTO
+									.userNameBoatBookingDTO[0].boatBooking
+									.extraService
+							}}
 						</p>
 					</div>
 					<div class="entryRight">
 						<button
 							class="entryDeny"
-							@click="sendAppeal(pbb.boatBooking.id, 'BOAT')"
+							@click="
+								sendAppeal(
+									pbb.boatNameBoatBookingDTO
+										.userNameBoatBookingDTO[0].boatBooking
+										.id,
+									'BOAT'
+								)
+							"
 						>
 							Appeal
 						</button>
 						<button
 							class="entryApprove"
-							@click="sendRevision(pbb.boatBooking.id, 'BOAT')"
+							@click="
+								sendRevision(
+									pbb.boatNameBoatBookingDTO
+										.userNameBoatBookingDTO[0].boatBooking
+										.id,
+									'BOAT'
+								)
+							"
 							v-if="!pbb.revision.revised"
 						>
 							Revise
@@ -116,17 +138,32 @@
 					:key="pab"
 				>
 					<div class="entryLeft">
+						<p class="entryLeftShort">
+							{{
+								pab.adventureNameAdventureBookingDTO
+									.adventureName
+							}}
+						</p>
 						<p class="entryLeftShort">{{ pab.start }}</p>
 						<p class="entryLeftShort">{{ pab.end }}</p>
 						<p class="entryLeftShort">
-							{{ pab.adventureBooking.extraService }}
+							{{
+								pab.adventureNameAdventureBookingDTO
+									.userNameAdventureBookingDTO[0]
+									.adventureBooking.extraService
+							}}
 						</p>
 					</div>
 					<div class="entryRight">
 						<button
 							class="entryDeny"
 							@click="
-								sendAppeal(pab.adventureBooking.id, 'ADVENTURE')
+								sendAppeal(
+									pab.adventureNameAdventureBookingDTO
+										.userNameAdventureBookingDTO[0]
+										.adventureBooking.id,
+									'ADVENTURE'
+								)
 							"
 						>
 							Appeal
@@ -135,7 +172,9 @@
 							class="entryApprove"
 							@click="
 								sendRevision(
-									pab.adventureBooking.id,
+									pab.adventureNameAdventureBookingDTO
+										.userNameAdventureBookingDTO[0]
+										.adventureBooking.id,
 									'ADVENTURE'
 								)
 							"
@@ -157,22 +196,43 @@
 					:key="prb"
 				>
 					<div class="entryLeft">
+						<p class="entryLeftShort">
+							{{ prb.cottageNameRoomBookingDTO.cottageName }}
+						</p>
 						<p class="entryLeftShort">{{ prb.start }}</p>
 						<p class="entryLeftShort">{{ prb.end }}</p>
 						<p class="entryLeftShort">
-							{{ prb.roomBooking.extraService }}
+							{{
+								prb.cottageNameRoomBookingDTO
+									.userNameAdventureBookingDTO[0].roomBooking
+									.extraService
+							}}
 						</p>
 					</div>
 					<div class="entryRight">
 						<button
 							class="entryDeny"
-							@click="sendAppeal(prb.roomBooking.id, COTTAGE)"
+							@click="
+								sendAppeal(
+									prb.cottageNameRoomBookingDTO
+										.userNameRoomBookingDTO[0].roomBooking
+										.id,
+									'COTTAGE'
+								)
+							"
 						>
 							Appeal
 						</button>
 						<button
 							class="entryApprove"
-							@click="sendRevision(prb.roomBooking.id, COTTAGE)"
+							@click="
+								sendRevision(
+									prb.cottageNameRoomBookingDTO
+										.userNameRoomBookingDTO[0].roomBooking
+										.id,
+									'COTTAGE'
+								)
+							"
 							v-if="!prb.revision.revised"
 						>
 							Revise
@@ -341,16 +401,11 @@
 			<div class="search" style="text-align: center">
 				<img
 					src="../../assets/wheel.svg"
-					style="width: 48px; margin-top: 18px"
+					style="width: 48px; margin-top: 18px; margin-bottom: 20px"
 				/>
-				<input
-					type="text"
-					placeholder="Search..."
-					v-model="searchQuery"
-				/>
-				<div v-if="searchQuery" class="searchResult">
-					<p>No results found...</p>
-				</div>
+				<button class="actionButton" @click="searchRedirect()">
+					Search
+				</button>
 			</div>
 			<div class="largeCategory">
 				<h1>Browse Cottages</h1>
@@ -368,7 +423,6 @@
 							:src="imageSource(1, i)"
 						/>
 						<h4>{{ cottages[i - 1].name }}</h4>
-						<h6>Rating: 5.00</h6>
 						<h6>${{ cottages[i - 1].pricePerDay }}/day</h6>
 						<h6>{{ cottages[i - 1].address }}</h6>
 					</div>
@@ -392,7 +446,6 @@
 							:src="imageSource(2, i)"
 						/>
 						<h4>{{ adventures[i - 1].name }}</h4>
-						<h6>Rating: 5.00</h6>
 						<h6>${{ adventures[i - 1].pricePerDay }}/day</h6>
 						<h6>{{ adventures[i - 1].address }}</h6>
 					</div>
@@ -414,7 +467,6 @@
 							:src="imageSource(3, i)"
 						/>
 						<h4>{{ boats[i - 1].name }}</h4>
-						<h6>Rating: 5.00</h6>
 						<h6>${{ boats[i - 1].pricePerDay }}/day</h6>
 						<h6>{{ boats[i - 1].address }}</h6>
 					</div>
@@ -500,18 +552,23 @@ export default {
 			.then(function (response) {
 				pastBoatBookingsDTO.value = response.data;
 
-				// Formatiranje datuma
 				var size = pastBoatBookingsDTO.value.length;
 				for (let i = 0; i < size; i++) {
 					let newStart =
-						pastBoatBookingsDTO.value[i].boatBooking.start.split(
+						pastBoatBookingsDTO.value[
+							i
+						].boatNameBoatBookingDTO.userNameBoatBookingDTO[0].boatBooking.start.split(
 							"T"
 						);
 					let newStartSecondPart = newStart[1].split(".")[0];
 					pastBoatBookingsDTO.value[i].start =
 						newStartSecondPart + ", " + newStart[0];
 					let newEnd =
-						pastBoatBookingsDTO.value[i].boatBooking.end.split("T");
+						pastBoatBookingsDTO.value[
+							i
+						].boatNameBoatBookingDTO.userNameBoatBookingDTO[0].boatBooking.end.split(
+							"T"
+						);
 					let newEndSecondPart = newEnd[1].split(".")[0];
 					pastBoatBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
@@ -533,14 +590,18 @@ export default {
 					let newStart =
 						pastAdventureBookingsDTO.value[
 							i
-						].adventureBooking.start.split("T");
+						].adventureNameAdventureBookingDTO.userNameAdventureBookingDTO[0].adventureBooking.start.split(
+							"T"
+						);
 					let newStartSecondPart = newStart[1].split(".")[0];
 					pastAdventureBookingsDTO.value[i].start =
 						newStartSecondPart + ", " + newStart[0];
 					let newEnd =
 						pastAdventureBookingsDTO.value[
 							i
-						].adventureBooking.end.split("T");
+						].adventureNameAdventureBookingDTO.userNameAdventureBookingDTO[0].adventureBooking.end.split(
+							"T"
+						);
 					let newEndSecondPart = newEnd[1].split(".")[0];
 					pastAdventureBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
@@ -559,14 +620,20 @@ export default {
 				var size = pastRoomBookingsDTO.value.length;
 				for (let i = 0; i < size; i++) {
 					let newStart =
-						pastRoomBookingsDTO.value[i].roomBooking.start.split(
+						pastRoomBookingsDTO.value[
+							i
+						].cottageNameRoomBookingDTO.userNameRoomBookingDTO[0].roomBooking.start.split(
 							"T"
 						);
 					let newStartSecondPart = newStart[1].split(".")[0];
 					pastRoomBookingsDTO.value[i].start =
 						newStartSecondPart + ", " + newStart[0];
 					let newEnd =
-						pastRoomBookingsDTO.value[i].roomBooking.end.split("T");
+						pastRoomBookingsDTO.value[
+							i
+						].cottageNameRoomBookingDTO.userNameRoomBookingDTO[0].roomBooking.end.split(
+							"T"
+						);
 					let newEndSecondPart = newEnd[1].split(".")[0];
 					pastRoomBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
@@ -788,6 +855,9 @@ export default {
 			showAllBoats() {
 				this.showAllBoatsToggle = false;
 				this.boatNumToDisplay = true;
+			},
+			searchRedirect() {
+				window.location.assign("/search");
 			},
 			imageRedirect(type, id) {
 				switch (type) {

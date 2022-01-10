@@ -68,9 +68,9 @@ public class BookingController {
 	@Autowired
 	RoomService roomService;
 
-
 	@PostMapping(path = "/quickBoatBooking")
-	public Boolean quickBoatBooking(RequestEntity<String> params) throws AddressException, UnsupportedEncodingException {
+	public Boolean quickBoatBooking(RequestEntity<String> params)
+			throws AddressException, UnsupportedEncodingException {
 		String[] paramsArray = params.getBody().split(",");
 		Long boatBookingId = Long.parseLong(paramsArray[0].split(":")[1]);
 		Long userId = Long.parseLong(paramsArray[1].split(":")[1].replace("}", ""));
@@ -85,12 +85,13 @@ public class BookingController {
 	}
 
 	@PostMapping(path = "/quickAdventureBooking")
-	public Boolean quickAdventureBooking(RequestEntity<String> params) throws AddressException, UnsupportedEncodingException {
+	public Boolean quickAdventureBooking(RequestEntity<String> params)
+			throws AddressException, UnsupportedEncodingException {
 		String[] paramsArray = params.getBody().split(",");
 		Long adventureBookingId = Long.parseLong(paramsArray[0].split(":")[1]);
 		Long userId = Long.parseLong(paramsArray[1].split(":")[1].replace("}", ""));
 		AdventureBooking ab = adventureBookingService.getById(adventureBookingId);
-		
+
 		String userName = registeredUserService.getById(userId).getName();
 		String userEmail = registeredUserService.getById(userId).getEmail();
 		mailService.SendMail(userEmail, userName, "Adventure booking\n\n You have successfully booked an adventure!");
@@ -100,7 +101,8 @@ public class BookingController {
 	}
 
 	@PostMapping(path = "/quickCottageBooking")
-	public Boolean quickCottageBooking(RequestEntity<String> params) throws AddressException, UnsupportedEncodingException {
+	public Boolean quickCottageBooking(RequestEntity<String> params)
+			throws AddressException, UnsupportedEncodingException {
 		String[] paramsArray = params.getBody().split(",");
 		Long roomBookingId = Long.parseLong(paramsArray[0].split(":")[1]);
 		Long userId = Long.parseLong(paramsArray[1].split(":")[1].replace("}", ""));
@@ -181,9 +183,8 @@ public class BookingController {
 				Integer.parseInt(dateD.split("-")[1]) - 1,
 				Integer.parseInt(dateD.split("-")[2]),
 				Integer.parseInt(time.split(":")[0]),
-				Integer.parseInt(time.split(":")[1]), 
-				0
-		);
+				Integer.parseInt(time.split(":")[1]),
+				0);
 		int days = Integer.parseInt(params[3].split(":")[1]);
 		int guests = Integer.parseInt(params[4].split(":")[1]);
 		Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
@@ -336,7 +337,8 @@ public class BookingController {
 
 	@GetMapping(path = "/cottageBookingDeal/{id}")
 	public ResponseEntity<ArrayList<RoomBooking>> cottageBookingDeal(@PathVariable("id") Long cottageId) {
-		ArrayList<RoomBooking> roomBookings = roomBookingService.findAllByCottageIdAndStartAfterAndQuickBookingAndRegisteredUserId(cottageId);
+		ArrayList<RoomBooking> roomBookings = roomBookingService
+				.findAllByCottageIdAndStartAfterAndQuickBookingAndRegisteredUserId(cottageId);
 
 		for (RoomBooking roomBooking : roomBookings) {
 			System.out.println(roomBooking.getId());
@@ -411,7 +413,7 @@ public class BookingController {
 	public Boolean createAction(RequestEntity<String> params) {
 		String split[] = params.getBody().split(",");
 		Long entityId = Long.parseLong(split[0].split(":")[1].replace("\"", ""));
-		
+
 		String dateStartString = split[1].split(":")[1].replace("\"", "");
 		String dateEndString = split[2].split(":")[1].replace("\"", "");
 
@@ -425,35 +427,32 @@ public class BookingController {
 		switch (forType) {
 			case "ADVENTURE":
 				AdventureBooking ab = new AdventureBooking(
-					entityId,
-					startDate,
-					endDate,
-					price,
-					adventureService.getById(entityId).getInstructorId()
-				);
+						entityId,
+						startDate,
+						endDate,
+						price,
+						adventureService.getById(entityId).getInstructorId());
 				return adventureBookingService.save(ab) != null;
 			case "BOAT":
 				BoatBooking bb = new BoatBooking(
-					entityId,
-					startDate,
-					endDate,
-					price
-				);
+						entityId,
+						startDate,
+						endDate,
+						price);
 				return boatBookingService.save(bb) != null;
 			case "COTTAGE":
 				ArrayList<Room> rooms = roomService.findAllByCottageId(entityId);
 				boolean flag = false;
 				for (Room room : rooms) {
 					RoomBooking rb = new RoomBooking(
-						room.getId(),
-						startDate,
-						endDate,
-						price, 
-						entityId
-					);
+							room.getId(),
+							startDate,
+							endDate,
+							price,
+							entityId);
 					flag = roomBookingService.save(rb) != null;
 				}
-				
+
 				return flag;
 			default:
 				System.err.println("Something went wrong >>> " + forType);
@@ -464,13 +463,12 @@ public class BookingController {
 	Date parseDate(String dateString) {
 		Calendar date = Calendar.getInstance();
 		date.set(
-			Integer.parseInt(dateString.split("-")[0]),
-			Integer.parseInt(dateString.split("-")[1]) - 1,
-			Integer.parseInt(dateString.split("-")[2]),
-			0,
-			0,
-			0
-		);
+				Integer.parseInt(dateString.split("-")[0]),
+				Integer.parseInt(dateString.split("-")[1]) - 1,
+				Integer.parseInt(dateString.split("-")[2]),
+				0,
+				0,
+				0);
 		return date.getTime();
 	}
 

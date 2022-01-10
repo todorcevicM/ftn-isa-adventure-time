@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import isa.adventuretime.DTO.PastAdventureBookingRevisionDTO;
+import isa.adventuretime.DTO.*;
 import isa.adventuretime.Entity.AdventureBooking;
 import isa.adventuretime.Entity.FishingInstructor;
 import isa.adventuretime.Entity.HeadEntityEnum;
@@ -14,6 +14,7 @@ import isa.adventuretime.Entity.Revision;
 import isa.adventuretime.Repository.AdventureBookingRepo;
 import isa.adventuretime.Repository.FishingInstructorRepo;
 import isa.adventuretime.Repository.RevisionRepo;
+import isa.adventuretime.Repository.AdventureRepo;
 import java.util.Calendar;
 
 @Service
@@ -26,6 +27,9 @@ public class AdventureBookingService {
 
 	@Autowired
 	private RevisionRepo revisionRepo;
+
+	@Autowired
+	private AdventureRepo adventureRepo;
 
 	public AdventureBooking getById(Long id) {
 		return adventureBookingRepo.getById(id);
@@ -61,7 +65,14 @@ public class AdventureBookingService {
 			if (revision == null) {
 				revision = new Revision(HeadEntityEnum.ADVENTURE, booking.getId(), booking.getBookedAdventureId());
 			}
-			pastBooking = new PastAdventureBookingRevisionDTO(booking, revision);
+			String adventureName = adventureRepo.findById(booking.getBookedAdventureId()).get().getName();
+			UserNameAdventureBookingDTO userNameAdventureBookingDTO = new UserNameAdventureBookingDTO("",
+					booking);
+			ArrayList<UserNameAdventureBookingDTO> userNameAdventureBookingDTOs = new ArrayList<>();
+			userNameAdventureBookingDTOs.add(userNameAdventureBookingDTO);
+			AdventureNameAdventureBookingDTO adventureNameAdventureBookingDTO = new AdventureNameAdventureBookingDTO(
+					adventureName, userNameAdventureBookingDTOs);
+			pastBooking = new PastAdventureBookingRevisionDTO(adventureNameAdventureBookingDTO, revision);
 			pastBookings.add(pastBooking);
 		}
 

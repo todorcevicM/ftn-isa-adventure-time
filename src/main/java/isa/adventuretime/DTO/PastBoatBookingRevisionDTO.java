@@ -1,6 +1,5 @@
 package isa.adventuretime.DTO;
 
-import isa.adventuretime.Entity.BoatBooking;
 import isa.adventuretime.Entity.Revision;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,15 +8,15 @@ import lombok.Setter;
 @Setter
 public class PastBoatBookingRevisionDTO {
 
-	private BoatBooking boatBooking;
+	private BoatNameBoatBookingDTO boatNameBoatBookingDTO;
 	private Revision revision;
 
 	public PastBoatBookingRevisionDTO() {
 
 	}
 
-	public PastBoatBookingRevisionDTO(BoatBooking boatBooking, Revision revision) {
-		this.boatBooking = boatBooking;
+	public PastBoatBookingRevisionDTO(BoatNameBoatBookingDTO boatNameBoatBookingDTO, Revision revision) {
+		this.boatNameBoatBookingDTO = boatNameBoatBookingDTO;
 		this.revision = revision;
 	}
 
