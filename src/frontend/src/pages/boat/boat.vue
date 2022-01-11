@@ -99,6 +99,9 @@
 				<div
 					style="border-bottom: solid #da9e46 1px; margin: 10px 0px"
 				></div>
+				<p v-if="boatBookingDeal == ''">
+					No booking deals available...
+				</p>
 				<div v-for="(bbd, index) in boatBookingDeal" :key="bbd">
 					<p class="smallText">Deal {{ index + 1 }}</p>
 					<p class="entryLeftShort">Start : {{ bbd.start }}</p>
@@ -121,7 +124,11 @@
 					</div>
 				</div>
 
-				<button class="entryApporve" @click="subscribe()">
+				<button
+					class="entryApporve"
+					@click="subscribe()"
+					style="margin-top: 10px"
+				>
 					Subscribe
 				</button>
 			</div>
@@ -203,10 +210,7 @@ export default {
 		if (localStorage.userId != null) {
 			actionsHide = false;
 			axios
-				.get(
-					"/api/booking/boatBookingDeal/" + boat.value.id,
-					localStorage.userId
-				)
+				.get("/api/booking/boatBookingDeal/" + boat.value.id)
 				.then(function (response) {
 					console.log(response.data);
 					boatBookingDeal.value = response.data;

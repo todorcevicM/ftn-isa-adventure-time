@@ -334,27 +334,23 @@ public class BookingController {
 	@GetMapping(path = "/boatBookingDeal/{id}")
 	public ResponseEntity<ArrayList<BoatBooking>> boatBookingDeal(@PathVariable("id") Long id) {
 		return new ResponseEntity<>(
-				boatBookingService.findAllByBookedBoatIdAndStartAfterAndQuickBookingAndRegisteredUserId(id),
+				boatBookingService.findAllByBookedBoatIdAndEndAfterAndQuickBookingAndRegisteredUserId(id),
 				HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/cottageBookingDeal/{id}")
 	public ResponseEntity<ArrayList<RoomBooking>> cottageBookingDeal(@PathVariable("id") Long cottageId) {
 		ArrayList<RoomBooking> roomBookings = roomBookingService
-				.findAllByCottageIdAndStartAfterAndQuickBookingAndRegisteredUserId(cottageId);
-
-		for (RoomBooking roomBooking : roomBookings) {
-			System.out.println(roomBooking.getId());
-		}
+				.findAllByCottageIdAndEndAfterAndQuickBookingAndRegisteredUserId(cottageId);
 
 		return new ResponseEntity<>(roomBookings, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/adventureBookingDeal/{id}")
 	public ResponseEntity<ArrayList<AdventureBooking>> adventureBookingDeal(@PathVariable("id") Long id) {
-		return new ResponseEntity<>(
-				adventureBookingService.findAllByBookedAdventureIdAndStartAfterAndQuickBookingAndRegisteredUserId(id),
-				HttpStatus.OK);
+		ArrayList<AdventureBooking> adventureBookings = adventureBookingService
+				.findAllByBookedAdventureIdAndEndAfterAndQuickBookingAndRegisteredUserId(id);
+		return new ResponseEntity<>(adventureBookings, HttpStatus.OK);
 	}
 
 	@PostMapping(path = "/cancelBooking")
@@ -414,6 +410,7 @@ public class BookingController {
 
 	@PostMapping(path = "/createAction")
 	public Boolean createAction(RequestEntity<String> params) throws AddressException, UnsupportedEncodingException {
+		System.out.println(params.getBody());
 		String split[] = params.getBody().split(",");
 		Long entityId = Long.parseLong(split[0].split(":")[1].replace("\"", ""));
 
@@ -424,10 +421,9 @@ public class BookingController {
 		Date endDate = parseDate(dateEndString);
 
 		double price = Double.parseDouble(split[3].split(":")[1].replace("\"", ""));
-
+		System.out.println(split[4]);
 		String forType = split[4].split(":")[1].replace("\"", "");
 		int validDuration = Integer.parseInt(split[5].split(":")[1].replace("\"", "").replace("}", ""));
-		
 
 		HeadEntityEnum forTypeEnum;
 		ArrayList<Subscription> subscriptions = new ArrayList<>();
@@ -439,8 +435,7 @@ public class BookingController {
 						startDate,
 						endDate,
 						price,
-						adventureService.getById(entityId).getInstructorId()
-				);
+						adventureService.getById(entityId).getInstructorId());
 
 				forTypeEnum = HeadEntityEnum.ADVENTURE;
 				subscriptions = subscriptionService.findAllByForEntityAndSubbedId(forTypeEnum, entityId);
@@ -449,7 +444,8 @@ public class BookingController {
 					RegisteredUser registeredUser = registeredUserService.getById(userId);
 					String userName = registeredUser.getName();
 					String userEmail = registeredUser.getEmail();
-					mailService.SendMail(userEmail, userName, "A new action has been added for an adventure you are subbscribed to!");
+					mailService.SendMail(userEmail, userName,
+							"A new action has been added for an adventure you are subbscribed to!");
 				}
 
 				return adventureBookingService.save(ab) != null;
@@ -458,8 +454,7 @@ public class BookingController {
 						entityId,
 						startDate,
 						endDate,
-						price
-				);
+						price);
 
 				forTypeEnum = HeadEntityEnum.BOAT;
 				subscriptions = subscriptionService.findAllByForEntityAndSubbedId(forTypeEnum, entityId);
@@ -468,7 +463,8 @@ public class BookingController {
 					RegisteredUser registeredUser = registeredUserService.getById(userId);
 					String userName = registeredUser.getName();
 					String userEmail = registeredUser.getEmail();
-					mailService.SendMail(userEmail, userName, "A new action has been added for a boat you are subbscribed to!");
+					mailService.SendMail(userEmail, userName,
+							"A new action has been added for a boat you are subbscribed to!");
 				}
 
 				return boatBookingService.save(bb) != null;
@@ -484,7 +480,7 @@ public class BookingController {
 							entityId);
 					flag = roomBookingService.save(rb) != null;
 				}
-				
+
 				forTypeEnum = HeadEntityEnum.BOAT;
 				subscriptions = subscriptionService.findAllByForEntityAndSubbedId(forTypeEnum, entityId);
 				for (Subscription subscription : subscriptions) {
@@ -492,7 +488,8 @@ public class BookingController {
 					RegisteredUser registeredUser = registeredUserService.getById(userId);
 					String userName = registeredUser.getName();
 					String userEmail = registeredUser.getEmail();
-					mailService.SendMail(userEmail, userName, "A new action has been added for a boat you are subbscribed to!");
+					mailService.SendMail(userEmail, userName,
+							"A new action has been added for a boat you are subbscribed to!");
 				}
 
 				return flag;

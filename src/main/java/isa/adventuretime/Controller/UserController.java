@@ -225,6 +225,7 @@ public class UserController {
 							request.getBody().getPassword(),
 							request.getBody().getAddress(), request.getBody().getCity(), request.getBody().getCountry(),
 							request.getBody().getTelephoneNumber());
+					administrator.setAuthenticated(true);
 					administratorService.register(administrator);
 					break;
 				case "registeredUser":

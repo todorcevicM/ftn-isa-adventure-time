@@ -74,31 +74,42 @@
 					<p>{{ owner.name }}</p>
 				</div>
 			</div>
-			<div v-if="!actionsHide">
-				<h3>Cottage Deals</h3>
+			<div v-if="!actionsHide" class="rightFlex">
+				<h4>Cottage Deals</h4>
 				<div
-					class="tableEntry"
-					v-for="cbd in cottageBookingDeal"
-					:key="cbd"
-				>
-					<div class="entryLeft">
-						<p class="entryLeftShort">{{ cbd.start }}</p>
-						<p class="entryLeftShort">{{ cbd.end }}</p>
-						<p class="entryLeftShort">
-							Popust :
-							{{ (1 - cbd.price / cottage.pricePerDay) * 100 }}%
-						</p>
-					</div>
-					<div class="entryRight">
+					style="border-bottom: solid #da9e46 1px; margin: 10px 0px"
+				></div>
+				<p v-if="cottageBookingDeal == ''">
+					No booking deals available...
+				</p>
+				<div v-for="(cbd, index) in cottageBookingDeal" :key="cbd">
+					<p class="smallText">Deal {{ index + 1 }}</p>
+					<p class="entryLeftShort">Start : {{ cbd.start }}</p>
+					<p class="entryLeftShort">End : {{ cbd.end }}</p>
+					<p class="entryLeftShort">
+						Discount :
+						{{
+							(
+								(1 - cbd.price / cottage.pricePerDay) *
+								100
+							).toFixed(2)
+						}}%
+					</p>
+					<div style="text-align: center">
 						<button
-							class="entryDeny"
 							@click="createBooking(cbd.id)"
+							style="margin-bottom: 20px"
 						>
 							Book
 						</button>
 					</div>
 				</div>
-				<button class="entryApporve" @click="subscribe()">
+
+				<button
+					class="entryApporve"
+					@click="subscribe()"
+					style="margin-top: 10px"
+				>
 					Subscribe
 				</button>
 			</div>
@@ -128,6 +139,14 @@ export default {
 			maxUsers: localStorage.maxUsers,
 			reservationStart: localStorage.reservationStart,
 			reservationEnd: localStorage.reservationEnd,
+		});
+
+		let priceAndInfoString = localStorage.priceAndInfo;
+		let priceAndInfoArray = priceAndInfoString.split(";");
+		priceAndInfoArray.forEach((item, index) => {
+			priceAndInfoArray[index] = item.split(":");
+			alert(priceAndInfoArray[index][0]);
+			alert(priceAndInfoArray[index][1]);
 		});
 
 		// Formatiranje datuma
@@ -204,6 +223,7 @@ export default {
 			rating,
 			actionsHide,
 			cottageBookingDeal,
+
 			imageSource(id) {
 				try {
 					return require("../../assets/images/cottage" + id + ".png");
@@ -222,7 +242,9 @@ export default {
 						if (response.data) {
 							console.log(response.data);
 							alert("Booking created!");
-							window.location.reload();
+							window.location.assign(
+								"/registeredUser/" + localStorage["emailHash"]
+							);
 						} else {
 							alert("Booking not created!");
 						}

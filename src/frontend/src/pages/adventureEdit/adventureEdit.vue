@@ -34,25 +34,14 @@
 				<div>
 					<p>Create an action</p>
 					<p class="smallText">Action Start</p>
-					<input
-						type="date"
-						v-model="action.start"
-					/>
+					<input type="date" v-model="action.start" />
 					<p class="smallText">Action End</p>
-					<input
-						type="date"
-						v-model="action.end"
-					/>
+					<input type="date" v-model="action.end" />
 					<p class="smallText">Action Price</p>
-					<input
-						type="number"
-						v-model="action.price"/>
+					<input type="number" v-model="action.price" />
 					<p class="smallText">Action Duration in Days</p>
-					<input
-						type="number"
-						v-model="action.validDuration"/>
+					<input type="number" v-model="action.validDuration" />
 					<button @click="createAction()">Create</button>
-
 				</div>
 			</div>
 			<div class="rightFlex">
@@ -332,16 +321,18 @@ export default {
 				}
 			},
 			createAction() {
-				axios.post("/api/booking/createAction", {
-					boat: this.adventure.id,
-					start: this.action.start,
-					end: this.action.end,
-					price: this.action.price,
-					validDuration: this.action.validDuration,
-					type: "ADVENTURE",
-				}).then(function (response) {
-					console.log(response.data);
-				});
+				axios
+					.post("/api/booking/createAction", {
+						boat: this.adventure.id,
+						start: this.action.start,
+						end: this.action.end,
+						price: this.action.price,
+						type: "ADVENTURE",
+						validDuration: this.action.validDuration,
+					})
+					.then(function (response) {
+						console.log(response.data);
+					});
 			},
 		};
 	},

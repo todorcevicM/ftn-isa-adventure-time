@@ -38,6 +38,7 @@ insert into registered_user (name, lastname, email, password, address, city, cou
 insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Jennifer", "Wells", "random14@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 223771799);
 insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Isabel", "Poole", "random15@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -1573179560);
 
+
 insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Old Pine Cabin", "Montauk, New York", 41.049690, -71.909219, "Sample Promo Description", "Sample Rules", 130.00, "zvucnik:30;bar:20", "2020-01-01", "2026-01-01", 4, 1, false);
 insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Wayward Cottage", "Burlington, Vermont", 44.415146, -73.254865, "Sample Promo Description", "Sample Rules", 185.00, "zvucnik:30;bar:20", "2020-01-01", "2028-01-01", 3, 1, false);
 insert into cottage(name, address, geo_lng, geo_lat, promo_description, rules, price_per_day, price_and_info, reservation_start, reservation_end, max_users, owner_id, hidden) values ("Old Fishing Place", "Diamond Lake, Oregon", 43.163765, -122.167166, "Sample Promo Description", "Sample Rules", 90.00, "zvucnik:30;bar:20", "2020-01-01", "2023-01-01", 5, 1, false);
@@ -59,7 +60,8 @@ insert into adventure(name, address, geo_lng, geo_lat, promo_description, instru
 
 insert into subscription (for_entity, subbed_id, subber_id) values (0, 1, 1);
 insert into subscription (for_entity, subbed_id, subber_id) values (2, 1, 1);
-insert into subscription (for_entity, subbed_id, subber_id) values (4, 1, 1);  
+insert into subscription (for_entity, subbed_id, subber_id) values (4, 1, 1);
+
 
 insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power, max_speed, navigation_equipment, address, geo_lng, geo_lat, promo_description, rules, price_per_day, reservation_start, reservation_end, price_and_info, max_users, hidden, equipment)
             values(1, "Nepotopivi 2", "Yamaha", "15", 1, 321, 321, "Sonar", "Jarkovci, Serbia", 45.043798, 20.027075, "VeryFastBoy", "Don't talk about Nepotopivi 1", 50, "2023-01-01", "2023-01-15", "zvucnik:30;bar:20", 7, false, "stap za pecanje");
@@ -89,20 +91,42 @@ insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, 
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
             values (3, 3, "2023-01-05", "2023-01-06", 0, false, "", 6);
---akcija
+-- Akcije
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
             values (0, 1, "2023-01-05", "2023-01-06", 35, true, "", 6);
 
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(1, "2020-01-01", "2023-02-01", 2, 0, false, 1, "", 1);
-
+			values(1, "2020-01-01", "2021-01-01", 2, 0, false, 1, "", 1);
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(1, "2023-01-03", "2023-01-04", 2, 0, false, 1, "", 1);
---Rezervacija u proslosti radi prikaza
+			values(2, "2020-01-01", "2021-01-01", 2, 0, false, 1, "", 1);
+-- Akcije
+insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
+			values(1, "2022-12-12", "2023-02-01", 2, 70, true, 0, "", 1);
+insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
+			values(2, "2022-01-01", "2023-02-01", 2, 80, true, 0, "", 1);
+insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
+			values(3, "2022-01-01", "2023-02-01", 2, 85, true, 0, "", 1);
+insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
+			values(4, "2022-01-01", "2023-02-01", 2, 80, true, 0, "", 1);
+
+-- Ovo su rezervacije za SOBE, ne za Cottage
+-- Rezervacija u proslosti radi prikaza
 insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
 			values (1, "1990-01-01", "1990-01-05", 1, false, 0, 2, "", 1);
+insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
+			values (1, "2021-01-01", "2021-02-01", 1, false, 0, 2, "", 1);
+-- Akcije
+insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
+			values (1, "2022-02-02", "2023-02-01", 0, true, 50, 2, "", 1);
+insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
+			values (2, "2023-01-01", "2024-02-01", 0, true, 50, 2, "", 1);
+insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
+			values (3, "2024-01-01", "2025-02-01", 0, true, 70, 2, "", 2);
+insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
+			values (4, "2024-01-01", "2025-02-01", 0, true, 75, 2, "", 2);
             
+-- Past Bookings
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
             values (1, 1, "1990-01-01", "1990-01-02", 0, false, "", 6);
 

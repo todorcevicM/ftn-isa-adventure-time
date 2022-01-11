@@ -115,7 +115,15 @@ public class AdventureBookingService {
 
 	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndStartAfterAndQuickBookingAndRegisteredUserId(
 			Long id) {
+		Date date = Calendar.getInstance().getTime();
 		return adventureBookingRepo.findAllByBookedAdventureIdAndStartAfterAndQuickBookingAndRegisteredUserId(id,
-				Calendar.getInstance().getTime(), true, 0L);
+				date, true, 0L);
+	}
+
+	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndEndAfterAndQuickBookingAndRegisteredUserId(
+			Long id) {
+		Date date = Calendar.getInstance().getTime();
+		return adventureBookingRepo.findAllByBookedAdventureIdAndEndAfterAndQuickBookingAndRegisteredUserId(id,
+				date, true, 0L);
 	}
 }

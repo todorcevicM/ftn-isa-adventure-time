@@ -36,4 +36,7 @@ public interface BoatBookingRepo extends JpaRepository<BoatBooking, Long> {
 
 	public ArrayList<BoatBooking> findAllByBookedBoatIdAndStartAfterAndQuickBookingAndRegisteredUserId(Long id,
 			Date date, Boolean quickBooking, Long id2);
+
+	public ArrayList<BoatBooking> findAllByBookedBoatIdAndEndAfterAndQuickBookingAndRegisteredUserId(
+			Long id, Date date, Boolean quickBooking, Long id2);
 }

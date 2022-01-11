@@ -123,4 +123,11 @@ public class BoatBookingService {
 		return boatBookingRepo.findAllByBookedBoatIdAndStartAfterAndQuickBookingAndRegisteredUserId(bookedBoatId,
 				Calendar.getInstance().getTime(), true, 0L);
 	}
+
+	public ArrayList<BoatBooking> findAllByBookedBoatIdAndEndAfterAndQuickBookingAndRegisteredUserId(
+			Long bookedBoatId) {
+
+		return boatBookingRepo.findAllByBookedBoatIdAndEndAfterAndQuickBookingAndRegisteredUserId(bookedBoatId,
+				Calendar.getInstance().getTime(), true, 0L);
+	}
 }

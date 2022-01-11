@@ -67,32 +67,42 @@
 				<p>{{ adventure.instructorBio }}</p>
 				<button @click="reserve()">Reserve</button>
 			</div>
-			<div v-if="!actionsHide">
-				<h3>Adventure Deals</h3>
+			<div v-if="!actionsHide" class="rightFlex">
+				<h4>Adventure Deals</h4>
 				<div
-					class="tableEntry"
-					v-for="abd in adventureBookingDeal"
-					:key="abd"
-				>
-					<div class="entryLeft">
-						<p>{{ abd.name }}</p>
-						<p class="entryLeftShort">{{ abd.start }}</p>
-						<p class="entryLeftShort">{{ abd.end }}</p>
-						<p class="entryLeftShort">
-							Popust :
-							{{ (1 - abd.price / adventure.pricePerDay) * 100 }}%
-						</p>
-					</div>
-					<div class="entryRight">
+					style="border-bottom: solid #da9e46 1px; margin: 10px 0px"
+				></div>
+				<p v-if="adventureBookingDeal == ''">
+					No booking deals available...
+				</p>
+				<div v-for="(abd, index) in adventureBookingDeal" :key="abd">
+					<p class="smallText">Deal {{ index + 1 }}</p>
+					<p class="entryLeftShort">Start : {{ abd.start }}</p>
+					<p class="entryLeftShort">End : {{ abd.end }}</p>
+					<p class="entryLeftShort">
+						Discount :
+						{{
+							(
+								(1 - abd.price / adventure.pricePerDay) *
+								100
+							).toFixed(2)
+						}}%
+					</p>
+					<div style="text-align: center">
 						<button
-							class="entryDeny"
 							@click="createBooking(abd.id)"
+							style="margin-bottom: 20px"
 						>
 							Book
 						</button>
 					</div>
 				</div>
-				<button class="entryApporve" @click="subscribe()">
+
+				<button
+					class="entryApporve"
+					@click="subscribe()"
+					style="margin-top: 10px"
+				>
 					Subscribe
 				</button>
 			</div>
@@ -125,6 +135,7 @@ export default {
 			equipment: localStorage.equipment,
 			percentTakenIfCancelled: localStorage.percentTakenIfCancelled,
 		});
+
 		// Za instructor.name gore
 		var instructor = ref(null);
 		axios
@@ -155,16 +166,16 @@ export default {
 			});
 
 		var actionsHide = true;
-		var adventureDeals = ref(null);
+		var adventureBookingDeal = ref(null);
 		if (localStorage.userId != null) {
 			actionsHide = false;
 			axios
 				.get("/api/booking/adventureBookingDeal/" + adventure.value.id)
 				.then(function (response) {
 					console.log(response.data);
-					adventureDeals.value = response.data;
+					adventureBookingDeal.value = response.data;
 
-					adventureDeals.value.forEach((bookingDeal) => {
+					adventureBookingDeal.value.forEach((bookingDeal) => {
 						let newStart = bookingDeal.start.split("T");
 						let newStartSecondPart = newStart[1].split(".")[0];
 						bookingDeal.start =
@@ -181,7 +192,7 @@ export default {
 			instructor,
 			rating,
 			actionsHide,
-			adventureDeals,
+			adventureBookingDeal,
 			imageSource(id) {
 				return require("../../assets/images/adventure" + id + ".png");
 			},
@@ -198,7 +209,9 @@ export default {
 						if (response.data) {
 							console.log(response.data);
 							alert("Booking created!");
-							window.location.reload();
+							window.location.assign(
+								"/registeredUser/" + localStorage["emailHash"]
+							);
 						} else {
 							alert("Booking not created!");
 						}

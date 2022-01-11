@@ -41,4 +41,8 @@ public interface AdventureBookingRepo extends JpaRepository<AdventureBooking, Lo
 
 	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndStartAfterAndQuickBookingAndRegisteredUserId(
 			Long id, Date date, Boolean quickBooking, Long id2);
+
+	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndEndAfterAndQuickBookingAndRegisteredUserId(
+			Long id, Date date, Boolean quickBooking, Long id2);
+
 }
