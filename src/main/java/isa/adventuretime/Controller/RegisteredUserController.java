@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import isa.adventuretime.DTO.AdventureNameAdventureBookingDTO;
+import isa.adventuretime.DTO.BoatNameBoatBookingDTO;
+import isa.adventuretime.DTO.CottageNameRoomBookingDTO;
 import isa.adventuretime.DTO.PastAdventureBookingRevisionDTO;
 import isa.adventuretime.DTO.PastBoatBookingRevisionDTO;
 import isa.adventuretime.DTO.PastRoomBookingRevisionDTO;
 import isa.adventuretime.Entity.Adventure;
-import isa.adventuretime.Entity.AdventureBooking;
 import isa.adventuretime.Entity.Boat;
-import isa.adventuretime.Entity.BoatBooking;
 import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RegisteredUser;
@@ -84,23 +85,23 @@ public class RegisteredUserController {
 	}
 
 	@GetMapping(path = "/futureBoatBookings/{id}")
-	public ResponseEntity<ArrayList<BoatBooking>> getFutureBoatBookings(@PathVariable("id") Long id) throws Exception {
-		return new ResponseEntity<ArrayList<BoatBooking>>(
+	public ResponseEntity<ArrayList<BoatNameBoatBookingDTO>> getFutureBoatBookings(@PathVariable("id") Long id) throws Exception {
+		return new ResponseEntity<ArrayList<BoatNameBoatBookingDTO>>(
 				boatBookingService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date()), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/futureAdventureBookings/{id}")
-	public ResponseEntity<ArrayList<AdventureBooking>> getFutureAdventureBookings(@PathVariable("id") Long id) {
-		return new ResponseEntity<ArrayList<AdventureBooking>>(
+	public ResponseEntity<ArrayList<AdventureNameAdventureBookingDTO>> getFutureAdventureBookings(@PathVariable("id") Long id) {
+		return new ResponseEntity<ArrayList<AdventureNameAdventureBookingDTO>>(
 				adventureBookingService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date()), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/futureRoomBookings/{id}")
-	public ResponseEntity<ArrayList<RoomBooking>> getFutureRoomBookings(@PathVariable("id") Long id) throws Exception {
-		ArrayList<RoomBooking> roomBookings = roomBookingService.findAllByRegisteredUserIdAndEndAfter(id,
+	public ResponseEntity<ArrayList<CottageNameRoomBookingDTO>> getFutureRoomBookings(@PathVariable("id") Long id) throws Exception {
+		ArrayList<CottageNameRoomBookingDTO> roomBookings = roomBookingService.findAllByRegisteredUserIdAndEndAfter(id,
 				new java.util.Date());
 
-		return new ResponseEntity<ArrayList<RoomBooking>>(
+		return new ResponseEntity<ArrayList<CottageNameRoomBookingDTO>>(
 				roomBookings, HttpStatus.OK);
 	}
 

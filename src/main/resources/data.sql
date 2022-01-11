@@ -32,7 +32,7 @@ insert into request_for_admin(for_type, user_registration_reason, requester_id) 
 insert into deletion_request(for_type, reason, requester_id, name, lastname) values (1, "I want another account.", 2, "Arden", "Dodge");
 insert into deletion_request(for_type, reason, requester_id, name, lastname) values (3, "Just delete it please.", 1, "Clair", "Albertson");
 
-insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Oliver", "Brooks", "random11@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 1319658580);
+insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Oliver", "Brooks", "todorcevic.marko.uni@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 1319658580);
 insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Max", "Morris", "random12@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, -477292779);
 insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Rory", "Atkinson", "random13@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 2020723158);
 insert into registered_user (name, lastname, email, password, address, city, country, telephone_number, authenticated, email_hash) values ("Jennifer", "Wells", "random14@gmail.com", "testpassword", "42 John Lane", "Johnville", "Canada", "064121213", TRUE, 223771799);

@@ -79,8 +79,22 @@ public class AdventureBookingService {
 		return pastBookings;
 	}
 
-	public ArrayList<AdventureBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {
-		return adventureBookingRepo.findAllByRegisteredUserIdAndEndAfter(id, date);
+	public ArrayList<AdventureNameAdventureBookingDTO> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {
+		ArrayList<AdventureBooking> bookings = adventureBookingRepo.findAllByRegisteredUserIdAndEndAfter(id, date);
+		ArrayList<AdventureNameAdventureBookingDTO> adventureNameAdventureBookingDTOs = new ArrayList<>();
+		AdventureNameAdventureBookingDTO adventureNameAdventureBookingDTO;
+
+		for (AdventureBooking booking : bookings) {
+			String adventureName = adventureRepo.findById(booking.getBookedAdventureId()).get().getName();
+			UserNameAdventureBookingDTO userNameAdventureBookingDTO = new UserNameAdventureBookingDTO("", booking);
+			ArrayList<UserNameAdventureBookingDTO> userNameAdventureBookingDTOs = new ArrayList<>();
+			userNameAdventureBookingDTOs.add(userNameAdventureBookingDTO);
+			adventureNameAdventureBookingDTO = new AdventureNameAdventureBookingDTO(adventureName,
+					userNameAdventureBookingDTOs);
+			adventureNameAdventureBookingDTOs.add(adventureNameAdventureBookingDTO);
+		}
+
+		return adventureNameAdventureBookingDTOs;
 	}
 
 	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndEndBefore(Long adventureId, Date date) {

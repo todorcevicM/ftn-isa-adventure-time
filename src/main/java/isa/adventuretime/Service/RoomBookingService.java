@@ -58,8 +58,26 @@ public class RoomBookingService {
 		return pastBookings;
 	}
 
-	public ArrayList<RoomBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {
-		return roomBookingRepo.findAllByRegisteredUserIdAndEndAfter(id, date);
+	public ArrayList<CottageNameRoomBookingDTO> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {
+		ArrayList<RoomBooking> bookings = roomBookingRepo.findAllByRegisteredUserIdAndEndAfter(id, date);
+		ArrayList<CottageNameRoomBookingDTO> cottageNameRoomBookingDTOs = new ArrayList<>();
+		CottageNameRoomBookingDTO cottageNameRoomBookingDTO;
+
+		for (RoomBooking booking : bookings) {
+			Revision revision = revisionRepo.findByBookingIdAndType(booking.getId(), HeadEntityEnum.COTTAGE);
+			if (revision == null) {
+				revision = new Revision(HeadEntityEnum.COTTAGE, booking.getId(), booking.getCottageId());
+			}
+			String cottageName = cottageRepo.getById(booking.getCottageId()).getName();
+			UserNameRoomBookingDTO userNameRoomBookingDTO = new UserNameRoomBookingDTO("", booking);
+			ArrayList<UserNameRoomBookingDTO> UserNameRoomBookingDTOs = new ArrayList<>();
+			UserNameRoomBookingDTOs.add(userNameRoomBookingDTO);
+			cottageNameRoomBookingDTO = new CottageNameRoomBookingDTO(cottageName, UserNameRoomBookingDTOs);
+
+			cottageNameRoomBookingDTOs.add(cottageNameRoomBookingDTO);
+		}
+
+		return cottageNameRoomBookingDTOs;
 	}
 
 	public ArrayList<RoomBooking> findAllByCottageIdAndEndBefore(Long id, Date date) {

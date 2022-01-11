@@ -16,5 +16,5 @@ public interface SubscriptionRepo extends JpaRepository<Subscription, Long> {
 
 	public Subscription getBySubberIdAndSubbedIdAndForEntity(Long id1, Long id2, HeadEntityEnum id3);
 
-	
+	public ArrayList<Subscription> findAllByForEntityAndSubbedId(HeadEntityEnum forEntity, Long id);	
 }

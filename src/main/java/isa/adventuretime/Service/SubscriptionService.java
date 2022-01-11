@@ -11,12 +11,8 @@ import isa.adventuretime.Repository.SubscriptionRepo;
 
 @Service
 public class SubscriptionService {
-	private SubscriptionRepo subscriptionRepo;
-
 	@Autowired
-	public SubscriptionService(SubscriptionRepo aR) {
-		this.subscriptionRepo = aR;
-	}
+	private SubscriptionRepo subscriptionRepo;
 
 	public Subscription getById(Long id) {
 		return subscriptionRepo.getById(id);
@@ -40,6 +36,11 @@ public class SubscriptionService {
 
 	public Subscription getBySubberIdAndSubbedIdAndForEntity(Long id1, Long id2, HeadEntityEnum id3){
 		return subscriptionRepo.getBySubberIdAndSubbedIdAndForEntity(id1, id2, id3);
+	}
+
+
+	public ArrayList<Subscription> findAllByForEntityAndSubbedId(HeadEntityEnum forType, Long id) {
+		return subscriptionRepo.findAllByForEntityAndSubbedId(forType, id);
 	}
 
 }

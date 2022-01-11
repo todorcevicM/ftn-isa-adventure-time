@@ -27,6 +27,7 @@ public class MailService {
 		Email email = DefaultEmail.builder()
 				.from(new InternetAddress("adventuretimesupport@protonmail.com", "Adventure Time Support 🧭"))
 				.to(Lists.newArrayList(new InternetAddress(toEmail, forWho)))
+				// TODO: change this to a real subject
 				.subject("Deletion mail")
 				.body(body)
 				.encoding("UTF-8").build();
