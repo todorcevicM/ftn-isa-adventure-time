@@ -382,6 +382,7 @@ export default {
 			// 	this.signUpMessageText = text;
 			// },
 			registerUser() {
+				var standardUser = false;
 				if (
 					this.userType == null ||
 					this.userEmail == null ||
@@ -437,6 +438,7 @@ export default {
 						switch (this.userType) {
 							case "Standard User":
 								user.userType = "registeredUser";
+								standardUser = true;
 								break;
 							case "Boat Owner":
 								user.userType = "boatOwner";
@@ -479,9 +481,15 @@ export default {
 									// 	signUpMessageText
 									// );
 								} else {
-									alert(
-										"A registration request has been sent to the Administrator. Keep your eye open for a verification email!"
-									);
+									if (standardUser) {
+										alert(
+											"Please check your e-mail in order to activate your account."
+										);
+									} else {
+										alert(
+											"A registration request has been sent to the Administrator. Keep your eye open for a verification email!"
+										);
+									}
 									// TODO: Ovde je isti problem
 									// popupState.value = false; // Zatvara sign up popup
 									// signUpMessageOn = true;

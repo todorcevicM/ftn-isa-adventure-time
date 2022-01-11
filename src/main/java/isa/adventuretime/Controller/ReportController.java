@@ -21,8 +21,6 @@ public class ReportController {
 
 	@PostMapping(path = "/makeReport")
 	public boolean makeReport(RequestEntity<String> report) {
-		// TODO: Vidi da li se na reload stranice
-		// kad se posalje report, gubi Make Report dugme
 		String split[] = report.getBody().split(",");
 		Long registeredUserId = Long.parseLong(split[0].split(":")[1]);
 		Boolean userShowedUp = Boolean.parseBoolean(split[4].split(":")[1]);
@@ -48,8 +46,7 @@ public class ReportController {
 
 		Report newReport = new Report(registeredUserId, userShowedUp, reportText, forType, bookingId);
 		reportService.save(newReport);
-		System.out.println(report.getBody());
-
+		// System.out.println(report.getBody());
 		return false;
 	}
 

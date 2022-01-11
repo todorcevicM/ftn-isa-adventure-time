@@ -15,26 +15,27 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Report {
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 
-    Long registeredUserId;
-    Boolean userShowedUp;
-    String reportText;
-    HeadEntityEnum forType;
-    Long bookingId;
+	Long registeredUserId;
+	Boolean userShowedUp;
+	String reportText;
+	HeadEntityEnum forType;
+	Long bookingId;
 
-    public Report(){
-        
-    }
+	public Report() {
 
-    public Report(Long registeredUserId, Boolean userShowedUp, String reportText, HeadEntityEnum forType, Long bookingId){
-        this.registeredUserId = registeredUserId;
-        this.userShowedUp = userShowedUp;
-        this.reportText = reportText;
-        this.forType = forType;
-        this.bookingId = bookingId;
-    }
+	}
+
+	public Report(Long registeredUserId, Boolean userShowedUp, String reportText, HeadEntityEnum forType,
+			Long bookingId) {
+		this.registeredUserId = registeredUserId;
+		this.userShowedUp = userShowedUp;
+		this.reportText = reportText;
+		this.forType = forType;
+		this.bookingId = bookingId;
+	}
 
 }

@@ -45,7 +45,7 @@ public class User {
 		this.emailHash = email.hashCode();
 		this.userType = "";
 		this.deleted = false;
-		// this.loginStatus = "";
+		this.denied = false;
 	}
 
 	public void updateWithUser(User user) {

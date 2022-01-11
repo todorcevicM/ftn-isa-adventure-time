@@ -147,12 +147,25 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		var searched = ref(null);
-		var type = ref(null);
-		var date = ref(null);
-		var time = ref(null);
-		var days = ref(null);
-		var guests = ref(null);
+		var today = new Date();
+		var searched = ref("");
+		var type = ref("Cottage");
+		var date = ref(
+			today.getFullYear() +
+				"-" +
+				("0" + (today.getMonth() + 1)).slice(-2) +
+				"-" +
+				("0" + today.getDate()).slice(-2)
+		);
+		var time = ref(
+			today.getHours() +
+				":" +
+				today.getMinutes() +
+				":" +
+				today.getSeconds()
+		);
+		var days = ref(1);
+		var guests = ref(1);
 
 		var searchResults = ref(null);
 		var actionsHide = true;
@@ -171,6 +184,7 @@ export default {
 			displayingRooms,
 			search() {
 				// TODO: Provera input polja
+
 				var searchParam =
 					this.searched +
 					";" +
@@ -197,8 +211,7 @@ export default {
 						for (let i = 0; i < size; i++) {
 							// Provera da li je search-ovan Cottage, zbog DTO-a
 							if (searchResults.value[i].cottage != null) {
-								alert("Usao");
-								displayingRooms.value = true; // TODO:
+								displayingRooms.value = true;
 								let newStart =
 									searchResults.value[
 										i
@@ -216,6 +229,12 @@ export default {
 								let newEndSecondPart = newEnd[1].split(".")[0];
 								searchResults.value[i].cottage.reservationEnd =
 									newEndSecondPart + ", " + newEnd[0];
+							} else if (
+								// Provera da li je search-ovan Adventure, zbog vremena rada instruktora
+								searchResults.value[i].location != null
+							) {
+								// TODO: Prikazati vremena instruktora, jer Adventure nema sam u sebi reservationStart i End,
+								// mora poseban request da se pravi
 							} else {
 								let newStart =
 									searchResults.value[
@@ -235,10 +254,11 @@ export default {
 							}
 						}
 					})
-				.catch(function (error) {
-					alert("Nothing has been found, please try again.");
-					alert(error);
-				});
+					.catch(function (error) {
+						searchResults.value = null;
+						console.log(error);
+						alert("Nothing has been found, please try again.");
+					});
 			},
 			reserve(object) {
 				console.log("Object to reserve :");

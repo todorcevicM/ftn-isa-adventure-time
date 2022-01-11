@@ -16,7 +16,7 @@ import isa.adventuretime.Entity.Boat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@RestController 
+@RestController
 @RequestMapping(path = "/api/boats")
 public class BoatController {
 
@@ -68,6 +68,10 @@ public class BoatController {
 		return new ResponseEntity<Boat>(boatService.save(boatToSave), HttpStatus.OK);
 	}
 
+	// TODO: Naziv ove metode nije konzistentan sa tim kako smo ih nazivali u npr
+	// CottageController,
+	// pa nisu ni URL path ni ime u repo-u isti.
+	// U repo-u ima i 2 iste ove metode koje rade istu stvar.
 	@GetMapping(path = "/getByOwner/{id}")
 	public ResponseEntity<ArrayList<Boat>> getBoatsByOwner(@PathVariable("id") Long id) {
 		return new ResponseEntity<ArrayList<Boat>>(boatService.findByOwnerId(id), HttpStatus.OK);

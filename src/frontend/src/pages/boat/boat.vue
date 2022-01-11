@@ -94,25 +94,27 @@
 				<p class="smallText">Owner</p>
 				<p>{{ owner.name }}</p>
 			</div>
-			<div v-if="!actionsHide">
-				<h3>Boat Deals</h3>
+			<div v-if="!actionsHide" class="rightFlex">
+				<h4>Boat Deals</h4>
 				<div
-					class="tableEntry"
-					v-for="bbd in boatBookingDeal"
-					:key="bbd"
-				>
-					<div class="entryLeft">
-						<p class="entryLeftShort">{{ bbd.start }}</p>
-						<p class="entryLeftShort">{{ bbd.end }}</p>
-						<p class="entryLeftShort">
-							Popust :
-							{{ (1 - bbd.price / boat.pricePerDay) * 100 }}%
-						</p>
-					</div>
-					<div class="entryRight">
+					style="border-bottom: solid #da9e46 1px; margin: 10px 0px"
+				></div>
+				<div v-for="(bbd, index) in boatBookingDeal" :key="bbd">
+					<p class="smallText">Deal {{ index + 1 }}</p>
+					<p class="entryLeftShort">Start : {{ bbd.start }}</p>
+					<p class="entryLeftShort">End : {{ bbd.end }}</p>
+					<p class="entryLeftShort">
+						Discount :
+						{{
+							((1 - bbd.price / boat.pricePerDay) * 100).toFixed(
+								2
+							)
+						}}%
+					</p>
+					<div style="text-align: center">
 						<button
-							class="entryDeny"
 							@click="createBooking(bbd.id)"
+							style="margin-bottom: 20px"
 						>
 							Book
 						</button>
@@ -246,6 +248,9 @@ export default {
 						if (response.data) {
 							console.log(response.data);
 							alert("Booking created!");
+							window.location.assign(
+								"/registeredUser/" + localStorage["emailHash"]
+							);
 						} else {
 							alert("Booking not created!");
 						}

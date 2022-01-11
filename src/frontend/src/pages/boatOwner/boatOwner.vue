@@ -117,7 +117,9 @@
 						justify-content: space-between;
 					"
 				>
-					<p v-if="reportToggle == true">Is this a bad report?</p>
+					<p v-if="reportToggle == true">
+						Is this report a complaint?
+					</p>
 					<input
 						v-model="cb2"
 						v-if="reportToggle == true"
@@ -312,16 +314,17 @@ export default {
 		var repeatPassword = ref(null);
 		var matching = ref(null);
 		var passwordChangeToggle = ref(null);
-		var boats = ref(null);
-		axios.get("/api/boats/get").then(function (response) {
-			boats.value = response.data;
-		});
-
 		var pastBoatBookings = ref(null);
 		axios
 			.get("/api/boatOwner/pastBoatBookings/" + localStorage["userId"])
 			.then(function (response) {
 				pastBoatBookings.value = response.data;
+			});
+		var boats = ref(null);
+		axios
+			.get("/api/boats/getByOwner/" + localStorage["userId"])
+			.then(function (response) {
+				boats.value = response.data;
 			});
 		var currentCustomers = ref(null);
 		axios
@@ -381,16 +384,8 @@ export default {
 				sendingUser.startWorkPeriod = this.newUser.newStartWorkPeriod;
 				sendingUser.endWorkPeriod = this.newUser.newEndWorkPeriod;
 				sendingUser.userType = "boatOwner";
-				console.log(sendingUser);
-				localStorage["sendingUser"] = JSON.stringify(sendingUser);
-				console.log(localStorage["sendingUser"]);
-
 				axios
-					.post("/api/user/update", localStorage["sendingUser"], {
-						headers: {
-							"Content-Type": "application/json",
-						},
-					})
+					.post("/api/user/update", sendingUser)
 					.then(function (response) {
 						console.log("Response : ");
 						console.log(response.data);
@@ -521,6 +516,7 @@ export default {
 					)
 					.then(function (/* response */) {
 						// console.log(response.data);
+						alert("Report created.");
 						window.location.reload();
 					});
 			},
@@ -562,6 +558,7 @@ body {
 	letter-spacing: -1px;
 	display: inline;
 }
+
 .mainFlex {
 	margin: 50px 200px 0px;
 	display: flex;

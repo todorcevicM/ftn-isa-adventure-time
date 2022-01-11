@@ -73,6 +73,10 @@ module.exports = {
 		bookingCreate: {
 			entry: "src/pages/bookingCreate/main.js",
 			title: "Booking Create Page",
+		},
+		confirmationPage: {
+			entry: "src/pages/confirmationPage/main.js",
+			title: "Confirmation Page",
 		}
 	},
 	devServer: {

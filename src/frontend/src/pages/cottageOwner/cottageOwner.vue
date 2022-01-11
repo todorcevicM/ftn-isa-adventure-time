@@ -94,6 +94,54 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
+			<!-- Sending Reports -->
+			<div class="passwordChange" v-if="reportToggle == true">
+				<div
+					style="
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+					"
+				>
+					<p v-if="reportToggle == true">User didn't show up?</p>
+					<input
+						v-model="cb1"
+						v-if="reportToggle == true"
+						type="checkbox"
+					/>
+				</div>
+				<div
+					style="
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+					"
+				>
+					<p v-if="reportToggle == true">
+						Is this report a complaint?
+					</p>
+					<input
+						v-model="cb2"
+						v-if="reportToggle == true"
+						type="checkbox"
+					/>
+				</div>
+				<p>Report Text</p>
+				<input
+					v-model="reportText"
+					v-if="reportToggle == true"
+					type="text"
+				/>
+				<button
+					v-if="reportToggle == true"
+					class="entryApprove"
+					@click="sendReport(reportUserId)"
+					style="width: 170px"
+				>
+					Send Report
+				</button>
+			</div>
+			<!-- Tables -->
 			<div class="table">
 				<div class="header">
 					<h3>Past Room Bookings</h3>
@@ -133,10 +181,15 @@
 								View User
 							</button>
 							<button
+								v-if="
+									!booking.roomBooking.reportMade &&
+									reportToggle == false
+								"
 								class="entryApprove"
 								@click="
 									makeReport(
-										booking.roomBooking.registeredUserId
+										booking.roomBooking.registeredUserId,
+										booking.roomBooking.id
 									)
 								"
 								style="width: 140px"
@@ -276,26 +329,28 @@ export default {
 		axios
 			.get("/api/cottageOwner/pastRoomBookings/" + localStorage["userId"])
 			.then(function (response) {
-				console.log(response.data);
 				pastRoomBookings.value = response.data;
 			});
 		var cottages = ref(null);
 		axios
 			.get("/api/cottages/getAllByOwnerId/" + localStorage["userId"])
 			.then(function (response) {
-				console.log(response.data);
 				cottages.value = response.data;
 			});
-
 		var currentCustomers = ref(null);
 		axios
 			.get("/api/cottageOwner/currentCustomers/" + localStorage["userId"])
 			.then(function (response) {
-				console.log(response.data);
 				currentCustomers.value = response.data;
 			});
 
 		var searchQuery = ref(null);
+		var reportToggle = ref(false);
+		var reportUserId = ref(null);
+		var reportBookingId = ref(null);
+		var reportText = ref(null);
+		var cb1 = ref(false);
+		var cb2 = ref(false);
 		return {
 			user,
 			pastRoomBookings,
@@ -308,6 +363,12 @@ export default {
 			passwordChangeToggle,
 			cottages,
 			searchQuery,
+			reportToggle,
+			reportUserId,
+			reportBookingId,
+			reportText,
+			cb1,
+			cb2,
 			notImplemented() {
 				alert("Not implemented yet!");
 			},
@@ -330,7 +391,6 @@ export default {
 				sendingUser.country = this.newUser.newCountry;
 				sendingUser.telephoneNumber = this.newUser.newTelephoneNumber;
 				sendingUser.userType = "cottageOwner";
-				console.log(sendingUser);
 				axios
 					.post("/api/user/update", sendingUser)
 					.then(function (response) {
@@ -446,9 +506,30 @@ export default {
 				localStorage.setItem("type", "COTTAGE_OWNER");
 				window.location.href = "/bookingCreate/";
 			},
-			makeReport(id) {
-				// TODO: uradi, izmeni parametar i ovde i gore
-				console.log(id);
+			makeReport(id, bookingId) {
+				reportBookingId = bookingId;
+				reportToggle.value = true;
+				reportUserId.value = id;
+			},
+			sendReport(reportUserId) {
+				axios
+					.post(
+						"/api/report/makeReport/",
+						{
+							userId: reportUserId,
+							type: "COTTAGE",
+							text: reportText.value,
+							bookingId: reportBookingId,
+							cb1: cb1.value,
+							cb2: cb2.value,
+						},
+						{ headers: { "Content-Type": "application/json" } }
+					)
+					.then(function (/* response */) {
+						// console.log(response.data);
+						alert("Report created.");
+						window.location.reload();
+					});
 			},
 		};
 	},

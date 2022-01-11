@@ -615,7 +615,6 @@ export default {
 			)
 			.then(function (response) {
 				pastRoomBookingsDTO.value = response.data;
-				
 
 				// Formatiranje datuma
 				var size = pastRoomBookingsDTO.value.length;
@@ -629,7 +628,6 @@ export default {
 					let newStartSecondPart = newStart[1].split(".")[0];
 					pastRoomBookingsDTO.value[i].start =
 						newStartSecondPart + ", " + newStart[0];
-					alert(pastRoomBookingsDTO.value[i].start);
 					let newEnd =
 						pastRoomBookingsDTO.value[
 							i
@@ -639,7 +637,6 @@ export default {
 					let newEndSecondPart = newEnd[1].split(".")[0];
 					pastRoomBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
-					alert(pastRoomBookingsDTO.value[i].end);
 				}
 			});
 
@@ -806,7 +803,6 @@ export default {
 				sendingUser.country = this.newUser.newCountry;
 				sendingUser.telephoneNumber = this.newUser.newTelephoneNumber;
 				sendingUser.userType = "registeredUser";
-				console.log(sendingUser);
 				axios
 					.post("/api/user/update", sendingUser)
 					.then(function (response) {

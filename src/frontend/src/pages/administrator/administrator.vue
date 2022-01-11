@@ -763,7 +763,6 @@ export default {
 				sendingUser.country = this.newUser.newCountry;
 				sendingUser.telephoneNumber = this.newUser.newTelephoneNumber;
 				sendingUser.userType = "administrator";
-				console.log(sendingUser);
 				axios
 					.post("/api/user/update", sendingUser)
 					.then(function (response) {

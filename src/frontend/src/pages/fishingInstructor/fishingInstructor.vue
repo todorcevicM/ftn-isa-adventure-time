@@ -114,6 +114,54 @@
 			</div>
 		</div>
 		<div class="lowerFlex">
+			<!-- Sending Reports -->
+			<div class="passwordChange" v-if="reportToggle == true">
+				<div
+					style="
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+					"
+				>
+					<p v-if="reportToggle == true">User didn't show up?</p>
+					<input
+						v-model="cb1"
+						v-if="reportToggle == true"
+						type="checkbox"
+					/>
+				</div>
+				<div
+					style="
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+					"
+				>
+					<p v-if="reportToggle == true">
+						Is this report a complaint?
+					</p>
+					<input
+						v-model="cb2"
+						v-if="reportToggle == true"
+						type="checkbox"
+					/>
+				</div>
+				<p>Report Text</p>
+				<input
+					v-model="reportText"
+					v-if="reportToggle == true"
+					type="text"
+				/>
+				<button
+					v-if="reportToggle == true"
+					class="entryApprove"
+					@click="sendReport(reportUserId)"
+					style="width: 170px"
+				>
+					Send Report
+				</button>
+			</div>
+			<!-- Tables -->
 			<div class="table">
 				<div class="header">
 					<h3>Past Adventure Bookings</h3>
@@ -154,11 +202,16 @@
 								View User
 							</button>
 							<button
+								v-if="
+									!booking.adventureBooking.reportMade &&
+									reportToggle == false
+								"
 								class="entryApprove"
 								@click="
 									makeReport(
 										booking.adventureBooking
-											.registeredUserId
+											.registeredUserId,
+										booking.adventureBooking.id
 									)
 								"
 								style="width: 140px"
@@ -287,7 +340,6 @@ export default {
 				"/api/fishingInstructor/getByEmail/" + localStorage["emailHash"]
 			)
 			.then(function (response) {
-				console.log(response.data);
 				user.value = response.data;
 
 				unformattedDateStart.value = user.value.startWorkPeriod;
@@ -315,12 +367,6 @@ export default {
 		var repeatPassword = ref(null);
 		var matching = ref(null);
 		var passwordChangeToggle = ref(null);
-		var adventures = ref(null);
-		axios.get("/api/adventures/get").then(function (response) {
-			console.log(response.data);
-			adventures.value = response.data;
-		});
-
 		var pastAdventureBookings = ref(null);
 		axios
 			.get(
@@ -328,10 +374,15 @@ export default {
 					localStorage["userId"]
 			)
 			.then(function (response) {
-				console.log(response.data);
 				pastAdventureBookings.value = response.data;
 			});
 
+		var adventures = ref(null);
+		axios
+			.get("/api/adventures/getByInstructor/" + localStorage["userId"])
+			.then(function (response) {
+				adventures.value = response.data;
+			});
 		var currentCustomers = ref(null);
 		axios
 			.get(
@@ -339,11 +390,16 @@ export default {
 					localStorage["userId"]
 			)
 			.then(function (response) {
-				console.log(response.data);
 				currentCustomers.value = response.data;
 			});
 
 		var searchQuery = ref(null);
+		var reportToggle = ref(false);
+		var reportUserId = ref(null);
+		var reportBookingId = ref(null);
+		var reportText = ref(null);
+		var cb1 = ref(false);
+		var cb2 = ref(false);
 		return {
 			user,
 			pastAdventureBookings,
@@ -356,6 +412,12 @@ export default {
 			passwordChangeToggle,
 			adventures,
 			searchQuery,
+			reportToggle,
+			reportUserId,
+			reportBookingId,
+			reportText,
+			cb1,
+			cb2,
 			unformattedDateStart,
 			unformattedDateEnd,
 			formattedDateStart,
@@ -386,16 +448,8 @@ export default {
 				sendingUser.startWorkPeriod = this.newUser.newStartWorkPeriod;
 				sendingUser.endWorkPeriod = this.newUser.newEndWorkPeriod;
 				sendingUser.userType = "fishingInstructor";
-				console.log(sendingUser);
-				localStorage["sendingUser"] = JSON.stringify(sendingUser);
-				console.log(localStorage["sendingUser"]);
-
 				axios
-					.post("/api/user/update", localStorage["sendingUser"], {
-						headers: {
-							"Content-Type": "application/json",
-						},
-					})
+					.post("/api/user/update", sendingUser)
 					.then(function (response) {
 						console.log("Response : ");
 						console.log(response.data);
@@ -435,7 +489,6 @@ export default {
 				this.passwordChangeToggle = true;
 			},
 			viewUser(id) {
-				console.log(id);
 				window.location.href = "/registeredUserProfile/" + id;
 			},
 			deleteAdventure(id) {
@@ -472,7 +525,6 @@ export default {
 				window.location.assign(
 					"/adventureCreate/" + localStorage.emailHash
 				);
-				console.log(localStorage.emailHash);
 			},
 			deleteAccount() {
 				var reason = prompt("Enter reason for deletion: ");
@@ -513,6 +565,31 @@ export default {
 				localStorage.setItem("whichUser", forUser);
 				localStorage.setItem("type", "FISHING_INSTRUCTOR");
 				window.location.href = "/bookingCreate/";
+			},
+			makeReport(id, bookingId) {
+				reportBookingId = bookingId;
+				reportToggle.value = true;
+				reportUserId.value = id;
+			},
+			sendReport(reportUserId) {
+				axios
+					.post(
+						"/api/report/makeReport/",
+						{
+							userId: reportUserId,
+							type: "ADVENTURE",
+							text: reportText.value,
+							bookingId: reportBookingId,
+							cb1: cb1.value,
+							cb2: cb2.value,
+						},
+						{ headers: { "Content-Type": "application/json" } }
+					)
+					.then(function (/* response */) {
+						// console.log(response.data);
+						alert("Report created.");
+						window.location.reload();
+					});
 			},
 		};
 	},
