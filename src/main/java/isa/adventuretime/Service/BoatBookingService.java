@@ -76,8 +76,21 @@ public class BoatBookingService {
 		return pastBookings;
 	}
 
-	public ArrayList<BoatBooking> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {
-		return boatBookingRepo.findAllByRegisteredUserIdAndEndAfter(id, date);
+	public ArrayList<BoatNameBoatBookingDTO> findAllByRegisteredUserIdAndEndAfter(Long id, Date date) {
+		ArrayList<BoatBooking> bookings = boatBookingRepo.findAllByRegisteredUserIdAndEndAfter(id, date);
+		ArrayList<BoatNameBoatBookingDTO> boatNameBoatBookingDTOs = new ArrayList<>();
+		BoatNameBoatBookingDTO boatNameBoatBookingDTO;
+
+		for (BoatBooking booking : bookings) {
+			String boatName = boatRepo.findById(booking.getBookedBoatId()).get().getName();
+			UserNameBoatBookingDTO userNameBoatBookingDTO = new UserNameBoatBookingDTO("", booking);
+			ArrayList<UserNameBoatBookingDTO> userNameBoatBookingDTOs = new ArrayList<>();
+			userNameBoatBookingDTOs.add(userNameBoatBookingDTO);
+			boatNameBoatBookingDTO = new BoatNameBoatBookingDTO(boatName, userNameBoatBookingDTOs);
+			boatNameBoatBookingDTOs.add(boatNameBoatBookingDTO);
+		}
+
+		return boatNameBoatBookingDTOs;
 	}
 
 	public Boolean existsByBookedBoatIdAndEndAfter(Long id, Date date) {

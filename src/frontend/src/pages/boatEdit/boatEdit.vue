@@ -52,7 +52,11 @@
 					<p class="smallText">Action Price</p>
 					<input
 						type="number"
-						v-model="action.price"/>
+						v-model="action.price"/>	
+					<p class="smallText">Action Duration in Days</p>
+					<input
+						type="number"
+						v-model="action.validDuration"/>
 					<button @click="createAction()">Create</button>
 
 				</div>
@@ -306,6 +310,7 @@ export default {
 			start: "",
 			end: "",
 			price: "",
+			validDuration: "",
 		});
 
 		// Za u <template>
@@ -424,6 +429,7 @@ export default {
 					end: this.action.end,
 					price: this.action.price,
 					type: "BOAT",
+					validDuration: this.action.validDuration,
 				}).then(function (response) {
 					console.log(response.data);
 				});

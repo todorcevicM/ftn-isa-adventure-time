@@ -247,18 +247,32 @@
 				</div>
 				<div
 					class="tableEntry"
-					v-for="pbb in futureBoatBookings"
+					v-for="pbb in futureBoatBookingsDTO"
 					:key="pbb"
 				>
 					<div class="entryLeft">
+						<p class="entryLeftShort">
+							{{ pbb.boatName }}
+						</p>
 						<p class="entryLeftShort">{{ pbb.start }}</p>
 						<p class="entryLeftShort">{{ pbb.end }}</p>
-						<p class="entryLeftShort">{{ pbb.extraService }}</p>
+						<p class="entryLeftShort">
+							{{
+								pbb.userNameBoatBookingDTO[0].boatBooking
+									.extraService
+							}}
+						</p>
 					</div>
 					<div class="entryRight">
 						<button
 							class="entryDeny"
-							@click="cancelBooking(pbb.id, 'BOAT')"
+							@click="
+								cancelBooking(
+									pbb.userNameBoatBookingDTO[0].boatBooking
+										.id,
+									'BOAT'
+								)
+							"
 						>
 							Cancel
 						</button>
@@ -272,18 +286,32 @@
 				</div>
 				<div
 					class="tableEntry"
-					v-for="pab in futureAdventureBookings"
+					v-for="pab in futureAdventureBookingsDTO"
 					:key="pab"
 				>
 					<div class="entryLeft">
+						<p class="entryLeftShort">
+							{{ pab.adventureName }}
+						</p>
 						<p class="entryLeftShort">{{ pab.start }}</p>
 						<p class="entryLeftShort">{{ pab.end }}</p>
-						<p class="entryLeftShort">{{ pab.extraService }}</p>
+						<p class="entryLeftShort">
+							{{
+								pab.userNameAdventureBookingDTO[0]
+									.adventureBooking.extraService
+							}}
+						</p>
 					</div>
 					<div class="entryRight">
 						<button
 							class="entryDeny"
-							@click="cancelBooking(pab.id, 'ADVENTURE')"
+							@click="
+								cancelBooking(
+									pab.userNameAdventureBookingDTO[0]
+										.adventureBooking.id,
+									'ADVENTURE'
+								)
+							"
 						>
 							Cancel
 						</button>
@@ -297,18 +325,32 @@
 				</div>
 				<div
 					class="tableEntry"
-					v-for="prb in futureRoomBookings"
+					v-for="prb in futureRoomBookingsDTO"
 					:key="prb"
 				>
 					<div class="entryLeft">
+						<p class="entryLeftShort">
+							{{ prb.cottageName }}
+						</p>
 						<p class="entryLeftShort">{{ prb.start }}</p>
 						<p class="entryLeftShort">{{ prb.end }}</p>
-						<p class="entryLeftShort">{{ prb.extraService }}</p>
+						<p class="entryLeftShort">
+							{{
+								prb.userNameRoomBookingDTO[0].roomBooking
+									.extraService
+							}}
+						</p>
 					</div>
 					<div class="entryRight">
 						<button
 							class="entryDeny"
-							@click="cancelBooking(prb.id, 'COTTAGE')"
+							@click="
+								cancelBooking(
+									prb.userNameRoomBookingDTO[0].roomBooking
+										.id,
+									'COTTAGE'
+								)
+							"
 						>
 							Cancel
 						</button>
@@ -640,73 +682,95 @@ export default {
 				}
 			});
 
-		var futureBoatBookings = ref(null);
+		var futureBoatBookingsDTO = ref(null);
 		axios
 			.get(
 				"/api/registeredUser/futureBoatBookings/" +
 					localStorage["userId"]
 			)
 			.then(function (response) {
-				futureBoatBookings.value = response.data;
-
-				// Formatiranje datuma
-				var size = futureBoatBookings.value.length;
+				futureBoatBookingsDTO.value = response.data;
+				var size = futureBoatBookingsDTO.value.length;
 				for (let i = 0; i < size; i++) {
-					let newStart = futureBoatBookings.value[i].start.split("T");
+					let newStart =
+						futureBoatBookingsDTO.value[
+							i
+						].userNameBoatBookingDTO[0].boatBooking.start.split(
+							"T"
+						);
 					let newStartSecondPart = newStart[1].split(".")[0];
-					futureBoatBookings.value[i].start =
+					futureBoatBookingsDTO.value[i].start =
 						newStartSecondPart + ", " + newStart[0];
-					let newEnd = futureBoatBookings.value[i].end.split("T");
+					let newEnd =
+						futureBoatBookingsDTO.value[
+							i
+						].userNameBoatBookingDTO[0].boatBooking.end.split("T");
 					let newEndSecondPart = newEnd[1].split(".")[0];
-					futureBoatBookings.value[i].end =
+					futureBoatBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
 				}
 			});
 
-		var futureAdventureBookings = ref(null);
+		var futureAdventureBookingsDTO = ref(null);
 		axios
 			.get(
 				"/api/registeredUser/futureAdventureBookings/" +
 					localStorage["userId"]
 			)
 			.then(function (response) {
-				futureAdventureBookings.value = response.data;
+				futureAdventureBookingsDTO.value = response.data;
 
 				// Formatiranje datuma
-				var size = futureAdventureBookings.value.length;
+				var size = pastAdventureBookingsDTO.value.length;
 				for (let i = 0; i < size; i++) {
 					let newStart =
-						futureAdventureBookings.value[i].start.split("T");
+						futureAdventureBookingsDTO.value[
+							i
+						].userNameAdventureBookingDTO[0].adventureBooking.start.split(
+							"T"
+						);
 					let newStartSecondPart = newStart[1].split(".")[0];
-					futureAdventureBookings.value[i].start =
+					futureAdventureBookingsDTO.value[i].start =
 						newStartSecondPart + ", " + newStart[0];
 					let newEnd =
-						futureAdventureBookings.value[i].end.split("T");
+						futureAdventureBookingsDTO.value[
+							i
+						].userNameAdventureBookingDTO[0].adventureBooking.end.split(
+							"T"
+						);
 					let newEndSecondPart = newEnd[1].split(".")[0];
-					futureAdventureBookings.value[i].end =
+					futureAdventureBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
 				}
 			});
 
-		var futureRoomBookings = ref(null);
+		var futureRoomBookingsDTO = ref(null);
 		axios
 			.get(
 				"/api/registeredUser/futureRoomBookings/" +
 					localStorage["userId"]
 			)
 			.then(function (response) {
-				futureRoomBookings.value = response.data;
+				futureRoomBookingsDTO.value = response.data;
 
 				// Formatiranje datuma
-				var size = futureRoomBookings.value.length;
+				var size = futureRoomBookingsDTO.value.length;
 				for (let i = 0; i < size; i++) {
-					let newStart = futureRoomBookings.value[i].start.split("T");
+					let newStart =
+						futureRoomBookingsDTO.value[
+							i
+						].userNameRoomBookingDTO[0].roomBooking.start.split(
+							"T"
+						);
 					let newStartSecondPart = newStart[1].split(".")[0];
-					futureRoomBookings.value[i].start =
+					futureRoomBookingsDTO.value[i].start =
 						newStartSecondPart + ", " + newStart[0];
-					let newEnd = futureRoomBookings.value[i].end.split("T");
+					let newEnd =
+						futureRoomBookingsDTO.value[
+							i
+						].userNameRoomBookingDTO[0].roomBooking.end.split("T");
 					let newEndSecondPart = newEnd[1].split(".")[0];
-					futureRoomBookings.value[i].end =
+					futureRoomBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
 				}
 			});
@@ -759,9 +823,9 @@ export default {
 			pastBoatBookingsDTO,
 			pastAdventureBookingsDTO,
 			pastRoomBookingsDTO,
-			futureBoatBookings,
-			futureAdventureBookings,
-			futureRoomBookings,
+			futureBoatBookingsDTO,
+			futureAdventureBookingsDTO,
+			futureRoomBookingsDTO,
 			subBoat,
 			subAdventure,
 			subCottage,
