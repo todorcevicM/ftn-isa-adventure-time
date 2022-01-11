@@ -425,7 +425,9 @@ public class BookingController {
 
 		double price = Double.parseDouble(split[3].split(":")[1].replace("\"", ""));
 
-		String forType = split[4].split(":")[1].replace("\"", "").replace("}", "");
+		String forType = split[4].split(":")[1].replace("\"", "");
+		int validDuration = Integer.parseInt(split[5].split(":")[1].replace("\"", "").replace("}", ""));
+		
 
 		HeadEntityEnum forTypeEnum;
 		ArrayList<Subscription> subscriptions = new ArrayList<>();
