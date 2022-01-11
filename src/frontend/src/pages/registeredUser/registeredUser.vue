@@ -204,7 +204,7 @@
 						<p class="entryLeftShort">
 							{{
 								prb.cottageNameRoomBookingDTO
-									.userNameAdventureBookingDTO[0].roomBooking
+									.userNameRoomBookingDTO[0].roomBooking
 									.extraService
 							}}
 						</p>
@@ -615,6 +615,7 @@ export default {
 			)
 			.then(function (response) {
 				pastRoomBookingsDTO.value = response.data;
+				
 
 				// Formatiranje datuma
 				var size = pastRoomBookingsDTO.value.length;
@@ -628,6 +629,7 @@ export default {
 					let newStartSecondPart = newStart[1].split(".")[0];
 					pastRoomBookingsDTO.value[i].start =
 						newStartSecondPart + ", " + newStart[0];
+					alert(pastRoomBookingsDTO.value[i].start);
 					let newEnd =
 						pastRoomBookingsDTO.value[
 							i
@@ -637,6 +639,7 @@ export default {
 					let newEndSecondPart = newEnd[1].split(".")[0];
 					pastRoomBookingsDTO.value[i].end =
 						newEndSecondPart + ", " + newEnd[0];
+					alert(pastRoomBookingsDTO.value[i].end);
 				}
 			});
 
@@ -972,6 +975,7 @@ export default {
 							revision: revision,
 							rating: rating,
 							type: type,
+							// TODO: ne salje se main entity id, dodati
 						},
 						{ headers: { "Content-Type": "application/json" } }
 					)
