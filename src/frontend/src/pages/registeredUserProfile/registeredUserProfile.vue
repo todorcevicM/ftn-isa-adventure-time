@@ -145,7 +145,8 @@ h3 {
 }
 
 .passwordChange {
-	margin: 20px 28em;
+	margin: 20px auto;
+	width: 530px;
 }
 
 .rightFlex p,

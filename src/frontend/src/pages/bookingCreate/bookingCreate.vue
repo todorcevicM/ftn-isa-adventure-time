@@ -10,47 +10,43 @@
 		</div>
 		<div class="mainFlex">
 			<div class="leftFlex">
-                <div>
-                    <div class="table">
-                        <div v-for="a in entities" :key="a">
-                            <p class="entryName" style="font-size: 26px; margin: 0">
-                                {{ a.name }}
-                            </p>
-                            <input type = "radio" :value="a" v-model="selectedEntity" />
-                        </div>
-                    </div>
-                    <div>
-                        <input v-model="date" type="date" />
-                    </div>
-                    <div>
-                        <input v-model="time" type="time" />
-                    </div>
-                    <div>
-                        <input v-model="days" type="number" />
-                    </div>
-                    <div>
-                        <input v-model="guest" type="number" />
-                    </div>
-                    <div>
-                        <button @click="createBooking()">Create Booking</button>
-                    </div>
-
-                   
-                </div>
-			</div>       
-            
-            
-            
-            <div class="rightFlex">
-
-
-
+				<div>
+					<div class="table">
+						<div v-for="a in entities" :key="a">
+							<p
+								class="entryName"
+								style="font-size: 26px; margin: 0"
+							>
+								{{ a.name }}
+							</p>
+							<input
+								type="radio"
+								:value="a"
+								v-model="selectedEntity"
+							/>
+						</div>
+					</div>
+					<div>
+						<input v-model="date" type="date" />
+					</div>
+					<div>
+						<input v-model="time" type="time" />
+					</div>
+					<div>
+						<input v-model="days" type="number" />
+					</div>
+					<div>
+						<input v-model="guest" type="number" />
+					</div>
+					<div>
+						<button @click="createBooking()">Create Booking</button>
+					</div>
+				</div>
 			</div>
 
+			<div class="rightFlex"></div>
 		</div>
-		<div class="lowerFlex">
-			
-		</div>
+		<div class="lowerFlex"></div>
 	</div>
 </template>
 
@@ -84,89 +80,92 @@ export default {
         var selectedEntity = ref(null);
 		var date = ref(null);
 		var time = ref(null);
-		var days = ref(null);  
+		var days = ref(null);
 		var guest = ref(null);
 
-		
 		return {
-            user, 
-            entities,
-            selectedEntity,
+			user,
+			entities,
+			selectedEntity,
 			date,
 			time,
 			days,
 			guest,
-			
+
 			notImplemented() {
 				alert("Not implemented yet!");
-                alert(selectedEntity.value.name);
+				alert(selectedEntity.value.name);
 			},
 
-            createBooking() {
-                if (localStorage.type == "FISHING_INSTRUCTOR") {
-                    axios.post("/api/booking/adventure", {
-                        entityId: selectedEntity.value.id,
-                        date: date.value,
-                        time: time.value,
-                        days: days.value,
-                        guest: guest.value,
-                        entityOwnerId: localStorage.userId,
-                        userId: localStorage.whichUser
-                        }, 
-                        { headers: { "Content-Type": "application/json" }
-                    }).then(function(response) {
-						if (response.data == true) {
-							alert("Booking created!");
-						}
-						else {
-							alert("Error creating booking!");
-						}
-					});
-                } 
-                else if (localStorage.type == "COTTAGE_OWNER") {
-                    axios.post("/api/booking/room", {
-                        entityId: selectedEntity.value.id,
-                        date: date.value,
-                        time: time.value,
-                        days: days.value,
-                        guest: guest.value,
-                        entityOwnerId: localStorage.userId,
-                        userId: localStorage.whichUser
-                        }, 
-                        { headers: { "Content-Type": "application/json" }
-                    }).then(function(response) {
-						if (response.data == true) {
-							alert("Booking created!");
-						}
-						else {
-							alert("Error creating booking!");
-						}
-					});
-                }
-                else if (localStorage.type == "BOAT_OWNER") {
-                    axios.post("/api/booking/boat", {
-                        entityId: selectedEntity.value.id,
-                        date: date.value,
-                        time: time.value,
-                        days: days.value,
-                        guest: guest.value,
-                        entityOwnerId: localStorage.userId,
-                        userId: localStorage.whichUser
-                        }, 
-                        { headers: { "Content-Type": "application/json" }
-                    }).then(function(response) {
-						if (response.data == true) {
-							alert("Booking created!");
-						}
-						else {
-							alert("Error creating booking!");
-						}
-					});
-                }
-            
-                
-            },
-			
+			createBooking() {
+				if (localStorage.type == "FISHING_INSTRUCTOR") {
+					axios
+						.post(
+							"/api/booking/adventure",
+							{
+								entityId: selectedEntity.value.id,
+								date: date.value,
+								time: time.value,
+								days: days.value,
+								guest: guest.value,
+								entityOwnerId: localStorage.userId,
+								userId: localStorage.whichUser,
+							},
+							{ headers: { "Content-Type": "application/json" } }
+						)
+						.then(function (response) {
+							if (response.data == true) {
+								alert("Booking created!");
+							} else {
+								alert("Error creating booking!");
+							}
+						});
+				} else if (localStorage.type == "COTTAGE_OWNER") {
+					axios
+						.post(
+							"/api/booking/room",
+							{
+								entityId: selectedEntity.value.id,
+								date: date.value,
+								time: time.value,
+								days: days.value,
+								guest: guest.value,
+								entityOwnerId: localStorage.userId,
+								userId: localStorage.whichUser,
+							},
+							{ headers: { "Content-Type": "application/json" } }
+						)
+						.then(function (response) {
+							if (response.data == true) {
+								alert("Booking created!");
+							} else {
+								alert("Error creating booking!");
+							}
+						});
+				} else if (localStorage.type == "BOAT_OWNER") {
+					axios
+						.post(
+							"/api/booking/boat",
+							{
+								entityId: selectedEntity.value.id,
+								date: date.value,
+								time: time.value,
+								days: days.value,
+								guest: guest.value,
+								entityOwnerId: localStorage.userId,
+								userId: localStorage.whichUser,
+							},
+							{ headers: { "Content-Type": "application/json" } }
+						)
+						.then(function (response) {
+							if (response.data == true) {
+								alert("Booking created!");
+							} else {
+								alert("Error creating booking!");
+							}
+						});
+				}
+			},
 		};
 	},
 };
@@ -262,7 +261,8 @@ h3 {
 }
 
 .passwordChange {
-	margin: 20px 28em;
+	margin: 20px auto;
+	width: 530px;
 }
 
 .rightFlex p,

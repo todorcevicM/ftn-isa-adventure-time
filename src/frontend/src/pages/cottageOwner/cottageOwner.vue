@@ -17,8 +17,10 @@
 				<div style="height: 40px"></div>
 				<div class="leftFlexEntry">
 					<p>Business Reports</p>
-					<button @click="notImplemented()">Show</button>
-				</div>
+					<button @click="getReportYear()">Year</button>
+					<button @click="getReportMonth()">Month</button>
+					<button @click="getReportWeek()">Week</button>					
+					</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
 				<div class="leftFlexEntry">
@@ -103,12 +105,8 @@
 						justify-content: space-between;
 					"
 				>
-					<p v-if="reportToggle == true">User didn't show up?</p>
-					<input
-						v-model="cb1"
-						v-if="reportToggle == true"
-						type="checkbox"
-					/>
+					<p>User didn't show up?</p>
+					<input v-model="cb1" type="checkbox" style="width: 22px" />
 				</div>
 				<div
 					style="
@@ -117,23 +115,12 @@
 						justify-content: space-between;
 					"
 				>
-					<p v-if="reportToggle == true">
-						Is this report a complaint?
-					</p>
-					<input
-						v-model="cb2"
-						v-if="reportToggle == true"
-						type="checkbox"
-					/>
+					<p>Is this report a complaint?</p>
+					<input v-model="cb2" type="checkbox" style="width: 22px" />
 				</div>
 				<p>Report Text</p>
-				<input
-					v-model="reportText"
-					v-if="reportToggle == true"
-					type="text"
-				/>
+				<input v-model="reportText" type="text" />
 				<button
-					v-if="reportToggle == true"
 					class="entryApprove"
 					@click="sendReport(reportUserId)"
 					style="width: 170px"
@@ -554,6 +541,42 @@ export default {
 						window.location.reload();
 					});
 			},
+			getReportYear(){
+				axios
+					.get("/api/cottageOwner/profitYear/" + localStorage["userId"])
+					.then(function(response){
+						if (response.data > 0) {
+							alert("Profit for last year: " + response.data);
+						} else {
+							alert("Something is wrong, ask Mike Oxlong");
+						}
+					})
+
+			},
+			getReportMonth(){
+				axios
+					.get("/api/cottageOwner/profitMonth/" + localStorage["userId"])
+					.then(function(response){
+						if (response.data > 0) {
+							alert("Profit for last month: " + response.data);
+						} else {
+							alert("Something is wrong, ask Mike Oxlong");
+						}
+					})
+
+			},
+			getReportWeek(){
+				axios
+					.get("/api/cottageOwner/profitWeek/" + localStorage["userId"])
+					.then(function(response){
+						if (response.data > 0) {
+							alert("Profit for last week: " + response.data);
+						} else {
+							alert("Something is wrong, ask Mike Oxlong");
+						}
+					})
+
+			},
 		};
 	},
 };
@@ -669,7 +692,8 @@ h3 {
 }
 
 .passwordChange {
-	margin: 20px 28em;
+	margin: 20px auto;
+	width: 530px;
 }
 
 .rightFlex p,

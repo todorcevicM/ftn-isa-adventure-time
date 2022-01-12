@@ -72,7 +72,9 @@
 				<div style="height: 40px"></div>
 				<div class="leftFlexEntry">
 					<p>Business Reports</p>
-					<button @click="notImplemented()">Show</button>
+					<button @click="getReportYear()">Year</button>
+					<button @click="getReportMonth()">Month</button>
+					<button @click="getReportWeek()">Week</button>
 				</div>
 			</div>
 			<div class="rightFlex">
@@ -1130,6 +1132,42 @@ export default {
 						}
 					});
 			},
+			getReportYear(){
+				axios
+					.get("/api/administrator/profitYear/")
+					.then(function(response){
+						if (response.data > 0) {
+							alert("Profit for last year: " + response.data);
+						} else {
+							alert("Something is wrong, ask Mike Oxlong");
+						}
+					})
+
+			},
+			getReportMonth(){
+				axios
+					.get("/api/administrator/profitMonth/")
+					.then(function(response){
+						if (response.data > 0) {
+							alert("Profit for last month: " + response.data);
+						} else {
+							alert("Something is wrong, ask Mike Oxlong");
+						}
+					})
+
+			},
+			getReportWeek(){
+				axios
+					.get("/api/administrator/profitWeek/")
+					.then(function(response){
+						if (response.data > 0) {
+							alert("Profit for last week: " + response.data);
+						} else {
+							alert("Something is wrong, ask Mike Oxlong");
+						}
+					})
+
+			},
 		};
 	},
 };
@@ -1245,7 +1283,8 @@ h3 {
 }
 
 .passwordChange {
-	margin: 20px 28em;
+	margin: 20px auto;
+	width: 530px;
 }
 
 .rightFlex p,

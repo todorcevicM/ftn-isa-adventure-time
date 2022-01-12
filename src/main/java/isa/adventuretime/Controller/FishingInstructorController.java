@@ -39,6 +39,22 @@ public class FishingInstructorController {
 	@Autowired
 	private RegisteredUserService registeredUserService;
 
+	@GetMapping(value = "/profitYear/{id}")
+	public float reportProfitYear(@PathVariable("id") Long id){
+		return fishingInstructorService.reportProfitYear(id);
+	}
+
+	@GetMapping(value = "/profitMonth/{id}")
+	public float reportProfitMonth(@PathVariable("id") Long id){
+		return fishingInstructorService.reportProfitMonth(id);
+	}
+
+	@GetMapping(value = "/profitWeek/{id}")
+	public float reportProfitWeek(@PathVariable("id") Long id){
+		return fishingInstructorService.reportProfitWeek(id);
+	}
+
+
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<FishingInstructor>> getAll() {
 		return new ResponseEntity<>(fishingInstructorService.getAll(), HttpStatus.OK);
