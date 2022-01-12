@@ -128,6 +128,11 @@
 						>
 							Price : ${{ sr.cottage.pricePerDay }}.00/Day
 						</p>
+						<p v-for="(item) in sr.sp" :key="item">
+							<!-- TODO: djotaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaa-->
+							<input type="checkbox" :checked="item.checked" />
+							{{ item.service }} : ${{ item.price }}
+						</p>
 					</div>
 					<button
 						v-if="!actionsHide"
@@ -204,12 +209,13 @@ export default {
 					.then(function (response) {
 						searchResults.value = response.data;
 						console.log(searchResults.value);
+						
 
 						// Formatiranje datuma
 						var size = searchResults.value.length;
-						alert(size);
 						for (let i = 0; i < size; i++) {
 							// Provera da li je search-ovan Cottage, zbog DTO-a
+							searchResults.value[i].sp = [];
 							if (searchResults.value[i].cottage != null) {
 								displayingRooms.value = true;
 								let newStart =
@@ -229,12 +235,36 @@ export default {
 								let newEndSecondPart = newEnd[1].split(".")[0];
 								searchResults.value[i].cottage.reservationEnd =
 									newEndSecondPart + ", " + newEnd[0];
+
+								
+
+
+								let priceAndInfoString = searchResults.value[i].cottage.priceAndInfo;
+								let priceAndInfoArray = priceAndInfoString.split(";");
+								priceAndInfoArray.forEach((item, index) => {
+									priceAndInfoArray[index] = item.split(":");
+									searchResults.value[i].sp.push({
+										service: priceAndInfoArray[index][0],
+										price: priceAndInfoArray[index][1],
+									});
+								});
 							} else if (
 								// Provera da li je search-ovan Adventure, zbog vremena rada instruktora
 								searchResults.value[i].location != null
 							) {
 								// TODO: Prikazati vremena instruktora, jer Adventure nema sam u sebi reservationStart i End,
 								// mora poseban request da se pravi
+								// ili pak DTO novi da se napravi, a sta mislis o tome, reci mi, reci
+								let priceAndInfoString = searchResults.value[i].priceAndInfo;
+								console.log(priceAndInfoString);
+								let priceAndInfoArray = priceAndInfoString.split(";");
+								priceAndInfoArray.forEach((item, index) => {
+									priceAndInfoArray[index] = item.split(":");
+									searchResults.value[i].sp.push({
+										service: priceAndInfoArray[index][0],
+										price: priceAndInfoArray[index][1],
+									});
+								});
 							} else {
 								let newStart =
 									searchResults.value[
@@ -251,6 +281,17 @@ export default {
 								let newEndSecondPart = newEnd[1].split(".")[0];
 								searchResults.value[i].reservationEnd =
 									newEndSecondPart + ", " + newEnd[0];
+
+								let priceAndInfoString = searchResults.value[i].priceAndInfo;
+								console.log(priceAndInfoString);
+								let priceAndInfoArray = priceAndInfoString.split(";");
+								priceAndInfoArray.forEach((item, index) => {
+									priceAndInfoArray[index] = item.split(":");
+									searchResults.value[i].sp.push({
+										service: priceAndInfoArray[index][0],
+										price: priceAndInfoArray[index][1],
+									});
+								});
 							}
 						}
 					})

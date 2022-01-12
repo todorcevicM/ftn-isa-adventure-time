@@ -78,7 +78,9 @@
 				<p class="smallText">Rules</p>
 				<p>{{ boat.rules }}</p>
 				<p class="smallText">Info</p>
-				<p>{{ boat.priceAndInfo }}</p>
+					<p v-for="(item) in servicePrice" :key="item">
+						{{ item.service }} : ${{ item.price }}
+					</p>
 				<p class="smallText">Reservation Start</p>
 				<p>{{ boat.reservationStart }}</p>
 				<p class="smallText">Reservation End</p>
@@ -168,6 +170,17 @@ export default {
 			maxSpeed: localStorage.maxSpeed,
 		});
 
+		let priceAndInfoString = localStorage.priceAndInfo;
+		let priceAndInfoArray = priceAndInfoString.split(";");
+		let servicePrice = [];
+		priceAndInfoArray.forEach((item, index) => {
+			priceAndInfoArray[index] = item.split(":");
+			servicePrice.push({
+				service: priceAndInfoArray[index][0],
+				price: priceAndInfoArray[index][1],
+			});
+		});
+
 		// Formatiranje datuma
 		let newStart = boat.value.reservationStart.split("T");
 		let newStartSecondPart = newStart[1].split(".")[0];
@@ -233,6 +246,7 @@ export default {
 			rating,
 			actionsHide,
 			boatBookingDeal,
+			servicePrice,
 
 			imageSource(id) {
 				try {

@@ -54,7 +54,9 @@
 				<p class="smallText">Rules</p>
 				<p>{{ adventure.rules }}</p>
 				<p class="smallText">Info</p>
-				<p>{{ adventure.priceAndInfo }}</p>
+				<p v-for="(item) in servicePrice" :key="item">
+					{{ item.service }} : ${{ item.price }}
+				</p>
 				<p class="smallText">Equipment</p>
 				<p>{{ adventure.equipment }}</p>
 				<p class="smallText">Person Limit</p>
@@ -136,6 +138,17 @@ export default {
 			percentTakenIfCancelled: localStorage.percentTakenIfCancelled,
 		});
 
+		let priceAndInfoString = localStorage.priceAndInfo;
+		let priceAndInfoArray = priceAndInfoString.split(";");
+		let servicePrice = [];
+		priceAndInfoArray.forEach((item, index) => {
+			priceAndInfoArray[index] = item.split(":");
+			servicePrice.push({
+				service: priceAndInfoArray[index][0],
+				price: priceAndInfoArray[index][1],
+			});
+		});
+
 		// Za instructor.name gore
 		var instructor = ref(null);
 		axios
@@ -193,6 +206,8 @@ export default {
 			rating,
 			actionsHide,
 			adventureBookingDeal,
+			servicePrice,
+
 			imageSource(id) {
 				return require("../../assets/images/adventure" + id + ".png");
 			},

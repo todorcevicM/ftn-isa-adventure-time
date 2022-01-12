@@ -52,6 +52,7 @@ public class AdventureService {
 
 		for (Adventure adventure : adventures) {
 			FishingInstructor fi = fishingInstructorRepo.getById(adventure.getInstructorId());
+			System.out.println(fi.getName());
 			if (startDate.before(fi.getStartWorkPeriod()) || endDate.after(fi.getEndWorkPeriod())) {
 				continue;
 			}
@@ -59,6 +60,7 @@ public class AdventureService {
 				retAdventures.add(adventure);
 			}
 		}
+		System.out.println(retAdventures.size());
 		return retAdventures;
 	}
 

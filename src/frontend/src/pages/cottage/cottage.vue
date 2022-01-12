@@ -59,15 +59,9 @@
 					<p class="smallText">Rules</p>
 					<p>{{ cottage.rules }}</p>
 					<p class="smallText">Info</p>
-					<p>{{ cottage.priceAndInfo }}</p>
-					<div v-for="(item) in servicePrice" :key="item">
-						<!-- <p v-for="(service) in item" :key="service">
-							{{ service }}
-						</p> -->
-						{{ item[0] }}
-						<!-- {{ item.service }} -->
-						<!-- {# Service : {{ item.service }}, ${{ item.price }}. #} -->
-					</div>
+					<p v-for="(item) in servicePrice" :key="item">
+						{{ item.service }} : ${{ item.price }}
+					</p>
 					<p class="smallText">Rooms</p>
 					<p v-for="(item, key) in rooms" :key="item">
 						Room {{ key + 1 }} : {{ item.numberOfBeds }} beds.
@@ -149,19 +143,16 @@ export default {
 			reservationEnd: localStorage.reservationEnd,
 		});
 
-		// TODO: 
 		let priceAndInfoString = localStorage.priceAndInfo;
 		let priceAndInfoArray = priceAndInfoString.split(";");
-		let servicePrice = {
-			service: [],
-			price: [],
-		};
+		let servicePrice = [];
 		priceAndInfoArray.forEach((item, index) => {
 			priceAndInfoArray[index] = item.split(":");
-			servicePrice.service.push(priceAndInfoArray[index][0]);
-			servicePrice.price.push(priceAndInfoArray[index][1]);
+			servicePrice.push({
+				service: priceAndInfoArray[index][0],
+				price: priceAndInfoArray[index][1],
+			});
 		});
-		alert(servicePrice.service[0]);
 
 		// Formatiranje datuma
 		let newStart = cottage.value.reservationStart.split("T");
@@ -237,7 +228,6 @@ export default {
 			rating,
 			actionsHide,
 			cottageBookingDeal,
-			priceAndInfoArray,
 			servicePrice,
 
 			imageSource(id) {
