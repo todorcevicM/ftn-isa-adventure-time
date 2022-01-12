@@ -40,7 +40,8 @@ public class RoomBooking {
 
 	}
 
-	public RoomBooking(Long bookedRoomId, Long registeredUserId, Boolean quickBooking, Date start, Date end, double price, String extraService, int maxUsers, Long cottageId) {
+	public RoomBooking(Long bookedRoomId, Long registeredUserId, Boolean quickBooking, Date start, Date end,
+			double price, String extraService, int maxUsers, Long cottageId) {
 		this.bookedRoomId = bookedRoomId;
 		this.registeredUserId = registeredUserId;
 		this.quickBooking = quickBooking;
@@ -52,7 +53,9 @@ public class RoomBooking {
 		this.cottageId = cottageId;
 		this.reportMade = false;
 	}
-	public RoomBooking(Long bookedRoomId, Long registeredUserId, Date start, Date end, String extraService, int maxUsers, Long cottageId) {
+
+	public RoomBooking(Long bookedRoomId, Long registeredUserId, Date start, Date end, String extraService,
+			int maxUsers, Long cottageId) {
 		this.bookedRoomId = bookedRoomId;
 		this.registeredUserId = registeredUserId;
 		this.start = start;
@@ -65,16 +68,18 @@ public class RoomBooking {
 		this.reportMade = false;
 	}
 
-	public RoomBooking(Long bookedRoomId, Date start, Date end, double price, Long cottageId) {
+	// Konstruktor za akcije
+	public RoomBooking(Long bookedRoomId, Date start, Date end, double price, int maxUsers, Long cottageId) {
 		this.bookedRoomId = bookedRoomId;
 		this.start = start;
 		this.end = end;
 		this.price = price;
+		this.maxUsers = maxUsers;
 		this.cottageId = cottageId;
 		this.quickBooking = true;
 		this.reportMade = false;
 		this.registeredUserId = 0L;
 		this.extraService = "";
-	}	
+	}
 
 }

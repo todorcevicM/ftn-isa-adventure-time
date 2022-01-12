@@ -39,7 +39,8 @@ public class AdventureBooking {
 
 	}
 
-	public AdventureBooking(Long bookedAdventureId, Long bookedInstrucotrId, Long registeredUserId, Date start, Date end, String extraService, int maxUsers) {
+	public AdventureBooking(Long bookedAdventureId, Long bookedInstrucotrId, Long registeredUserId, Date start,
+			Date end, String extraService, int maxUsers) {
 		this.bookedAdventureId = bookedAdventureId;
 		this.bookedInstructorId = bookedInstrucotrId;
 		this.registeredUserId = registeredUserId;
@@ -52,7 +53,9 @@ public class AdventureBooking {
 		this.reportMade = false;
 	}
 
-	public AdventureBooking(Long bookedAdventureId, Date start, Date end, double price, Long instructorId) {
+	// Konstruktor za akcije
+	public AdventureBooking(Long bookedAdventureId, Date start, Date end, double price, int maxUsers,
+			Long instructorId) {
 		this.bookedAdventureId = bookedAdventureId;
 		this.start = start;
 		this.end = end;
@@ -60,7 +63,8 @@ public class AdventureBooking {
 		this.quickBooking = true;
 		this.price = price;
 		this.reportMade = false;
-		// TODO: 
+		this.maxUsers = maxUsers;
+		// TODO:
 		this.extraService = "";
 		this.bookedInstructorId = instructorId;
 	}
