@@ -122,7 +122,6 @@ public class CottageOwnerController {
 	@GetMapping(path = "/currentCustomers/{id}")
 	public ResponseEntity<ArrayList<CottageNameRoomBookingDTO>> acquireCustomer(@PathVariable("id") Long id) {
 		ArrayList<RegisteredUser> registeredUsers = registeredUserService.getAllUsersOfCottageOwner(id);
-		ArrayList<CottageNameRoomBookingDTO> cottageNameRoomBookingDTOs = new ArrayList<>();
 		ArrayList<CottageWithRoomDTO> cottagesWithRooms = new ArrayList<>();
 		Date now = new Date();
 
