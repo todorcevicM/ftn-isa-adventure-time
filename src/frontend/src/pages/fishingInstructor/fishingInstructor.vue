@@ -17,7 +17,9 @@
 				<div style="height: 40px"></div>
 				<div class="leftFlexEntry">
 					<p>Business Reports</p>
-					<button @click="notImplemented()">Show</button>
+					<button @click="getReportYear()">Year</button>
+					<button @click="getReportMonth()">Month</button>
+					<button @click="getReportWeek()">Week</button>	
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
@@ -590,6 +592,42 @@ export default {
 						alert("Report created.");
 						window.location.reload();
 					});
+			},
+			getReportYear(){
+				axios
+					.get("/api/fishingInstructor/profitYear/" + localStorage["userId"])
+					.then(function(response){
+						if (response.data > 0) {
+							alert("Profit for last year: " + response.data);
+						} else {
+							alert("Something is wrong, ask Mike Oxlong");
+						}
+					})
+
+			},
+			getReportMonth(){
+				axios
+					.get("/api/fishingInstructor/profitMonth/" + localStorage["userId"])
+					.then(function(response){
+						if (response.data > 0) {
+							alert("Profit for last month: " + response.data);
+						} else {
+							alert("Something is wrong, ask Mike Oxlong");
+						}
+					})
+
+			},
+			getReportWeek(){
+				axios
+					.get("/api/fishingInstructor/profitWeek/" + localStorage["userId"])
+					.then(function(response){
+						if (response.data > 0) {
+							alert("Profit for last week: " + response.data);
+						} else {
+							alert("Something is wrong, ask Mike Oxlong");
+						}
+					})
+
 			},
 		};
 	},

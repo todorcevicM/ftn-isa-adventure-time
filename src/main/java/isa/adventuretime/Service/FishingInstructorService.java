@@ -1,6 +1,7 @@
 package isa.adventuretime.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 
@@ -110,6 +111,28 @@ public class FishingInstructorService {
 		fishingInstructor.setDenied(true);
 		fishingInstructorRepo.save(fishingInstructor);
 		return true;
+	}
+
+
+	public float reportProfitYear(Long id){
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		cal.add(Calendar.YEAR, -1);
+		return fishingInstructorRepo.reportProfit(today, cal.getTime(), id);
+	}
+
+	public float reportProfitMonth(Long id){
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		cal.add(Calendar.MONTH, -1);
+		return fishingInstructorRepo.reportProfit(today, cal.getTime(), id);
+	}
+
+	public float reportProfitWeek(Long id){
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		cal.add(Calendar.WEEK_OF_MONTH, -1);
+		return fishingInstructorRepo.reportProfit(today, cal.getTime(), id);
 	}
 
 }

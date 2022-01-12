@@ -1,6 +1,8 @@
 package isa.adventuretime.Service;
 
+import java.util.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,5 +48,26 @@ public class AdministratorService {
 
 	public ArrayList<Administrator> findAllByDeleted() {
 		return administratorRepo.findAllByDeleted(false);
+	}
+
+	public float reportProfitYear(){
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		cal.add(Calendar.YEAR, -1);
+		return administratorRepo.reportProfit(today, cal.getTime());
+	}
+
+	public float reportProfitMonth(){
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		cal.add(Calendar.MONTH, -1);
+		return administratorRepo.reportProfit(today, cal.getTime());
+	}
+
+	public float reportProfitWeek(){
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		cal.add(Calendar.WEEK_OF_MONTH, -1);
+		return administratorRepo.reportProfit(today, cal.getTime());
 	}
 }
