@@ -55,30 +55,29 @@ import { ref } from "vue";
 import axios from "axios";
 export default {
 	setup() {
-		const user = ref(null);
+        const user = ref(null);
+		// TODO: alooooooooooooooooooooooooooo
 
-		var entities = ref(null);
-		if (localStorage.type == "FISHING_INSTRUCTOR") {
-			axios
-				.get("/api/adventures/getByInstructor/" + localStorage.userId)
-				.then((result) => {
-					entities.value = result.data;
-				});
-		} else if (localStorage.type == "COTTAGE_OWNER") {
-			axios
-				.get("/api/cottages/getAllByOwnerId/" + localStorage.userId)
-				.then((result) => {
-					entities.value = result.data;
-				});
-		} else if (localStorage.type == "BOAT_OWNER") {
-			axios
-				.get("/api/boats/getAllByOwnerId/" + localStorage.userId)
-				.then((result) => {
-					entities.value = result.data;
-				});
-		}
 
-		var selectedEntity = ref(null);
+        var entities = ref(null);
+        if (localStorage.type == "FISHING_INSTRUCTOR") {
+            axios.get("/api/adventures/getByInstructor/" + localStorage.userId).then(result => {
+                entities.value = result.data;
+            });
+        }
+        else if (localStorage.type == "COTTAGE_OWNER") {
+            axios.get("/api/cottages/getAllByOwnerId/" + localStorage.userId).then(result => {
+                entities.value = result.data;
+            });
+        }
+        else if (localStorage.type == "BOAT_OWNER") {
+            axios.get("/api/boats/getAllByOwnerId/" + localStorage.userId).then(result => {
+                entities.value = result.data;
+            });
+        }
+
+
+        var selectedEntity = ref(null);
 		var date = ref(null);
 		var time = ref(null);
 		var days = ref(null);

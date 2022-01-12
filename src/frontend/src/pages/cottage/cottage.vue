@@ -94,7 +94,7 @@
 							(
 								(1 - cbd.price / cottage.pricePerDay) *
 								100
-							).toFixed(2)
+							)
 						}}%
 					</p>
 					<div style="text-align: center">

@@ -130,4 +130,9 @@ public class BoatBookingService {
 		return boatBookingRepo.findAllByBookedBoatIdAndEndAfterAndQuickBookingAndRegisteredUserId(bookedBoatId,
 				Calendar.getInstance().getTime(), true, 0L);
 	}
+
+	public ArrayList<BoatBooking> findAllByBookedBoatIdAndRegisteredUserIdAndStartBeforeAndEndAfter(Long bookedBoatId, Long registeredUserId, Date start, Date end) {
+
+		return boatBookingRepo.findAllByBookedBoatIdAndRegisteredUserIdAndStartBeforeAndEndAfter(bookedBoatId, registeredUserId, start, end);
+	}
 }

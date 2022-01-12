@@ -119,4 +119,8 @@ public class RoomBookingService {
 		return roomBookingRepo.findAllByCottageIdAndEndAfterAndQuickBookingAndRegisteredUserId(cottageId,
 				Calendar.getInstance().getTime(), true, 0L);
 	}
+
+	public ArrayList<RoomBooking> findAllByBookedRoomIdAndRegisteredUserIdAndStartBeforeAndEndAfter(Long bookedRoomId, Long registeredUserId, Date start, Date end) {
+		return roomBookingRepo.findAllByBookedRoomIdAndRegisteredUserIdAndStartBeforeAndEndAfter(bookedRoomId, registeredUserId, start, end);
+	}
 }

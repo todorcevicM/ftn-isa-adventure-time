@@ -111,9 +111,7 @@
 					<p class="entryLeftShort">
 						Discount :
 						{{
-							((1 - bbd.price / boat.pricePerDay) * 100).toFixed(
-								2
-							)
+							((1 - bbd.price / boat.pricePerDay) * 100)
 						}}%
 					</p>
 					<div style="text-align: center">

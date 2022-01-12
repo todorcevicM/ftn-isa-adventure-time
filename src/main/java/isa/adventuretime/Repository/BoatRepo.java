@@ -26,3 +26,8 @@ public interface BoatRepo extends JpaRepository<Boat, Long> {
 	public ArrayList<Boat> findByOwnerId(Long id);
 
 }
+
+// TODO: sa n^3 na n
+// vise boat-ova ali za jedan boat u jednom trenutku vremena postoji samo jedan booking te ovo sranje postaje n
+
+
