@@ -39,6 +39,24 @@ public class CottageOwnerController {
 	@Autowired
 	private RegisteredUserService registeredUserService;
 
+
+	
+	@GetMapping(value = "/profitYear/{id}")
+	public float reportProfitYear(@PathVariable("id") Long id){
+		return cottageOwnerService.reportProfitYear(id);
+	}
+
+	@GetMapping(value = "/profitMonth/{id}")
+	public float reportProfitMonth(@PathVariable("id") Long id){
+		return cottageOwnerService.reportProfitMonth(id);
+	}
+
+	@GetMapping(value = "/profitWeek/{id}")
+	public float reportProfitWeek(@PathVariable("id") Long id){
+		return cottageOwnerService.reportProfitWeek(id);
+	}
+
+
 	@GetMapping("/get")
 	public ResponseEntity<ArrayList<CottageOwner>> getAll() {
 		return new ResponseEntity<ArrayList<CottageOwner>>(cottageOwnerService.getAll(), HttpStatus.OK);
