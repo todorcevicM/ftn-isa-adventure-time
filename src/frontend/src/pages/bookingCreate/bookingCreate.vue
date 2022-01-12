@@ -8,45 +8,54 @@
 				</div>
 			</a>
 		</div>
-		<div class="mainFlex">
-			<div class="leftFlex">
-				<div>
-					<div class="table">
-						<div v-for="a in entities" :key="a">
-							<p
-								class="entryName"
-								style="font-size: 26px; margin: 0"
-							>
-								{{ a.name }}
-							</p>
-							<input
-								type="radio"
-								:value="a"
-								v-model="selectedEntity"
-							/>
-						</div>
-					</div>
-					<div>
-						<input v-model="date" type="date" />
-					</div>
-					<div>
-						<input v-model="time" type="time" />
-					</div>
-					<div>
-						<input v-model="days" type="number" />
-					</div>
-					<div>
-						<input v-model="guest" type="number" />
-					</div>
-					<div>
-						<button @click="createBooking()">Create Booking</button>
-					</div>
+		<div class="mainFlex" style="justify-content: space-evenly">
+			<div class="rightFlex">
+				<div
+					v-for="a in entities"
+					:key="a"
+					style="display: flex; justify-content: space-between"
+				>
+					<p
+						class="entryName"
+						style="font-size: 26px; margin: 0; margin-right: 20px"
+					>
+						{{ a.name }}
+					</p>
+					<input
+						style="width: 24px"
+						type="radio"
+						:value="a"
+						v-model="selectedEntity"
+					/>
 				</div>
 			</div>
-
-			<div class="rightFlex"></div>
+			<div class="rightFlex">
+				<div>
+					<p>Start Date</p>
+					<input v-model="date" type="date" />
+				</div>
+				<div>
+					<p>Start Time</p>
+					<input v-model="time" type="time" />
+				</div>
+				<div>
+					<p>How many days?</p>
+					<input v-model="days" type="number" min="1" max="1000" />
+				</div>
+				<div>
+					<p>How many guests?</p>
+					<input v-model="guests" type="number" min="1" max="1000" />
+				</div>
+				<div>
+					<button
+						@click="createBooking()"
+						style="width: -webkit-fill-available"
+					>
+						Create Booking
+					</button>
+				</div>
+			</div>
 		</div>
-		<div class="lowerFlex"></div>
 	</div>
 </template>
 
@@ -56,6 +65,11 @@ import axios from "axios";
 export default {
 	setup() {
 		const user = ref(null);
+		var selectedEntity = ref(null);
+		var date = ref(null);
+		var time = ref(null);
+		var days = ref(null);
+		var guests = ref(null);
 
 		var entities = ref(null);
 		if (localStorage.type == "FISHING_INSTRUCTOR") {
@@ -72,17 +86,11 @@ export default {
 				});
 		} else if (localStorage.type == "BOAT_OWNER") {
 			axios
-				.get("/api/boats/getAllByOwnerId/" + localStorage.userId)
+				.get("/api/boats/getByOwner/" + localStorage.userId)
 				.then((result) => {
 					entities.value = result.data;
 				});
 		}
-
-		var selectedEntity = ref(null);
-		var date = ref(null);
-		var time = ref(null);
-		var days = ref(null);
-		var guest = ref(null);
 
 		return {
 			user,
@@ -91,14 +99,33 @@ export default {
 			date,
 			time,
 			days,
-			guest,
+			guests,
 
 			notImplemented() {
 				alert("Not implemented yet!");
-				alert(selectedEntity.value.name);
 			},
 
 			createBooking() {
+				if (
+					this.selectedEntity == null ||
+					this.date == "" ||
+					this.time == "" ||
+					this.days == "" ||
+					this.guests == ""
+				) {
+					alert("Please fill out all inputs.");
+					return;
+				}
+				// isNaN je nepotreban jer se koristi input type="number"
+				if (
+					this.days < 1 ||
+					this.days > 1000 ||
+					this.guests < 1 ||
+					this.guests > 1000
+				) {
+					alert("Please fill out numerical inputs correctly.");
+					return;
+				}
 				if (localStorage.type == "FISHING_INSTRUCTOR") {
 					axios
 						.post(
@@ -108,7 +135,7 @@ export default {
 								date: date.value,
 								time: time.value,
 								days: days.value,
-								guest: guest.value,
+								guest: guests.value,
 								entityOwnerId: localStorage.userId,
 								userId: localStorage.whichUser,
 							},
@@ -117,6 +144,7 @@ export default {
 						.then(function (response) {
 							if (response.data == true) {
 								alert("Booking created!");
+								window.location.assign("/fishingInstructor/"+localStorage["emailHash"]);
 							} else {
 								alert("Error creating booking!");
 							}
@@ -130,7 +158,7 @@ export default {
 								date: date.value,
 								time: time.value,
 								days: days.value,
-								guest: guest.value,
+								guest: guests.value,
 								entityOwnerId: localStorage.userId,
 								userId: localStorage.whichUser,
 							},
@@ -139,6 +167,7 @@ export default {
 						.then(function (response) {
 							if (response.data == true) {
 								alert("Booking created!");
+								window.location.assign("/cottageOwner/"+localStorage["emailHash"]);
 							} else {
 								alert("Error creating booking!");
 							}
@@ -152,7 +181,7 @@ export default {
 								date: date.value,
 								time: time.value,
 								days: days.value,
-								guest: guest.value,
+								guest: guests.value,
 								entityOwnerId: localStorage.userId,
 								userId: localStorage.whichUser,
 							},
@@ -161,6 +190,7 @@ export default {
 						.then(function (response) {
 							if (response.data == true) {
 								alert("Booking created!");
+								window.location.assign("/boatOwner/"+localStorage["emailHash"]);
 							} else {
 								alert("Error creating booking!");
 							}
@@ -173,7 +203,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@300;400&display=swap");
 body {
 	background-color: #e6e4df;
 	background-size: 100%;
@@ -205,7 +235,6 @@ body {
 	letter-spacing: -1px;
 	display: inline;
 }
-
 .mainFlex {
 	margin: 50px 200px 0px;
 	display: flex;
@@ -215,6 +244,10 @@ body {
 .leftFlex {
 	display: flex;
 	flex-direction: column;
+}
+
+.rightFlex {
+	height: min-content;
 }
 
 h4 {
@@ -241,8 +274,24 @@ h3 {
 	object-fit: cover;
 }
 
-.rightFlex {
-	height: 310px;
+/* LEFT FLEX ELEMENTS */
+
+.leftFlexEntry {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.leftFlexEntry input {
+	width: 40px;
+	margin: 0 10px;
+	text-align: center;
+	font-size: 22px;
+}
+
+.leftFlexEntry button {
+	margin: 0 0 0 30px;
+	width: 110px;
 }
 
 .rightFlex,
@@ -271,6 +320,7 @@ h3 {
 .passwordChange p {
 	margin: 4px 0;
 	font-size: 25px;
+	text-align: left;
 }
 
 .rightFlex .smallText,
@@ -280,10 +330,7 @@ h3 {
 	color: #9e6b1d;
 }
 
-.rightFlex input,
-.firstLogin input,
-.passwordChange input,
-.percentage input {
+input {
 	height: 24px;
 	border-radius: 5px;
 	border: 1px solid rgb(122, 122, 122);
@@ -291,10 +338,7 @@ h3 {
 	background-color: #f0f0f0;
 }
 
-.rightFlex input:focus,
-.firstLogin input:focus,
-.passwordChange input:focus,
-.percentage input:focus {
+input:focus {
 	outline: none !important;
 	border: 1px solid #ad6800;
 }
@@ -339,17 +383,26 @@ button:hover {
 }
 
 .lowerFlex {
-	margin: 0px 200px;
+	margin: 0px 200px 100px;
 	display: flex;
 	flex-direction: column;
 }
 
-.lowerFlex h3 {
-	border-bottom: solid 1px rgb(145, 145, 145);
-}
+/* TABLE */
 
 .table {
 	margin-top: 20px;
+}
+
+.header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.header button {
+	margin: auto 0;
+	width: 110px;
 }
 
 .tableEntry {
@@ -360,17 +413,37 @@ button:hover {
 	border-bottom: solid 1px rgb(145, 145, 145);
 }
 
-.tableEntry .entryName {
+.tableSubEntry {
+	margin: 0;
+	margin-top: 10px;
+	color: #9e6b1d;
+	font-size: 26px;
+}
+
+.entryLeft {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 	margin: auto 0;
+}
+
+.entryLeftShort {
 	width: 180px;
 }
 
-.tableEntry .entryRequestText {
-	width: 800px;
+.entryLeftLong {
+	width: 650px;
+}
+
+.entryRight {
+	min-width: 260px;
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
 	margin: auto 0;
 }
 
-.tableEntry button {
+.entryRight button {
 	width: 110px;
 	margin: auto 0;
 	font-size: 20px;
@@ -392,27 +465,67 @@ button:hover {
 	background-color: rgb(119, 51, 51);
 }
 
-.percentage,
-.businessReports {
+/* Sa Home Page-a */
+
+a {
+	color: #ad6800;
+	text-decoration: none;
+}
+a:hover {
+	color: #573b0d;
+	cursor: pointer;
+}
+.mainCard {
+	background-color: white;
+	/* height: 1900px; */
+	margin: 0;
+	border-radius: 24px;
+	padding-bottom: 30px;
+}
+.categoryItems {
 	display: flex;
-	flex-direction: row;
-	align-items: center;
+	align-items: flex-end;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	row-gap: 20px;
 }
-
-.percentage input,
-.businessReports input {
-	width: 40px;
-	margin: 0 10px;
-	text-align: center;
-	font-size: 22px;
+.itemImage {
+	margin: 0px 3px;
+	border-radius: 15px;
+	object-fit: cover;
+	width: 360px;
+	height: 360px;
+	transition: all 0.2s ease-in-out;
 }
-
-.percentage button,
-.businessReports button {
-	margin: 0 0 0 30px;
-	width: 110px;
+.itemImage:hover {
+	transform: scale(1.02);
+	cursor: pointer;
 }
-
+.largeCategory {
+	margin-left: 224px;
+	margin-right: 224px;
+}
+.largeCategory a {
+	margin-left: 30px;
+	font-size: 24px;
+}
+input,
+select {
+	width: 260px;
+	height: 32px;
+	border-radius: 5px;
+	border: 1px solid rgb(122, 122, 122);
+	font-size: 20px;
+	background-color: #f0f0f0;
+}
+input:focus,
+select:focus {
+	outline: none !important;
+	border: 1px solid #ad6800;
+}
+input:invalid {
+	border: 2px solid #b11919;
+}
 .search {
 	text-align: center;
 	display: flex;
@@ -438,18 +551,26 @@ button:hover {
 	color: rgb(71, 71, 71);
 	font-size: 35px;
 }
-input,
-select {
-	width: 260px;
-	height: 32px;
-	border-radius: 5px;
-	border: 1px solid rgb(122, 122, 122);
-	font-size: 20px;
-	background-color: #f0f0f0;
+.categoryItems div h4 {
+	font-size: 32px;
+	font-weight: 400;
+	margin: 0;
 }
-input:focus,
-select:focus {
-	outline: none !important;
-	border: 1px solid #ad6800;
+h6 {
+	font-size: 26px;
+	font-weight: lighter;
+	margin: 0;
+}
+h1 {
+	display: inline-block;
+	font-size: 46px;
+	letter-spacing: 1px;
+	border-bottom: #ad6800 3px solid;
+	margin-top: 10px;
+}
+.lowestFlex {
+	margin: 0px 200px 100px;
+	display: flex;
+	flex-direction: column;
 }
 </style>

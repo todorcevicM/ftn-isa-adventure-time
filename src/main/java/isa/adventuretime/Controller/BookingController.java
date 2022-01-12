@@ -185,11 +185,11 @@ public class BookingController {
 				0);
 		int days = Integer.parseInt(params[3].split(":")[1]);
 		int guests = Integer.parseInt(params[4].split(":")[1]);
-		Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
-		// Long userId = Long.parseLong(params[6].split(":")[1].replace("\"",
-		// "").replace("}", ""));
+		Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", ""));
+		Long userId = Long.parseLong(params[6].split(":")[1].replace("\"",
+				"").replace("}", ""));
 		// TODO: ovde fali od userId sa fronta
-		Long userId = 1L;
+		// Long userId = 1L;
 
 		Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
@@ -198,6 +198,12 @@ public class BookingController {
 		String boatName = boatService.getById(boatId).getName();
 
 		ArrayList<Boat> boats = boatService.getAllBySearchQuery(boatName, startDate, endDate, guests);
+		try {
+			Boat boat = boats.get(0);
+		} catch (Exception e) {
+			System.err.println(e);
+			return false;
+		}
 		BoatBooking boatBooking = new BoatBooking(
 				boats.get(0).getId(),
 				userId,

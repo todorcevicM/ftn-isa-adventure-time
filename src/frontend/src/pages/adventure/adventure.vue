@@ -54,7 +54,7 @@
 				<p class="smallText">Rules</p>
 				<p>{{ adventure.rules }}</p>
 				<p class="smallText">Info</p>
-				<p v-for="(item) in servicePrice" :key="item">
+				<p v-for="item in servicePrice" :key="item">
 					{{ item.service }} : ${{ item.price }}
 				</p>
 				<p class="smallText">Equipment</p>
@@ -244,7 +244,7 @@ export default {
 							console.log(response.data);
 							alert("Subscribed!");
 						} else {
-							alert("Subscription failed!");
+							alert("You're already subscribed!");
 						}
 					});
 			},
