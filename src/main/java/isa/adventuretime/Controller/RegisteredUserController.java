@@ -92,8 +92,9 @@ public class RegisteredUserController {
 
 	@GetMapping(path = "/futureAdventureBookings/{id}")
 	public ResponseEntity<ArrayList<AdventureNameAdventureBookingDTO>> getFutureAdventureBookings(@PathVariable("id") Long id) {
-		return new ResponseEntity<ArrayList<AdventureNameAdventureBookingDTO>>(
-				adventureBookingService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date()), HttpStatus.OK);
+		ArrayList<AdventureNameAdventureBookingDTO> futureAdventureBookings = adventureBookingService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date());
+
+		return new ResponseEntity<ArrayList<AdventureNameAdventureBookingDTO>>(futureAdventureBookings, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/futureRoomBookings/{id}")

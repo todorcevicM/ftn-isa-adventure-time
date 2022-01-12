@@ -91,7 +91,29 @@ public class BoatOwnerController {
 	}
 
 	@GetMapping(path = "/currentCustomers/{id}")
-	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id) {
-		return new ResponseEntity<>(registeredUserService.getAllUsersOfBoatOwner(id), HttpStatus.OK);
+	public ResponseEntity<ArrayList<BoatNameBoatBookingDTO>> acquireCustomer(@PathVariable("id") Long id) {
+		ArrayList<RegisteredUser> registeredUsers = registeredUserService.getAllUsersOfBoatOwner(id);
+		ArrayList<BoatNameBoatBookingDTO> boatNameBoatBookingDTOs = new ArrayList<>();
+		ArrayList<Boat> boats = boatService.findByOwnerId(id);
+		Date now = new Date();
+
+		for (Boat boat : boats) {
+			ArrayList<UserNameBoatBookingDTO> userNameBoatBookingsDTOs = new ArrayList<>();
+			for (RegisteredUser registeredUser : registeredUsers) {
+				String userNameLastname = registeredUser.getName() + " " + registeredUser.getLastname();
+				ArrayList<BoatBooking> boatBookings = boatBookingService.findAllByBookedBoatIdAndRegisteredUserIdAndStartBeforeAndEndAfter(boat.getId(), registeredUser.getId(), now, now);
+				
+				for (BoatBooking boatBooking : boatBookings) {
+					if (boatBooking.getBookedBoatId() == boat.getId()) {
+						userNameBoatBookingsDTOs.add(new UserNameBoatBookingDTO(userNameLastname, boatBooking));
+					}
+				}	
+			}
+			if (userNameBoatBookingsDTOs.size() > 0) {
+				boatNameBoatBookingDTOs.add(new BoatNameBoatBookingDTO(boat.getName(), userNameBoatBookingsDTOs));
+			}
+		}
+
+		return new ResponseEntity<>(boatNameBoatBookingDTOs, HttpStatus.OK);
 	}
 }

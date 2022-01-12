@@ -205,18 +205,29 @@
 					<h3>Current Room Bookings</h3>
 					<button @click="notImplemented()">Sort</button>
 				</div>
-				<div v-for="cc in currentCustomers" :key="cc">
-					<div class="tableEntry">
+				<div v-for="cnrb in cottageNameRoomBookingDTO" :key="cnrb">
+					<p class="tableSubEntry">
+						{{ cnrb.cottageName }}
+					</p>
+					<div 
+						class="tableEntry"
+						v-for="booking in cnrb.userNameRoomBookingDTO" :key="booking"
+					>
 						<div class="entryLeft">
-							<p class="entryLeftLong">
-								{{ cc.name }} {{ cc.lastname }}
+							<p class="entryLeftShort"> User: {{ booking.userName }} </p>
+							<p class="entryLeftShort">
+								{{ cnrb.start }}
 							</p>
+							<p class="entryLeftShort">
+								{{ cnrb.end }}
+							</p>
+
 						</div>
 						<div class="entryRight">
 							<button
 								class="entryApprove"
-								@click="createNewBooking(cc.id)"
 								style="width: 260px"
+								@click="createNewBooking(booking.roomBooking.registeredUserId)"
 							>
 								Create New Booking
 							</button>
@@ -337,11 +348,23 @@ export default {
 			.then(function (response) {
 				cottages.value = response.data;
 			});
-		var currentCustomers = ref(null);
+		var cottageNameRoomBookingDTO = ref(null);
 		axios
 			.get("/api/cottageOwner/currentCustomers/" + localStorage["userId"])
 			.then(function (response) {
-				currentCustomers.value = response.data;
+				cottageNameRoomBookingDTO.value = response.data;
+				console.log(cottageNameRoomBookingDTO.value);
+				cottageNameRoomBookingDTO.value.forEach(function (cottageNameRoomBooking) {
+					cottageNameRoomBooking.start = new Date(
+						cottageNameRoomBooking.userNameRoomBookingDTO[0].roomBooking.start
+					).toString().substring(0, 15);
+
+					cottageNameRoomBooking.end = new Date(
+						cottageNameRoomBooking.userNameRoomBookingDTO[0].roomBooking.end
+					).toString().substring(0, 15);
+
+				});
+
 			});
 
 		var searchQuery = ref(null);
@@ -354,7 +377,7 @@ export default {
 		return {
 			user,
 			pastRoomBookings,
-			currentCustomers,
+			cottageNameRoomBookingDTO,
 			newUser,
 			updateToggle,
 			firstPassword,

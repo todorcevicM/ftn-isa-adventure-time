@@ -82,9 +82,17 @@ insert into boat(owner_id ,name, type, boat_length, engine_number, engine_power,
 --rezervacije u prvoj polovini januara, pravice problem u januaru
 insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
 			values (1, "2020-01-01", "2023-01-05", 1, false, 0, 2, "", 1);
+insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
+			values (2, "2020-01-01", "2023-01-05", 2, false, 0, 2, "", 1);
+insert into room_booking (booked_room_id, start, end, registered_user_id, quick_booking, price, max_users, extra_service, cottage_id)
+			values (1, "2020-01-01", "2023-01-05", 3, false, 0, 2, "", 2);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
             values (1, 1, "2020-01-01", "2023-01-02", 0, false, "", 6);
+insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
+            values (2, 2, "2020-01-01", "2023-01-02", 0, false, "", 6);
+insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
+            values (3, 3, "2020-01-01", "2023-01-02", 0, false, "", 6);
 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
             values (2, 1, "2023-01-03", "2023-01-04", 0, false, "", 6);
@@ -95,6 +103,12 @@ insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, 
 insert into boat_booking(registered_user_id, booked_boat_id, start, end, price, quick_booking, extra_service, max_users) 
             values (0, 1, "2023-01-05", "2023-01-06", 35, true, "", 6);
 
+insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
+			values(1, "2022-01-12", "2022-02-01", 2, 0, false, 1, "", 1);
+insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
+			values(1, "2022-03-01", "2022-04-01", 2, 0, false, 1, "", 1);
+insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
+			values(1, "2022-04-15", "2022-05-01", 2, 0, false, 1, "", 1);
 
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
 			values(1, "2020-01-01", "2021-01-01", 2, 0, false, 1, "", 1);
@@ -103,12 +117,6 @@ insert into adventure_booking(booked_adventure_id, start, end, max_users, price,
 -- Akcije
 insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
 			values(1, "2022-12-12", "2023-02-01", 2, 70, true, 0, "", 1);
-insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(2, "2022-01-01", "2023-02-01", 2, 80, true, 0, "", 1);
-insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(3, "2022-01-01", "2023-02-01", 2, 85, true, 0, "", 1);
-insert into adventure_booking(booked_adventure_id, start, end, max_users, price, quick_booking, registered_user_id, extra_service, booked_instructor_id) 
-			values(4, "2022-01-01", "2023-02-01", 2, 80, true, 0, "", 1);
 
 -- Ovo su rezervacije za SOBE, ne za Cottage
 -- Rezervacija u proslosti radi prikaza

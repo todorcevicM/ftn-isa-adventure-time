@@ -126,4 +126,7 @@ public class AdventureBookingService {
 		return adventureBookingRepo.findAllByBookedAdventureIdAndEndAfterAndQuickBookingAndRegisteredUserId(id,
 				date, true, 0L);
 	}
+	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndStartBeforeAndEndAfter(Long id, Date start, Date end) {
+		return adventureBookingRepo.findAllByBookedAdventureIdAndStartBeforeAndEndAfter(id, start, end);
+	}
 }

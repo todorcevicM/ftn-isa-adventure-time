@@ -13,15 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isa.adventuretime.DTO.CottageNameRoomBookingDTO;
+import isa.adventuretime.DTO.CottageWithRoomDTO;
 import isa.adventuretime.DTO.UserNameRoomBookingDTO;
 import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Entity.CottageOwner;
 import isa.adventuretime.Entity.RegisteredUser;
+import isa.adventuretime.Entity.Room;
 import isa.adventuretime.Entity.RoomBooking;
 import isa.adventuretime.Service.CottageOwnerService;
 import isa.adventuretime.Service.CottageService;
 import isa.adventuretime.Service.RegisteredUserService;
 import isa.adventuretime.Service.RoomBookingService;
+import isa.adventuretime.Service.RoomService;
 
 @RestController
 @RequestMapping("/api/cottageOwner")
@@ -38,6 +41,8 @@ public class CottageOwnerController {
 
 	@Autowired
 	private RegisteredUserService registeredUserService;
+	@Autowired
+	private RoomService roomService;
 
 	@GetMapping("/get")
 	public ResponseEntity<ArrayList<CottageOwner>> getAll() {
@@ -97,7 +102,82 @@ public class CottageOwnerController {
 	}
 
 	@GetMapping(path = "/currentCustomers/{id}")
-	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id) {
-		return new ResponseEntity<>(registeredUserService.getAllUsersOfCottageOwner(id), HttpStatus.OK);
+	public ResponseEntity<ArrayList<CottageNameRoomBookingDTO>> acquireCustomer(@PathVariable("id") Long id) {
+		ArrayList<RegisteredUser> registeredUsers = registeredUserService.getAllUsersOfCottageOwner(id);
+		ArrayList<CottageNameRoomBookingDTO> cottageNameRoomBookingDTOs = new ArrayList<>();
+		ArrayList<CottageWithRoomDTO> cottagesWithRooms = new ArrayList<>();
+		Date now = new Date();
+
+		ArrayList<Cottage> cottages = cottageService.findAllByOwnerId(id);
+
+		for (Cottage cottage : cottages) {
+			ArrayList<Room> rooms = roomService.findAllByCottageId(cottage.getId());
+			for (Room room : rooms) {
+				cottagesWithRooms.add(new CottageWithRoomDTO(cottage, room));
+			}
+		}
+		ArrayList<UserNameRoomBookingDTO> userNameRoomBookingDTO = new ArrayList<>();
+		ArrayList<CottageWithRoomDTO> cwr = new ArrayList<>();
+		for (CottageWithRoomDTO cottageWithRoom : cottagesWithRooms) {
+			ArrayList<RoomBooking> roomBookings = new ArrayList<>();
+			for (RegisteredUser registeredUser : registeredUsers) {
+
+				String userNameLastname = registeredUser.getName() + " " + registeredUser.getLastname();
+				roomBookings = roomBookingService.findAllByBookedRoomIdAndRegisteredUserIdAndStartBeforeAndEndAfter(cottageWithRoom.getRoom().getId(), registeredUser.getId(), now, now);
+				for (RoomBooking roomBooking : roomBookings) {
+					userNameRoomBookingDTO.add(new UserNameRoomBookingDTO(userNameLastname, roomBooking));
+					cwr.add(new CottageWithRoomDTO(cottageService.getById(roomBooking.getCottageId()), roomService.getById(roomBooking.getId())));
+				}
+			}
+		}
+		ArrayList<Cottage> co = new ArrayList<>();
+		ArrayList<Integer> indexes = new ArrayList<>();
+		for (CottageWithRoomDTO cwr1 : cwr) {
+			co.add(cwr1.getCottage());
+		}
+		int a = 0;
+		for(Cottage c : co) {
+			if (co.indexOf(c) != -1) {
+				indexes.add(co.indexOf(c));
+			}
+			else {
+				indexes.add(a);
+			}
+			a++;
+		}
+		ArrayList<Integer> indexes_copy = new ArrayList<>(indexes);
+		int insize = indexes.size();
+		for (int i = 0; i < insize; i++) {
+			int j = indexes.get(i);
+			if (j < i) {
+				indexes.remove(i);
+			}
+		}
+		ArrayList<Cottage> cottagesToBeUsed = new ArrayList<>();
+		for (int i : indexes) {
+			cottagesToBeUsed.add(co.get(i));
+		}
+		ArrayList<CottageNameRoomBookingDTO> conm = new ArrayList<>(); 
+		for (int i : indexes) {
+			a = 0;
+			ArrayList<UserNameRoomBookingDTO> toAdd = new ArrayList<>();
+			for (int j : indexes_copy) {
+				if (i == j) {
+					toAdd.add(userNameRoomBookingDTO.get(a));
+				}
+				a++;
+			}
+			conm.add(new CottageNameRoomBookingDTO(co.get(i).getName(), toAdd));
+		}
+		
+		for (CottageNameRoomBookingDTO c : conm) {
+			System.out.println("Cottage Name: " + c.getCottageName());
+			for (UserNameRoomBookingDTO u : c.getUserNameRoomBookingDTO()) {
+				System.out.println("User: " + u.getUserName());
+				System.out.println("Room Booking Id: " + u.getRoomBooking().getId());				
+			}
+		}
+	
+		return new ResponseEntity<ArrayList<CottageNameRoomBookingDTO>>(conm, HttpStatus.OK);
 	}
 }
