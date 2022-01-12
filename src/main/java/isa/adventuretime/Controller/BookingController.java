@@ -4,7 +4,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import javax.mail.internet.AddressException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -14,11 +16,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import isa.adventuretime.DTO.CottageWithRoomDTO;
 import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Entity.AdventureBooking;
 import isa.adventuretime.Entity.Boat;
 import isa.adventuretime.Entity.BoatBooking;
+import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RegisteredUser;
 import isa.adventuretime.Entity.Room;
@@ -112,37 +116,47 @@ public class BookingController {
 
 	@PostMapping(path = "/room")
 	public Boolean bookRoom(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
-		// TODO: Ovo treba da primi extraServices kao niz selektovanih servisa koje hoce
-		// da zakaze, to tako mora da se salje sa front-a, i pocinje od nule
-		System.out.println(param.getBody());
-		String params[] = param.getBody().split(",");
+		
+		String params[] = param.getBody().split(",", 8);
 		Long cottageId = Long.parseLong(params[0].split(":")[1]);
 		String dateD = params[1].split(":")[1].replace("\"", "");
 		String time = params[2].split("\"")[3];
 		Calendar date = Calendar.getInstance();
+	
 		date.set(
-				Integer.parseInt(dateD.split("-")[0]),
-				Integer.parseInt(dateD.split("-")[1]) - 1,
-				Integer.parseInt(dateD.split("-")[2]),
-				Integer.parseInt(time.split(":")[0]),
-				Integer.parseInt(time.split(":")[1]), 0);
-		int days = Integer.parseInt(params[3].split(":")[1]);
-		int guests = Integer.parseInt(params[4].split(":")[1]);
-		Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
-		// Long userId = Long.parseLong(params[6].split(":")[1].replace("\"",
-		// "").replace("}", ""));
-		// TODO: ovde fali od userId sa fronta
-		Long userId = 1L;
-
-		Date startDate = date.getTime();
-		date.add(Calendar.DAY_OF_MONTH, days);
-		Date endDate = date.getTime();
-
-		String cottageName = cottageService.getById(cottageId).getName();
-
-		ArrayList<CottageWithRoomDTO> rooms = cottageService.getAllBySearchQuery(cottageName, startDate, endDate,
-				guests);
-		if (rooms == null || rooms.isEmpty())
+			Integer.parseInt(dateD.split("-")[0]),
+			Integer.parseInt(dateD.split("-")[1]) - 1,
+			Integer.parseInt(dateD.split("-")[2]),
+			Integer.parseInt(time.split(":")[0]),
+			Integer.parseInt(time.split(":")[1]), 0);
+			int days = Integer.parseInt(params[3].split(":")[1]);
+			int guests = Integer.parseInt(params[4].split(":")[1]);
+				
+			Long userId = 1L;
+			
+			Date startDate = date.getTime();
+			date.add(Calendar.DAY_OF_MONTH, days);
+			Date endDate = date.getTime();
+			
+			String extraServices = "";
+			String servicesParsed = params[7];
+			servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
+			servicesParsed = servicesParsed.replace("]}", "");
+	
+			String servicesChecked[] = servicesParsed.split(",");
+			Cottage cottage = cottageService.getById(cottageId);
+			String priceAndInfo[] = cottage.getPriceAndInfo().split(";");
+			String cottageName = cottage.getName();
+			
+			for (String fromFront : servicesChecked) {
+				extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+			}
+			extraServices += "ß";
+			extraServices = extraServices.replace(";ß", "");
+			
+			ArrayList<CottageWithRoomDTO> rooms = cottageService.getAllBySearchQuery(cottageName, startDate, endDate,
+			guests);
+			if (rooms == null || rooms.isEmpty())
 			return false;
 
 		CottageWithRoomDTO room = rooms.get(0);
@@ -152,7 +166,7 @@ public class BookingController {
 				userId,
 				startDate,
 				endDate,
-				"extraService",
+				extraServices,
 				guests,
 				rooms.get(0).getCottage().getId());
 
@@ -167,10 +181,8 @@ public class BookingController {
 
 	@PostMapping(path = "/boat")
 	public Boolean bookBoat(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
-		// TODO: Ovo treba da primi extraServices kao niz selektovanih servisa koje hoce
-		// da zakaze, to tako mora da se salje sa front-a, i pocinje od nule
-		System.out.println(param.getBody());
-		String params[] = param.getBody().split(",");
+
+		String params[] = param.getBody().split(",", 8);
 		Long boatId = Long.parseLong(params[0].split(":")[1]);
 		String dateD = params[1].split(":")[1].replace("\"", "");
 		String time = params[2].split("\"")[3];
@@ -184,17 +196,30 @@ public class BookingController {
 				0);
 		int days = Integer.parseInt(params[3].split(":")[1]);
 		int guests = Integer.parseInt(params[4].split(":")[1]);
-		Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
-		// Long userId = Long.parseLong(params[6].split(":")[1].replace("\"",
-		// "").replace("}", ""));
-		// TODO: ovde fali od userId sa fronta
+
 		Long userId = 1L;
 
 		Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
 		Date endDate = date.getTime();
 
-		String boatName = boatService.getById(boatId).getName();
+		
+		
+		String extraServices = "";
+		String servicesParsed = params[7];
+		servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
+		servicesParsed = servicesParsed.replace("]}", "");
+		String servicesChecked[] = servicesParsed.split(",");
+		Boat boat = boatService.getById(boatId);
+		String priceAndInfo[] = boat.getPriceAndInfo().split(";");
+		String boatName = boat.getName();
+			
+		for (String fromFront : servicesChecked) {
+			extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+		}
+		extraServices += "ß";
+		extraServices = extraServices.replace(";ß", "");
+
 
 		ArrayList<Boat> boats = boatService.getAllBySearchQuery(boatName, startDate, endDate, guests);
 		BoatBooking boatBooking = new BoatBooking(
@@ -202,7 +227,7 @@ public class BookingController {
 				userId,
 				startDate,
 				endDate,
-				"extraService",
+				extraServices,
 				guests);
 
 		String userName = registeredUserService.getById(userId).getName();
@@ -217,10 +242,8 @@ public class BookingController {
 
 	@PostMapping(path = "/adventure")
 	public Boolean bookAdventure(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
-		// TODO: Ovo treba da primi extraServices kao niz selektovanih servisa koje hoce
-		// da zakaze, to tako mora da se salje sa front-a, i pocinje od nule
-		System.out.println(param.getBody());
-		String params[] = param.getBody().split(",");
+	
+		String params[] = param.getBody().split(",", 8);
 		Long adventureId = Long.parseLong(params[0].split(":")[1]);
 		String dateD = params[1].split(":")[1].replace("\"", "");
 		String time = params[2].split("\"")[3];
@@ -234,18 +257,30 @@ public class BookingController {
 		int days = Integer.parseInt(params[3].split(":")[1]);
 		int guests = Integer.parseInt(params[4].split(":")[1]);
 		Long instructorId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
-		// Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"",
-		// "").replace("}", ""));
-		// Long userId = Long.parseLong(params[6].split(":")[1].replace("\"",
-		// "").replace("}", ""));
-		// TODO: ovde fali od userId sa fronta
+
 		Long userId = 1L;
 
 		Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
 		Date endDate = date.getTime();
 
-		String adventureName = adventureService.getById(adventureId).getName();
+		
+		String extraServices = "";
+		String servicesParsed = params[7];
+		servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
+		servicesParsed = servicesParsed.replace("]}", "");
+		String servicesChecked[] = servicesParsed.split(",");
+		Adventure adventure = adventureService.getById(adventureId);
+		String adventureName = adventure.getName();
+		String priceAndInfo[] = adventure.getPriceAndInfo().split(";");
+
+		for (String fromFront : servicesChecked) {
+			extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+		}
+		extraServices += "ß";
+		extraServices = extraServices.replace(";ß", "");
+
+
 		ArrayList<Adventure> adventures = adventureService.getAllBySearchQuery(adventureName, startDate, endDate,
 				guests);
 
@@ -255,7 +290,7 @@ public class BookingController {
 				userId,
 				startDate,
 				endDate,
-				"extraService",
+				extraServices,
 				guests);
 
 		String userName = registeredUserService.getById(userId).getName();
@@ -415,7 +450,6 @@ public class BookingController {
 
 		double price = Double.parseDouble(split[3].split(":")[1].replace("\"", ""));
 		String forType = split[4].split(":")[1].replace("\"", "");
-		int validDuration = Integer.parseInt(split[5].split(":")[1].replace("\"", "").replace("}", ""));
 
 		HeadEntityEnum forTypeEnum;
 		ArrayList<Subscription> subscriptions = new ArrayList<>();

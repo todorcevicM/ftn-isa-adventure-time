@@ -22,7 +22,6 @@ import isa.adventuretime.Entity.Boat;
 import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RegisteredUser;
-import isa.adventuretime.Entity.RoomBooking;
 import isa.adventuretime.Entity.Subscription;
 import isa.adventuretime.Service.AdventureBookingService;
 import isa.adventuretime.Service.AdventureService;
