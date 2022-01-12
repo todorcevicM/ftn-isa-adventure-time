@@ -103,12 +103,8 @@
 						justify-content: space-between;
 					"
 				>
-					<p v-if="reportToggle == true">User didn't show up?</p>
-					<input
-						v-model="cb1"
-						v-if="reportToggle == true"
-						type="checkbox"
-					/>
+					<p>User didn't show up?</p>
+					<input v-model="cb1" type="checkbox" style="width: 22px" />
 				</div>
 				<div
 					style="
@@ -117,23 +113,12 @@
 						justify-content: space-between;
 					"
 				>
-					<p v-if="reportToggle == true">
-						Is this report a complaint?
-					</p>
-					<input
-						v-model="cb2"
-						v-if="reportToggle == true"
-						type="checkbox"
-					/>
+					<p>Is this report a complaint?</p>
+					<input v-model="cb2" type="checkbox" style="width: 22px" />
 				</div>
 				<p>Report Text</p>
-				<input
-					v-model="reportText"
-					v-if="reportToggle == true"
-					type="text"
-				/>
+				<input v-model="reportText" type="text" />
 				<button
-					v-if="reportToggle == true"
 					class="entryApprove"
 					@click="sendReport(reportUserId)"
 					style="width: 170px"
@@ -646,7 +631,8 @@ h3 {
 }
 
 .passwordChange {
-	margin: 20px 28em;
+	margin: 20px auto;
+	width: 530px;
 }
 
 .rightFlex p,

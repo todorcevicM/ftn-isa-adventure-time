@@ -423,6 +423,7 @@ export default {
 				}
 			},
 			createAction() {
+				// isNaN je nepotreban jer se koristi input type="number"
 				if (
 					this.action.price < 1 ||
 					this.action.price > 1000 ||

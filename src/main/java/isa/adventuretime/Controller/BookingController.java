@@ -112,6 +112,8 @@ public class BookingController {
 
 	@PostMapping(path = "/room")
 	public Boolean bookRoom(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
+		// TODO: Ovo treba da primi extraServices kao niz selektovanih servisa koje hoce
+		// da zakaze, to tako mora da se salje sa front-a, i pocinje od nule
 		System.out.println(param.getBody());
 		String params[] = param.getBody().split(",");
 		Long cottageId = Long.parseLong(params[0].split(":")[1]);
@@ -166,6 +168,8 @@ public class BookingController {
 
 	@PostMapping(path = "/boat")
 	public Boolean bookBoat(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
+		// TODO: Ovo treba da primi extraServices kao niz selektovanih servisa koje hoce
+		// da zakaze, to tako mora da se salje sa front-a, i pocinje od nule
 		System.out.println(param.getBody());
 		String params[] = param.getBody().split(",");
 		Long boatId = Long.parseLong(params[0].split(":")[1]);
@@ -215,6 +219,8 @@ public class BookingController {
 
 	@PostMapping(path = "/adventure")
 	public Boolean bookAdventure(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
+		// TODO: Ovo treba da primi extraServices kao niz selektovanih servisa koje hoce
+		// da zakaze, to tako mora da se salje sa front-a, i pocinje od nule
 		System.out.println(param.getBody());
 		String params[] = param.getBody().split(",");
 		Long adventureId = Long.parseLong(params[0].split(":")[1]);
