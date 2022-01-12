@@ -4,9 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.mail.internet.AddressException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import isa.adventuretime.DTO.CottageWithRoomDTO;
 import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Entity.AdventureBooking;
@@ -42,26 +39,20 @@ import isa.adventuretime.Service.SubscriptionService;
 @RestController
 @RequestMapping("/api/booking")
 public class BookingController {
-
 	@Autowired
 	AdventureBookingService adventureBookingService;
-
 	@Autowired
 	BoatBookingService boatBookingService;
-
 	@Autowired
 	RoomBookingService roomBookingService;
-
 	@Autowired
 	CottageService cottageService;
 	@Autowired
 	AdventureService adventureService;
 	@Autowired
 	BoatService boatService;
-
 	@Autowired
 	FishingInstructorService fishingInstructorService;
-
 	@Autowired
 	MailService mailService;
 	@Autowired
@@ -410,7 +401,6 @@ public class BookingController {
 
 	@PostMapping(path = "/createAction")
 	public Boolean createAction(RequestEntity<String> params) throws AddressException, UnsupportedEncodingException {
-		System.out.println(params.getBody());
 		String split[] = params.getBody().split(",");
 		Long entityId = Long.parseLong(split[0].split(":")[1].replace("\"", ""));
 
@@ -421,20 +411,22 @@ public class BookingController {
 		Date endDate = parseDate(dateEndString);
 
 		double price = Double.parseDouble(split[3].split(":")[1].replace("\"", ""));
-		System.out.println(split[4]);
 		String forType = split[4].split(":")[1].replace("\"", "");
 		int validDuration = Integer.parseInt(split[5].split(":")[1].replace("\"", "").replace("}", ""));
 
 		HeadEntityEnum forTypeEnum;
 		ArrayList<Subscription> subscriptions = new ArrayList<>();
 
+		int maxUsers;
 		switch (forType) {
 			case "ADVENTURE":
+				maxUsers = adventureService.getById(entityId).getMaxUsers();
 				AdventureBooking ab = new AdventureBooking(
 						entityId,
 						startDate,
 						endDate,
 						price,
+						maxUsers,
 						adventureService.getById(entityId).getInstructorId());
 
 				forTypeEnum = HeadEntityEnum.ADVENTURE;
@@ -450,11 +442,13 @@ public class BookingController {
 
 				return adventureBookingService.save(ab) != null;
 			case "BOAT":
+				maxUsers = boatService.getById(entityId).getMaxUsers();
 				BoatBooking bb = new BoatBooking(
 						entityId,
 						startDate,
 						endDate,
-						price);
+						price,
+						maxUsers);
 
 				forTypeEnum = HeadEntityEnum.BOAT;
 				subscriptions = subscriptionService.findAllByForEntityAndSubbedId(forTypeEnum, entityId);
@@ -469,6 +463,7 @@ public class BookingController {
 
 				return boatBookingService.save(bb) != null;
 			case "COTTAGE":
+				maxUsers = cottageService.getById(entityId).getMaxUsers();
 				ArrayList<Room> rooms = roomService.findAllByCottageId(entityId);
 				boolean flag = false;
 				for (Room room : rooms) {
@@ -477,6 +472,7 @@ public class BookingController {
 							startDate,
 							endDate,
 							price,
+							maxUsers,
 							entityId);
 					flag = roomBookingService.save(rb) != null;
 				}

@@ -30,19 +30,6 @@
 					class="itemImage"
 					:src="addedImageSource(adventure.id)"
 				/>
-
-				<div>
-					<p>Create an action</p>
-					<p class="smallText">Action Start</p>
-					<input type="date" v-model="action.start" />
-					<p class="smallText">Action End</p>
-					<input type="date" v-model="action.end" />
-					<p class="smallText">Action Price</p>
-					<input type="number" v-model="action.price" />
-					<p class="smallText">Action Duration in Days</p>
-					<input type="number" v-model="action.validDuration" />
-					<button @click="createAction()">Create</button>
-				</div>
 			</div>
 			<div class="rightFlex">
 				<p class="smallText">Name</p>
@@ -185,6 +172,30 @@
 					Submit
 				</button>
 			</div>
+			<div class="rightFlex">
+				<p>Create a Quick Booking</p>
+				<p class="smallText">Start Date</p>
+				<input type="date" v-model="action.start" />
+				<p class="smallText">End Date</p>
+				<input type="date" v-model="action.end" />
+				<p class="smallText">Price ($)</p>
+				<input
+					type="number"
+					v-model="action.price"
+					min="1"
+					max="1000"
+				/>
+				<p class="smallText">Duration (Days)</p>
+				<input
+					type="number"
+					v-model="action.validDuration"
+					min="1"
+					max="1000"
+				/>
+				<button @click="createAction()" style="margin-top: 20px">
+					Create
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -321,6 +332,22 @@ export default {
 				}
 			},
 			createAction() {
+				if (
+					this.action.price < 1 ||
+					this.action.price > 1000 ||
+					this.action.validDuration < 1 ||
+					this.action.validDuration > 1000
+				) {
+					alert("Please fill out numerical inputs correctly.");
+					return;
+				}
+				if (
+					new Date(this.action.start).getTime() >=
+					new Date(this.action.end).getTime()
+				) {
+					alert("Please enter valid dates.");
+					return;
+				}
 				axios
 					.post("/api/booking/createAction", {
 						boat: this.adventure.id,
