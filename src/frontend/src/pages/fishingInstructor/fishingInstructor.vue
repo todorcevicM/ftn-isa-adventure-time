@@ -214,18 +214,29 @@
 					<h3>Current Adventure Bookings</h3>
 					<button @click="notImplemented()">Sort</button>
 				</div>
-				<div v-for="cc in currentCustomers" :key="cc">
-					<div class="tableEntry">
+				<div v-for="anab in adventureNameAdventureBookingDTO" :key="anab">
+					<p class="tableSubEntry">
+						{{ anab.adventureName }}
+					</p>
+					<div 
+						class="tableEntry"
+						v-for="booking in anab.userNameAdventureBookingDTO" :key="booking"
+					>
 						<div class="entryLeft">
-							<p class="entryLeftLong">
-								{{ cc.name }} {{ cc.lastname }}
+							<p class="entryLeftShort"> User: {{ booking.userName }} </p>
+							<p class="entryLeftShort">
+								{{ anab.start }}
 							</p>
+							<p class="entryLeftShort">
+								{{ anab.end }}
+							</p>
+
 						</div>
 						<div class="entryRight">
 							<button
 								class="entryApprove"
-								@click="createNewBooking(cc.id)"
 								style="width: 260px"
+								@click="createNewBooking(booking.adventureBooking.registeredUserId)"
 							>
 								Create New Booking
 							</button>
@@ -370,14 +381,24 @@ export default {
 			.then(function (response) {
 				adventures.value = response.data;
 			});
-		var currentCustomers = ref(null);
+		var adventureNameAdventureBookingDTO = ref(null);
 		axios
 			.get(
 				"/api/fishingInstructor/currentCustomers/" +
 					localStorage["userId"]
 			)
 			.then(function (response) {
-				currentCustomers.value = response.data;
+				adventureNameAdventureBookingDTO.value = response.data;
+				console.log(adventureNameAdventureBookingDTO.value);
+				adventureNameAdventureBookingDTO.value.forEach(function (adventureNameAdventureBooking) {
+					adventureNameAdventureBooking.start = new Date(
+						adventureNameAdventureBooking.userNameAdventureBookingDTO[0].adventureBooking.start
+					).toString().substring(0, 15);
+
+					adventureNameAdventureBooking.end = new Date(
+						adventureNameAdventureBooking.userNameAdventureBookingDTO[0].adventureBooking.end
+					).toString().substring(0, 15);
+				})
 			});
 
 		var searchQuery = ref(null);
@@ -390,7 +411,7 @@ export default {
 		return {
 			user,
 			pastAdventureBookings,
-			currentCustomers,
+			adventureNameAdventureBookingDTO,
 			newUser,
 			updateToggle,
 			firstPassword,

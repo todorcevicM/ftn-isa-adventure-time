@@ -85,35 +85,43 @@ public class RevisionsController {
 	public Boolean approveRevision(@PathVariable("id") Long id) throws AddressException, UnsupportedEncodingException {
 		Revision revision = revisionsService.getById(id);
 		revision.setApproved(true);
-		revisionsService.save(revision);
-
+		Long mainEntityId; 
+		
 		switch (revision.getType()) {
 			case BOAT:
 				BoatBooking boatBooking = boatBookingService.getById(revision.getBookingId());
 				Boat boat = boatService.getById(boatBooking.getBookedBoatId());
 				BoatOwner boatOwner = boatOwnerService.getById(boat.getOwnerId());
+				mainEntityId = boat.getId();
+				revision.setMainEntityId(mainEntityId);
+				revisionsService.save(revision);
 
 				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
-						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
-
+						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.", "Revision Submission");
 				break;
 
 			case COTTAGE:
 				RoomBooking roomBooking = roomBookingService.getById(revision.getBookingId());
 				Cottage cottage = cottageService.getById(roomBooking.getCottageId());
 				CottageOwner cottageOwner = cottageOwnerService.getById(cottage.getOwnerId());
+				mainEntityId = cottage.getId();
+				revision.setMainEntityId(mainEntityId);
+				revisionsService.save(revision);
 
 				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
-						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
+						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.", "Revision Submission");
 				break;
 
 			case ADVENTURE:
 				AdventureBooking adventureBooking = adventureBookingService.getById(revision.getBookingId());
 				Adventure adventure = adventureService.getById(adventureBooking.getBookedAdventureId());
 				FishingInstructor fishingInstructor = fishingInstructorService.getById(adventure.getInstructorId());
+				mainEntityId = adventure.getId();
+				revision.setMainEntityId(mainEntityId);
+				revisionsService.save(revision);
 
 				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
-						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
+						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.", "Revision Submission");
 				break;
 
 			default:

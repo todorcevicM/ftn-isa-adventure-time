@@ -91,10 +91,9 @@ public class AppealController {
                 BoatOwner boatOwner = boatOwnerService.getById(boat.getOwnerId());  
 
                 
-                mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(), "An appeal concernig your service has been answered!\nPlease take some time to read the answer and...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.");
-
+                mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(), "An appeal concernig your service has been answered!\nPlease take some time to read the answer and...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.", "Appeal Submission");
                 registeredUser = registeredUserService.getById(boatBooking.getRegisteredUserId());
-                mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(), "Your appeal has been answered and has been forwarded to the service provider...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.");
+                mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(), "Your appeal has been answered and has been forwarded to the service provider...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.", "Appeal Submission");
 
                 break;
 
@@ -103,10 +102,10 @@ public class AppealController {
                 Cottage cottage = cottageService.getById(roomBooking.getCottageId());
                 CottageOwner cottageOwner = cottageOwnerService.getById(cottage.getOwnerId());
                 
-                mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(), "An appeal concernig your service has been answered!\nPlease take some time to read the answer and...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.");
+                mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(), "An appeal concernig your service has been answered!\nPlease take some time to read the answer and...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.", "Appeal Submission");
 
                 registeredUser = registeredUserService.getById(roomBooking.getRegisteredUserId());
-                mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(), "Your appeal has been answered and has been forwarded to the service provider...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.");
+                mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(), "Your appeal has been answered and has been forwarded to the service provider...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.", "Appeal Submission");
 
                 break;
 
@@ -115,10 +114,9 @@ public class AppealController {
                 Adventure adventure = adventureService.getById(adventureBooking.getBookedAdventureId());
                 FishingInstructor fishingInstructor = fishingInstructorService.getById(adventure.getInstructorId());
 
-                mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(), "An appeal concernig your service has been answered!\nPlease take some time to read the answer and...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.");
-
+                mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(), "An appeal concernig your service has been answered!\nPlease take some time to read the answer and...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.", "Appeal Submission");
                 registeredUser = registeredUserService.getById(adventureBooking.getRegisteredUserId());
-                mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(), "Your appeal has been answered and has been forwarded to the service provider...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.");
+                mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(), "Your appeal has been answered and has been forwarded to the service provider...\n" + answer.getBody() + "\n\nSincerely, Adventure Time.", "Appeal Submission");
 
                 break;
             

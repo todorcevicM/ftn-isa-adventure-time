@@ -144,7 +144,10 @@ export default {
 						.then(function (response) {
 							if (response.data == true) {
 								alert("Booking created!");
-								window.location.assign("/fishingInstructor/"+localStorage["emailHash"]);
+								window.location.assign(
+									"/fishingInstructor/" +
+										localStorage["emailHash"]
+								);
 							} else {
 								alert("Error creating booking!");
 							}
@@ -167,7 +170,9 @@ export default {
 						.then(function (response) {
 							if (response.data == true) {
 								alert("Booking created!");
-								window.location.assign("/cottageOwner/"+localStorage["emailHash"]);
+								window.location.assign(
+									"/cottageOwner/" + localStorage["emailHash"]
+								);
 							} else {
 								alert("Error creating booking!");
 							}
@@ -190,7 +195,9 @@ export default {
 						.then(function (response) {
 							if (response.data == true) {
 								alert("Booking created!");
-								window.location.assign("/boatOwner/"+localStorage["emailHash"]);
+								window.location.assign(
+									"/boatOwner/" + localStorage["emailHash"]
+								);
 							} else {
 								alert("Error creating booking!");
 							}

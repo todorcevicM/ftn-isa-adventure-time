@@ -87,7 +87,7 @@
 							(
 								(1 - abd.price / adventure.pricePerDay) *
 								100
-							).toFixed(2)
+							)
 						}}%
 					</p>
 					<div style="text-align: center">

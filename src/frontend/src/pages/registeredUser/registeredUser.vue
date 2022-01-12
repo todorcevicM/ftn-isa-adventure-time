@@ -748,7 +748,7 @@ export default {
 				futureAdventureBookingsDTO.value = response.data;
 
 				// Formatiranje datuma
-				var size = pastAdventureBookingsDTO.value.length;
+				var size = futureAdventureBookingsDTO.value.length;
 				for (let i = 0; i < size; i++) {
 					let newStart =
 						futureAdventureBookingsDTO.value[
@@ -1080,6 +1080,7 @@ export default {
 						console.log("Response : ");
 						console.log(response.data);
 						alert("Revision sent!");
+						window.location.reload();
 					});
 			},
 			sendAppeal(bookingId, type) {

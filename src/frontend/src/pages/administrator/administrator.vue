@@ -134,9 +134,9 @@
 					<div class="entryLeft">
 						<div class="entryLeftShort">{{ r.type }}</div>
 						<div class="entryLeftLong">{{ r.revision }}</div>
-						<div class="entryLeftShort">
+						<!-- <div class="entryLeftShort">
 							{{ r.rating.toFixed(2) }}
-						</div>
+						</div> -->
 					</div>
 					<div class="entryRight">
 						<!-- Mora obrnuti redosled -->
@@ -699,6 +699,22 @@ export default {
 			.get("/api/revision/getAllNotDeniedNotApproved")
 			.then(function (response) {
 				revisions.value = response.data;
+				var size = revisions.value.length;
+
+				for (let i = 0; i < size; i++) {
+					switch (revisions.value[i].type) {
+						case "ADVENTURE": 
+							revisions.value[i].type = "Adventure";
+							break;
+						case "COTTAGE":
+							revisions.value[i].type = "Cottage";
+							break;
+						case "BOAT":
+							revisions.value[i].type = "Boat";
+							break; 
+
+					}
+				}
 			});
 		var appeals = ref(null);
 		axios.get("/api/appeal/getAll").then(function (response) {

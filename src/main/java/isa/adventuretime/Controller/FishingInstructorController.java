@@ -109,15 +109,33 @@ public class FishingInstructorController {
 	}
 
 	@GetMapping(path = "/currentCustomers/{id}")
-	public ResponseEntity<ArrayList<RegisteredUser>> acquireCustomer(@PathVariable("id") Long id) {
+	public ResponseEntity<ArrayList<AdventureNameAdventureBookingDTO>> acquireCustomer(@PathVariable("id") Long id) {
 		ArrayList<RegisteredUser> registeredUsers = registeredUserService.getAllUsersOfFishingInstructor(id);
+		ArrayList<AdventureNameAdventureBookingDTO> adventureNameAdventureBookingDTOs = new ArrayList<>();
+		ArrayList<Adventure> adventures = adventureService.findByInstructorId(id);
+		Date now = new Date();
 
-		// System.out.println(registeredUsers.size());
-		// for (RegisteredUser registeredUser : registeredUsers) {
-		// System.out.println(registeredUser.getName());
-		// }
+		for (Adventure adventure : adventures) {
+			ArrayList<UserNameAdventureBookingDTO> userNameAdventureBookingDTOs = new ArrayList<>();
+			for (RegisteredUser registeredUser : registeredUsers) {
+				String userNameUserlastname = registeredUser.getName() + " " + registeredUser.getLastname();
+				ArrayList<AdventureBooking> adventureBookings = adventureBookingService
+						.findAllByBookedAdventureIdAndStartBeforeAndEndAfter(adventure.getId(), now, now);
+					
+				for (AdventureBooking adventureBooking : adventureBookings) {
+					if (adventureBooking.getBookedAdventureId() == adventure.getId()) {
+						userNameAdventureBookingDTOs.add(new UserNameAdventureBookingDTO(userNameUserlastname,
+								adventureBooking));
+					}
+				}
+			}
+			if (userNameAdventureBookingDTOs.size() > 0) {
+				adventureNameAdventureBookingDTOs.add(new AdventureNameAdventureBookingDTO(adventure.getName(),
+						userNameAdventureBookingDTOs));
+			}
+		}
 
-		return new ResponseEntity<>(registeredUsers, HttpStatus.OK);
+		return new ResponseEntity<>(adventureNameAdventureBookingDTOs, HttpStatus.OK);
 	}
 
 }

@@ -435,6 +435,7 @@ export default {
 								guests: guests.value,
 								ownerId: searchResultInPrompt.value.ownerId,
 								userId: userId,
+								extraServices : checkedFull.value,
 							},
 							{
 								headers: { "Content-Type": "application/json" },
@@ -462,6 +463,7 @@ export default {
 								ownerId:
 									searchResultInPrompt.value.cottage.ownerId,
 								userId: userId,
+								extraServices : checkedFull.value,
 							},
 							{
 								headers: { "Content-Type": "application/json" },
@@ -488,6 +490,7 @@ export default {
 								ownerId:
 									searchResultInPrompt.value.instructorId,
 								userId: userId,
+								extraServices : checkedFull.value,
 							},
 							{
 								headers: { "Content-Type": "application/json" },

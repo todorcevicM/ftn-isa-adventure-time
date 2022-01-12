@@ -192,18 +192,29 @@
 					<h3>Current Boat Bookings</h3>
 					<button @click="notImplemented()">Sort</button>
 				</div>
-				<div v-for="cc in currentCustomers" :key="cc">
-					<div class="tableEntry">
+				<div v-for="bnbb in boatNameBoatBookingDTO" :key="bnbb">
+					<p class="tableSubEntry">
+						{{ bnbb.boatName }}
+					</p>
+					<div 
+						class="tableEntry"
+						v-for="booking in bnbb.userNameBoatBookingDTO" :key="booking"
+					>
 						<div class="entryLeft">
-							<p class="entryLeftLong">
-								{{ cc.name }} {{ cc.lastname }}
+							<p class="entryLeftShort"> User: {{ booking.userName }} </p>
+							<p class="entryLeftShort">
+								{{ bnbb.start }}
 							</p>
+							<p class="entryLeftShort">
+								{{ bnbb.end }}
+							</p>
+
 						</div>
 						<div class="entryRight">
 							<button
 								class="entryApprove"
-								@click="createNewBooking(cc.id)"
 								style="width: 260px"
+								@click="createNewBooking(booking.boatBooking.registeredUserId)"
 							>
 								Create New Booking
 							</button>
@@ -313,11 +324,20 @@ export default {
 			.then(function (response) {
 				boats.value = response.data;
 			});
-		var currentCustomers = ref(null);
+		var boatNameBoatBookingDTO = ref(null);
 		axios
 			.get("/api/boatOwner/currentCustomers/" + localStorage["userId"])
 			.then(function (response) {
-				currentCustomers.value = response.data;
+				boatNameBoatBookingDTO.value = response.data;
+				boatNameBoatBookingDTO.value.forEach(function (boatNameBoatBooking) {
+					boatNameBoatBooking.start = new Date(
+						boatNameBoatBooking.userNameBoatBookingDTO[0].boatBooking.start
+					).toString().substring(0, 15);
+					
+					boatNameBoatBooking.end = new Date(
+						boatNameBoatBooking.userNameBoatBookingDTO[0].boatBooking.end
+					).toString().substring(0, 15);
+				});
 			});
 
 		var searchQuery = ref(null);
@@ -330,7 +350,7 @@ export default {
 		return {
 			user,
 			pastBoatBookings,
-			currentCustomers,
+			boatNameBoatBookingDTO,
 			newUser,
 			updateToggle,
 			firstPassword,

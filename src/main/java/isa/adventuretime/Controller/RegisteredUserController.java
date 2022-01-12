@@ -22,7 +22,6 @@ import isa.adventuretime.Entity.Boat;
 import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RegisteredUser;
-import isa.adventuretime.Entity.RoomBooking;
 import isa.adventuretime.Entity.Subscription;
 import isa.adventuretime.Service.AdventureBookingService;
 import isa.adventuretime.Service.AdventureService;
@@ -92,8 +91,9 @@ public class RegisteredUserController {
 
 	@GetMapping(path = "/futureAdventureBookings/{id}")
 	public ResponseEntity<ArrayList<AdventureNameAdventureBookingDTO>> getFutureAdventureBookings(@PathVariable("id") Long id) {
-		return new ResponseEntity<ArrayList<AdventureNameAdventureBookingDTO>>(
-				adventureBookingService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date()), HttpStatus.OK);
+		ArrayList<AdventureNameAdventureBookingDTO> futureAdventureBookings = adventureBookingService.findAllByRegisteredUserIdAndEndAfter(id, new java.util.Date());
+
+		return new ResponseEntity<ArrayList<AdventureNameAdventureBookingDTO>>(futureAdventureBookings, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/futureRoomBookings/{id}")

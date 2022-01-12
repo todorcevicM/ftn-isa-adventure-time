@@ -4,7 +4,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import javax.mail.internet.AddressException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -14,11 +16,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import isa.adventuretime.DTO.CottageWithRoomDTO;
 import isa.adventuretime.Entity.Adventure;
 import isa.adventuretime.Entity.AdventureBooking;
 import isa.adventuretime.Entity.Boat;
 import isa.adventuretime.Entity.BoatBooking;
+import isa.adventuretime.Entity.Cottage;
 import isa.adventuretime.Entity.HeadEntityEnum;
 import isa.adventuretime.Entity.RegisteredUser;
 import isa.adventuretime.Entity.Room;
@@ -72,7 +76,8 @@ public class BookingController {
 
 		String userName = registeredUserService.getById(userId).getName();
 		String userEmail = registeredUserService.getById(userId).getEmail();
-		mailService.SendMail(userEmail, userName, "Boat booking.\n\n You have successfully booked a boat!");
+		mailService.SendMail(userEmail, userName, "Boat booking.\n\n You have successfully booked a boat!",
+				"Reservation");
 
 		bb.setRegisteredUserId(userId);
 		return boatBookingService.save(bb) != null;
@@ -88,7 +93,8 @@ public class BookingController {
 
 		String userName = registeredUserService.getById(userId).getName();
 		String userEmail = registeredUserService.getById(userId).getEmail();
-		mailService.SendMail(userEmail, userName, "Adventure booking\n\n You have successfully booked an adventure!");
+		mailService.SendMail(userEmail, userName, "Adventure booking\n\n You have successfully booked an adventure!",
+				"Reservation");
 
 		ab.setRegisteredUserId(userId);
 		return adventureBookingService.save(ab) != null;
@@ -104,7 +110,8 @@ public class BookingController {
 
 		String userName = registeredUserService.getById(userId).getName();
 		String userEmail = registeredUserService.getById(userId).getEmail();
-		mailService.SendMail(userEmail, userName, "Cottage booking\n\n You have successfully booked a cottage!");
+		mailService.SendMail(userEmail, userName, "Cottage booking\n\n You have successfully booked a cottage!",
+				"Reservation");
 
 		rb.setRegisteredUserId(userId);
 		return roomBookingService.save(rb) != null;
@@ -112,14 +119,13 @@ public class BookingController {
 
 	@PostMapping(path = "/room")
 	public Boolean bookRoom(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
-		// TODO: Ovo treba da primi extraServices kao niz selektovanih servisa koje hoce
-		// da zakaze, to tako mora da se salje sa front-a, i pocinje od nule
-		System.out.println(param.getBody());
-		String params[] = param.getBody().split(",");
+
+		String params[] = param.getBody().split(",", 8);
 		Long cottageId = Long.parseLong(params[0].split(":")[1]);
 		String dateD = params[1].split(":")[1].replace("\"", "");
 		String time = params[2].split("\"")[3];
 		Calendar date = Calendar.getInstance();
+
 		date.set(
 				Integer.parseInt(dateD.split("-")[0]),
 				Integer.parseInt(dateD.split("-")[1]) - 1,
@@ -128,17 +134,28 @@ public class BookingController {
 				Integer.parseInt(time.split(":")[1]), 0);
 		int days = Integer.parseInt(params[3].split(":")[1]);
 		int guests = Integer.parseInt(params[4].split(":")[1]);
-		Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
-		// Long userId = Long.parseLong(params[6].split(":")[1].replace("\"",
-		// "").replace("}", ""));
-		// TODO: ovde fali od userId sa fronta
+
 		Long userId = 1L;
 
 		Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
 		Date endDate = date.getTime();
 
-		String cottageName = cottageService.getById(cottageId).getName();
+		String extraServices = "";
+		String servicesParsed = params[7];
+		servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
+		servicesParsed = servicesParsed.replace("]}", "");
+
+		String servicesChecked[] = servicesParsed.split(",");
+		Cottage cottage = cottageService.getById(cottageId);
+		String priceAndInfo[] = cottage.getPriceAndInfo().split(";");
+		String cottageName = cottage.getName();
+
+		for (String fromFront : servicesChecked) {
+			extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+		}
+		extraServices += "ß";
+		extraServices = extraServices.replace(";ß", "");
 
 		ArrayList<CottageWithRoomDTO> rooms = cottageService.getAllBySearchQuery(cottageName, startDate, endDate,
 				guests);
@@ -152,7 +169,7 @@ public class BookingController {
 				userId,
 				startDate,
 				endDate,
-				"extraService",
+				extraServices,
 				guests,
 				rooms.get(0).getCottage().getId());
 
@@ -160,18 +177,17 @@ public class BookingController {
 		String userEmail = registeredUserService.getById(userId).getEmail();
 
 		mailService.SendMail(userEmail, userName,
-				"Rezervacija sobe \n\n Vlasnik je uspesno rezervisao sobu u Vase ime u kući: " + cottageName
-						+ " u periodu od " + startDate + " do " + endDate + ".");
+				"Room reservation. \n\n Cottage Owner has successfully made a reservation in your name in the following Cottage:"
+						+ cottageName + "\n Time Period: " + startDate + " - " + endDate + ".",
+				"Reservation");
 
 		return roomBookingService.save(roomBooking) != null;
 	}
 
 	@PostMapping(path = "/boat")
 	public Boolean bookBoat(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
-		// TODO: Ovo treba da primi extraServices kao niz selektovanih servisa koje hoce
-		// da zakaze, to tako mora da se salje sa front-a, i pocinje od nule
-		System.out.println(param.getBody());
-		String params[] = param.getBody().split(",");
+
+		String params[] = param.getBody().split(",", 8);
 		Long boatId = Long.parseLong(params[0].split(":")[1]);
 		String dateD = params[1].split(":")[1].replace("\"", "");
 		String time = params[2].split("\"")[3];
@@ -195,11 +211,24 @@ public class BookingController {
 		date.add(Calendar.DAY_OF_MONTH, days);
 		Date endDate = date.getTime();
 
-		String boatName = boatService.getById(boatId).getName();
+		String extraServices = "";
+		String servicesParsed = params[7];
+		servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
+		servicesParsed = servicesParsed.replace("]}", "");
+		String servicesChecked[] = servicesParsed.split(",");
+		Boat boat = boatService.getById(boatId);
+		String priceAndInfo[] = boat.getPriceAndInfo().split(";");
+		String boatName = boat.getName();
+
+		for (String fromFront : servicesChecked) {
+			extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+		}
+		extraServices += "ß";
+		extraServices = extraServices.replace(";ß", "");
 
 		ArrayList<Boat> boats = boatService.getAllBySearchQuery(boatName, startDate, endDate, guests);
 		try {
-			Boat boat = boats.get(0);
+			Boat testBoat = boats.get(0);
 		} catch (Exception e) {
 			System.err.println(e);
 			return false;
@@ -209,15 +238,16 @@ public class BookingController {
 				userId,
 				startDate,
 				endDate,
-				"extraService",
+				extraServices,
 				guests);
 
 		String userName = registeredUserService.getById(userId).getName();
 		String userEmail = registeredUserService.getById(userId).getEmail();
 
 		mailService.SendMail(userEmail, userName,
-				"Rezervacija broda \n\n Vlasnik je uspesno rezervisao brod u Vase ime u kući: " + boatName
-						+ " u periodu od " + startDate + " do " + endDate + ".");
+				"Boat reservation. \n\n Boat Owner has successfully made a reservation in your name in the following Boat:"
+						+ boatName + "\n Time Period: " + startDate + " - " + endDate + ".",
+				"Reservation");
 
 		BoatBooking bb = boatBookingService.save(boatBooking);
 		return bb != null;
@@ -225,10 +255,8 @@ public class BookingController {
 
 	@PostMapping(path = "/adventure")
 	public Boolean bookAdventure(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
-		// TODO: Ovo treba da primi extraServices kao niz selektovanih servisa koje hoce
-		// da zakaze, to tako mora da se salje sa front-a, i pocinje od nule
-		System.out.println(param.getBody());
-		String params[] = param.getBody().split(",");
+
+		String params[] = param.getBody().split(",", 8);
 		Long adventureId = Long.parseLong(params[0].split(":")[1]);
 		String dateD = params[1].split(":")[1].replace("\"", "");
 		String time = params[2].split("\"")[3];
@@ -242,18 +270,28 @@ public class BookingController {
 		int days = Integer.parseInt(params[3].split(":")[1]);
 		int guests = Integer.parseInt(params[4].split(":")[1]);
 		Long instructorId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
-		// Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"",
-		// "").replace("}", ""));
-		// Long userId = Long.parseLong(params[6].split(":")[1].replace("\"",
-		// "").replace("}", ""));
-		// TODO: ovde fali od userId sa fronta
+
 		Long userId = 1L;
 
 		Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
 		Date endDate = date.getTime();
 
-		String adventureName = adventureService.getById(adventureId).getName();
+		String extraServices = "";
+		String servicesParsed = params[7];
+		servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
+		servicesParsed = servicesParsed.replace("]}", "");
+		String servicesChecked[] = servicesParsed.split(",");
+		Adventure adventure = adventureService.getById(adventureId);
+		String adventureName = adventure.getName();
+		String priceAndInfo[] = adventure.getPriceAndInfo().split(";");
+
+		for (String fromFront : servicesChecked) {
+			extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+		}
+		extraServices += "ß";
+		extraServices = extraServices.replace(";ß", "");
+
 		ArrayList<Adventure> adventures = adventureService.getAllBySearchQuery(adventureName, startDate, endDate,
 				guests);
 
@@ -263,15 +301,16 @@ public class BookingController {
 				userId,
 				startDate,
 				endDate,
-				"extraService",
+				extraServices,
 				guests);
 
 		String userName = registeredUserService.getById(userId).getName();
 		String userEmail = registeredUserService.getById(userId).getEmail();
 
 		mailService.SendMail(userEmail, userName,
-				"Rezervacija avanture \n\n Instruktor je uspesno rezervisao avanturu u Vase ime u kući: "
-						+ adventureName + " u periodu od " + startDate + " do " + endDate + ".");
+				"Adventure reservation. \n\n Fishing Instructor has successfully made a reservation in your name in the following Adventure:"
+						+ adventureName + "\n Time Period: " + startDate + " - " + endDate + ".",
+				"Reservation");
 
 		AdventureBooking ab = adventureBookingService.save(adventureBooking);
 		return ab != null;
@@ -424,7 +463,6 @@ public class BookingController {
 
 		double price = Double.parseDouble(split[3].split(":")[1].replace("\"", ""));
 		String forType = split[4].split(":")[1].replace("\"", "");
-		int validDuration = Integer.parseInt(split[5].split(":")[1].replace("\"", "").replace("}", ""));
 
 		HeadEntityEnum forTypeEnum;
 		ArrayList<Subscription> subscriptions = new ArrayList<>();
@@ -449,7 +487,7 @@ public class BookingController {
 					String userName = registeredUser.getName();
 					String userEmail = registeredUser.getEmail();
 					mailService.SendMail(userEmail, userName,
-							"A new action has been added for an adventure you are subbscribed to!");
+							"A new action has been added for an adventure you are subbscribed to!", "Action Creation");
 				}
 
 				return adventureBookingService.save(ab) != null;
@@ -470,7 +508,7 @@ public class BookingController {
 					String userName = registeredUser.getName();
 					String userEmail = registeredUser.getEmail();
 					mailService.SendMail(userEmail, userName,
-							"A new action has been added for a boat you are subbscribed to!");
+							"A new action has been added for a boat you are subbscribed to!", "Action Creation");
 				}
 
 				return boatBookingService.save(bb) != null;
@@ -497,7 +535,7 @@ public class BookingController {
 					String userName = registeredUser.getName();
 					String userEmail = registeredUser.getEmail();
 					mailService.SendMail(userEmail, userName,
-							"A new action has been added for a boat you are subbscribed to!");
+							"A new action has been added for a boat you are subbscribed to!", "Action Creation");
 				}
 
 				return flag;
