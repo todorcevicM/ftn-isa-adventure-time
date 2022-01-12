@@ -97,8 +97,7 @@ public class RevisionsController {
 				revisionsService.save(revision);
 
 				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
-						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
-
+						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.", "Revision Submission");
 				break;
 
 			case COTTAGE:
@@ -110,7 +109,7 @@ public class RevisionsController {
 				revisionsService.save(revision);
 
 				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
-						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
+						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.", "Revision Submission");
 				break;
 
 			case ADVENTURE:
@@ -122,7 +121,7 @@ public class RevisionsController {
 				revisionsService.save(revision);
 
 				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
-						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.");
+						"A revision for your service has been submitted! \n\nSincerely, Adventure Time.", "Revision Submission");
 				break;
 
 			default:

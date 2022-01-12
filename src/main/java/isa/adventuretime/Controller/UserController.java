@@ -367,30 +367,30 @@ public class UserController {
 			case "\"ADMINISTRATOR\"":
 				Administrator administrator = administratorService.getById(id);
 				mailService.SendMail(administrator.getEmail(), administrator.getName(),
-						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.", "Deleted Account");
 				return new ResponseEntity<Boolean>(administratorService.markDeleted(id), HttpStatus.OK);
 			case "\"REGISTERED_USER\"":
 				RegisteredUser registeredUser = registeredUserService.getById(id);
 				mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(),
-						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.", "Deleted Account");
 				return new ResponseEntity<Boolean>(registeredUserService.markDeleted(id), HttpStatus.OK);
 
 			case "\"BOAT_OWNER\"":
 				BoatOwner boatOwner = boatOwnerService.getById(id);
 				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
-						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.", "Deleted Account");
 				return new ResponseEntity<Boolean>(boatOwnerService.markDeleted(id), HttpStatus.OK);
 
 			case "\"COTTAGE_OWNER\"":
 				CottageOwner cottageOwner = cottageOwnerService.getById(id);
 				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
-						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.", "Deleted Account");
 				return new ResponseEntity<Boolean>(cottageOwnerService.markDeleted(id), HttpStatus.OK);
 
 			case "\"FISHING_INSTRUCTOR\"":
 				FishingInstructor fishingInstructor = fishingInstructorService.getById(id);
 				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
-						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+						"Your account has been deleted. \nThank you for using our services! \n\nSincerely, Adventure Time.", "Deleted Account");
 				return new ResponseEntity<Boolean>(fishingInstructorService.markDeleted(id), HttpStatus.OK);
 
 			default:
@@ -418,7 +418,7 @@ public class UserController {
 						.delete(deletionRequestService.getByForTypeAndRequesterId(HeadEntityEnum.BOAT_OWNER, id));
 				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
 						"Your request for account deletion has been denied by an administrator.\nThe reason for the denial for the deletion of your account is :\n"
-								+ reason);
+								+ reason, "Denied Deletion");
 				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 
 			case "COTTAGE_OWNER":
@@ -427,7 +427,7 @@ public class UserController {
 						.delete(deletionRequestService.getByForTypeAndRequesterId(HeadEntityEnum.COTTAGE_OWNER, id));
 				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
 						"Your request for account deletion has been denied by an administrator.\nThe reason for the denial for the deletion of your account is :\n"
-								+ reason);
+								+ reason, "Denied Deletion");
 				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 
 			case "FISHING_INSTRUCTOR":
@@ -437,7 +437,7 @@ public class UserController {
 								id));
 				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
 						"Your request for account deletion has been denied by an administrator.\nThe reason for the denial for the deletion of your account is :\n"
-								+ reason);
+								+ reason, "Denied Deletion");
 				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 
 			default:
@@ -464,7 +464,7 @@ public class UserController {
 				// registeredUserService.createDeletionRequest(id, reason);
 				mailService.SendMail(registeredUser.getEmail(), registeredUser.getName(),
 						"Your request for account deletion has been sent to an administrator.\nThe reason for the deletion of your account is :\n"
-								+ reason);
+								+ reason, "Deletion Request");
 				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 
 			case "BOAT_OWNER":
@@ -475,7 +475,7 @@ public class UserController {
 				boatOwnerService.createDeletionRequest(id, reason);
 				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
 						"Your request for account deletion has been sent to an administrator.\nThe reason for the deletion of your account is :\n"
-								+ reason);
+								+ reason, "Deletion Request");
 				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 
 			case "COTTAGE_OWNER":
@@ -486,7 +486,7 @@ public class UserController {
 				cottageOwnerService.createDeletionRequest(id, reason);
 				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
 						"Your request for account deletion has been sent to an administrator.\nThe reason for the deletion of your account is :\n"
-								+ reason);
+								+ reason, "Deletion Request");
 				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 
 			case "FISHING_INSTRUCTOR":
@@ -497,7 +497,7 @@ public class UserController {
 				fishingInstructorService.createDeletionRequest(id, reason);
 				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
 						"Your request for account deletion has been sent to an administrator.\nThe reason for the deletion of your account is :\n"
-								+ reason);
+								+ reason, "Deletion Request");
 				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 
 			default:
@@ -514,7 +514,7 @@ public class UserController {
 			case "\"Boat Owner\"":
 				BoatOwner boatOwner = boatOwnerService.getById(id);
 				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
-						"Your account has been created. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+						"Your account has been created. \nThank you for using our services! \n\nSincerely, Adventure Time.", "Account Creation");
 				requestForAdminService
 						.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.BOAT_OWNER, id));
 				return new ResponseEntity<Boolean>(boatOwnerService.markAuthenticated(id), HttpStatus.OK);
@@ -522,7 +522,7 @@ public class UserController {
 			case "\"Cottage Owner\"":
 				CottageOwner cottageOwner = cottageOwnerService.getById(id);
 				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
-						"Your account has been created. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+						"Your account has been created. \nThank you for using our services! \n\nSincerely, Adventure Time.", "Account Creation");
 				requestForAdminService
 						.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.COTTAGE_OWNER, id));
 				return new ResponseEntity<Boolean>(cottageOwnerService.markAuthenticated(id), HttpStatus.OK);
@@ -530,7 +530,7 @@ public class UserController {
 			case "\"Fishing Instructor\"":
 				FishingInstructor fishingInstructor = fishingInstructorService.getById(id);
 				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
-						"Your account has been created. \nThank you for using our services! \n\nSincerely, Adventure Time.");
+						"Your account has been created. \nThank you for using our services! \n\nSincerely, Adventure Time.", "Account Creation");
 				requestForAdminService.delete(
 						requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.FISHING_INSTRUCTOR, id));
 				return new ResponseEntity<Boolean>(fishingInstructorService.markAuthenticated(id), HttpStatus.OK);
@@ -556,7 +556,7 @@ public class UserController {
 				BoatOwner boatOwner = boatOwnerService.getById(id);
 				mailService.SendMail(boatOwner.getEmail(), boatOwner.getName(),
 						"Your account has been denied. \nThank you for using our services! \n\nSincerely, Adventure Time."
-								+ reason);
+								+ reason, "Registration Denial");
 				requestForAdminService
 						.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.BOAT_OWNER, id));
 				return new ResponseEntity<Boolean>(boatOwnerService.markDenied(id), HttpStatus.OK);
@@ -565,7 +565,7 @@ public class UserController {
 				CottageOwner cottageOwner = cottageOwnerService.getById(id);
 				mailService.SendMail(cottageOwner.getEmail(), cottageOwner.getName(),
 						"Your account has been denied. \nThank you for using our services! \n\nSincerely, Adventure Time."
-								+ reason);
+								+ reason, "Registration Denial");
 				requestForAdminService
 						.delete(requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.COTTAGE_OWNER, id));
 				return new ResponseEntity<Boolean>(cottageOwnerService.markDenied(id), HttpStatus.OK);
@@ -574,7 +574,7 @@ public class UserController {
 				FishingInstructor fishingInstructor = fishingInstructorService.getById(id);
 				mailService.SendMail(fishingInstructor.getEmail(), fishingInstructor.getName(),
 						"Your account has been denied. \nThank you for using our services! \n\nSincerely, Adventure Time."
-								+ reason);
+								+ reason, "Registration Denial");
 				requestForAdminService.delete(
 						requestForAdminService.findByForTypeAndRequesterId(HeadEntityEnum.FISHING_INSTRUCTOR, id));
 				return new ResponseEntity<Boolean>(fishingInstructorService.markDenied(id), HttpStatus.OK);

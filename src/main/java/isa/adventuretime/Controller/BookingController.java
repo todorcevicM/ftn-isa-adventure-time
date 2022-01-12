@@ -72,7 +72,7 @@ public class BookingController {
 
 		String userName = registeredUserService.getById(userId).getName();
 		String userEmail = registeredUserService.getById(userId).getEmail();
-		mailService.SendMail(userEmail, userName, "Boat booking.\n\n You have successfully booked a boat!");
+		mailService.SendMail(userEmail, userName, "Boat booking.\n\n You have successfully booked a boat!", "Reservation");
 
 		bb.setRegisteredUserId(userId);
 		return boatBookingService.save(bb) != null;
@@ -88,7 +88,7 @@ public class BookingController {
 
 		String userName = registeredUserService.getById(userId).getName();
 		String userEmail = registeredUserService.getById(userId).getEmail();
-		mailService.SendMail(userEmail, userName, "Adventure booking\n\n You have successfully booked an adventure!");
+		mailService.SendMail(userEmail, userName, "Adventure booking\n\n You have successfully booked an adventure!", "Reservation");
 
 		ab.setRegisteredUserId(userId);
 		return adventureBookingService.save(ab) != null;
@@ -104,7 +104,7 @@ public class BookingController {
 
 		String userName = registeredUserService.getById(userId).getName();
 		String userEmail = registeredUserService.getById(userId).getEmail();
-		mailService.SendMail(userEmail, userName, "Cottage booking\n\n You have successfully booked a cottage!");
+		mailService.SendMail(userEmail, userName, "Cottage booking\n\n You have successfully booked a cottage!", "Reservation");
 
 		rb.setRegisteredUserId(userId);
 		return roomBookingService.save(rb) != null;
@@ -160,8 +160,7 @@ public class BookingController {
 		String userEmail = registeredUserService.getById(userId).getEmail();
 
 		mailService.SendMail(userEmail, userName,
-				"Rezervacija sobe \n\n Vlasnik je uspesno rezervisao sobu u Vase ime u kući: " + cottageName
-						+ " u periodu od " + startDate + " do " + endDate + ".");
+				"Room reservation. \n\n Cottage Owner has successfully made a reservation in your name in the following Cottage:" + cottageName + "\n Time Period: " + startDate + " - " + endDate + ".", "Reservation");
 
 		return roomBookingService.save(roomBooking) != null;
 	}
@@ -210,8 +209,7 @@ public class BookingController {
 		String userEmail = registeredUserService.getById(userId).getEmail();
 
 		mailService.SendMail(userEmail, userName,
-				"Rezervacija broda \n\n Vlasnik je uspesno rezervisao brod u Vase ime u kući: " + boatName
-						+ " u periodu od " + startDate + " do " + endDate + ".");
+				"Boat reservation. \n\n Boat Owner has successfully made a reservation in your name in the following Boat:" + boatName + "\n Time Period: " + startDate + " - " + endDate + ".", "Reservation");
 
 		BoatBooking bb = boatBookingService.save(boatBooking);
 		return bb != null;
@@ -264,8 +262,7 @@ public class BookingController {
 		String userEmail = registeredUserService.getById(userId).getEmail();
 
 		mailService.SendMail(userEmail, userName,
-				"Rezervacija avanture \n\n Instruktor je uspesno rezervisao avanturu u Vase ime u kući: "
-						+ adventureName + " u periodu od " + startDate + " do " + endDate + ".");
+				"Adventure reservation. \n\n Fishing Instructor has successfully made a reservation in your name in the following Adventure:" + adventureName + "\n Time Period: " + startDate + " - " + endDate + ".", "Reservation");
 
 		AdventureBooking ab = adventureBookingService.save(adventureBooking);
 		return ab != null;
@@ -443,7 +440,7 @@ public class BookingController {
 					String userName = registeredUser.getName();
 					String userEmail = registeredUser.getEmail();
 					mailService.SendMail(userEmail, userName,
-							"A new action has been added for an adventure you are subbscribed to!");
+							"A new action has been added for an adventure you are subbscribed to!", "Action Creation");
 				}
 
 				return adventureBookingService.save(ab) != null;
@@ -464,7 +461,7 @@ public class BookingController {
 					String userName = registeredUser.getName();
 					String userEmail = registeredUser.getEmail();
 					mailService.SendMail(userEmail, userName,
-							"A new action has been added for a boat you are subbscribed to!");
+							"A new action has been added for a boat you are subbscribed to!", "Action Creation");
 				}
 
 				return boatBookingService.save(bb) != null;
@@ -491,7 +488,7 @@ public class BookingController {
 					String userName = registeredUser.getName();
 					String userEmail = registeredUser.getEmail();
 					mailService.SendMail(userEmail, userName,
-							"A new action has been added for a boat you are subbscribed to!");
+							"A new action has been added for a boat you are subbscribed to!", "Action Creation");
 				}
 
 				return flag;

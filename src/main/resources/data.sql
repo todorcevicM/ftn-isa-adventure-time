@@ -151,13 +151,13 @@ insert into adventure_booking(booked_adventure_id, start, end, max_users, price,
 			values(1, "1990-01-03", "1990-01-04", 2, 0, false, 1, "", 1);
 
 insert into revision(type, booking_id, revised, revision, rating, approved, denied, main_entity_id) 
-values (0, 4, true, "Turbulent...", 2.5, false, false, 1);
+values (0, 7, true, "Turbulent...", 2.5, false, false, 1);
 
 insert into revision(type, booking_id, revised, revision, rating, approved, denied, main_entity_id) 
-values (2, 2, true, "Very comfy!", 4.33333333, false, false, 1);
+values (2, 4, true, "Very comfy!", 4.33333333, false, false, 1);
 
 insert into revision(type, booking_id, revised, revision, rating, approved, denied, main_entity_id) 
-values (4, 3, true, "The instructor was very funny.", 5, false, false, 1);
+values (4, 7, true, "The instructor was very funny.", 5, false, false, 1);
 
 insert into appeal(type, booking_id, appeal) values (0, 4, "There's a big hole in the floor...");
 

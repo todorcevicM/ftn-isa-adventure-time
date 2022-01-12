@@ -22,13 +22,13 @@ public class MailService {
 	@Autowired
 	EmailService emailService;
 
-	public void SendMail(String toEmail, String forWho, String body)
+	public void SendMail(String toEmail, String forWho, String body, String subject)
 			throws AddressException, UnsupportedEncodingException {
 		Email email = DefaultEmail.builder()
 				.from(new InternetAddress("adventuretimesupport@protonmail.com", "Adventure Time Support 🧭"))
 				.to(Lists.newArrayList(new InternetAddress(toEmail, forWho)))
 				// TODO: change this to a real subject
-				.subject("Deletion mail")
+				.subject(subject)
 				.body(body)
 				.encoding("UTF-8").build();
 		emailService.send(email);
