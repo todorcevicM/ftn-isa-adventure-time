@@ -108,6 +108,9 @@
 					<p class="smallText">Deal {{ index + 1 }}</p>
 					<p class="entryLeftShort">Start : {{ bbd.start }}</p>
 					<p class="entryLeftShort">End : {{ bbd.end }}</p>
+					<p v-for="item in bbd.servicePrice" :key="item">
+						{{ item.service }} : ${{ item.price }}
+					</p>
 					<p class="entryLeftShort">
 						Discount :
 						{{
@@ -227,6 +230,21 @@ export default {
 					boatBookingDeal.value = response.data;
 
 					boatBookingDeal.value.forEach((bookingDeal) => {
+						let priceAndInfoString = bookingDeal.extraService;
+						console.log(bookingDeal.id)
+						console.log(priceAndInfoString);
+						let priceAndInfoArray = priceAndInfoString.split(";");
+						bookingDeal.servicePrice = [];
+						priceAndInfoArray.forEach((item, index) => {
+							if (item.length > 0) {
+								priceAndInfoArray[index] = item.split(":");
+								bookingDeal.servicePrice.push({
+									service: priceAndInfoArray[index][0],
+									price: priceAndInfoArray[index][1],
+								});
+							}
+						});
+						
 						let newStart = bookingDeal.start.split("T");
 						let newStartSecondPart = newStart[1].split(".")[0];
 						bookingDeal.start =

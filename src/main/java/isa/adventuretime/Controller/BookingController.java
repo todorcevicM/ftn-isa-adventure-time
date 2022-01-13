@@ -448,6 +448,7 @@ public class BookingController {
 
 	@PostMapping(path = "/createAction")
 	public Boolean createAction(RequestEntity<String> params) throws AddressException, UnsupportedEncodingException {
+		System.out.println(params.getBody());
 		String split[] = params.getBody().split(",");
 		Long entityId = Long.parseLong(split[0].split(":")[1].replace("\"", ""));
 
@@ -460,6 +461,11 @@ public class BookingController {
 		double price = Double.parseDouble(split[3].split(":")[1].replace("\"", ""));
 		String forType = split[4].split(":")[1].replace("\"", "");
 
+		int validDuration = Integer.parseInt(split[5].split(":")[1].replace("\"", ""));
+
+		String extraServices = split[6].split("\"")[3];
+
+
 		HeadEntityEnum forTypeEnum;
 		ArrayList<Subscription> subscriptions = new ArrayList<>();
 
@@ -468,12 +474,14 @@ public class BookingController {
 			case "ADVENTURE":
 				maxUsers = adventureService.getById(entityId).getMaxUsers();
 				AdventureBooking ab = new AdventureBooking(
-						entityId,
-						startDate,
-						endDate,
-						price,
-						maxUsers,
-						adventureService.getById(entityId).getInstructorId());
+					entityId,
+					startDate,
+					endDate,
+					price,
+					maxUsers,
+					adventureService.getById(entityId).getInstructorId(),
+					extraServices		
+				);
 
 				forTypeEnum = HeadEntityEnum.ADVENTURE;
 				subscriptions = subscriptionService.findAllByForEntityAndSubbedId(forTypeEnum, entityId);
@@ -490,11 +498,13 @@ public class BookingController {
 			case "BOAT":
 				maxUsers = boatService.getById(entityId).getMaxUsers();
 				BoatBooking bb = new BoatBooking(
-						entityId,
-						startDate,
-						endDate,
-						price,
-						maxUsers);
+					entityId,
+					startDate,
+					endDate,
+					price,
+					maxUsers, 
+					extraServices
+				);
 
 				forTypeEnum = HeadEntityEnum.BOAT;
 				subscriptions = subscriptionService.findAllByForEntityAndSubbedId(forTypeEnum, entityId);
@@ -514,12 +524,14 @@ public class BookingController {
 				boolean flag = false;
 				for (Room room : rooms) {
 					RoomBooking rb = new RoomBooking(
-							room.getId(),
-							startDate,
-							endDate,
-							price,
-							maxUsers,
-							entityId);
+						room.getId(),
+						startDate,
+						endDate,
+						price,
+						maxUsers,
+						entityId, 
+						extraServices
+					);
 					flag = roomBookingService.save(rb) != null;
 				}
 

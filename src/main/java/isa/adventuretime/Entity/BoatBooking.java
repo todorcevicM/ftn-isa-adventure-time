@@ -53,7 +53,7 @@ public class BoatBooking {
 	}
 
 	// Konstruktor za akcije
-	public BoatBooking(Long bookedBoatId, Date start, Date end, double price, int maxUsers) {
+	public BoatBooking(Long bookedBoatId, Date start, Date end, double price, int maxUsers, String extraService) {
 		this.bookedBoatId = bookedBoatId;
 		this.start = start;
 		this.end = end;
@@ -63,7 +63,7 @@ public class BoatBooking {
 		this.maxUsers = maxUsers;
 		this.reportMade = false;
 		// TODO:
-		this.extraService = "";
+		this.extraService = extraService;
 	}
 
 }

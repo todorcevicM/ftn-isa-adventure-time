@@ -206,6 +206,28 @@
 				<input type="date" v-model="action.start" />
 				<p class="smallText">End Date</p>
 				<input type="date" v-model="action.end" />
+				<p class="smallText">Extra Services</p>
+				<div class="roomsDiv">
+					<div
+						class="roomDiv"
+						v-for="(item, key) in actionServiceToAdd"
+						:key="item"
+					>
+						<p>
+							Extra Service {{ key + 1 }} : {{ item.service }} : ${{ item.price }}.
+						</p>
+						<button class="edit" @click="updateService(key)">
+							Edit
+						</button>
+						<button class="deletion" @click="deleteService(key)">
+							-
+						</button>
+					</div>
+					<div class="roomDiv">
+						<p></p>
+						<button class="addition" @click="addService()">+</button>
+					</div>
+				</div>
 				<p class="smallText">Price ($)</p>
 				<input
 					type="number"
@@ -279,6 +301,8 @@ export default {
 		// Za punjenje input-a na pocetku
 		var newCottage = cottage;
 
+		var actionServiceToAdd = ref([]);
+
 		var rooms = ref(null);
 		axios
 			.get("/api/rooms/getAllByCottageId/" + cottage.value.id)
@@ -291,6 +315,7 @@ export default {
 			end: "",
 			price: "",
 			validDuration: "",
+			extraServices: "",
 		});
 
 		// Za u <template>
@@ -305,6 +330,7 @@ export default {
 			canUpload,
 			selectedFile: null,
 			action,
+			actionServiceToAdd,
 			servicePrice, 
 			
 			imageSource(id) {
@@ -450,6 +476,13 @@ export default {
 				}
 			},
 			createAction() {
+				let priceAndInfo = "";
+				actionServiceToAdd.value.forEach(servicePrice => {
+					priceAndInfo += servicePrice.service + ":" + servicePrice.price + ";";
+				})
+				this.action.extraServices = priceAndInfo;
+
+
 				if (
 					this.action.price < 1 ||
 					this.action.price > 1000 ||
@@ -474,11 +507,43 @@ export default {
 						price: this.action.price,
 						type: "COTTAGE",
 						validDuration: this.action.validDuration,
+						extraServices: this.action.extraServices,
 					})
 					.then(function (response) {
 						console.log(response.data);
 						alert("Quick booking created!");
 					});
+			},
+			addService() {
+				var serv = prompt("Enter a service: ");
+				var pric = prompt("Enter a price: ");
+				if (
+					isNaN(pric.toString()) == true ||
+					pric <= 0
+				) {
+					alert("Please enter a correct price.");
+					return;
+				}
+				this.actionServiceToAdd.push({ 
+					service: serv, 
+					price: pric,	
+				});
+			},
+			updateService(key) {
+				var serv = prompt("Enter a new service: ");
+				var pric = prompt("Enter a new price: ");
+				if (
+					isNaN(pric.toString()) == true ||
+					pric <= 0
+				) {
+					alert("Please enter a correct price.");
+					return;
+				}
+				this.actionServiceToAdd[key].service = serv;
+				this.actionServiceToAdd[key].price = pric;
+			},
+			deleteService(key) {
+				this.actionServiceToAdd.splice(key, 1);
 			},
 		};
 	},

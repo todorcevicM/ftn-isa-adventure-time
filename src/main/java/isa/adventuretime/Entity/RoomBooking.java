@@ -69,7 +69,7 @@ public class RoomBooking {
 	}
 
 	// Konstruktor za akcije
-	public RoomBooking(Long bookedRoomId, Date start, Date end, double price, int maxUsers, Long cottageId) {
+	public RoomBooking(Long bookedRoomId, Date start, Date end, double price, int maxUsers, Long cottageId, String extraService) {
 		this.bookedRoomId = bookedRoomId;
 		this.start = start;
 		this.end = end;
@@ -79,7 +79,7 @@ public class RoomBooking {
 		this.quickBooking = true;
 		this.reportMade = false;
 		this.registeredUserId = 0L;
-		this.extraService = "";
+		this.extraService = extraService;
 	}
 
 }

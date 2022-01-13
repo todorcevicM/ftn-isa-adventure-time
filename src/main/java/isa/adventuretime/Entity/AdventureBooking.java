@@ -54,8 +54,7 @@ public class AdventureBooking {
 	}
 
 	// Konstruktor za akcije
-	public AdventureBooking(Long bookedAdventureId, Date start, Date end, double price, int maxUsers,
-			Long instructorId) {
+	public AdventureBooking(Long bookedAdventureId, Date start, Date end, double price, int maxUsers, Long instructorId, String extraService) {
 		this.bookedAdventureId = bookedAdventureId;
 		this.start = start;
 		this.end = end;
@@ -65,7 +64,7 @@ public class AdventureBooking {
 		this.reportMade = false;
 		this.maxUsers = maxUsers;
 		// TODO:
-		this.extraService = "";
+		this.extraService = extraService;
 		this.bookedInstructorId = instructorId;
 	}
 }
