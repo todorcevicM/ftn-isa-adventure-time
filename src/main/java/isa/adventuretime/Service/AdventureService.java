@@ -52,15 +52,16 @@ public class AdventureService {
 
 		for (Adventure adventure : adventures) {
 			FishingInstructor fi = fishingInstructorRepo.getById(adventure.getInstructorId());
-			System.out.println(fi.getName());
+
 			if (startDate.before(fi.getStartWorkPeriod()) || endDate.after(fi.getEndWorkPeriod())) {
 				continue;
 			}
+
 			if (adventureBookingRepo.findBadBookings(adventure.getInstructorId(), startDate, endDate).size() == 0) {
 				retAdventures.add(adventure);
 			}
 		}
-		System.out.println(retAdventures.size());
+		
 		return retAdventures;
 	}
 

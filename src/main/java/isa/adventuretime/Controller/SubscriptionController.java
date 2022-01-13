@@ -35,15 +35,14 @@ public class SubscriptionController {
                 forType = HeadEntityEnum.COTTAGE;
                 break;
             default:
-                System.out.println("Something went wrong, >>> " + split[2]);
+                System.out.println("No such Entity Type: " + split[2]);
                 return null;
         }
         if (subscriptionService.existsBySubberIdAndSubbedIdAndForEntity(subber, subbed, forType)){
-            System.out.println("There is such subscription");
+            System.out.println("User with the ID : " + subber + " is already Subbscribed to the Entity: " + forType + " with ID: " + subbed);
             return false;
         }
-        subscriptionService.save(new Subscription(subber, subbed, forType));
-        return true;
+        return subscriptionService.save(new Subscription(subber, subbed, forType)) != null;
     }
 
     @PostMapping(path = "/unsubscribe")
@@ -65,7 +64,7 @@ public class SubscriptionController {
                 forType = HeadEntityEnum.COTTAGE;
                 break;
             default:
-                System.out.println("Something went wrong, >>> " + split[2]);
+                System.out.println("No such Entity Type: " + split[2]);
                 return null;
         }
         Subscription subscription = subscriptionService.getBySubberIdAndSubbedIdAndForEntity(subber, subbed, forType); 
@@ -79,8 +78,6 @@ public class SubscriptionController {
 
     @PostMapping(path = "/existsSubscription")
     public Boolean existSubsricption(RequestEntity<String> subParam){
-        //ako nije vec sub
-        System.out.println(subParam.getBody());
         String split[] = subParam.getBody().split(";");
         Long subber = Long.parseLong(split[0]);
         Long subbed = Long.parseLong(split[1]);
@@ -96,12 +93,10 @@ public class SubscriptionController {
                 forType = HeadEntityEnum.COTTAGE;
                 break;
             default:
-                System.out.println("Something went wrong, >>> " + split[2]);
+                System.out.println("No such Entity Type: " + split[2]);
                 return null;
         }
-        if(subscriptionService.existsBySubberIdAndSubbedIdAndForEntity(subber, subbed, forType))
-            return true;
-        return false;
+        return subscriptionService.existsBySubberIdAndSubbedIdAndForEntity(subber, subbed, forType);
     }
 
 }

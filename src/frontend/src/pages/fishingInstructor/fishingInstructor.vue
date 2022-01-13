@@ -24,24 +24,6 @@
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
 				<div class="leftFlexEntry">
-					<p>New Report</p>
-					<button @click="notImplemented()">Fill</button>
-				</div>
-				<!-- Spacer -->
-				<div style="height: 40px"></div>
-				<div class="leftFlexEntry">
-					<p>Quick Reservation</p>
-					<button @click="notImplemented()">Create</button>
-				</div>
-				<!-- Spacer -->
-				<div style="height: 40px"></div>
-				<div class="leftFlexEntry">
-					<p>New Reservation</p>
-					<button @click="notImplemented()">Create</button>
-				</div>
-				<!-- Spacer -->
-				<div style="height: 40px"></div>
-				<div class="leftFlexEntry">
 					<p>Occupancy Calendar</p>
 					<button @click="notImplemented()">Show</button>
 				</div>
@@ -526,6 +508,8 @@ export default {
 								localStorage.setItem(key, response.data[key]);
 							}
 						}
+						localStorage.setItem("startDate", localStorage.startWorkPeriod);
+						localStorage.setItem("endDate", localStorage.endWorkPeriod);
 						window.location.href = "/adventureEdit/" + id;
 					});
 			},

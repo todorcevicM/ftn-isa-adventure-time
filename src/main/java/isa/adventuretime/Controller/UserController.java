@@ -285,12 +285,11 @@ public class UserController {
 
 					break;
 				default:
-					returnedString = "Error - Unrecognized type!";
+					returnedString = "Error - Unrecognized Entity Type!";
 
 			}
 		} else {
 			returnedString = "Error - User with that E-mail already exists.";
-			System.out.println(returnedString);
 		}
 		if (request.getBody().getUserType().equals("registeredUser"))
 			mailService.SendAuthenticationMail(request.getBody().getEmail(), request.getBody().getName());
@@ -334,7 +333,6 @@ public class UserController {
 					break;
 				case COTTAGE_OWNER:
 					for (CottageOwner cottageOwner : cottageOwners) {
-						System.out.println(cottageOwner.getName());
 						if (requestForAdmin.getRequesterId() == cottageOwner.getId()
 								&& requestForAdmin.getForType().equals(HeadEntityEnum.COTTAGE_OWNER)) {
 							unauthenticatedUsers.add(new UnauthenticatedUserDTO(cottageOwner, requestForAdmin,
@@ -536,7 +534,7 @@ public class UserController {
 				return new ResponseEntity<Boolean>(fishingInstructorService.markAuthenticated(id), HttpStatus.OK);
 
 			default:
-				System.out.println("User type isn't recognised.");
+				System.out.println("Entity Type isn't recognised.");
 				return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 		}
 	}

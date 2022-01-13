@@ -63,7 +63,7 @@ public class MainController {
 			fishingInstructorService.register(fishingInstructor);
 			return;
 		}
-		System.out.println("Nije nadjen sa tim codom " + code);
+		System.out.println("No such confirmation code was found: " + code);
 	}
 
 	@GetMapping(path = "/get/constant/{name}")
@@ -75,7 +75,6 @@ public class MainController {
 	public ResponseEntity<BusinessConstants> updatePercent(@PathVariable("name") String name,
 			@PathVariable("percent") double percent) {
 		BusinessConstants bc = businessConstantsService.getBusinessConstantsByName(name);
-		System.out.println(percent);
 		bc.setValue(percent);
 		bc = businessConstantsService.save(bc);
 		return new ResponseEntity<>(bc, HttpStatus.OK);

@@ -20,24 +20,6 @@
 					<button @click="getReportYear()">Year</button>
 					<button @click="getReportMonth()">Month</button>
 					<button @click="getReportWeek()">Week</button>					
-					</div>
-				<!-- Spacer -->
-				<div style="height: 40px"></div>
-				<div class="leftFlexEntry">
-					<p>New Report</p>
-					<button @click="notImplemented()">Fill</button>
-				</div>
-				<!-- Spacer -->
-				<div style="height: 40px"></div>
-				<div class="leftFlexEntry">
-					<p>Quick Reservation</p>
-					<button @click="notImplemented()">Create</button>
-				</div>
-				<!-- Spacer -->
-				<div style="height: 40px"></div>
-				<div class="leftFlexEntry">
-					<p>New Reservation</p>
-					<button @click="notImplemented()">Create</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>

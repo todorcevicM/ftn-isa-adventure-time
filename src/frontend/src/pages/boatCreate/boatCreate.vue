@@ -64,8 +64,28 @@
 				<p class="smallText">Rules</p>
 				<input type="text" v-model="newBoat.rules" />
 
-				<p class="smallText">Info</p>
-				<input type="text" v-model="newBoat.priceAndInfo" />
+				<p class="smallText">Extra Services</p>
+				<div class="roomsDiv">
+					<div
+						class="roomDiv"
+						v-for="(item, key) in servicesToAdd"
+						:key="item"
+					>
+						<p>
+							Extra Service {{ key + 1 }} : {{ item.service }} : ${{ item.price }}.
+						</p>
+						<button class="edit" @click="updateService(key)">
+							Edit
+						</button>
+						<button class="deletion" @click="deleteService(key)">
+							-
+						</button>
+					</div>
+					<div class="roomDiv">
+						<p></p>
+						<button class="addition" @click="addService()">+</button>
+					</div>
+				</div>
 
 				<p class="smallText">Reservation Start</p>
 				<input type="date" v-model="newBoat.reservationStart" />
@@ -137,9 +157,13 @@ export default {
 			percentTakenIfCancelled: "",
 		});
 
+		var servicesToAdd = ref([]);
+
 		// Za u <template>
 		return {
 			newBoat,
+			servicesToAdd,
+
 			submit() {
 				if (
 					this.newBoat.name == "" ||
@@ -153,7 +177,6 @@ export default {
 					this.newBoat.geoLat == "" ||
 					this.newBoat.geoLng == "" ||
 					this.newBoat.rules == "" ||
-					this.newBoat.priceAndInfo == "" ||
 					this.newBoat.promoDescription == "" ||
 					this.newBoat.maxUsers == "" ||
 					this.newBoat.reservationStart == "" ||
@@ -193,6 +216,12 @@ export default {
 					return;
 				}
 
+				let priceAndInfo = "";
+				servicesToAdd.value.forEach(servicePrice => {
+					priceAndInfo += servicePrice.service + ":" + servicePrice.price + ";";
+				})
+				this.newBoat.priceAndInfo = priceAndInfo;
+
 				axios
 					.post("/api/boats/update", this.newBoat)
 					.then(function (response) {
@@ -202,6 +231,38 @@ export default {
 							"/boatOwner/" + localStorage.emailHash
 						);
 					});
+			},
+
+			addService() {
+				var serv = prompt("Enter a service: ");
+				var pric = prompt("Enter a price: ");
+				if (
+					isNaN(pric.toString()) == true ||
+					pric <= 0
+				) {
+					alert("Please enter a correct price.");
+					return;
+				}
+				this.servicesToAdd.push({ 
+					service: serv, 
+					price: pric,	
+				});
+			},
+			updateService(key) {
+				var serv = prompt("Enter a new service: ");
+				var pric = prompt("Enter a new price: ");
+				if (
+					isNaN(pric.toString()) == true ||
+					pric <= 0
+				) {
+					alert("Please enter a correct price.");
+					return;
+				}
+				this.servicesToAdd[key].service = serv;
+				this.servicesToAdd[key].price = pric;
+			},
+			deleteService(key) {
+				this.servicesToAdd.splice(key, 1);
 			},
 		};
 	},

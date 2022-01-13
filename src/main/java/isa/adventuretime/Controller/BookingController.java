@@ -204,8 +204,6 @@ public class BookingController {
 		Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", ""));
 		Long userId = Long.parseLong(params[6].split(":")[1].replace("\"",
 				"").replace("}", ""));
-		// TODO: ovde fali od userId sa fronta
-		// Long userId = 1L;
 
 		Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
@@ -227,14 +225,15 @@ public class BookingController {
 		extraServices = extraServices.replace(";ß", "");
 
 		ArrayList<Boat> boats = boatService.getAllBySearchQuery(boatName, startDate, endDate, guests);
+		Boat testBoat;
 		try {
-			Boat testBoat = boats.get(0);
+			testBoat = boats.get(0);
 		} catch (Exception e) {
 			System.err.println(e);
 			return false;
 		}
 		BoatBooking boatBooking = new BoatBooking(
-				boats.get(0).getId(),
+				testBoat.getId(),
 				userId,
 				startDate,
 				endDate,
@@ -321,7 +320,7 @@ public class BookingController {
 		String query = searchParam.getBody();
 		// Trim-ovanje " na pocetku i kraju
 		query = query.substring(1, query.length() - 1);
-		System.out.println(query);
+		// System.out.println(query);
 		String split[] = query.split(";");
 		if (split.length != 6) {
 			System.out.println("User tried using ';' as part of his search");
@@ -333,7 +332,6 @@ public class BookingController {
 		String time = split[3];
 		String numberOfDays = split[4];
 		String numberOfGuests = split[5];
-		System.out.println(dateAndTime);
 		Calendar date = Calendar.getInstance();
 		date.set(Integer.parseInt(dateAndTime.split("-")[0]),
 				Integer.parseInt(dateAndTime.split("-")[1]) - 1,
@@ -342,9 +340,7 @@ public class BookingController {
 				Integer.parseInt(time.split(":")[1]), 0);
 
 		Date startDate = date.getTime();
-		System.out.println(date.getTime());
 		date.add(Calendar.DAY_OF_MONTH, Integer.parseInt(numberOfDays));
-		System.out.println(date.getTime());
 		Date endDate = date.getTime();
 
 		switch (type) {

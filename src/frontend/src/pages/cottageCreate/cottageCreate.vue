@@ -42,9 +42,6 @@
 				<p class="smallText">Rules</p>
 				<input type="text" v-model="newCottage.rules" />
 
-				<p class="smallText">Info</p>
-				<input type="text" v-model="newCottage.priceAndInfo" />
-
 				<p class="smallText">Rooms</p>
 				<div class="roomsDiv">
 					<div
@@ -65,6 +62,29 @@
 					<div class="roomDiv">
 						<p></p>
 						<button class="addition" @click="addRoom()">+</button>
+					</div>
+				</div>
+
+				<p class="smallText">Extra Services</p>
+				<div class="roomsDiv">
+					<div
+						class="roomDiv"
+						v-for="(item, key) in servicesToAdd"
+						:key="item"
+					>
+						<p>
+							Extra Service {{ key + 1 }} : {{ item.service }} : ${{ item.price }}.
+						</p>
+						<button class="edit" @click="updateService(key)">
+							Edit
+						</button>
+						<button class="deletion" @click="deleteService(key)">
+							-
+						</button>
+					</div>
+					<div class="roomDiv">
+						<p></p>
+						<button class="addition" @click="addService()">+</button>
 					</div>
 				</div>
 
@@ -118,17 +138,20 @@ export default {
 			maxUsers: "",
 		});
 
+		var servicesToAdd = ref([]);
+
 		// Za u <template>
 		return {
 			newCottage,
 			roomsToAdd,
+			servicesToAdd,
+
 			submit() {
 				if (
 					this.newCottage.name == "" ||
 					this.newCottage.pricePerDay == "" ||
 					this.newCottage.address == "" ||
 					this.newCottage.rules == "" ||
-					this.newCottage.priceAndInfo == "" ||
 					this.newCottage.promoDescription == "" ||
 					this.newCottage.reservationStart == "" ||
 					this.newCottage.reservationEnd == "" ||
@@ -160,6 +183,12 @@ export default {
 					alert("Please add at least one room.");
 					return;
 				}
+
+				let priceAndInfo = "";
+				servicesToAdd.value.forEach(servicePrice => {
+					priceAndInfo += servicePrice.service + ":" + servicePrice.price + ";";
+				})
+				this.newCottage.priceAndInfo = priceAndInfo;
 
 				axios
 					.post("/api/cottages/update", this.newCottage)
@@ -205,6 +234,38 @@ export default {
 			},
 			deleteRoom(key) {
 				this.roomsToAdd.splice(key, 1);
+			},
+
+			addService() {
+				var serv = prompt("Enter a service: ");
+				var pric = prompt("Enter a price: ");
+				if (
+					isNaN(pric.toString()) == true ||
+					pric <= 0
+				) {
+					alert("Please enter a correct price.");
+					return;
+				}
+				this.servicesToAdd.push({ 
+					service: serv, 
+					price: pric,	
+				});
+			},
+			updateService(key) {
+				var serv = prompt("Enter a new service: ");
+				var pric = prompt("Enter a new price: ");
+				if (
+					isNaN(pric.toString()) == true ||
+					pric <= 0
+				) {
+					alert("Please enter a correct price.");
+					return;
+				}
+				this.servicesToAdd[key].service = serv;
+				this.servicesToAdd[key].price = pric;
+			},
+			deleteService(key) {
+				this.servicesToAdd.splice(key, 1);
 			},
 		};
 	},

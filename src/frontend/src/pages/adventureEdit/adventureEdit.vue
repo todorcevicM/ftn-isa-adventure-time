@@ -79,7 +79,7 @@
 					v-if="updateToggle"
 				/>
 
-				<p class="smallText">Location</p>
+				<p class="smallText">Location</p>				
 				<p v-if="!updateToggle">{{ adventure.location }}</p>
 				<input
 					type="text"
@@ -108,8 +108,8 @@
 				/>
 
 				<p class="smallText">Info</p>
-				<p v-if="!updateToggle">
-					{{ adventure.priceAndInfo }}
+				<p v-for="item in servicePrice" :key="item">
+					{{ item.service }} : ${{ item.price }}
 				</p>
 				<input
 					type="text"
@@ -126,6 +126,28 @@
 					v-model="newAdventure.equipment"
 					v-if="updateToggle"
 				/>
+
+				<p class="smallText">Reservation Start</p>
+				<p v-if="!updateToggle">
+					{{ formattedReservationStart }}
+				</p>
+				<!-- TODO: -->
+				<!-- <input
+					type="date"
+					v-if="updateToggle"
+					v-model="newCottage.reservationStart"
+				/> -->
+
+				<p class="smallText">Reservation End</p>
+				<p v-if="!updateToggle">
+					{{ formattedReservationEnd }}
+				</p>
+				<!-- TODO: -->
+				<!-- <input
+					type="date"
+					v-if="updateToggle"
+					v-model="newCottage.reservationEnd"
+				/> -->
 
 				<p class="smallText">Person Limit</p>
 				<p v-if="!updateToggle">{{ adventure.maxUsers }} People</p>
@@ -229,6 +251,26 @@ export default {
 			percentTakenIfCancelled: localStorage.percentTakenIfCancelled,
 		});
 
+		let priceAndInfoString = localStorage.priceAndInfo;
+		let priceAndInfoArray = priceAndInfoString.split(";");
+		let servicePrice = [];
+		priceAndInfoArray.forEach((item, index) => {
+			if (item.length > 0) {
+				priceAndInfoArray[index] = item.split(":");
+				servicePrice.push({
+					service: priceAndInfoArray[index][0],
+					price: priceAndInfoArray[index][1],
+				});
+			}
+		});
+
+		let newStart = localStorage.startDate.split("T");
+		let newStartSecondPart = newStart[1].split(".")[0];
+		var formattedReservationStart = newStartSecondPart + ", " + newStart[0];
+		let newEnd = localStorage.endDate.split("T");
+		let newEndSecondPart = newEnd[1].split(".")[0];
+		var formattedReservationEnd = newEndSecondPart + ", " + newEnd[0];
+
 		// Adventure nema Date-a za formatiranje
 
 		// Za punjenje input-a na pocetku
@@ -250,6 +292,10 @@ export default {
 			canUpload,
 			selectedFile: null,
 			action,
+			servicePrice,
+			formattedReservationStart,
+			formattedReservationEnd,
+
 			imageSource(id) {
 				try {
 					return require("../../assets/images/adventure" +
@@ -271,7 +317,6 @@ export default {
 					this.newAdventure.geoLng == "" ||
 					this.newAdventure.location == "" ||
 					this.newAdventure.rules == "" ||
-					this.newAdventure.priceAndInfo == "" ||
 					this.newAdventure.promoDescription == "" ||
 					this.newAdventure.equipment == "" ||
 					this.newAdventure.maxUsers == "" ||

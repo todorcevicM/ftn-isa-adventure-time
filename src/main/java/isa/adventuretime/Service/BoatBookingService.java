@@ -36,7 +36,7 @@ public class BoatBookingService {
 	public ArrayList<Date> getFreeTime(Long id) {
 		Boat currentBoat = boatRepo.findById(id).get();
 		if (currentBoat == null) {
-			System.out.println("--> No boat with id: " + id + "\n");
+			System.out.println("No Boat with ID: " + id + "\n");
 			return null;
 		}
 		ArrayList<BoatBooking> bookings = boatBookingRepo.findAllByBookedBoatId(id);

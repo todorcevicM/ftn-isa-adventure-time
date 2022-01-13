@@ -37,8 +37,9 @@ public class AdventureBookingService {
 
 	public ArrayList<Date> getFreeTime(Long id) {
 		FishingInstructor fishingInstructor = fishingInstructorRepo.findById(id).get();
+
 		if (fishingInstructor == null) {
-			System.out.println("--> No fishingInstructor with id: " + id + "\n");
+			System.out.println("No Fishing Instructor with ID: " + id + "\n");
 			return null;
 		}
 		ArrayList<AdventureBooking> bookings = adventureBookingRepo.findAllByBookedInstructorId(id);

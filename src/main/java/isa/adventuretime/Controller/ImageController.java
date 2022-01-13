@@ -21,8 +21,8 @@ public class ImageController {
 
     @PostMapping(path = "/save/{namePic}")
 	public ResponseEntity<String> saveImage(@PathVariable("namePic") String namePic, @RequestParam ("file") MultipartFile multipartFile) throws Exception {
-        System.out.println("New picture name:");
-        System.out.println(namePic);
+        // System.out.println("New picture name:");
+        // System.out.println(namePic);
         String imgName = namePic + ".png";
         Path filepath = Paths.get("src/frontend/src/assets/images", imgName);
         if(System.getProperty("os.name").indexOf("Win") >= 0)

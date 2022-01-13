@@ -111,8 +111,8 @@
 				/>
 
 				<p class="smallText">Info</p>
-				<p v-if="!updateToggle">
-					{{ cottage.priceAndInfo }}
+				<p v-for="item in servicePrice" :key="item">
+					{{ item.service }} : ${{ item.price }}
 				</p>
 				<input
 					type="text"
@@ -255,6 +255,19 @@ export default {
 			reservationEnd: localStorage.reservationEnd,
 		});
 
+		let priceAndInfoString = localStorage.priceAndInfo;
+		let priceAndInfoArray = priceAndInfoString.split(";");
+		let servicePrice = [];
+		priceAndInfoArray.forEach((item, index) => {
+			if (item.length > 0) {
+				priceAndInfoArray[index] = item.split(":");
+				servicePrice.push({
+					service: priceAndInfoArray[index][0],
+					price: priceAndInfoArray[index][1],
+				});
+			}
+		});
+
 		// Formatiranje datuma
 		let newStart = cottage.value.reservationStart.split("T");
 		let newStartSecondPart = newStart[1].split(".")[0];
@@ -292,6 +305,8 @@ export default {
 			canUpload,
 			selectedFile: null,
 			action,
+			servicePrice, 
+			
 			imageSource(id) {
 				try {
 					return require("../../assets/images/cottage" + id + ".png");

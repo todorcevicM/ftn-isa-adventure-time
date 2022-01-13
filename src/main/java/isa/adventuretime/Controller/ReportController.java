@@ -40,14 +40,12 @@ public class ReportController {
 				reportService.setReportFlagToTrueRoom(bookingId);
 				break;
 			default:
-				System.out.println("Something went wrong >>> " + split[1].split(":")[1]);
+				System.out.println("No such Entity Type: " + split[1].split(":")[1]);
 				break;
 		}
 
 		Report newReport = new Report(registeredUserId, userShowedUp, reportText, forType, bookingId);
-		reportService.save(newReport);
-		// System.out.println(report.getBody());
-		return false;
+		return reportService.save(newReport) != null;
 	}
 
 }
