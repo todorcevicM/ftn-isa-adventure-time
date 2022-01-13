@@ -335,11 +335,13 @@ export default {
 								let priceAndInfoArray =
 									priceAndInfoString.split(";");
 								priceAndInfoArray.forEach((item, index) => {
-									priceAndInfoArray[index] = item.split(":");
-									searchResults.value[i].extraServices.push({
-										service: priceAndInfoArray[index][0],
-										price: priceAndInfoArray[index][1],
-									});
+									if (item.length > 0) {
+										priceAndInfoArray[index] = item.split(":");
+										searchResults.value[i].extraServices.push({
+											service: priceAndInfoArray[index][0],
+											price: priceAndInfoArray[index][1],
+										});
+									}
 								});
 							} else if (
 								// Provera da li je search-ovan Adventure, zbog vremena rada instruktora
@@ -354,11 +356,13 @@ export default {
 								let priceAndInfoArray =
 									priceAndInfoString.split(";");
 								priceAndInfoArray.forEach((item, index) => {
-									priceAndInfoArray[index] = item.split(":");
-									searchResults.value[i].extraServices.push({
-										service: priceAndInfoArray[index][0],
-										price: priceAndInfoArray[index][1],
-									});
+									if (item.length > 0) {
+										priceAndInfoArray[index] = item.split(":");
+										searchResults.value[i].extraServices.push({
+											service: priceAndInfoArray[index][0],
+											price: priceAndInfoArray[index][1],
+										});
+									}
 								});
 							} else {
 								let newStart =
@@ -383,11 +387,13 @@ export default {
 								let priceAndInfoArray =
 									priceAndInfoString.split(";");
 								priceAndInfoArray.forEach((item, index) => {
-									priceAndInfoArray[index] = item.split(":");
-									searchResults.value[i].extraServices.push({
-										service: priceAndInfoArray[index][0],
-										price: priceAndInfoArray[index][1],
-									});
+									if (item.length > 0) {
+										priceAndInfoArray[index] = item.split(":");
+										searchResults.value[i].extraServices.push({
+											service: priceAndInfoArray[index][0],
+											price: priceAndInfoArray[index][1],
+										});
+									}
 								});
 							}
 						}

@@ -110,7 +110,7 @@
 					v-model="newCottage.rules"
 				/>
 
-				<p class="smallText">Info</p>
+				<p class="smallText">Extra Services</p>
 				<p v-for="item in servicePrice" :key="item">
 					{{ item.service }} : ${{ item.price }}
 				</p>

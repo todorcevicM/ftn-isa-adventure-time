@@ -961,12 +961,12 @@ export default {
 								for (const key in response.data) {
 									if (!(key === "password")) {
 										// TODO: Jel nam treba ovo?
-										if (key === "priceAndInfo") {
-											localStorage.setItem(
-												"extraService",
-												response.data[key]
-											);
-										}
+										// if (key === "priceAndInfo") {
+										// 	localStorage.setItem(
+										// 		"extraService",
+										// 		response.data[key]
+										// 	);
+										// }
 										localStorage.setItem(
 											key,
 											response.data[key]
@@ -1012,19 +1012,28 @@ export default {
 				switch (type) {
 					case 1:
 						// console.log("CASE 1 ID ZA IMAGESOURCE : " + id);
-						return require("../../assets/images/cottage" +
-							id +
-							".png");
+						try {
+							return require("../../assets/images/cottage" + id + ".png");
+						}
+						catch (err) {
+							return require("../../assets/images/cottage1.png");
+						}
 					case 2:
 						// console.log("CASE 2 ID ZA IMAGESOURCE : " + id);
-						return require("../../assets/images/adventure" +
-							id +
-							".png");
+						try {
+							return require("../../assets/images/adventure" + id + ".png");
+						}
+						catch (err) {
+							return require("../../assets/images/adventure1.png");
+						}
 					case 3:
 						// console.log("CASE 3 ID ZA IMAGESOURCE : " + id);
-						return require("../../assets/images/boat" +
-							id +
-							".png");
+						try {
+							return require("../../assets/images/boat" + id + ".png");
+						}
+						catch (err) {
+							return require("../../assets/images/boat1.png");
+						}
 				}
 			},
 			deleteAccount() {

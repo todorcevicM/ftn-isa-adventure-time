@@ -77,7 +77,7 @@
 				<p>{{ boat.promoDescription }}</p>
 				<p class="smallText">Rules</p>
 				<p>{{ boat.rules }}</p>
-				<p class="smallText">Info</p>
+				<p class="smallText">Extra Services</p>
 				<p v-for="item in servicePrice" :key="item">
 					{{ item.service }} : ${{ item.price }}
 				</p>
@@ -175,11 +175,13 @@ export default {
 		let priceAndInfoArray = priceAndInfoString.split(";");
 		let servicePrice = [];
 		priceAndInfoArray.forEach((item, index) => {
-			priceAndInfoArray[index] = item.split(":");
-			servicePrice.push({
-				service: priceAndInfoArray[index][0],
-				price: priceAndInfoArray[index][1],
-			});
+			if (item.length > 0) {
+				priceAndInfoArray[index] = item.split(":");
+				servicePrice.push({
+					service: priceAndInfoArray[index][0],
+					price: priceAndInfoArray[index][1],
+				});
+			}
 		});
 
 		// Formatiranje datuma
