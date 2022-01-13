@@ -254,8 +254,7 @@ export default {
 				try {
 					return require("../../assets/images/cottage" + id + ".png");
 				} catch (e) {
-					// TODO: return praznu sliku ili nesto tako
-					return require("../../assets/images/cottage1.png");
+					return require("../../assets/images/default_cottage.png");
 				}
 			},
 			createBooking(entityId) {

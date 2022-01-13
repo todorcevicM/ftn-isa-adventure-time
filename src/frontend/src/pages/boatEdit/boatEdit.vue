@@ -351,7 +351,6 @@ export default {
 			extraServices: "",
 		});
 
-		// Za u <template>
 		return {
 			boat,
 			newBoat,
@@ -369,7 +368,7 @@ export default {
 				try {
 					return require("../../assets/images/boat" + id + ".png");
 				} catch (err) {
-					return require("../../assets/images/boat1.png");
+					return require("../../assets/images/default_boat.png");
 				}
 			},
 			updateDetails() {
@@ -460,7 +459,7 @@ export default {
 				try {
 					return require("../../assets/images/boat_" + id + ".png");
 				} catch (err) {
-					return require("../../assets/images/boat1.png");
+					return require("../../assets/images/default_boat.png");
 				}
 			},
 			createAction() {

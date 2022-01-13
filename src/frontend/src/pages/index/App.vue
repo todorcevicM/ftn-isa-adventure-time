@@ -26,7 +26,6 @@
 		</div>
 
 		<!-- Login -->
-		<!-- <div v-if="loginState" style="height: 500px"></div> -->
 		<div v-if="loginState" class="popupLogin">
 			<div style="height: 20px"></div>
 			<!-- Spacer -->
@@ -280,7 +279,7 @@ export default {
 		var popupState = ref(null);
 		var loginState = ref(null);
 		var firstPassword = ref(null);
-		var repeatPassword = ref(null); // Ako se inicijalizuje ovde na "Do passwords match?", kasnice update-ovanje za jedan
+		var repeatPassword = ref(null); 
 		var matching = ref(null);
 		var userType = ref(null);
 		var userEmail = ref(null);
@@ -291,9 +290,6 @@ export default {
 		var userCity = ref(null);
 		var userCountry = ref(null);
 		var userRegistrationReason = ref(null);
-		// var signUpMessageOn = ref(null);
-		// var signUpMessageKind = ref(null);
-		// var signUpMessageText = ref(null);
 		var cottageNumToDisplay = ref(null);
 		var showAllCottagesToggle = ref(null);
 		showAllCottagesToggle = true;
@@ -315,7 +311,6 @@ export default {
 			boats.value = response.data;
 		});
 
-		// Za u <template>
 		return {
 			cottages,
 			adventures,
@@ -334,9 +329,6 @@ export default {
 			userCity,
 			userCountry,
 			userRegistrationReason,
-			// signUpMessageOn,
-			// signUpMessageKind,
-			// signUpMessageText,
 			cottageNumToDisplay,
 			showAllCottagesToggle,
 			adventureNumToDisplay,
@@ -356,40 +348,31 @@ export default {
 			imageSource(type, id) {
 				switch (type) {
 					case 1:
-						// console.log("CASE 1 ID ZA IMAGESOURCE : " + id);
 						try {
 							return require("../../assets/images/cottage" + id + ".png");
 						}
 						catch (err) {
-							return require("../../assets/images/cottage1.png");
+							return require("../../assets/images/default_cottage.png");
 						}
 					case 2:
-						// console.log("CASE 2 ID ZA IMAGESOURCE : " + id);
 						try {
 							return require("../../assets/images/adventure" + id + ".png");
 						}
 						catch (err) {
-							return require("../../assets/images/adventure1.png");
+							return require("../../assets/images/default_adventure.png");
 						}
 					case 3:
-						// console.log("CASE 3 ID ZA IMAGESOURCE : " + id);
 						try {
 							return require("../../assets/images/boat" + id + ".png");
 						}
 						catch (err) {
-							return require("../../assets/images/boat1.png");
+							return require("../../assets/images/default_boat.png");
 						}
 				}
 			},
 			openPopup() {
 				popupState.value = true;
 			},
-			// TODO: Ovo se vise ne koristi, koristimo alert()
-			// renderSecondPopup(on, kind, text) {
-			// 	this.signUpMessageOn = on;
-			// 	this.signUpMessageKind = kind;
-			// 	this.signUpMessageText = text;
-			// },
 			registerUser() {
 				var standardUser = false;
 				if (
@@ -405,22 +388,16 @@ export default {
 					this.repeatPassword == null
 				) {
 					alert("All fields need to be filled, try again.");
-					// this.renderSecondPopup(
-					// 	true,
-					// 	"failed",
-					// 	"All fields need to be filled, try again."
-					// );
 				} else {
-					// Provera korektnog formata Email-a
-					// TODO: prolazi a@., a ne treba
 					if (
 						!(
 							(
 								this.userEmail.includes("@") &&
-								this.userEmail.indexOf("@") !=
-									this.userEmail.length - 1 &&
-								this.userEmail.indexOf("@") != 0
-							) // Proverava da li imamo nesto posle @ ili pre @
+								this.userEmail.indexOf("@") != this.userEmail.length - 1 &&
+								this.userEmail.indexOf("@") != 0 &&
+								this.userEmail.indexOf(".") != this.userEmail.length - 1 &&
+								this.userEmail.indexOf("@") + 1 != this.userEmail.indexOf(".")
+							)
 						)
 					) {
 						alert(
@@ -428,9 +405,6 @@ export default {
 						);
 						return;
 					}
-					// this.signUpMessageOn = false;
-					// this.signUpMessageKind = "failed";
-					// this.signUpMessageText = "Sample Text";
 					if (this.firstPassword == this.repeatPassword) {
 						var user = {
 							userType: "",
@@ -463,8 +437,6 @@ export default {
 						axios
 							.post("/api/user/create", user)
 							.then(function (response) {
-								// console.log("From AXIOS POST");
-								// console.log(response);
 								if (
 									response.data ==
 									"Error - User with that E-mail already exists."
@@ -472,23 +444,6 @@ export default {
 									alert(
 										"User with that E-mail already exists."
 									);
-									// TODO: Iz .then()-a nikako ne mogu niti da return-ujem promenljive koje se koriste u setup()-u, niti da zovem neku funkciju. Ne radi ni this. ni .value, ne mogu ni da izcupam vrednost iz response.data u neku promenljivu pa da nju prosledim nekoj drugoj funkciji, nista. Ne moze ni da se bind-uje this u scope .then()-a, nista ne moze da vidi.
-									// Za sad radi alert(), i to je to.
-
-									// this.renderSecondPopup(
-									// 	true,
-									// 	"failed",
-									// 	"User with that E-mail already exists."
-									// );
-									// signUpMessageOn = true;
-									// signUpMessageKind = "failed";
-									// signUpMessageText =
-									// 	"User with that E-mail already exists.";
-									// return (
-									// 	signUpMessageOn,
-									// 	signUpMessageKind,
-									// 	signUpMessageText
-									// );
 								} else {
 									if (standardUser) {
 										alert(
@@ -499,26 +454,10 @@ export default {
 											"A registration request has been sent to the Administrator. Keep your eye open for a verification email!"
 										);
 									}
-									// TODO: Ovde je isti problem
-									// popupState.value = false; // Zatvara sign up popup
-									// signUpMessageOn = true;
-									// signUpMessageKind = "success";
-									// signUpMessageText =
-									// 	"A registration request has been sent to the Administrator. Keep your eye open for a verification email!";
-									// return (
-									// 	signUpMessageOn,
-									// 	signUpMessageKind,
-									// 	signUpMessageText
-									// );
 								}
 							});
 					} else {
 						alert("Passwords don't match, try again.");
-						// this.renderSecondPopup(
-						// 	true,
-						// 	"failed",
-						// 	"Passwords don't match, try again."
-						// );
 					}
 				}
 			},
@@ -528,21 +467,16 @@ export default {
 			loginUser() {
 				if (this.userEmail == null || this.firstPassword == null) {
 					alert("All fields need to be filled, try again.");
-					// this.renderSecondPopup(
-					// 	true,
-					// 	"failed",
-					// 	"All fields need to be filled, try again."
-					// );
 				} else {
-					// Provera korektnog formata Email-a
 					if (
 						!(
 							(
 								this.userEmail.includes("@") &&
-								this.userEmail.indexOf("@") !=
-									this.userEmail.length - 1 &&
-								this.userEmail.indexOf("@") != 0
-							) // Proverava da li imamo nesto posle @
+								this.userEmail.indexOf("@") != this.userEmail.length - 1 &&
+								this.userEmail.indexOf("@") != 0 && 
+								this.userEmail.indexOf(".") != this.userEmail.length - 1 &&
+								this.userEmail.indexOf("@") + 1 != this.userEmail.indexOf(".")
+							) 
 						)
 					) {
 						alert(

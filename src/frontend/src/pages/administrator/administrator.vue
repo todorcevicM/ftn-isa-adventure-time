@@ -988,16 +988,15 @@ export default {
 				) {
 					alert("All fields need to be filled, try again.");
 				} else {
-					// Provera korektnog formata Email-a
-					// TODO: prolazi a@., a ne treba
 					if (
 						!(
 							(
-								this.newAdminEmail.includes("@") &&
-								this.newAdminEmail.indexOf("@") !=
-									this.newAdminEmail.length - 1 &&
-								this.newAdminEmail.indexOf("@") != 0
-							) // Proverava da li imamo nesto posle @ ili pre @
+								this.newAdminEmail.includes("@") && 
+								this.newAdminEmail.indexOf("@") != this.newAdminEmail.length - 1 &&
+								this.newAdminEmail.indexOf("@") != 0 && 
+								this.newAdminEmail.indexOf(".") != this.newAdminEmail.length - 1 &&
+								this.newAdminEmail.indexOf("@") + 1 != this.newAdminEmail.indexOf(".")
+							) 
 						)
 					) {
 						alert(

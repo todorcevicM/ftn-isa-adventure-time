@@ -318,7 +318,6 @@ export default {
 			extraServices: "",
 		});
 
-		// Za u <template>
 		return {
 			cottage,
 			newCottage,
@@ -337,7 +336,7 @@ export default {
 				try {
 					return require("../../assets/images/cottage" + id + ".png");
 				} catch (e) {
-					return require("../../assets/images/cottage1.png");
+					return require("../../assets/images/default_cottage.png");
 				}
 			},
 			addRoom() {
@@ -472,7 +471,7 @@ export default {
 						id +
 						".png");
 				} catch (e) {
-					return require("../../assets/images/cottage1.png");
+					return require("../../assets/images/default_cottage.png");
 				}
 			},
 			createAction() {

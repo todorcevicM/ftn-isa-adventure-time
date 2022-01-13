@@ -131,23 +131,11 @@
 				<p v-if="!updateToggle">
 					{{ formattedReservationStart }}
 				</p>
-				<!-- TODO: -->
-				<!-- <input
-					type="date"
-					v-if="updateToggle"
-					v-model="newCottage.reservationStart"
-				/> -->
 
 				<p class="smallText">Reservation End</p>
 				<p v-if="!updateToggle">
 					{{ formattedReservationEnd }}
 				</p>
-				<!-- TODO: -->
-				<!-- <input
-					type="date"
-					v-if="updateToggle"
-					v-model="newCottage.reservationEnd"
-				/> -->
 
 				<p class="smallText">Person Limit</p>
 				<p v-if="!updateToggle">{{ adventure.maxUsers }} People</p>
@@ -308,7 +296,6 @@ export default {
 			extraServices: "",
 		});
 
-		// Za u <template>
 		return {
 			adventure,
 			newAdventure,
@@ -328,7 +315,7 @@ export default {
 						id +
 						".png");
 				} catch (err) {
-					return require("../../assets/images/adventure1.png");
+					return require("../../assets/images/default_adventure.png");
 				}
 			},
 			updateDetails() {
@@ -399,7 +386,7 @@ export default {
 						id +
 						".png");
 				} catch (err) {
-					return require("../../assets/images/adventure1.png");
+					return require("../../assets/images/default_adventure.png");
 				}
 			},
 			createAction() {

@@ -140,7 +140,6 @@ export default {
 
 		var servicesToAdd = ref([]);
 
-		// Za u <template>
 		return {
 			newCottage,
 			roomsToAdd,

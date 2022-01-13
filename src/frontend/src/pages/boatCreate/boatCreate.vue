@@ -159,7 +159,6 @@ export default {
 
 		var servicesToAdd = ref([]);
 
-		// Za u <template>
 		return {
 			newBoat,
 			servicesToAdd,

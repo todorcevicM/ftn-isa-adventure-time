@@ -74,7 +74,7 @@ export default {
 		var entities = ref(null);
 		if (localStorage.type == "FISHING_INSTRUCTOR") {
 			axios
-				.get("/api/adventures/getByInstructor/" + localStorage.userId)
+				.get("/api/adventures/getAllByInstructorId/" + localStorage.userId)
 				.then((result) => {
 					entities.value = result.data;
 				});
@@ -86,7 +86,7 @@ export default {
 				});
 		} else if (localStorage.type == "BOAT_OWNER") {
 			axios
-				.get("/api/boats/getByOwner/" + localStorage.userId)
+				.get("/api/boats/getAllByOwnerId/" + localStorage.userId)
 				.then((result) => {
 					entities.value = result.data;
 				});

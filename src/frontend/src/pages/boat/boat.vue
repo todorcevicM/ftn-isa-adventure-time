@@ -270,8 +270,7 @@ export default {
 				try {
 					return require("../../assets/images/boat" + id + ".png");
 				} catch (e) {
-					// TODO: return praznu sliku ili nesto tako
-					return require("../../assets/images/boat1.png");
+					return require("../../assets/images/default_boat.png");
 				}
 			},
 			createBooking(entityId) {

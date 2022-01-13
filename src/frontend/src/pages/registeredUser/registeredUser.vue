@@ -611,8 +611,6 @@ export default {
 		var matching = ref(null);
 		var passwordChangeToggle = ref(null);
 
-		// TODO: revision da sakrijem dugme
-
 		var pastBoatBookingsDTO = ref(null);
 		axios
 			.get(
@@ -1011,28 +1009,25 @@ export default {
 			imageSource(type, id) {
 				switch (type) {
 					case 1:
-						// console.log("CASE 1 ID ZA IMAGESOURCE : " + id);
 						try {
 							return require("../../assets/images/cottage" + id + ".png");
 						}
 						catch (err) {
-							return require("../../assets/images/cottage1.png");
+							return require("../../assets/images/default_cottage.png");
 						}
 					case 2:
-						// console.log("CASE 2 ID ZA IMAGESOURCE : " + id);
 						try {
 							return require("../../assets/images/adventure" + id + ".png");
 						}
 						catch (err) {
-							return require("../../assets/images/adventure1.png");
+							return require("../../assets/images/default_adventure.png");
 						}
 					case 3:
-						// console.log("CASE 3 ID ZA IMAGESOURCE : " + id);
 						try {
 							return require("../../assets/images/boat" + id + ".png");
 						}
 						catch (err) {
-							return require("../../assets/images/boat1.png");
+							return require("../../assets/images/default_boat.png");
 						}
 				}
 			},
@@ -1081,7 +1076,6 @@ export default {
 							revision: revision,
 							rating: rating,
 							type: type,
-							// TODO: ne salje se main entity id, dodati
 						},
 						{ headers: { "Content-Type": "application/json" } }
 					)

@@ -72,7 +72,7 @@ public class AdventureController {
 		return new ResponseEntity<Adventure>(adventureService.save(newAdventure), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/getByInstructor/{id}")
+	@GetMapping(path = "/getAllByInstructorId/{id}")
 	public ResponseEntity<ArrayList<Adventure>> getAdventuresByInstructor(@PathVariable("id") Long id) {
 		return new ResponseEntity<ArrayList<Adventure>>(adventureService.findByInstructorId(id), HttpStatus.OK);
 	}

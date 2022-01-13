@@ -229,7 +229,13 @@ export default {
 			servicePrice,
 
 			imageSource(id) {
-				return require("../../assets/images/adventure" + id + ".png");
+				try {
+					return require("../../assets/images/adventure" +
+						id +
+						".png");
+				} catch (err) {
+					return require("../../assets/images/default_adventure.png");
+				}
 			},
 			reserve() {
 				alert("Not implemented yet!");

@@ -359,7 +359,7 @@ export default {
 
 		var adventures = ref(null);
 		axios
-			.get("/api/adventures/getByInstructor/" + localStorage["userId"])
+			.get("/api/adventures/getAllByInstructorId/" + localStorage["userId"])
 			.then(function (response) {
 				adventures.value = response.data;
 			});

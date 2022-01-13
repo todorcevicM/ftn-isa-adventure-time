@@ -302,7 +302,7 @@ export default {
 			});
 		var boats = ref(null);
 		axios
-			.get("/api/boats/getByOwner/" + localStorage["userId"])
+			.get("/api/boats/getAllByOwnerId/" + localStorage["userId"])
 			.then(function (response) {
 				boats.value = response.data;
 			});
