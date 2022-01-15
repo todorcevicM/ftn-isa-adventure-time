@@ -189,7 +189,7 @@ public class BookingController {
 	}
 
 	@PostMapping(path = "/boat")
-	public Boolean bookBoat(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
+	public ResponseEntity<Boolean> bookBoat(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
 
 		String params[] = param.getBody().split(",", 8);
 		Long boatId = Long.parseLong(params[0].split(":")[1]);
@@ -229,12 +229,14 @@ public class BookingController {
 
 		ArrayList<Boat> boats = boatService.getAllBySearchQuery(boatName, startDate, endDate, guests);
 		Boat testBoat;
+		System.out.println(boats.size());
 		try {
 			testBoat = boats.get(0);
 		} catch (Exception e) {
 			System.err.println(e);
-			return false;
+			return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
 		}
+		System.out.println(testBoat.getId());
 		BoatBooking boatBooking = new BoatBooking(
 				testBoat.getId(),
 				userId,
@@ -252,7 +254,11 @@ public class BookingController {
 				"Reservation");
 
 		BoatBooking bb = boatBookingService.save(boatBooking);
-		return bb != null;
+		if (bb != null) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PostMapping(path = "/adventure")

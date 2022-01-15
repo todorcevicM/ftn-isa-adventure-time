@@ -33,6 +33,11 @@ public class BoatBookingService {
 		return boatBookingRepo.getById(id);
 	}
 
+	public Boolean checkAvailable(Long id) {
+		Date now = new Date();
+		return !boatBookingRepo.existsByBookedBoatIdAndStartBeforeAndEndAfter(id, now, now);
+	}
+
 	public ArrayList<Date> getFreeTime(Long id) {
 		Boat currentBoat = boatRepo.findById(id).get();
 		if (currentBoat == null) {

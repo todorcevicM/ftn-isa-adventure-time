@@ -433,14 +433,24 @@ export default {
 				});
 			},
 			viewBoat(id) {
-				axios.get("/api/boats/get/" + id).then(function (response) {
-					for (const key in response.data) {
-						if (!(key === "password")) {
-							localStorage.setItem(key, response.data[key]);
+				axios.get("/api/boats/checkAvailable/" + id).then(
+					function (response) {
+						if (!response.data) {
+							alert("This boat is not available for editing as a booking currently exists.");
+						} 
+						else {
+							axios.get("/api/boats/get/" + id).then(function (response) {
+								for (const key in response.data) {
+									if (!(key === "password")) {
+										localStorage.setItem(key, response.data[key]);
+									}
+								}
+								window.location.href = "/boatEdit/" + id;
+							});
 						}
 					}
-					window.location.href = "/boatEdit/" + id;
-				});
+				)
+				
 			},
 			addNewBoat() {
 				window.location.assign("/boatCreate/" + localStorage.emailHash);

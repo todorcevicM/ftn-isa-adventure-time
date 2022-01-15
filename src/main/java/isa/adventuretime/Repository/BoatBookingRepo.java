@@ -25,6 +25,8 @@ public interface BoatBookingRepo extends JpaRepository<BoatBooking, Long> {
 
 	public Boolean existsByBookedBoatIdAndStartAfter(Long id, Date date);
 
+	public Boolean existsByBookedBoatIdAndStartBeforeAndEndAfter(Long id, Date start, Date end);
+
 	public ArrayList<BoatBooking> findAllByBookedBoatIdAndEndBefore(Long id, Date date);
 
 	// public Boolean

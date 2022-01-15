@@ -31,6 +31,11 @@ public class BoatController {
 		return new ResponseEntity<ArrayList<Boat>>(boatService.findAll(), HttpStatus.OK);
 	}
 
+	@GetMapping(path = "/checkAvailable/{id}")
+	public Boolean checkAvailable(@PathVariable("id") Long id) {
+		return boatBookingService.checkAvailable(id);
+	}
+
 	@GetMapping(path = "/get/{id}")
 	public ResponseEntity<Boat> getBoat(@PathVariable("id") Long id) {
 		Boat boat = boatService.getById(id);
