@@ -25,23 +25,8 @@
 				<div style="height: 40px"></div>
 				<div class="leftFlexEntry">
 					<p>Occupancy Calendar</p>
-					<button @click="notImplemented()">Show</button>
+					<button @click="calendar()">Show</button>
 				</div>
-				<calendar-view
-					:show-date="showDate"
-					:events="events"
-					class="
-						theme-default
-						holiday-us-traditional holiday-us-official
-					"
-				>
-					<template #header="{ headerProps }">
-						<calendar-view-header
-							:header-props="headerProps"
-							@input="setShowDate"
-						/>
-					</template>
-				</calendar-view>
 				<!-- Spacer -->
 				<div style="height: 20px"></div>
 			</div>
@@ -292,13 +277,7 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
-import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
-import "../../../node_modules/vue-simple-calendar/dist/style.css";
 export default {
-	components: {
-		CalendarView,
-		CalendarViewHeader,
-	},
 	setup() {
 		var user = ref(null);
 		axios
@@ -359,18 +338,6 @@ export default {
 		var cb1 = ref(false);
 		var cb2 = ref(false);
 		return {
-			showDate: new Date(),
-			setShowDate(d) {
-				this.showDate = d;
-			},
-			events: [
-				{
-					id: "e1",
-					startDate: "2022-01-01",
-					endDate: "2018-01-02",
-					title: "Sample event 1",
-				},
-			],
 			user,
 			pastBoatBookings,
 			boatNameBoatBookingDTO,
@@ -390,6 +357,9 @@ export default {
 			cb2,
 			notImplemented() {
 				alert("Not implemented yet!");
+			},
+			calendar() {
+				window.location.href = "/calendar";
 			},
 			updateDetails() {
 				this.updateToggle = true;

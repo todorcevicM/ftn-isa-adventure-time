@@ -25,7 +25,7 @@
 				<div style="height: 40px"></div>
 				<div class="leftFlexEntry">
 					<p>Occupancy Calendar</p>
-					<button @click="notImplemented()">Show</button>
+					<button @click="calendar()">Show</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 20px"></div>
@@ -428,6 +428,9 @@ export default {
 			formattedDateEnd,
 			notImplemented() {
 				alert("Not implemented yet!");
+			},
+			calendar() {
+				window.location.href = "/calendar";
 			},
 			updateDetails() {
 				this.updateToggle = true;

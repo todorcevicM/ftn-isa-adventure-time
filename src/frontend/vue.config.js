@@ -77,6 +77,10 @@ module.exports = {
 		confirmationPage: {
 			entry: "src/pages/confirmationPage/main.js",
 			title: "Confirmation Page",
+		},
+		calendar: {
+			entry: "src/pages/calendar/main.js",
+			title: "Calendar",
 		}
 	},
 	devServer: {
