@@ -19,7 +19,7 @@
 					<p>Business Reports</p>
 					<button @click="getReportYear()">Year</button>
 					<button @click="getReportMonth()">Month</button>
-					<button @click="getReportWeek()">Week</button>	
+					<button @click="getReportWeek()">Week</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
@@ -147,14 +147,10 @@
 					>
 						<div class="entryLeft">
 							<p class="entryLeftShort">
-								User :
 								{{ booking.userName }}
 							</p>
 							<p class="entryLeftShort">
 								{{ booking.adventureBooking.extraService }}
-							</p>
-							<p class="entryLeftShort">
-								Price : {{ booking.adventureBooking.price }}.00
 							</p>
 						</div>
 						<div class="entryRight">
@@ -196,29 +192,39 @@
 					<h3>Current Adventure Bookings</h3>
 					<button @click="notImplemented()">Sort</button>
 				</div>
-				<div v-for="anab in adventureNameAdventureBookingDTO" :key="anab">
+				<div
+					v-for="anab in adventureNameAdventureBookingDTO"
+					:key="anab"
+				>
 					<p class="tableSubEntry">
 						{{ anab.adventureName }}
 					</p>
-					<div 
+					<div
 						class="tableEntry"
-						v-for="booking in anab.userNameAdventureBookingDTO" :key="booking"
+						v-for="booking in anab.userNameAdventureBookingDTO"
+						:key="booking"
 					>
 						<div class="entryLeft">
-							<p class="entryLeftShort"> User: {{ booking.userName }} </p>
+							<p class="entryLeftShort">
+								{{ booking.userName }}
+							</p>
 							<p class="entryLeftShort">
 								{{ anab.start }}
 							</p>
 							<p class="entryLeftShort">
 								{{ anab.end }}
 							</p>
-
 						</div>
 						<div class="entryRight">
 							<button
 								class="entryApprove"
 								style="width: 260px"
-								@click="createNewBooking(booking.adventureBooking.registeredUserId)"
+								@click="
+									createNewBooking(
+										booking.adventureBooking
+											.registeredUserId
+									)
+								"
 							>
 								Create New Booking
 							</button>
@@ -359,7 +365,9 @@ export default {
 
 		var adventures = ref(null);
 		axios
-			.get("/api/adventures/getAllByInstructorId/" + localStorage["userId"])
+			.get(
+				"/api/adventures/getAllByInstructorId/" + localStorage["userId"]
+			)
 			.then(function (response) {
 				adventures.value = response.data;
 			});
@@ -372,15 +380,21 @@ export default {
 			.then(function (response) {
 				adventureNameAdventureBookingDTO.value = response.data;
 				console.log(adventureNameAdventureBookingDTO.value);
-				adventureNameAdventureBookingDTO.value.forEach(function (adventureNameAdventureBooking) {
+				adventureNameAdventureBookingDTO.value.forEach(function (
+					adventureNameAdventureBooking
+				) {
 					adventureNameAdventureBooking.start = new Date(
 						adventureNameAdventureBooking.userNameAdventureBookingDTO[0].adventureBooking.start
-					).toString().substring(0, 15);
+					)
+						.toString()
+						.substring(0, 15);
 
 					adventureNameAdventureBooking.end = new Date(
 						adventureNameAdventureBooking.userNameAdventureBookingDTO[0].adventureBooking.end
-					).toString().substring(0, 15);
-				})
+					)
+						.toString()
+						.substring(0, 15);
+				});
 			});
 
 		var searchQuery = ref(null);
@@ -508,8 +522,14 @@ export default {
 								localStorage.setItem(key, response.data[key]);
 							}
 						}
-						localStorage.setItem("startDate", localStorage.startWorkPeriod);
-						localStorage.setItem("endDate", localStorage.endWorkPeriod);
+						localStorage.setItem(
+							"startDate",
+							localStorage.startWorkPeriod
+						);
+						localStorage.setItem(
+							"endDate",
+							localStorage.endWorkPeriod
+						);
 						window.location.href = "/adventureEdit/" + id;
 					});
 			},
@@ -583,41 +603,47 @@ export default {
 						window.location.reload();
 					});
 			},
-			getReportYear(){
+			getReportYear() {
 				axios
-					.get("/api/fishingInstructor/profitYear/" + localStorage["userId"])
-					.then(function(response){
+					.get(
+						"/api/fishingInstructor/profitYear/" +
+							localStorage["userId"]
+					)
+					.then(function (response) {
 						if (response.data > 0) {
 							alert("Profit for last year: " + response.data);
 						} else {
 							alert("Something is wrong, ask Mike Oxlong");
 						}
-					})
-
+					});
 			},
-			getReportMonth(){
+			getReportMonth() {
 				axios
-					.get("/api/fishingInstructor/profitMonth/" + localStorage["userId"])
-					.then(function(response){
+					.get(
+						"/api/fishingInstructor/profitMonth/" +
+							localStorage["userId"]
+					)
+					.then(function (response) {
 						if (response.data > 0) {
 							alert("Profit for last month: " + response.data);
 						} else {
 							alert("Something is wrong, ask Mike Oxlong");
 						}
-					})
-
+					});
 			},
-			getReportWeek(){
+			getReportWeek() {
 				axios
-					.get("/api/fishingInstructor/profitWeek/" + localStorage["userId"])
-					.then(function(response){
+					.get(
+						"/api/fishingInstructor/profitWeek/" +
+							localStorage["userId"]
+					)
+					.then(function (response) {
 						if (response.data > 0) {
 							alert("Profit for last week: " + response.data);
 						} else {
 							alert("Something is wrong, ask Mike Oxlong");
 						}
-					})
-
+					});
 			},
 		};
 	},

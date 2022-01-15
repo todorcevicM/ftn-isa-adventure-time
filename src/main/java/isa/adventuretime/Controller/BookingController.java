@@ -118,7 +118,8 @@ public class BookingController {
 	}
 
 	@PostMapping(path = "/room")
-	public Boolean bookRoom(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
+	public ResponseEntity<Boolean> bookRoom(RequestEntity<String> param)
+			throws AddressException, UnsupportedEncodingException {
 
 		String params[] = param.getBody().split(",", 8);
 		Long cottageId = Long.parseLong(params[0].split(":")[1]);
@@ -134,11 +135,10 @@ public class BookingController {
 				Integer.parseInt(time.split(":")[1]), 0);
 		int days = Integer.parseInt(params[3].split(":")[1]);
 		int guests = Integer.parseInt(params[4].split(":")[1]);
-		
-		Long userId = Long.parseLong(params[6].split(":")[1].replace("\"",""));
+
+		Long userId = Long.parseLong(params[6].split(":")[1].replace("\"", ""));
 		// String extraServices = params[7];//.split(":")[1].replace("\"", "");
 		// // .replace("}", ""));
-
 
 		Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
@@ -146,25 +146,26 @@ public class BookingController {
 
 		String extraServices = "";
 		String servicesParsed = params[7];
-		System.out.println(servicesParsed);
-		servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
-		servicesParsed = servicesParsed.replace("]}", "");
-
-		String servicesChecked[] = servicesParsed.split(",");
 		Cottage cottage = cottageService.getById(cottageId);
 		String priceAndInfo[] = cottage.getPriceAndInfo().split(";");
 		String cottageName = cottage.getName();
 
-		for (String fromFront : servicesChecked) {
-			extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+		if (servicesParsed == "") {
+			servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
+			servicesParsed = servicesParsed.replace("]}", "");
+			String servicesChecked[] = servicesParsed.split(",");
+
+			for (String fromFront : servicesChecked) {
+				extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+			}
+			extraServices += "ß";
+			extraServices = extraServices.replace(";ß", "");
 		}
-		extraServices += "ß";
-		extraServices = extraServices.replace(";ß", "");
 
 		ArrayList<CottageWithRoomDTO> rooms = cottageService.getAllBySearchQuery(cottageName, startDate, endDate,
 				guests);
 		if (rooms == null || rooms.isEmpty())
-			return false;
+			return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
 
 		CottageWithRoomDTO room = rooms.get(0);
 		Room r = room.getRoom();
@@ -185,11 +186,17 @@ public class BookingController {
 						+ cottageName + "\n Time Period: " + startDate + " - " + endDate + ".",
 				"Reservation");
 
-		return roomBookingService.save(roomBooking) != null;
+		RoomBooking rb = roomBookingService.save(roomBooking);
+		if (rb != null)
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+
 	}
 
 	@PostMapping(path = "/boat")
-	public ResponseEntity<Boolean> bookBoat(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
+	public ResponseEntity<Boolean> bookBoat(RequestEntity<String> param)
+			throws AddressException, UnsupportedEncodingException {
 
 		String params[] = param.getBody().split(",", 8);
 		Long boatId = Long.parseLong(params[0].split(":")[1]);
@@ -206,7 +213,7 @@ public class BookingController {
 		int days = Integer.parseInt(params[3].split(":")[1]);
 		int guests = Integer.parseInt(params[4].split(":")[1]);
 		// Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", ""));
-		Long userId = Long.parseLong(params[6].split(":")[1].replace("\"","").replace("}", ""));
+		Long userId = Long.parseLong(params[6].split(":")[1].replace("\"", "").replace("}", ""));
 
 		Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
@@ -214,26 +221,27 @@ public class BookingController {
 
 		String extraServices = "";
 		String servicesParsed = params[7];
-		servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
-		servicesParsed = servicesParsed.replace("]}", "");
-		String servicesChecked[] = servicesParsed.split(",");
 		Boat boat = boatService.getById(boatId);
 		String priceAndInfo[] = boat.getPriceAndInfo().split(";");
 		String boatName = boat.getName();
+		if (servicesParsed == "") {
+			servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
+			servicesParsed = servicesParsed.replace("]}", "");
+			String servicesChecked[] = servicesParsed.split(",");
 
-		for (String fromFront : servicesChecked) {
-			extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+			for (String fromFront : servicesChecked) {
+				extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+			}
+			extraServices += "ß";
+			extraServices = extraServices.replace(";ß", "");
+
 		}
-		extraServices += "ß";
-		extraServices = extraServices.replace(";ß", "");
 
 		ArrayList<Boat> boats = boatService.getAllBySearchQuery(boatName, startDate, endDate, guests);
 		Boat testBoat;
-		System.out.println(boats.size());
 		try {
 			testBoat = boats.get(0);
 		} catch (Exception e) {
-			System.err.println(e);
 			return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
 		}
 		System.out.println(testBoat.getId());
@@ -254,15 +262,15 @@ public class BookingController {
 				"Reservation");
 
 		BoatBooking bb = boatBookingService.save(boatBooking);
-		if (bb != null) {
+		if (bb != null)
 			return new ResponseEntity<>(true, HttpStatus.OK);
-		} else {
+		else
 			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
 	}
 
 	@PostMapping(path = "/adventure")
-	public Boolean bookAdventure(RequestEntity<String> param) throws AddressException, UnsupportedEncodingException {
+	public ResponseEntity<Boolean> bookAdventure(RequestEntity<String> param)
+			throws AddressException, UnsupportedEncodingException {
 
 		String params[] = param.getBody().split(",", 8);
 		Long adventureId = Long.parseLong(params[0].split(":")[1]);
@@ -279,7 +287,7 @@ public class BookingController {
 		int guests = Integer.parseInt(params[4].split(":")[1]);
 		Long instructorId = Long.parseLong(params[5].split(":")[1].replace("\"", "").replace("}", ""));
 
-		Long userId = 1L;
+		Long userId = Long.parseLong(params[6].split(":")[1].replace("\"", "").replace("}", ""));
 
 		Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
@@ -287,24 +295,33 @@ public class BookingController {
 
 		String extraServices = "";
 		String servicesParsed = params[7];
-		servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
-		servicesParsed = servicesParsed.replace("]}", "");
-		String servicesChecked[] = servicesParsed.split(",");
 		Adventure adventure = adventureService.getById(adventureId);
 		String adventureName = adventure.getName();
 		String priceAndInfo[] = adventure.getPriceAndInfo().split(";");
 
-		for (String fromFront : servicesChecked) {
-			extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+		if (servicesParsed == "") {
+			servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
+			servicesParsed = servicesParsed.replace("]}", "");
+			String servicesChecked[] = servicesParsed.split(",");
+
+			for (String fromFront : servicesChecked) {
+				extraServices += priceAndInfo[Integer.parseInt(fromFront)].split(":")[0] + ";";
+			}
+			extraServices += "ß";
+			extraServices = extraServices.replace(";ß", "");
 		}
-		extraServices += "ß";
-		extraServices = extraServices.replace(";ß", "");
 
 		ArrayList<Adventure> adventures = adventureService.getAllBySearchQuery(adventureName, startDate, endDate,
 				guests);
+		Adventure testAdventure;
+		try {
+			testAdventure = adventures.get(0);
+		} catch (Exception e) {
+			return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+		}
 
 		AdventureBooking adventureBooking = new AdventureBooking(
-				adventures.get(0).getId(),
+				testAdventure.getId(),
 				instructorId,
 				userId,
 				startDate,
@@ -321,7 +338,10 @@ public class BookingController {
 				"Reservation");
 
 		AdventureBooking ab = adventureBookingService.save(adventureBooking);
-		return ab != null;
+		if (ab != null)
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@PostMapping(path = "/search")
@@ -470,10 +490,10 @@ public class BookingController {
 		double price = Double.parseDouble(split[3].split(":")[1].replace("\"", ""));
 		String forType = split[4].split(":")[1].replace("\"", "");
 
-		// int validDuration = Integer.parseInt(split[5].split(":")[1].replace("\"", ""));
+		// int validDuration = Integer.parseInt(split[5].split(":")[1].replace("\"",
+		// ""));
 
 		String extraServices = split[6].split("\"")[3];
-
 
 		HeadEntityEnum forTypeEnum;
 		ArrayList<Subscription> subscriptions = new ArrayList<>();
@@ -483,14 +503,13 @@ public class BookingController {
 			case "ADVENTURE":
 				maxUsers = adventureService.getById(entityId).getMaxUsers();
 				AdventureBooking ab = new AdventureBooking(
-					entityId,
-					startDate,
-					endDate,
-					price,
-					maxUsers,
-					adventureService.getById(entityId).getInstructorId(),
-					extraServices		
-				);
+						entityId,
+						startDate,
+						endDate,
+						price,
+						maxUsers,
+						adventureService.getById(entityId).getInstructorId(),
+						extraServices);
 
 				forTypeEnum = HeadEntityEnum.ADVENTURE;
 				subscriptions = subscriptionService.findAllByForEntityAndSubbedId(forTypeEnum, entityId);
@@ -507,13 +526,12 @@ public class BookingController {
 			case "BOAT":
 				maxUsers = boatService.getById(entityId).getMaxUsers();
 				BoatBooking bb = new BoatBooking(
-					entityId,
-					startDate,
-					endDate,
-					price,
-					maxUsers, 
-					extraServices
-				);
+						entityId,
+						startDate,
+						endDate,
+						price,
+						maxUsers,
+						extraServices);
 
 				forTypeEnum = HeadEntityEnum.BOAT;
 				subscriptions = subscriptionService.findAllByForEntityAndSubbedId(forTypeEnum, entityId);
@@ -533,14 +551,13 @@ public class BookingController {
 				boolean flag = false;
 				for (Room room : rooms) {
 					RoomBooking rb = new RoomBooking(
-						room.getId(),
-						startDate,
-						endDate,
-						price,
-						maxUsers,
-						entityId, 
-						extraServices
-					);
+							room.getId(),
+							startDate,
+							endDate,
+							price,
+							maxUsers,
+							entityId,
+							extraServices);
 					flag = roomBookingService.save(rb) != null;
 				}
 

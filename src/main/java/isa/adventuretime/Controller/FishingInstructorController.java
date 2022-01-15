@@ -40,20 +40,19 @@ public class FishingInstructorController {
 	private RegisteredUserService registeredUserService;
 
 	@GetMapping(value = "/profitYear/{id}")
-	public float reportProfitYear(@PathVariable("id") Long id){
+	public float reportProfitYear(@PathVariable("id") Long id) {
 		return fishingInstructorService.reportProfitYear(id);
 	}
 
 	@GetMapping(value = "/profitMonth/{id}")
-	public float reportProfitMonth(@PathVariable("id") Long id){
+	public float reportProfitMonth(@PathVariable("id") Long id) {
 		return fishingInstructorService.reportProfitMonth(id);
 	}
 
 	@GetMapping(value = "/profitWeek/{id}")
-	public float reportProfitWeek(@PathVariable("id") Long id){
+	public float reportProfitWeek(@PathVariable("id") Long id) {
 		return fishingInstructorService.reportProfitWeek(id);
 	}
-
 
 	@GetMapping(path = "/get")
 	public ResponseEntity<ArrayList<FishingInstructor>> getAll() {
@@ -90,7 +89,8 @@ public class FishingInstructorController {
 					date));
 
 			for (AdventureBooking adventureBooking : adventureBookings) {
-				String userName = registeredUserService.getById(adventureBooking.getRegisteredUserId()).getName();
+				RegisteredUser user = registeredUserService.getById(adventureBooking.getRegisteredUserId());
+				String userName = user.getName() + " " + user.getLastname();
 				userNameAdventureBookingDTOs.add(new UserNameAdventureBookingDTO(userName, adventureBooking));
 			}
 
@@ -121,7 +121,7 @@ public class FishingInstructorController {
 				String userNameUserlastname = registeredUser.getName() + " " + registeredUser.getLastname();
 				ArrayList<AdventureBooking> adventureBookings = adventureBookingService
 						.findAllByBookedAdventureIdAndStartBeforeAndEndAfter(adventure.getId(), now, now);
-					
+
 				for (AdventureBooking adventureBooking : adventureBookings) {
 					if (adventureBooking.getBookedAdventureId() == adventure.getId()) {
 						userNameAdventureBookingDTOs.add(new UserNameAdventureBookingDTO(userNameUserlastname,

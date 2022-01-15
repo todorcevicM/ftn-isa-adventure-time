@@ -37,6 +37,11 @@ public class CottageController {
 		return new ResponseEntity<ArrayList<Cottage>>(cottageService.findAll(), HttpStatus.OK);
 	}
 
+	@GetMapping(path = "/checkAvailable/{id}")
+	public Boolean checkAvailable(@PathVariable("id") Long id) {
+		return roomBookingService.checkAvailable(id);
+	}
+
 	@GetMapping(path = "/get/{id}")
 	public ResponseEntity<Cottage> getCottage(@PathVariable("id") Long id) {
 		Cottage cottage = cottageService.getById(id);
@@ -74,7 +79,7 @@ public class CottageController {
 	}
 
 	@PostMapping(path = "/update")
-	public ResponseEntity<Cottage> updateCottage(RequestEntity<Cottage> cottage) {		
+	public ResponseEntity<Cottage> updateCottage(RequestEntity<Cottage> cottage) {
 		Cottage newCottage = cottage.getBody();
 		newCottage.setHidden(false);
 		return new ResponseEntity<Cottage>(cottageService.save(newCottage), HttpStatus.OK);

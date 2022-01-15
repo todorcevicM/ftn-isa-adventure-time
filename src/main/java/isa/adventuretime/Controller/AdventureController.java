@@ -35,6 +35,11 @@ public class AdventureController {
 		return new ResponseEntity<ArrayList<Adventure>>(adventureService.findAll(), HttpStatus.OK);
 	}
 
+	@GetMapping(path = "/checkAvailable/{id}")
+	public Boolean checkAvailable(@PathVariable("id") Long id) {
+		return adventureBookingService.checkAvailable(id);
+	}
+
 	@GetMapping(path = "/get/{id}")
 	public ResponseEntity<Adventure> getAdventure(@PathVariable("id") Long id) {
 		Adventure adventure = adventureService.getById(id);

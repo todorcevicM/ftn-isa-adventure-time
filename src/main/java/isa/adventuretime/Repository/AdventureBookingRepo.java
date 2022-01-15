@@ -31,6 +31,8 @@ public interface AdventureBookingRepo extends JpaRepository<AdventureBooking, Lo
 
 	public Boolean existsByBookedAdventureIdAndStartAfter(Long id, Date date);
 
+	public Boolean existsByBookedAdventureIdAndStartBeforeAndEndAfter(Long id, Date start, Date end);
+
 	// public Boolean
 	// existsByBookedInstructorIdAndStartBetweenOrBookedInstructorIdAndEndBetween(Long
 	// id, Date dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date
@@ -45,6 +47,7 @@ public interface AdventureBookingRepo extends JpaRepository<AdventureBooking, Lo
 	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndEndAfterAndQuickBookingAndRegisteredUserId(
 			Long id, Date date, Boolean quickBooking, Long id2);
 
-	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndStartBeforeAndEndAfter(Long adventureId, Date start, Date end);
+	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndStartBeforeAndEndAfter(Long adventureId, Date start,
+			Date end);
 
 }

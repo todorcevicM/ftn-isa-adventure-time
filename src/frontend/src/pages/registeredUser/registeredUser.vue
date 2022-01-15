@@ -242,7 +242,7 @@
 			</div>
 			<div class="table">
 				<div class="header">
-					<h3>Future Boat Bookings</h3>
+					<h3>Current & Future Boat Bookings</h3>
 					<button @click="notImplemented()">Sort</button>
 				</div>
 				<div
@@ -281,7 +281,7 @@
 			</div>
 			<div class="table">
 				<div class="header">
-					<h3>Future Adventure Bookings</h3>
+					<h3>Current & Future Adventure Bookings</h3>
 					<button @click="notImplemented()">Sort</button>
 				</div>
 				<div
@@ -320,7 +320,7 @@
 			</div>
 			<div class="table">
 				<div class="header">
-					<h3>Future Room Bookings</h3>
+					<h3>Current & Future Room Bookings</h3>
 					<button @click="notImplemented()">Sort</button>
 				</div>
 				<div
@@ -454,24 +454,18 @@
 				<a v-if="showAllCottagesToggle" @click="showAllCottages()"
 					>Show All</a
 				>
-				<a  @click="sortByNameCottage()"
-				>[Sort By Name]</a
-				>
-				<a  @click="sortByPriceCottage()"
-				>[Sort By Price]</a
-				>
-				<a  @click="sortByAddressCottage()"
-				>[Sort By Address]</a
-				>
+				<a @click="sortByNameCottage()">[Sort By Name]</a>
+				<a @click="sortByPriceCottage()">[Sort By Price]</a>
+				<a @click="sortByAddressCottage()">[Sort By Address]</a>
 				<div class="categoryItems">
 					<div
 						v-for="i in cottageNumToDisplay ? cottages.length : 3"
 						:key="i"
 					>
 						<img
-							@click="imageRedirect(1, cottages[i-1].id)"
+							@click="imageRedirect(1, cottages[i - 1].id)"
 							class="itemImage"
-							:src="imageSource(1, cottages[i-1].id)"
+							:src="imageSource(1, cottages[i - 1].id)"
 						/>
 						<h4>{{ cottages[i - 1].name }}</h4>
 						<h6>${{ cottages[i - 1].pricePerDay }}/day</h6>
@@ -484,15 +478,9 @@
 				<a v-if="showAllAdventuresToggle" @click="showAllAdventures()"
 					>Show All</a
 				>
-				<a  @click="sortByNameAdventure()"
-				>[Sort By Name]</a
-				>
-				<a  @click="sortByPriceAdventure()"
-				>[Sort By Price]</a
-				>
-				<a  @click="sortByAddressAdventure()"
-				>[Sort By Address]</a
-				>
+				<a @click="sortByNameAdventure()">[Sort By Name]</a>
+				<a @click="sortByPriceAdventure()">[Sort By Price]</a>
+				<a @click="sortByAddressAdventure()">[Sort By Address]</a>
 				<div class="categoryItems">
 					<div
 						v-for="i in adventureNumToDisplay
@@ -501,9 +489,9 @@
 						:key="i"
 					>
 						<img
-							@click="imageRedirect(2, adventures[i-1].id)"
+							@click="imageRedirect(2, adventures[i - 1].id)"
 							class="itemImage"
-							:src="imageSource(2, adventures[i-1].id)"
+							:src="imageSource(2, adventures[i - 1].id)"
 						/>
 						<h4>{{ adventures[i - 1].name }}</h4>
 						<h6>${{ adventures[i - 1].pricePerDay }}/day</h6>
@@ -516,24 +504,18 @@
 				<a v-if="showAllBoatsToggle" @click="showAllBoats()"
 					>Show All</a
 				>
-				<a  @click="sortByNameBoat()"
-				>[Sort By Name]</a
-				>
-				<a  @click="sortByPriceBoat()"
-				>[Sort By Price]</a
-				>
-				<a  @click="sortByAddressBoat()"
-				>[Sort By Address]</a
-				>
+				<a @click="sortByNameBoat()">[Sort By Name]</a>
+				<a @click="sortByPriceBoat()">[Sort By Price]</a>
+				<a @click="sortByAddressBoat()">[Sort By Address]</a>
 				<div class="categoryItems">
 					<div
 						v-for="i in boatNumToDisplay ? boats.length : 3"
 						:key="i"
 					>
 						<img
-							@click="imageRedirect(3, boats[i-1].id)"
+							@click="imageRedirect(3, boats[i - 1].id)"
 							class="itemImage"
-							:src="imageSource(3, boats[i-1].id)"
+							:src="imageSource(3, boats[i - 1].id)"
 						/>
 						<h4>{{ boats[i - 1].name }}</h4>
 						<h6>${{ boats[i - 1].pricePerDay }}/day</h6>
@@ -837,7 +819,6 @@ export default {
 		axios.get("/api/cottages/get").then(function (response) {
 			cottages.value = response.data;
 			//cottages.value.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-
 		});
 		axios.get("/api/adventures/get").then(function (response) {
 			adventures.value = response.data;
@@ -875,7 +856,7 @@ export default {
 			notImplemented() {
 				alert("Not implemented yet!");
 			},
-			
+
 			updateDetails() {
 				this.updateToggle = true;
 			},
@@ -1003,23 +984,26 @@ export default {
 				switch (type) {
 					case 1:
 						try {
-							return require("../../assets/images/cottage" + id + ".png");
-						}
-						catch (err) {
+							return require("../../assets/images/cottage" +
+								id +
+								".png");
+						} catch (err) {
 							return require("../../assets/images/default_cottage.png");
 						}
 					case 2:
 						try {
-							return require("../../assets/images/adventure" + id + ".png");
-						}
-						catch (err) {
+							return require("../../assets/images/adventure" +
+								id +
+								".png");
+						} catch (err) {
 							return require("../../assets/images/default_adventure.png");
 						}
 					case 3:
 						try {
-							return require("../../assets/images/boat" + id + ".png");
-						}
-						catch (err) {
+							return require("../../assets/images/boat" +
+								id +
+								".png");
+						} catch (err) {
 							return require("../../assets/images/default_boat.png");
 						}
 				}
@@ -1138,32 +1122,62 @@ export default {
 						}
 					});
 			},
-			sortByNameCottage(){
-				cottages.value.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+			sortByNameCottage() {
+				cottages.value.sort((a, b) =>
+					a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+				);
 			},
-			sortByPriceCottage(){
-				cottages.value.sort((a,b) => (a.pricePerDay > b.pricePerDay) ? 1 : ((b.pricePerDay > a.pricePerDay) ? -1 : 0));
+			sortByPriceCottage() {
+				cottages.value.sort((a, b) =>
+					a.pricePerDay > b.pricePerDay
+						? 1
+						: b.pricePerDay > a.pricePerDay
+						? -1
+						: 0
+				);
 			},
-			sortByAddressCottage(){
-				cottages.value.sort((a,b) => (a.address > b.address) ? 1 : ((b.address > a.address) ? -1 : 0));
+			sortByAddressCottage() {
+				cottages.value.sort((a, b) =>
+					a.address > b.address ? 1 : b.address > a.address ? -1 : 0
+				);
 			},
-			sortByNameBoat(){
-				boats.value.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+			sortByNameBoat() {
+				boats.value.sort((a, b) =>
+					a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+				);
 			},
-			sortByPriceBoat(){
-				boats.value.sort((a,b) => (a.pricePerDay > b.pricePerDay) ? 1 : ((b.pricePerDay > a.pricePerDay) ? -1 : 0));
+			sortByPriceBoat() {
+				boats.value.sort((a, b) =>
+					a.pricePerDay > b.pricePerDay
+						? 1
+						: b.pricePerDay > a.pricePerDay
+						? -1
+						: 0
+				);
 			},
-			sortByAddressBoat(){
-				boats.value.sort((a,b) => (a.address > b.address) ? 1 : ((b.address > a.address) ? -1 : 0));
+			sortByAddressBoat() {
+				boats.value.sort((a, b) =>
+					a.address > b.address ? 1 : b.address > a.address ? -1 : 0
+				);
 			},
-			sortByNameAdventure(){
-				adventures.value.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+			sortByNameAdventure() {
+				adventures.value.sort((a, b) =>
+					a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+				);
 			},
-			sortByPriceAdventure(){
-				adventures.value.sort((a,b) => (a.pricePerDay > b.pricePerDay) ? 1 : ((b.pricePerDay > a.pricePerDay) ? -1 : 0));
+			sortByPriceAdventure() {
+				adventures.value.sort((a, b) =>
+					a.pricePerDay > b.pricePerDay
+						? 1
+						: b.pricePerDay > a.pricePerDay
+						? -1
+						: 0
+				);
 			},
-			sortByAddressAdventure(){
-				adventures.value.sort((a,b) => (a.address > b.address) ? 1 : ((b.address > a.address) ? -1 : 0));
+			sortByAddressAdventure() {
+				adventures.value.sort((a, b) =>
+					a.address > b.address ? 1 : b.address > a.address ? -1 : 0
+				);
 			},
 		};
 	},

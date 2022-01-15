@@ -33,6 +33,8 @@ public interface RoomBookingRepo extends JpaRepository<RoomBooking, Long> {
 
 	public Boolean existsByBookedRoomIdAndStartAfter(Long id, Date date);
 
+	public Boolean existsByBookedRoomIdAndStartBeforeAndEndAfter(Long id, Date start, Date end);
+
 	// public Boolean
 	// existsByBookedRoomIdAndStartBetweenOrBookedRoomIdAndEndBetween(Long id, Date
 	// dateStart1, Date dateEnd1, Long id2, Date dateStart2, Date dateEnd2);
@@ -50,6 +52,7 @@ public interface RoomBookingRepo extends JpaRepository<RoomBooking, Long> {
 	public ArrayList<RoomBooking> findAllByCottageIdAndEndAfterAndQuickBookingAndRegisteredUserId(Long cottageId,
 			Date now, Boolean quickBooking, Long registeredUserId);
 
-	public ArrayList<RoomBooking> findAllByBookedRoomIdAndRegisteredUserIdAndStartBeforeAndEndAfter(Long bookedRoomId, Long registeredUserId, Date start, Date end);
-	
+	public ArrayList<RoomBooking> findAllByBookedRoomIdAndRegisteredUserIdAndStartBeforeAndEndAfter(Long bookedRoomId,
+			Long registeredUserId, Date start, Date end);
+
 }

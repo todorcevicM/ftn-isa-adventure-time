@@ -13,17 +13,26 @@
 				<div
 					v-for="a in entities"
 					:key="a"
-					style="display: flex; justify-content: space-between"
+					style="
+						display: flex;
+						justify-content: space-between;
+						flex-direction: column;
+						border-bottom: solid 1px rgb(145, 145, 145);
+						margin-bottom: 10px;
+					"
 				>
-					<div style="display: flex; justify-content: space-around"> 						
+					<div style="display: flex; justify-content: space-between">
 						<p
 							class="entryName"
-							style="font-size: 26px; margin: 0; margin-right: 20px"
+							style="
+								font-size: 29px;
+								font-weight: 300;
+								margin: 0;
+								margin-right: 20px;
+							"
 						>
 							{{ a.name }}
 						</p>
-					</div>
-					<div style="display: flex; justify-content: space-around"> 	
 						<input
 							style="width: 24px"
 							type="radio"
@@ -31,15 +40,40 @@
 							v-model="selectedEntity"
 							@click="selectExtraServices(a)"
 						/>
+					</div>
+					<div style="display: flex; justify-content: space-between">
+						<p
+							class="entryName"
+							style="
+								font-size: 26px;
+								margin: 0;
+								margin-right: 20px;
+							"
+						>
+							Start :
+							{{ String(Date(a.reservationStart)).slice(4, 15) }}
+						</p>
+						<p
+							class="entryName"
+							style="
+								font-size: 26px;
+								margin: 0;
+								margin-right: 20px;
+							"
+						>
+							End :
+							{{ String(Date(a.reservationEnd)).slice(4, 15) }}
+						</p>
+					</div>
+					<div style="display: flex; justify-content: space-between">
 						<div
 							class="entryLeftShort"
 							style="display: flex; align-items: center"
 						>
-							Extra Services :
+							<p>Extra Services :</p>
 						</div>
 						<div
 							class="entryLeftShort"
-							style="display: flex; align-items: center"
 							v-for="item in a.extraServices"
 							:key="item"
 						>
@@ -66,7 +100,9 @@
 									justify-content: space-between;
 								"
 							>
-								<p style="margin-right: 20px">${{ item.price }}</p>
+								<p style="margin-right: 20px">
+									${{ item.price }}
+								</p>
 								<input
 									type="checkbox"
 									style="width: 22px"
@@ -125,7 +161,10 @@ export default {
 		var entities = ref(null);
 		if (localStorage.type == "FISHING_INSTRUCTOR") {
 			axios
-				.get("/api/adventures/getAllByInstructorId/" + localStorage.userId)
+				.get(
+					"/api/adventures/getAllByInstructorId/" +
+						localStorage.userId
+				)
 				.then((result) => {
 					entities.value = result.data;
 					for (var i = 0; i < entities.value.length; i++) {
@@ -245,8 +284,19 @@ export default {
 									"/fishingInstructor/" +
 										localStorage["emailHash"]
 								);
-							} else {
-								alert("Error creating booking!");
+							}
+						})
+						.catch(function (error) {
+							console.log(error.response.status);
+							switch (error.response.status) {
+								case 404: // NOT_FOUND
+									alert(
+										"Boat is not available for this time period."
+									);
+									break;
+								case 500: // INTERNAL_SERVER_ERROR
+									alert("Error while saving!");
+									break;
 							}
 						});
 				} else if (localStorage.type == "COTTAGE_OWNER") {
@@ -271,8 +321,19 @@ export default {
 								window.location.assign(
 									"/cottageOwner/" + localStorage["emailHash"]
 								);
-							} else {
-								alert("Error creating booking!");
+							}
+						})
+						.catch(function (error) {
+							console.log(error.response.status);
+							switch (error.response.status) {
+								case 404: // NOT_FOUND
+									alert(
+										"Boat is not available for this time period."
+									);
+									break;
+								case 500: // INTERNAL_SERVER_ERROR
+									alert("Error while saving!");
+									break;
 							}
 						});
 				} else if (localStorage.type == "BOAT_OWNER") {
@@ -297,8 +358,19 @@ export default {
 								window.location.assign(
 									"/boatOwner/" + localStorage["emailHash"]
 								);
-							} else {
-								alert("Error creating booking!");
+							}
+						})
+						.catch(function (error) {
+							console.log(error.response.status);
+							switch (error.response.status) {
+								case 404: // NOT_FOUND
+									alert(
+										"Boat is not available for this time period."
+									);
+									break;
+								case 500: // INTERNAL_SERVER_ERROR
+									alert("Error while saving!");
+									break;
 							}
 						});
 				}
@@ -306,7 +378,7 @@ export default {
 			selectExtraServices(object) {
 				reserveToggle.value = true;
 				extraServicesInPrompt.value = object.extraServices;
-				console.log(extraServicesInPrompt.value)
+				console.log(extraServicesInPrompt.value);
 			},
 			cbClick(selectedExtraService) {
 				if (checkedFull.value.includes(selectedExtraService)) {

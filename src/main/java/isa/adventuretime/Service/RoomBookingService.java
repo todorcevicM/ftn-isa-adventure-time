@@ -30,6 +30,11 @@ public class RoomBookingService {
 		return roomBookingRepo.getById(id);
 	}
 
+	public Boolean checkAvailable(Long id) {
+		Date now = new Date();
+		return !roomBookingRepo.existsByBookedRoomIdAndStartBeforeAndEndAfter(id, now, now);
+	}
+
 	public ArrayList<RoomBooking> findAllByBookedRoomId(Long id) {
 		return roomBookingRepo.findAllByBookedRoomId(id);
 	}
@@ -120,7 +125,9 @@ public class RoomBookingService {
 				Calendar.getInstance().getTime(), true, 0L);
 	}
 
-	public ArrayList<RoomBooking> findAllByBookedRoomIdAndRegisteredUserIdAndStartBeforeAndEndAfter(Long bookedRoomId, Long registeredUserId, Date start, Date end) {
-		return roomBookingRepo.findAllByBookedRoomIdAndRegisteredUserIdAndStartBeforeAndEndAfter(bookedRoomId, registeredUserId, start, end);
+	public ArrayList<RoomBooking> findAllByBookedRoomIdAndRegisteredUserIdAndStartBeforeAndEndAfter(Long bookedRoomId,
+			Long registeredUserId, Date start, Date end) {
+		return roomBookingRepo.findAllByBookedRoomIdAndRegisteredUserIdAndStartBeforeAndEndAfter(bookedRoomId,
+				registeredUserId, start, end);
 	}
 }

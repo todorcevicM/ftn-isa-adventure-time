@@ -35,6 +35,11 @@ public class AdventureBookingService {
 		return adventureBookingRepo.getById(id);
 	}
 
+	public Boolean checkAvailable(Long id) {
+		Date now = new Date();
+		return !adventureBookingRepo.existsByBookedAdventureIdAndStartBeforeAndEndAfter(id, now, now);
+	}
+
 	public ArrayList<Date> getFreeTime(Long id) {
 		FishingInstructor fishingInstructor = fishingInstructorRepo.findById(id).get();
 
@@ -127,7 +132,9 @@ public class AdventureBookingService {
 		return adventureBookingRepo.findAllByBookedAdventureIdAndEndAfterAndQuickBookingAndRegisteredUserId(id,
 				date, true, 0L);
 	}
-	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndStartBeforeAndEndAfter(Long id, Date start, Date end) {
+
+	public ArrayList<AdventureBooking> findAllByBookedAdventureIdAndStartBeforeAndEndAfter(Long id, Date start,
+			Date end) {
 		return adventureBookingRepo.findAllByBookedAdventureIdAndStartBeforeAndEndAfter(id, start, end);
 	}
 }

@@ -19,7 +19,7 @@
 					<p>Business Reports</p>
 					<button @click="getReportYear()">Year</button>
 					<button @click="getReportMonth()">Month</button>
-					<button @click="getReportWeek()">Week</button>					
+					<button @click="getReportWeek()">Week</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
@@ -127,14 +127,10 @@
 					>
 						<div class="entryLeft">
 							<p class="entryLeftShort">
-								User :
 								{{ booking.userName }}
 							</p>
 							<p class="entryLeftShort">
 								{{ booking.roomBooking.extraService }}
-							</p>
-							<p class="entryLeftShort">
-								Price : {{ booking.roomBooking.price }}.00
 							</p>
 						</div>
 						<div class="entryRight">
@@ -178,25 +174,31 @@
 					<p class="tableSubEntry">
 						{{ cnrb.cottageName }}
 					</p>
-					<div 
+					<div
 						class="tableEntry"
-						v-for="booking in cnrb.userNameRoomBookingDTO" :key="booking"
+						v-for="booking in cnrb.userNameRoomBookingDTO"
+						:key="booking"
 					>
 						<div class="entryLeft">
-							<p class="entryLeftShort"> User: {{ booking.userName }} </p>
+							<p class="entryLeftShort">
+								{{ booking.userName }}
+							</p>
 							<p class="entryLeftShort">
 								{{ cnrb.start }}
 							</p>
 							<p class="entryLeftShort">
 								{{ cnrb.end }}
 							</p>
-
 						</div>
 						<div class="entryRight">
 							<button
 								class="entryApprove"
 								style="width: 260px"
-								@click="createNewBooking(booking.roomBooking.registeredUserId)"
+								@click="
+									createNewBooking(
+										booking.roomBooking.registeredUserId
+									)
+								"
 							>
 								Create New Booking
 							</button>
@@ -323,17 +325,21 @@ export default {
 			.then(function (response) {
 				cottageNameRoomBookingDTO.value = response.data;
 				console.log(cottageNameRoomBookingDTO.value);
-				cottageNameRoomBookingDTO.value.forEach(function (cottageNameRoomBooking) {
+				cottageNameRoomBookingDTO.value.forEach(function (
+					cottageNameRoomBooking
+				) {
 					cottageNameRoomBooking.start = new Date(
 						cottageNameRoomBooking.userNameRoomBookingDTO[0].roomBooking.start
-					).toString().substring(0, 15);
+					)
+						.toString()
+						.substring(0, 15);
 
 					cottageNameRoomBooking.end = new Date(
 						cottageNameRoomBooking.userNameRoomBookingDTO[0].roomBooking.end
-					).toString().substring(0, 15);
-
+					)
+						.toString()
+						.substring(0, 15);
 				});
-
 			});
 
 		var searchQuery = ref(null);
@@ -523,41 +529,45 @@ export default {
 						window.location.reload();
 					});
 			},
-			getReportYear(){
+			getReportYear() {
 				axios
-					.get("/api/cottageOwner/profitYear/" + localStorage["userId"])
-					.then(function(response){
+					.get(
+						"/api/cottageOwner/profitYear/" + localStorage["userId"]
+					)
+					.then(function (response) {
 						if (response.data > 0) {
 							alert("Profit for last year: " + response.data);
 						} else {
 							alert("Something is wrong, ask Mike Oxlong");
 						}
-					})
-
+					});
 			},
-			getReportMonth(){
+			getReportMonth() {
 				axios
-					.get("/api/cottageOwner/profitMonth/" + localStorage["userId"])
-					.then(function(response){
+					.get(
+						"/api/cottageOwner/profitMonth/" +
+							localStorage["userId"]
+					)
+					.then(function (response) {
 						if (response.data > 0) {
 							alert("Profit for last month: " + response.data);
 						} else {
 							alert("Something is wrong, ask Mike Oxlong");
 						}
-					})
-
+					});
 			},
-			getReportWeek(){
+			getReportWeek() {
 				axios
-					.get("/api/cottageOwner/profitWeek/" + localStorage["userId"])
-					.then(function(response){
+					.get(
+						"/api/cottageOwner/profitWeek/" + localStorage["userId"]
+					)
+					.then(function (response) {
 						if (response.data > 0) {
 							alert("Profit for last week: " + response.data);
 						} else {
 							alert("Something is wrong, ask Mike Oxlong");
 						}
-					})
-
+					});
 			},
 		};
 	},

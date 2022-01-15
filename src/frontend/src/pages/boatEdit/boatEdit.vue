@@ -247,7 +247,8 @@
 						:key="item"
 					>
 						<p>
-							Extra Service {{ key + 1 }} : {{ item.service }} : ${{ item.price }}.
+							Extra Service {{ key + 1 }} : {{ item.service }} :
+							${{ item.price }}.
 						</p>
 						<button class="edit" @click="updateService(key)">
 							Edit
@@ -258,7 +259,9 @@
 					</div>
 					<div class="roomDiv">
 						<p></p>
-						<button class="addition" @click="addService()">+</button>
+						<button class="addition" @click="addService()">
+							+
+						</button>
 					</div>
 				</div>
 				<p class="smallText">Price ($)</p>
@@ -372,7 +375,17 @@ export default {
 				}
 			},
 			updateDetails() {
-				this.updateToggle = true;
+				axios
+					.get("/api/boats/checkAvailable/" + boat.value.id)
+					.then(function (response) {
+						if (!response.data) {
+							alert(
+								"This boat is not available for editing as a booking currently exists."
+							);
+						} else {
+							updateToggle.value = true;
+						}
+					});
 			},
 			sendUpdatedDetails() {
 				if (
@@ -465,9 +478,10 @@ export default {
 			createAction() {
 				// isNaN je nepotreban jer se koristi input type="number"
 				let priceAndInfo = "";
-				actionServiceToAdd.value.forEach(servicePrice => {
-					priceAndInfo += servicePrice.service + ":" + servicePrice.price + ";";
-				})
+				actionServiceToAdd.value.forEach((servicePrice) => {
+					priceAndInfo +=
+						servicePrice.service + ":" + servicePrice.price + ";";
+				});
 				this.action.extraServices = priceAndInfo;
 
 				if (
@@ -494,7 +508,7 @@ export default {
 						price: this.action.price,
 						type: "BOAT",
 						validDuration: this.action.validDuration,
-						extraServices: this.action.extraServices
+						extraServices: this.action.extraServices,
 					})
 					.then(function (response) {
 						console.log(response.data);
@@ -504,25 +518,19 @@ export default {
 			addService() {
 				var serv = prompt("Enter a service: ");
 				var pric = prompt("Enter a price: ");
-				if (
-					isNaN(pric.toString()) == true ||
-					pric <= 0
-				) {
+				if (isNaN(pric.toString()) == true || pric <= 0) {
 					alert("Please enter a correct price.");
 					return;
 				}
-				this.actionServiceToAdd.push({ 
-					service: serv, 
-					price: pric,	
+				this.actionServiceToAdd.push({
+					service: serv,
+					price: pric,
 				});
 			},
 			updateService(key) {
 				var serv = prompt("Enter a new service: ");
 				var pric = prompt("Enter a new price: ");
-				if (
-					isNaN(pric.toString()) == true ||
-					pric <= 0
-				) {
+				if (isNaN(pric.toString()) == true || pric <= 0) {
 					alert("Please enter a correct price.");
 					return;
 				}

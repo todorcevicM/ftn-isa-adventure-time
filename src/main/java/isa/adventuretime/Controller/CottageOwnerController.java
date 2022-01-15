@@ -44,23 +44,20 @@ public class CottageOwnerController {
 	@Autowired
 	private RoomService roomService;
 
-
-	
 	@GetMapping(value = "/profitYear/{id}")
-	public float reportProfitYear(@PathVariable("id") Long id){
+	public float reportProfitYear(@PathVariable("id") Long id) {
 		return cottageOwnerService.reportProfitYear(id);
 	}
 
 	@GetMapping(value = "/profitMonth/{id}")
-	public float reportProfitMonth(@PathVariable("id") Long id){
+	public float reportProfitMonth(@PathVariable("id") Long id) {
 		return cottageOwnerService.reportProfitMonth(id);
 	}
 
 	@GetMapping(value = "/profitWeek/{id}")
-	public float reportProfitWeek(@PathVariable("id") Long id){
+	public float reportProfitWeek(@PathVariable("id") Long id) {
 		return cottageOwnerService.reportProfitWeek(id);
 	}
-
 
 	@GetMapping("/get")
 	public ResponseEntity<ArrayList<CottageOwner>> getAll() {
@@ -97,7 +94,8 @@ public class CottageOwnerController {
 					.addAll(roomBookingService.findAllByCottageIdAndEndBefore(cottage.getId(), date));
 
 			for (RoomBooking roomBooking : roomBookings) {
-				String userName = registeredUserService.getById(roomBooking.getRegisteredUserId()).getName();
+				RegisteredUser user = registeredUserService.getById(roomBooking.getRegisteredUserId());
+				String userName = user.getName() + " " + user.getLastname();
 				userNameRoomBookingsDTO.add(new UserNameRoomBookingDTO(userName, roomBooking));
 			}
 
@@ -140,10 +138,12 @@ public class CottageOwnerController {
 			for (RegisteredUser registeredUser : registeredUsers) {
 
 				String userNameLastname = registeredUser.getName() + " " + registeredUser.getLastname();
-				roomBookings = roomBookingService.findAllByBookedRoomIdAndRegisteredUserIdAndStartBeforeAndEndAfter(cottageWithRoom.getRoom().getId(), registeredUser.getId(), now, now);
+				roomBookings = roomBookingService.findAllByBookedRoomIdAndRegisteredUserIdAndStartBeforeAndEndAfter(
+						cottageWithRoom.getRoom().getId(), registeredUser.getId(), now, now);
 				for (RoomBooking roomBooking : roomBookings) {
 					userNameRoomBookingDTO.add(new UserNameRoomBookingDTO(userNameLastname, roomBooking));
-					cwr.add(new CottageWithRoomDTO(cottageService.getById(roomBooking.getCottageId()), roomService.getById(roomBooking.getId())));
+					cwr.add(new CottageWithRoomDTO(cottageService.getById(roomBooking.getCottageId()),
+							roomService.getById(roomBooking.getId())));
 				}
 			}
 		}
@@ -153,11 +153,10 @@ public class CottageOwnerController {
 			co.add(cwr1.getCottage());
 		}
 		int a = 0;
-		for(Cottage c : co) {
+		for (Cottage c : co) {
 			if (co.indexOf(c) != -1) {
 				indexes.add(co.indexOf(c));
-			}
-			else {
+			} else {
 				indexes.add(a);
 			}
 			a++;
@@ -174,7 +173,7 @@ public class CottageOwnerController {
 		for (int i : indexes) {
 			cottagesToBeUsed.add(co.get(i));
 		}
-		ArrayList<CottageNameRoomBookingDTO> conm = new ArrayList<>(); 
+		ArrayList<CottageNameRoomBookingDTO> conm = new ArrayList<>();
 		for (int i : indexes) {
 			a = 0;
 			ArrayList<UserNameRoomBookingDTO> toAdd = new ArrayList<>();
@@ -186,15 +185,15 @@ public class CottageOwnerController {
 			}
 			conm.add(new CottageNameRoomBookingDTO(co.get(i).getName(), toAdd));
 		}
-		
+
 		// for (CottageNameRoomBookingDTO c : conm) {
-		// 	System.out.println("Cottage Name: " + c.getCottageName());
-		// 	for (UserNameRoomBookingDTO u : c.getUserNameRoomBookingDTO()) {
-		// 		System.out.println("User: " + u.getUserName());
-		// 		System.out.println("Room Booking Id: " + u.getRoomBooking().getId());				
-		// 	}
+		// System.out.println("Cottage Name: " + c.getCottageName());
+		// for (UserNameRoomBookingDTO u : c.getUserNameRoomBookingDTO()) {
+		// System.out.println("User: " + u.getUserName());
+		// System.out.println("Room Booking Id: " + u.getRoomBooking().getId());
 		// }
-	
+		// }
+
 		return new ResponseEntity<ArrayList<CottageNameRoomBookingDTO>>(conm, HttpStatus.OK);
 	}
 }

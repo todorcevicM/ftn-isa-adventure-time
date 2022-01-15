@@ -40,20 +40,19 @@ public class BoatOwnerController {
 	private RegisteredUserService registeredUserService;
 
 	@GetMapping(value = "/profitYear/{id}")
-	public float reportProfitYear(@PathVariable("id") Long id){
+	public float reportProfitYear(@PathVariable("id") Long id) {
 		return boatOwnerService.reportProfitYear(id);
 	}
 
 	@GetMapping(value = "/profitMonth/{id}")
-	public float reportProfitMonth(@PathVariable("id") Long id){
+	public float reportProfitMonth(@PathVariable("id") Long id) {
 		return boatOwnerService.reportProfitMonth(id);
 	}
 
 	@GetMapping(value = "/profitWeek/{id}")
-	public float reportProfitWeek(@PathVariable("id") Long id){
+	public float reportProfitWeek(@PathVariable("id") Long id) {
 		return boatOwnerService.reportProfitWeek(id);
 	}
-
 
 	@GetMapping("/get")
 	public ResponseEntity<ArrayList<BoatOwner>> getAll() {
@@ -94,7 +93,8 @@ public class BoatOwnerController {
 					.addAll(boatBookingService.findAllByBookedBoatIdAndEndBefore(boat.getId(), date));
 
 			for (BoatBooking boatBooking : boatBookings) {
-				String userName = registeredUserService.getById(boatBooking.getRegisteredUserId()).getName();
+				RegisteredUser user = registeredUserService.getById(boatBooking.getRegisteredUserId());
+				String userName = user.getName() + " " + user.getLastname();
 				userNameBoatBookingsDTOs.add(new UserNameBoatBookingDTO(userName, boatBooking));
 			}
 
@@ -117,13 +117,15 @@ public class BoatOwnerController {
 			ArrayList<UserNameBoatBookingDTO> userNameBoatBookingsDTOs = new ArrayList<>();
 			for (RegisteredUser registeredUser : registeredUsers) {
 				String userNameLastname = registeredUser.getName() + " " + registeredUser.getLastname();
-				ArrayList<BoatBooking> boatBookings = boatBookingService.findAllByBookedBoatIdAndRegisteredUserIdAndStartBeforeAndEndAfter(boat.getId(), registeredUser.getId(), now, now);
-				
+				ArrayList<BoatBooking> boatBookings = boatBookingService
+						.findAllByBookedBoatIdAndRegisteredUserIdAndStartBeforeAndEndAfter(boat.getId(),
+								registeredUser.getId(), now, now);
+
 				for (BoatBooking boatBooking : boatBookings) {
 					if (boatBooking.getBookedBoatId() == boat.getId()) {
 						userNameBoatBookingsDTOs.add(new UserNameBoatBookingDTO(userNameLastname, boatBooking));
 					}
-				}	
+				}
 			}
 			if (userNameBoatBookingsDTOs.size() > 0) {
 				boatNameBoatBookingDTOs.add(new BoatNameBoatBookingDTO(boat.getName(), userNameBoatBookingsDTOs));

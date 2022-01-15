@@ -19,7 +19,7 @@
 					<p>Business Reports</p>
 					<button @click="getReportYear()">Year</button>
 					<button @click="getReportMonth()">Month</button>
-					<button @click="getReportWeek()">Week</button>				
+					<button @click="getReportWeek()">Week</button>
 				</div>
 				<!-- Spacer -->
 				<div style="height: 40px"></div>
@@ -27,6 +27,21 @@
 					<p>Occupancy Calendar</p>
 					<button @click="notImplemented()">Show</button>
 				</div>
+				<calendar-view
+					:show-date="showDate"
+					:events="events"
+					class="
+						theme-default
+						holiday-us-traditional holiday-us-official
+					"
+				>
+					<template #header="{ headerProps }">
+						<calendar-view-header
+							:header-props="headerProps"
+							@input="setShowDate"
+						/>
+					</template>
+				</calendar-view>
 				<!-- Spacer -->
 				<div style="height: 20px"></div>
 			</div>
@@ -127,14 +142,10 @@
 					>
 						<div class="entryLeft">
 							<p class="entryLeftShort">
-								User :
 								{{ booking.userName }}
 							</p>
 							<p class="entryLeftShort">
 								{{ booking.boatBooking.extraService }}
-							</p>
-							<p class="entryLeftShort">
-								Price : {{ booking.boatBooking.price }}.00
 							</p>
 						</div>
 						<div class="entryRight">
@@ -178,25 +189,31 @@
 					<p class="tableSubEntry">
 						{{ bnbb.boatName }}
 					</p>
-					<div 
+					<div
 						class="tableEntry"
-						v-for="booking in bnbb.userNameBoatBookingDTO" :key="booking"
+						v-for="booking in bnbb.userNameBoatBookingDTO"
+						:key="booking"
 					>
 						<div class="entryLeft">
-							<p class="entryLeftShort"> User: {{ booking.userName }} </p>
+							<p class="entryLeftShort">
+								{{ booking.userName }}
+							</p>
 							<p class="entryLeftShort">
 								{{ bnbb.start }}
 							</p>
 							<p class="entryLeftShort">
 								{{ bnbb.end }}
 							</p>
-
 						</div>
 						<div class="entryRight">
 							<button
 								class="entryApprove"
 								style="width: 260px"
-								@click="createNewBooking(booking.boatBooking.registeredUserId)"
+								@click="
+									createNewBooking(
+										booking.boatBooking.registeredUserId
+									)
+								"
 							>
 								Create New Booking
 							</button>
@@ -275,7 +292,13 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
+import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
+import "../../../node_modules/vue-simple-calendar/dist/style.css";
 export default {
+	components: {
+		CalendarView,
+		CalendarViewHeader,
+	},
 	setup() {
 		var user = ref(null);
 		axios
@@ -311,14 +334,20 @@ export default {
 			.get("/api/boatOwner/currentCustomers/" + localStorage["userId"])
 			.then(function (response) {
 				boatNameBoatBookingDTO.value = response.data;
-				boatNameBoatBookingDTO.value.forEach(function (boatNameBoatBooking) {
+				boatNameBoatBookingDTO.value.forEach(function (
+					boatNameBoatBooking
+				) {
 					boatNameBoatBooking.start = new Date(
 						boatNameBoatBooking.userNameBoatBookingDTO[0].boatBooking.start
-					).toString().substring(0, 15);
-					
+					)
+						.toString()
+						.substring(0, 15);
+
 					boatNameBoatBooking.end = new Date(
 						boatNameBoatBooking.userNameBoatBookingDTO[0].boatBooking.end
-					).toString().substring(0, 15);
+					)
+						.toString()
+						.substring(0, 15);
 				});
 			});
 
@@ -330,6 +359,18 @@ export default {
 		var cb1 = ref(false);
 		var cb2 = ref(false);
 		return {
+			showDate: new Date(),
+			setShowDate(d) {
+				this.showDate = d;
+			},
+			events: [
+				{
+					id: "e1",
+					startDate: "2022-01-01",
+					endDate: "2018-01-02",
+					title: "Sample event 1",
+				},
+			],
 			user,
 			pastBoatBookings,
 			boatNameBoatBookingDTO,
@@ -433,24 +474,14 @@ export default {
 				});
 			},
 			viewBoat(id) {
-				axios.get("/api/boats/checkAvailable/" + id).then(
-					function (response) {
-						if (!response.data) {
-							alert("This boat is not available for editing as a booking currently exists.");
-						} 
-						else {
-							axios.get("/api/boats/get/" + id).then(function (response) {
-								for (const key in response.data) {
-									if (!(key === "password")) {
-										localStorage.setItem(key, response.data[key]);
-									}
-								}
-								window.location.href = "/boatEdit/" + id;
-							});
+				axios.get("/api/boats/get/" + id).then(function (response) {
+					for (const key in response.data) {
+						if (!(key === "password")) {
+							localStorage.setItem(key, response.data[key]);
 						}
 					}
-				)
-				
+					window.location.href = "/boatEdit/" + id;
+				});
 			},
 			addNewBoat() {
 				window.location.assign("/boatCreate/" + localStorage.emailHash);
@@ -519,41 +550,38 @@ export default {
 						window.location.reload();
 					});
 			},
-			getReportYear(){
+			getReportYear() {
 				axios
 					.get("/api/boatOwner/profitYear/" + localStorage["userId"])
-					.then(function(response){
+					.then(function (response) {
 						if (response.data > 0) {
 							alert("Profit for last year: " + response.data);
 						} else {
 							alert("Something is wrong, ask Mike Oxlong");
 						}
-					})
-
+					});
 			},
-			getReportMonth(){
+			getReportMonth() {
 				axios
 					.get("/api/boatOwner/profitMonth/" + localStorage["userId"])
-					.then(function(response){
+					.then(function (response) {
 						if (response.data > 0) {
 							alert("Profit for last month: " + response.data);
 						} else {
 							alert("Something is wrong, ask Mike Oxlong");
 						}
-					})
-
+					});
 			},
-			getReportWeek(){
+			getReportWeek() {
 				axios
 					.get("/api/boatOwner/profitWeek/" + localStorage["userId"])
-					.then(function(response){
+					.then(function (response) {
 						if (response.data > 0) {
 							alert("Profit for last week: " + response.data);
 						} else {
 							alert("Something is wrong, ask Mike Oxlong");
 						}
-					})
-
+					});
 			},
 		};
 	},
