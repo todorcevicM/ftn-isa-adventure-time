@@ -62,7 +62,6 @@ public class BoatBooking {
 		this.price = price;
 		this.maxUsers = maxUsers;
 		this.reportMade = false;
-		// TODO:
 		this.extraService = extraService;
 	}
 

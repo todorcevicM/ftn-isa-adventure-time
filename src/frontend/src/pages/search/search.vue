@@ -428,8 +428,6 @@ export default {
 				console.log("searchResultInPrompt :");
 				console.log(searchResultInPrompt.value);
 				let userId = localStorage.userId;
-				// TODO: Ubaci checkedFull.value u request, odnosno one servise koje je korisnik selektovao
-				// ubaceno je?
 				if (this.type == "Boat") {
 					axios
 						.post(

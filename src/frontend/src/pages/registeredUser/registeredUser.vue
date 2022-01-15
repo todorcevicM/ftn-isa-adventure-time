@@ -958,13 +958,6 @@ export default {
 							.then(function (response) {
 								for (const key in response.data) {
 									if (!(key === "password")) {
-										// TODO: Jel nam treba ovo?
-										// if (key === "priceAndInfo") {
-										// 	localStorage.setItem(
-										// 		"extraService",
-										// 		response.data[key]
-										// 	);
-										// }
 										localStorage.setItem(
 											key,
 											response.data[key]

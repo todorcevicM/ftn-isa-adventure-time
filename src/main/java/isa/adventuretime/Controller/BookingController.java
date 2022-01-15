@@ -134,8 +134,11 @@ public class BookingController {
 				Integer.parseInt(time.split(":")[1]), 0);
 		int days = Integer.parseInt(params[3].split(":")[1]);
 		int guests = Integer.parseInt(params[4].split(":")[1]);
+		
+		Long userId = Long.parseLong(params[6].split(":")[1].replace("\"",""));
+		// String extraServices = params[7];//.split(":")[1].replace("\"", "");
+		// // .replace("}", ""));
 
-		Long userId = 1L;
 
 		Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
@@ -143,6 +146,7 @@ public class BookingController {
 
 		String extraServices = "";
 		String servicesParsed = params[7];
+		System.out.println(servicesParsed);
 		servicesParsed = servicesParsed.replace("\"extraServices\":[", "");
 		servicesParsed = servicesParsed.replace("]}", "");
 
@@ -201,9 +205,8 @@ public class BookingController {
 				0);
 		int days = Integer.parseInt(params[3].split(":")[1]);
 		int guests = Integer.parseInt(params[4].split(":")[1]);
-		Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", ""));
-		Long userId = Long.parseLong(params[6].split(":")[1].replace("\"",
-				"").replace("}", ""));
+		// Long ownerId = Long.parseLong(params[5].split(":")[1].replace("\"", ""));
+		Long userId = Long.parseLong(params[6].split(":")[1].replace("\"","").replace("}", ""));
 
 		Date startDate = date.getTime();
 		date.add(Calendar.DAY_OF_MONTH, days);
@@ -461,7 +464,7 @@ public class BookingController {
 		double price = Double.parseDouble(split[3].split(":")[1].replace("\"", ""));
 		String forType = split[4].split(":")[1].replace("\"", "");
 
-		int validDuration = Integer.parseInt(split[5].split(":")[1].replace("\"", ""));
+		// int validDuration = Integer.parseInt(split[5].split(":")[1].replace("\"", ""));
 
 		String extraServices = split[6].split("\"")[3];
 

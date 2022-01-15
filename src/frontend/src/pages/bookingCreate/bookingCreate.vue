@@ -15,18 +15,66 @@
 					:key="a"
 					style="display: flex; justify-content: space-between"
 				>
-					<p
-						class="entryName"
-						style="font-size: 26px; margin: 0; margin-right: 20px"
-					>
-						{{ a.name }}
-					</p>
-					<input
-						style="width: 24px"
-						type="radio"
-						:value="a"
-						v-model="selectedEntity"
-					/>
+					<div style="display: flex; justify-content: space-around"> 						
+						<p
+							class="entryName"
+							style="font-size: 26px; margin: 0; margin-right: 20px"
+						>
+							{{ a.name }}
+						</p>
+					</div>
+					<div style="display: flex; justify-content: space-around"> 	
+						<input
+							style="width: 24px"
+							type="radio"
+							:value="a"
+							v-model="selectedEntity"
+							@click="selectExtraServices(a)"
+						/>
+						<div
+							class="entryLeftShort"
+							style="display: flex; align-items: center"
+						>
+							Extra Services :
+						</div>
+						<div
+							class="entryLeftShort"
+							style="display: flex; align-items: center"
+							v-for="item in a.extraServices"
+							:key="item"
+						>
+							<p>{{ item.service }} : ${{ item.price }}</p>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="passwordChange" v-if="reserveToggle == true">
+						<div
+							v-for="(item, index) in extraServicesInPrompt"
+							:key="item"
+							style="
+								display: flex;
+								flex-direction: row;
+								justify-content: space-between;
+							"
+						>
+							<p>{{ item.service }}</p>
+							<div
+								style="
+									display: flex;
+									flex-direction: row;
+									justify-content: space-between;
+								"
+							>
+								<p style="margin-right: 20px">${{ item.price }}</p>
+								<input
+									type="checkbox"
+									style="width: 22px"
+									@click="cbClick(index)"
+								/>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="rightFlex">
@@ -70,6 +118,9 @@ export default {
 		var time = ref(null);
 		var days = ref(null);
 		var guests = ref(null);
+		var reserveToggle = ref(null);
+		var extraServicesInPrompt = ref(null);
+		var checkedFull = ref([]);
 
 		var entities = ref(null);
 		if (localStorage.type == "FISHING_INSTRUCTOR") {
@@ -77,18 +128,60 @@ export default {
 				.get("/api/adventures/getAllByInstructorId/" + localStorage.userId)
 				.then((result) => {
 					entities.value = result.data;
+					for (var i = 0; i < entities.value.length; i++) {
+						entities.value[i].extraServices = [];
+						let priceAndInfoString = entities.value[i].priceAndInfo;
+						let priceAndInfoArray = priceAndInfoString.split(";");
+						priceAndInfoArray.forEach((item, index) => {
+							if (item.length > 0) {
+								priceAndInfoArray[index] = item.split(":");
+								entities.value[i].extraServices.push({
+									service: priceAndInfoArray[index][0],
+									price: priceAndInfoArray[index][1],
+								});
+							}
+						});
+					}
 				});
 		} else if (localStorage.type == "COTTAGE_OWNER") {
 			axios
 				.get("/api/cottages/getAllByOwnerId/" + localStorage.userId)
 				.then((result) => {
 					entities.value = result.data;
+					for (var i = 0; i < entities.value.length; i++) {
+						entities.value[i].extraServices = [];
+						let priceAndInfoString = entities.value[i].priceAndInfo;
+						let priceAndInfoArray = priceAndInfoString.split(";");
+						priceAndInfoArray.forEach((item, index) => {
+							if (item.length > 0) {
+								priceAndInfoArray[index] = item.split(":");
+								entities.value[i].extraServices.push({
+									service: priceAndInfoArray[index][0],
+									price: priceAndInfoArray[index][1],
+								});
+							}
+						});
+					}
 				});
 		} else if (localStorage.type == "BOAT_OWNER") {
 			axios
 				.get("/api/boats/getAllByOwnerId/" + localStorage.userId)
 				.then((result) => {
 					entities.value = result.data;
+					for (var i = 0; i < entities.value.length; i++) {
+						entities.value[i].extraServices = [];
+						let priceAndInfoString = entities.value[i].priceAndInfo;
+						let priceAndInfoArray = priceAndInfoString.split(";");
+						priceAndInfoArray.forEach((item, index) => {
+							if (item.length > 0) {
+								priceAndInfoArray[index] = item.split(":");
+								entities.value[i].extraServices.push({
+									service: priceAndInfoArray[index][0],
+									price: priceAndInfoArray[index][1],
+								});
+							}
+						});
+					}
 				});
 		}
 
@@ -100,6 +193,9 @@ export default {
 			time,
 			days,
 			guests,
+			reserveToggle,
+			extraServicesInPrompt,
+			checkedFull,
 
 			notImplemented() {
 				alert("Not implemented yet!");
@@ -138,6 +234,7 @@ export default {
 								guest: guests.value,
 								entityOwnerId: localStorage.userId,
 								userId: localStorage.whichUser,
+								extraServices: checkedFull.value,
 							},
 							{ headers: { "Content-Type": "application/json" } }
 						)
@@ -164,6 +261,7 @@ export default {
 								guest: guests.value,
 								entityOwnerId: localStorage.userId,
 								userId: localStorage.whichUser,
+								extraServices: checkedFull.value,
 							},
 							{ headers: { "Content-Type": "application/json" } }
 						)
@@ -189,6 +287,7 @@ export default {
 								guest: guests.value,
 								entityOwnerId: localStorage.userId,
 								userId: localStorage.whichUser,
+								extraServices: checkedFull.value,
 							},
 							{ headers: { "Content-Type": "application/json" } }
 						)
@@ -203,6 +302,22 @@ export default {
 							}
 						});
 				}
+			},
+			selectExtraServices(object) {
+				reserveToggle.value = true;
+				extraServicesInPrompt.value = object.extraServices;
+				console.log(extraServicesInPrompt.value)
+			},
+			cbClick(selectedExtraService) {
+				if (checkedFull.value.includes(selectedExtraService)) {
+					// Izbacivanje tog elementa iz liste
+					let index = checkedFull.value.indexOf(selectedExtraService);
+					checkedFull.value.splice(index, 1);
+				} else {
+					checkedFull.value.push(selectedExtraService);
+				}
+				console.log("checkedFull :");
+				console.log(checkedFull.value);
 			},
 		};
 	},

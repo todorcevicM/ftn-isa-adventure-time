@@ -187,13 +187,13 @@ public class CottageOwnerController {
 			conm.add(new CottageNameRoomBookingDTO(co.get(i).getName(), toAdd));
 		}
 		
-		for (CottageNameRoomBookingDTO c : conm) {
-			System.out.println("Cottage Name: " + c.getCottageName());
-			for (UserNameRoomBookingDTO u : c.getUserNameRoomBookingDTO()) {
-				System.out.println("User: " + u.getUserName());
-				System.out.println("Room Booking Id: " + u.getRoomBooking().getId());				
-			}
-		}
+		// for (CottageNameRoomBookingDTO c : conm) {
+		// 	System.out.println("Cottage Name: " + c.getCottageName());
+		// 	for (UserNameRoomBookingDTO u : c.getUserNameRoomBookingDTO()) {
+		// 		System.out.println("User: " + u.getUserName());
+		// 		System.out.println("Room Booking Id: " + u.getRoomBooking().getId());				
+		// 	}
+		// }
 	
 		return new ResponseEntity<ArrayList<CottageNameRoomBookingDTO>>(conm, HttpStatus.OK);
 	}

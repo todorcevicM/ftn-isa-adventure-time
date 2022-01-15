@@ -63,7 +63,6 @@ public class AdventureBooking {
 		this.price = price;
 		this.reportMade = false;
 		this.maxUsers = maxUsers;
-		// TODO:
 		this.extraService = extraService;
 		this.bookedInstructorId = instructorId;
 	}
