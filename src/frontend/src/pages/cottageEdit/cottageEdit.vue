@@ -21,28 +21,22 @@
 				</div>
 				<!-- Spacer -->
 				<div style="margin-top: 20px"></div>
-				<div>
-					<p v-if="!uploadedImage">Add a new image:</p>
+				<div v-if="canUpload">
+					<p>Add a new image:</p>
 					<input
-						v-if="!uploadedImage"
 						type="file"
 						@change="onFileChange"
 					/>
-				</div>
-				<div style="margin: 20px 0px; text-align: center">
-					<button
-						v-if="!uploadedImage"
-						@click="uploadImage(cottage.id)"
-					>
+					<button @click="uploadImage(cottage.id)">
 						Upload
 					</button>
+
 				</div>
-				<div>
-					<img
-						class="itemImage"
-						:src="addedImageSource(cottage.id)"
-					/>
-				</div>
+				<img
+					v-if="uploadedImageToggle"
+					class="itemImage"
+					:src="addedImageSource(cottage.id)"
+				/>
 			</div>
 			<div class="rightFlex">
 				<p class="smallText">Name</p>
@@ -259,7 +253,7 @@ import axios from "axios";
 export default {
 	setup() {
 		var uploadedImage = false;
-		var canUpload = false;
+		var canUpload = ref(null);
 		var updateToggle = ref(null);
 
 		var cottage = ref({
@@ -321,6 +315,12 @@ export default {
 			extraServices: "",
 		});
 
+		var uploadedImageToggle = ref(null);
+		axios.post("/api/image/existsByIdAndType/" + cottage.value.id, "COTTAGE").then(function (response) {
+			uploadedImageToggle.value = response.data;
+			canUpload.value = !response.data;
+		});
+
 		return {
 			cottage,
 			newCottage,
@@ -334,6 +334,7 @@ export default {
 			action,
 			actionServiceToAdd,
 			servicePrice,
+			uploadedImageToggle,
 
 			imageSource(id) {
 				try {
@@ -464,18 +465,18 @@ export default {
 			},
 			uploadImage(id) {
 				if (this.canUpload) {
-					console.log("Uploading image...");
-					const newFormData = new FormData();
-					newFormData.append("file", this.selectedFile);
+					const formData = new FormData();
+					formData.append('file', this.selectedFile);
 					console.log("Form data : ");
-					var api = "cottage_" + id;
+					var name = "cottage_" + id;
 					axios
-						.post("/api/image/save/" + api, newFormData, {})
+						.post("/api/image/save/" + name, formData)
 						.then(function (response) {
 							console.log(response.data);
 						});
-					console.log("Image uploaded.");
-					this.uploadedImage = true;
+					this.uploadedImageToggle = true;
+					this.canUpload = false;
+					window.location.reload();
 				}
 			},
 			addedImageSource(id) {
@@ -483,8 +484,9 @@ export default {
 					return require("../../assets/images/cottage_" +
 						id +
 						".png");
-				} catch (e) {
-					return require("../../assets/images/default_cottage.png");
+				} catch (err) {
+					console.log(err);
+					return;
 				}
 			},
 			createAction() {

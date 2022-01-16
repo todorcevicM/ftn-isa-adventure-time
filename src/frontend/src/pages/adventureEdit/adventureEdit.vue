@@ -15,18 +15,20 @@
 				</div>
 				<!-- Spacer -->
 				<div style="margin-top: 20px"></div>
-				<p v-if="!uploadedImage">Add a new image:</p>
-				<input
-					v-if="!uploadedImage"
-					type="file"
-					@change="onFileChange"
-				/>
-				<button v-if="canUpload" @click="uploadImage(adventure.id)">
-					Upload
-				</button>
+				<div v-if="canUpload">
+					<p>Add a new image:</p>
+					<input
+						type="file"
+						@change="onFileChange"
+					/>
+					<button @click="uploadImage(adventure.id)">
+						Upload
+					</button>
+
+				</div>
 
 				<img
-					v-if="uploadedImage"
+					v-if="uploadedImageToggle"
 					class="itemImage"
 					:src="addedImageSource(adventure.id)"
 				/>
@@ -241,7 +243,7 @@ import axios from "axios";
 export default {
 	setup() {
 		var uploadedImage = ref(false);
-		var canUpload = ref(false);
+		var canUpload = ref(null);
 		var updateToggle = ref(null);
 
 		var adventure = ref({
@@ -299,6 +301,12 @@ export default {
 			extraServices: "",
 		});
 
+		var uploadedImageToggle = ref(null);
+		axios.post("/api/image/existsByIdAndType/" + adventure.value.id, "ADVENTURE").then(function (response) {
+			uploadedImageToggle.value = response.data;
+			canUpload.value = !response.data;
+		});
+
 		return {
 			adventure,
 			newAdventure,
@@ -311,6 +319,7 @@ export default {
 			servicePrice,
 			formattedReservationStart,
 			formattedReservationEnd,
+			uploadedImageToggle,
 
 			imageSource(id) {
 				try {
@@ -382,16 +391,17 @@ export default {
 				this.selectedFile = files[0];
 			},
 			uploadImage(id) {
-				const newFormData = new FormData();
-				newFormData.append("file", this.selectedFile);
-				var api = "adventure_" + id + ".png";
+				const formData = new FormData();
+				formData.append("file", this.selectedFile);
+				var name = "adventure_" + id;
 				axios
-					.post("/api/image/save/" + api, newFormData, {})
+					.post("/api/image/save/" + name, formData, {})
 					.then(function (response) {
 						console.log(response.data);
 					});
-				this.uploadedImage = true;
-				console.log(this.uploadedImage);
+				this.uploadedImageToggle = true;
+				this.canUpload = false;
+				window.location.reload();
 			},
 			addedImageSource(id) {
 				try {
@@ -399,7 +409,8 @@ export default {
 						id +
 						".png");
 				} catch (err) {
-					return require("../../assets/images/default_adventure.png");
+					console.log(err);
+					return;
 				}
 			},
 			createAction() {
