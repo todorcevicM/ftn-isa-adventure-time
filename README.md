@@ -35,6 +35,7 @@ It can be used by fishing instructors, cottage owners, boat owners, and their cu
 
 * Install MySQL DBMS and create a connection to a new database named `atdb`.
 * Create a new user with credentials `newuser` as username and `adventuretime` as password.
+* The database will be initialized using the following [script](https://github.com/todorcevicM/ftn-isa-adventure-time/blob/main/src/main/resources/data.sql).
 * Make sure the service is running when starting up the server.
 
 ### NPM & Vue
@@ -65,9 +66,3 @@ It can be used by fishing instructors, cottage owners, boat owners, and their cu
 ## License
 
 [MIT License](/LICENSE)
-
-vue - instalacija, biblioteke, (dependency), pokretanje
-java - dependencyi, pokretanje
-data.sql - (ovo ne bih nista dodatno pisao, samo bi ostavili ovaj fajl)
-
-Za punjenje baze podataka se koristi sledeća [skripta](https://github.com/todorcevicM/ftn-isa-adventure-time/blob/main/src/main/resources/data.sql).
